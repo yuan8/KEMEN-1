@@ -178,11 +178,11 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::post('/map/provinsi-store/{id}', 'FORM\IntegrasiCtrl@mapingProStore')->name('map.provinsi.store');
 
 			Route::get('/result/provinsi/', 'FORM\IntegrasiCtrl@result_pro')->name('res.pro');
-			Route::post('/pel-nomen/provinsi/{id}', 'FORM\IntegrasiNomenCtrl@store_pel_nomen_pro')->name('pel.pro');
+			Route::post('/pel-nomen/provinsi/{id}', 'FORM\IntegrasiNomenCTRL@store_pel_nomen_pro')->name('pel.pro');
 
 
-			Route::get('/provinsi-nomen/', 'FORM\IntegrasiNomenCtrl@index_pro')->name('nomen.pro.index');
-			Route::get('/provinsi-nomen/{kode_daerah}', 'FORM\IntegrasiNomenCtrl@detail_pro')->name('nomen.pro.detail');
+			Route::get('/provinsi-nomen/', 'FORM\IntegrasiNomenCTRL@index_pro')->name('nomen.pro.index');
+			Route::get('/provinsi-nomen/{kode_daerah}', 'FORM\IntegrasiNomenCTRL@detail_pro')->name('nomen.pro.detail');
 
 
 
