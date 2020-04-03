@@ -51,7 +51,7 @@
 </html>
 <script type="text/javascript">
 
-localStorage.dss_tab_info_refresh=Date();
+localStorage.local_{{str_replace('.','_',$_SERVER['HTTP_HOST'])}}_dss_tab_info_refresh=Date();
 
 count=3;
 

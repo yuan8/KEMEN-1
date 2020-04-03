@@ -12,11 +12,16 @@ class SIPDCTRL extends Controller
 {
     //
 
-	static $token='d1d1ab9140c249e34ce356c91e9166a6';
-	static $host='https://sipd.go.id/';
-	// :'http://192.168.123.195/';
+	static function  host(){
+			if( strpos($_SERVER['HTTP_HOST'], '192.168.123.190') !== false) {
+				return 'http://192.168.123.195/';
+			}else{
+				return 'https://sipd.go.id/';
+			}
+		}
 
-	// protected $host='https://192.168.123.195';
+	static $token='d1d1ab9140c249e34ce356c91e9166a6';
+
 
 	static public function codeLibrari($tahun,$kodepemda){
 		$code_list=[];
@@ -34,7 +39,7 @@ class SIPDCTRL extends Controller
 			$kodepemda=$kodepemda.'00';
 		}
 
-		$path=static::$host.'run/serv/get.php?tahun='.($tahun).'&kodepemda='.$kodepemda;
+		$path=static::host().'run/serv/get.php?tahun='.($tahun).'&kodepemda='.$kodepemda;
 		// dd($path);
 		$path=urldecode($path);
 		$data=file_get_contents($path,false, $context);
@@ -44,7 +49,6 @@ class SIPDCTRL extends Controller
 
     public function getData($tahun,$kodepemda){
 
-    	
 
         Hp::checkDBProKeg($tahun);
 
@@ -55,7 +59,7 @@ class SIPDCTRL extends Controller
 		    "http" => [
 		        "method" => "GET",
 		          "header" => "Authorization: bearer ".static::$token
-		            
+
 		    ]
 		];
 
@@ -70,19 +74,19 @@ class SIPDCTRL extends Controller
 		// Open the file using the HTTP headers set above
 		$file=null;
 		try {
-    			
+
 			if(file_exists(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$kodepemda.'.json'))){
 				$file=file_get_contents(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$kodepemda.'.json'));
 			}else{
-				$path=static::$host.'run/serv/get.php?tahun='.($tahun).'&kodepemda='.$kode_daerah;
+				$path=static::host().'run/serv/get.php?tahun='.($tahun).'&kodepemda='.$kode_daerah;
 				$path=urldecode($path);
 				$file=file_get_contents($path,false, $context);
 				if(!(strpos($file, '[')!==false)){
 					$file='[]';
 				}
 			}
-				
-				
+
+
 		}
 		catch (exception $e) {
 			$file=[];
@@ -232,10 +236,10 @@ class SIPDCTRL extends Controller
 			   										$sub['indikator'][]=$sub_ind;
 			   									}
 
-				   								
+
 
 			   								}
-					 
+
 
 			   							}
 
@@ -259,17 +263,17 @@ class SIPDCTRL extends Controller
 		   				}
 
 		   				if((!empty($data['kode']))and(!empty($data['uraian']))){
-		   					$data_recorded[]=$data;	
+		   					$data_recorded[]=$data;
 		   				}
-		   				
+
 
 		   			}
 		   		}
-		   		
 
 
-		   
-		   
+
+
+
 		   		$drah=DB::table('master_daerah as d')
 				->join('prokeg.tb_'.$tahun.'_kegiatan as k','k.kode_daerah','=','d.id','left outer')
 				->where('k.id',NULL)
@@ -306,14 +310,14 @@ class SIPDCTRL extends Controller
 
 
 		   		}
-		   	
+
 
 
 		   		if(!$drah){
 		   			return 'data selesai';
 		   		}
 
-		   		
+
 		   		return redirect()->route('sipdd',['id_next'=>$drah->id,'nama'=>$drah->nama,'tahun'=>$tahun]);
 
 			}else{
@@ -321,14 +325,14 @@ class SIPDCTRL extends Controller
 
 
 		// success
-		    	
+
 
 		}
 
 		return [];
 
 
-		
+
 
     }
 
@@ -341,7 +345,7 @@ class SIPDCTRL extends Controller
     	}
 
     }
-  
+
     public static function storeDB($data,$tahun=null,$kodepemda=null){
         if($tahun==null){
             return '';
@@ -428,13 +432,13 @@ class SIPDCTRL extends Controller
                         ]);
                     }
 
-                }       
+                }
 
 
             }
 
             foreach ($d['indikator'] as $ip) {
-               
+
 
                 $idip=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_ind_program')
                 ->where([
@@ -443,7 +447,7 @@ class SIPDCTRL extends Controller
                     'tahun'=>$ip['tahun'],
                     'kode_daerah'=>$ip['kode_daerah'],
 
-              
+
                 ])->pluck('id')->first();
 
                 if(!$idip){
@@ -472,7 +476,7 @@ class SIPDCTRL extends Controller
         if($kodepemda!=null){
         	static::updateDb($kodepemda,$tahun);
         }
-    
+
     }
 
 
@@ -506,7 +510,7 @@ class SIPDCTRL extends Controller
     			->where('id_urusan','!=',null)
     			->where('kode_daerah',$kodepemda)->where('id',$id_bidang_daerah)->get();
     	}
-    
+
 
     	foreach ($map as $key => $value) {
 

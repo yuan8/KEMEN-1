@@ -106,13 +106,13 @@
      buildNum();
 
     $('html').on('load',buildNum());
-    var localy_trigger_refresh=localStorage.getItem('dss_tab_info_refresh');
+    var localy_trigger_refresh=localStorage.getItem('local_{{str_replace('.','_',$_SERVER['HTTP_HOST'])}}_dss_tab_info_refresh');
 
     $(window).on("storage", function(e) {
     var event = e.originalEvent; // Get access to the storage-specifics
-    if (event.key == "dss_tab_info_refresh") { // Or whatever
+    if (event.key == "local_{{str_replace('.','_',$_SERVER['HTTP_HOST'])}}_dss_tab_info_refresh") { // Or whatever
         // Do something with event.newValue
-        if(localy_trigger_refresh!=localStorage.getItem('dss_tab_info_refresh')){
+        if(localy_trigger_refresh!=localStorage.getItem('local_{{str_replace('.','_',$_SERVER['HTTP_HOST'])}}_dss_tab_info_refresh')){
             window.location.reload();
         };
     }
@@ -122,7 +122,7 @@ window.addEventListener("message", receiveMessage, false);
 
 function receiveMessage(event) {
   if (event.origin == "http://localhost"){
-     console.log('message kenek'); 
+     // console.log('message kenek'); 
     console.log(event);
 
   }
