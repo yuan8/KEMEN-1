@@ -1,0 +1,137 @@
+{
+    "KABUPATEN_BOLAANG_MONGONDOW": {
+        "bjp_sumur_bor_at_pompa": 3647,
+        "bjp_sumur_terlindungi": 13888,
+        "bjp_mata_air_telindungi": 4296,
+        "bjp_air_hujan": 142,
+        "jumlah_rumah_tangga": 56994,
+        "kode_daerah": "7111",
+        "kode_daerah_simspam": "7101"
+    },
+    "KABUPATEN_BOLAANG_MONGONDOW_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 895,
+        "bjp_sumur_terlindungi": 2558,
+        "bjp_mata_air_telindungi": 1947,
+        "bjp_air_hujan": 210,
+        "jumlah_rumah_tangga": 16192,
+        "kode_daerah": "7111",
+        "kode_daerah_simspam": "7111"
+    },
+    "KABUPATEN_BOLAANG_MONGONDOW_TIMUR": {
+        "bjp_sumur_bor_at_pompa": 699,
+        "bjp_sumur_terlindungi": 2401,
+        "bjp_mata_air_telindungi": 2203,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 13771,
+        "kode_daerah": "7110",
+        "kode_daerah_simspam": "7110"
+    },
+    "KABUPATEN_BOLAANG_MONGONDOW_UTARA": {
+        "bjp_sumur_bor_at_pompa": 475,
+        "bjp_sumur_terlindungi": 1680,
+        "bjp_mata_air_telindungi": 7572,
+        "bjp_air_hujan": 5822,
+        "jumlah_rumah_tangga": 17778,
+        "kode_daerah": "7108",
+        "kode_daerah_simspam": "7108"
+    },
+    "KABUPATEN_KEPULAUAN_SANGIHE": {
+        "bjp_sumur_bor_at_pompa": 248,
+        "bjp_sumur_terlindungi": 1292,
+        "bjp_mata_air_telindungi": 10267,
+        "bjp_air_hujan": 774,
+        "jumlah_rumah_tangga": 33420,
+        "kode_daerah": "7103",
+        "kode_daerah_simspam": "7103"
+    },
+    "KABUPATEN_KEPULAUAN_SIAU_TAGULANDANG_BIARO": {
+        "bjp_sumur_bor_at_pompa": 1145,
+        "bjp_sumur_terlindungi": 8222,
+        "bjp_mata_air_telindungi": 6823,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 27158,
+        "kode_daerah": "7109",
+        "kode_daerah_simspam": "7109"
+    },
+    "KABUPATEN_KEPULAUAN_TALAUD": {
+        "bjp_sumur_bor_at_pompa": 1400,
+        "bjp_sumur_terlindungi": 4439,
+        "bjp_mata_air_telindungi": 1170,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 22235,
+        "kode_daerah": "7104",
+        "kode_daerah_simspam": "7104"
+    },
+    "KABUPATEN_MINAHASA": {
+        "bjp_sumur_bor_at_pompa": 11679,
+        "bjp_sumur_terlindungi": 10656,
+        "bjp_mata_air_telindungi": 15586,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 88174,
+        "kode_daerah": "7102",
+        "kode_daerah_simspam": "7102"
+    },
+    "KABUPATEN_MINAHASA_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 2314,
+        "bjp_sumur_terlindungi": 10973,
+        "bjp_mata_air_telindungi": 13357,
+        "bjp_air_hujan": 154,
+        "jumlah_rumah_tangga": 54424,
+        "kode_daerah": "7105",
+        "kode_daerah_simspam": "7105"
+    },
+    "KABUPATEN_MINAHASA_TENGGARA": {
+        "bjp_sumur_bor_at_pompa": 1245,
+        "bjp_sumur_terlindungi": 6481,
+        "bjp_mata_air_telindungi": 580,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 18939,
+        "kode_daerah": "7107",
+        "kode_daerah_simspam": "7107"
+    },
+    "KABUPATEN_MINAHASA_UTARA": {
+        "bjp_sumur_bor_at_pompa": 4191,
+        "bjp_sumur_terlindungi": 13794,
+        "bjp_mata_air_telindungi": 5472,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 46875,
+        "kode_daerah": "7106",
+        "kode_daerah_simspam": "7106"
+    },
+    "KOTA_BITUNG": {
+        "bjp_sumur_bor_at_pompa": 18283,
+        "bjp_sumur_terlindungi": 5949,
+        "bjp_mata_air_telindungi": 5243,
+        "bjp_air_hujan": 98,
+        "jumlah_rumah_tangga": 50645,
+        "kode_daerah": "7172",
+        "kode_daerah_simspam": "7172"
+    },
+    "KOTA_KOTAMOBAGU": {
+        "bjp_sumur_bor_at_pompa": 4721,
+        "bjp_sumur_terlindungi": 4621,
+        "bjp_mata_air_telindungi": 764,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 25653,
+        "kode_daerah": "7174",
+        "kode_daerah_simspam": "7174"
+    },
+    "KOTA_MANADO": {
+        "bjp_sumur_bor_at_pompa": 45045,
+        "bjp_sumur_terlindungi": 29854,
+        "bjp_mata_air_telindungi": 1521,
+        "bjp_air_hujan": 1079,
+        "jumlah_rumah_tangga": 116221,
+        "kode_daerah": "7171",
+        "kode_daerah_simspam": "7171"
+    },
+    "KOTA_TOMOHON": {
+        "bjp_sumur_bor_at_pompa": 7351,
+        "bjp_sumur_terlindungi": 4395,
+        "bjp_mata_air_telindungi": 5593,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 26292,
+        "kode_daerah": "7173",
+        "kode_daerah_simspam": "7173"
+    }
+}

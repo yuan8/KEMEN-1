@@ -1,0 +1,47 @@
+{
+    "KABUPATEN_MAJENE": {
+        "bjp_sumur_bor_at_pompa": 3274,
+        "bjp_sumur_terlindungi": 8348,
+        "bjp_mata_air_telindungi": 2395,
+        "bjp_air_hujan": 76,
+        "jumlah_rumah_tangga": 33584,
+        "kode_daerah": "7605",
+        "kode_daerah_simspam": "7601"
+    },
+    "KABUPATEN_MAMASA": {
+        "bjp_sumur_bor_at_pompa": 209,
+        "bjp_sumur_terlindungi": 0,
+        "bjp_mata_air_telindungi": 149,
+        "bjp_air_hujan": 369,
+        "jumlah_rumah_tangga": 37000,
+        "kode_daerah": "7603",
+        "kode_daerah_simspam": "7603"
+    },
+    "KABUPATEN_MAMUJU": {
+        "bjp_sumur_bor_at_pompa": 10586,
+        "bjp_sumur_terlindungi": 16655,
+        "bjp_mata_air_telindungi": 2686,
+        "bjp_air_hujan": 3164,
+        "jumlah_rumah_tangga": 83236,
+        "kode_daerah": "7602",
+        "kode_daerah_simspam": "7604"
+    },
+    "KABUPATEN_MAMUJU_UTARA": {
+        "bjp_sumur_bor_at_pompa": 5096,
+        "bjp_sumur_terlindungi": 11709,
+        "bjp_mata_air_telindungi": 1604,
+        "bjp_air_hujan": 1095,
+        "jumlah_rumah_tangga": 36975,
+        "kode_daerah": "7601",
+        "kode_daerah_simspam": "7605"
+    },
+    "KABUPATEN_POLEWALI_MANDAR": {
+        "bjp_sumur_bor_at_pompa": 7534,
+        "bjp_sumur_terlindungi": 23051,
+        "bjp_mata_air_telindungi": 4312,
+        "bjp_air_hujan": 233,
+        "jumlah_rumah_tangga": 97415,
+        "kode_daerah": "7604",
+        "kode_daerah_simspam": "7602"
+    }
+}

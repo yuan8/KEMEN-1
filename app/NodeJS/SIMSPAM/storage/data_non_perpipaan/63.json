@@ -1,0 +1,119 @@
+{
+    "KABUPATEN_BALANGAN": {
+        "bjp_sumur_bor_at_pompa": 5303,
+        "bjp_sumur_terlindungi": 1327,
+        "bjp_mata_air_telindungi": 576,
+        "bjp_air_hujan": 138,
+        "jumlah_rumah_tangga": 33984,
+        "kode_daerah": "6311",
+        "kode_daerah_simspam": "6311"
+    },
+    "KABUPATEN_BANJAR": {
+        "bjp_sumur_bor_at_pompa": 6870,
+        "bjp_sumur_terlindungi": 13642,
+        "bjp_mata_air_telindungi": 1640,
+        "bjp_air_hujan": 5187,
+        "jumlah_rumah_tangga": 146767,
+        "kode_daerah": "6303",
+        "kode_daerah_simspam": "6303"
+    },
+    "KABUPATEN_BARITO_KUALA": {
+        "bjp_sumur_bor_at_pompa": 3942,
+        "bjp_sumur_terlindungi": 270,
+        "bjp_mata_air_telindungi": 178,
+        "bjp_air_hujan": 7861,
+        "jumlah_rumah_tangga": 82985,
+        "kode_daerah": "6304",
+        "kode_daerah_simspam": "6304"
+    },
+    "KABUPATEN_HULU_SUNGAI_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 20103,
+        "bjp_sumur_terlindungi": 378,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 66867,
+        "kode_daerah": "6306",
+        "kode_daerah_simspam": "6306"
+    },
+    "KABUPATEN_HULU_SUNGAI_TENGAH": {
+        "bjp_sumur_bor_at_pompa": 21855,
+        "bjp_sumur_terlindungi": 1890,
+        "bjp_mata_air_telindungi": 1273,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 73806,
+        "kode_daerah": "6307",
+        "kode_daerah_simspam": "6307"
+    },
+    "KABUPATEN_HULU_SUNGAI_UTARA": {
+        "bjp_sumur_bor_at_pompa": 9962,
+        "bjp_sumur_terlindungi": 536,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 59245,
+        "kode_daerah": "6308",
+        "kode_daerah_simspam": "6308"
+    },
+    "KABUPATEN_KOTA_BARU": {
+        "bjp_sumur_bor_at_pompa": 1258,
+        "bjp_sumur_terlindungi": 18572,
+        "bjp_mata_air_telindungi": 1622,
+        "bjp_air_hujan": 4594,
+        "jumlah_rumah_tangga": 82570,
+        "kode_daerah": "6302",
+        "kode_daerah_simspam": "6302"
+    },
+    "KABUPATEN_TABALONG": {
+        "bjp_sumur_bor_at_pompa": 4718,
+        "bjp_sumur_terlindungi": 6585,
+        "bjp_mata_air_telindungi": 2132,
+        "bjp_air_hujan": 226,
+        "jumlah_rumah_tangga": 64232,
+        "kode_daerah": "6309",
+        "kode_daerah_simspam": "6309"
+    },
+    "KABUPATEN_TANAH_BUMBU": {
+        "bjp_sumur_bor_at_pompa": 11437,
+        "bjp_sumur_terlindungi": 7321,
+        "bjp_mata_air_telindungi": 393,
+        "bjp_air_hujan": 948,
+        "jumlah_rumah_tangga": 84282,
+        "kode_daerah": "6310",
+        "kode_daerah_simspam": "6310"
+    },
+    "KABUPATEN_TANAH_LAUT": {
+        "bjp_sumur_bor_at_pompa": 26127,
+        "bjp_sumur_terlindungi": 15641,
+        "bjp_mata_air_telindungi": 710,
+        "bjp_air_hujan": 933,
+        "jumlah_rumah_tangga": 88357,
+        "kode_daerah": "6301",
+        "kode_daerah_simspam": "6301"
+    },
+    "KABUPATEN_TAPIN": {
+        "bjp_sumur_bor_at_pompa": 11532,
+        "bjp_sumur_terlindungi": 8501,
+        "bjp_mata_air_telindungi": 274,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 53103,
+        "kode_daerah": "6305",
+        "kode_daerah_simspam": "6305"
+    },
+    "KOTA_BANJAR_BARU": {
+        "bjp_sumur_bor_at_pompa": 1198,
+        "bjp_sumur_terlindungi": 27720,
+        "bjp_mata_air_telindungi": 159,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 66677,
+        "kode_daerah": "6372",
+        "kode_daerah_simspam": "6372"
+    },
+    "KOTA_BANJARMASIN": {
+        "bjp_sumur_bor_at_pompa": 0,
+        "bjp_sumur_terlindungi": 0,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 187994,
+        "kode_daerah": "6371",
+        "kode_daerah_simspam": "6371"
+    }
+}

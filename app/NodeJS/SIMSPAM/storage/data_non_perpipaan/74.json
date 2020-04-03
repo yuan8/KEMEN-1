@@ -1,0 +1,110 @@
+{
+    "KABUPATEN_BOMBANA": {
+        "bjp_sumur_bor_at_pompa": 2658,
+        "bjp_sumur_terlindungi": 4770,
+        "bjp_mata_air_telindungi": 5065,
+        "bjp_air_hujan": 176,
+        "jumlah_rumah_tangga": 38302,
+        "kode_daerah": "7406",
+        "kode_daerah_simspam": "7406"
+    },
+    "KABUPATEN_BUTON": {
+        "bjp_sumur_bor_at_pompa": 0,
+        "bjp_sumur_terlindungi": 5003,
+        "bjp_mata_air_telindungi": 19252,
+        "bjp_air_hujan": 4229,
+        "jumlah_rumah_tangga": 56644,
+        "kode_daerah": "7415",
+        "kode_daerah_simspam": "7401"
+    },
+    "KABUPATEN_BUTON_UTARA": {
+        "bjp_sumur_bor_at_pompa": 503,
+        "bjp_sumur_terlindungi": 5535,
+        "bjp_mata_air_telindungi": 664,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 12968,
+        "kode_daerah": "7410",
+        "kode_daerah_simspam": "7409"
+    },
+    "KABUPATEN_KOLAKA": {
+        "bjp_sumur_bor_at_pompa": 17533,
+        "bjp_sumur_terlindungi": 12594,
+        "bjp_mata_air_telindungi": 8231,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 81461,
+        "kode_daerah": "7401",
+        "kode_daerah_simspam": "7404"
+    },
+    "KABUPATEN_KOLAKA_UTARA": {
+        "bjp_sumur_bor_at_pompa": 681,
+        "bjp_sumur_terlindungi": 502,
+        "bjp_mata_air_telindungi": 6684,
+        "bjp_air_hujan": 78,
+        "jumlah_rumah_tangga": 33129,
+        "kode_daerah": "7408",
+        "kode_daerah_simspam": "7408"
+    },
+    "KABUPATEN_KONAWE": {
+        "bjp_sumur_bor_at_pompa": 8530,
+        "bjp_sumur_terlindungi": 22310,
+        "bjp_mata_air_telindungi": 4802,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 59403,
+        "kode_daerah": "7412",
+        "kode_daerah_simspam": "7403"
+    },
+    "KABUPATEN_KONAWE_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 6431,
+        "bjp_sumur_terlindungi": 38466,
+        "bjp_mata_air_telindungi": 7487,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 70175,
+        "kode_daerah": "7405",
+        "kode_daerah_simspam": "7405"
+    },
+    "KABUPATEN_KONAWE_UTARA": {
+        "bjp_sumur_bor_at_pompa": 335,
+        "bjp_sumur_terlindungi": 351,
+        "bjp_mata_air_telindungi": 6759,
+        "bjp_air_hujan": 334,
+        "jumlah_rumah_tangga": 12850,
+        "kode_daerah": "7409",
+        "kode_daerah_simspam": "7410"
+    },
+    "KABUPATEN_MUNA": {
+        "bjp_sumur_bor_at_pompa": 1004,
+        "bjp_sumur_terlindungi": 25413,
+        "bjp_mata_air_telindungi": 3329,
+        "bjp_air_hujan": 648,
+        "jumlah_rumah_tangga": 69275,
+        "kode_daerah": "7403",
+        "kode_daerah_simspam": "7402"
+    },
+    "KABUPATEN_WAKATOBI": {
+        "bjp_sumur_bor_at_pompa": 574,
+        "bjp_sumur_terlindungi": 7826,
+        "bjp_mata_air_telindungi": 1023,
+        "bjp_air_hujan": 3762,
+        "jumlah_rumah_tangga": 23356,
+        "kode_daerah": "7407",
+        "kode_daerah_simspam": "7407"
+    },
+    "KOTA_BAU_BAU": {
+        "bjp_sumur_bor_at_pompa": 2205,
+        "bjp_sumur_terlindungi": 6657,
+        "bjp_mata_air_telindungi": 986,
+        "bjp_air_hujan": 65,
+        "jumlah_rumah_tangga": 33933,
+        "kode_daerah": "7472",
+        "kode_daerah_simspam": "7472"
+    },
+    "KOTA_KENDARI": {
+        "bjp_sumur_bor_at_pompa": 27763,
+        "bjp_sumur_terlindungi": 13920,
+        "bjp_mata_air_telindungi": 6250,
+        "bjp_air_hujan": 169,
+        "jumlah_rumah_tangga": 82660,
+        "kode_daerah": "7471",
+        "kode_daerah_simspam": "7471"
+    }
+}

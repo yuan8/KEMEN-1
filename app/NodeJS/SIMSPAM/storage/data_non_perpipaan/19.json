@@ -1,0 +1,65 @@
+{
+    "KABUPATEN_BANGKA": {
+        "bjp_sumur_bor_at_pompa": 9117,
+        "bjp_sumur_terlindungi": 36762,
+        "bjp_mata_air_telindungi": 1087,
+        "bjp_air_hujan": 475,
+        "jumlah_rumah_tangga": 79948,
+        "kode_daerah": "1905",
+        "kode_daerah_simspam": "1901"
+    },
+    "KABUPATEN_BANGKA_BARAT": {
+        "bjp_sumur_bor_at_pompa": 5157,
+        "bjp_sumur_terlindungi": 14876,
+        "bjp_mata_air_telindungi": 354,
+        "bjp_air_hujan": 164,
+        "jumlah_rumah_tangga": 51855,
+        "kode_daerah": "1905",
+        "kode_daerah_simspam": "1903"
+    },
+    "KABUPATEN_BANGKA_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 3086,
+        "bjp_sumur_terlindungi": 21655,
+        "bjp_mata_air_telindungi": 705,
+        "bjp_air_hujan": 3,
+        "jumlah_rumah_tangga": 49330,
+        "kode_daerah": "1903",
+        "kode_daerah_simspam": "1905"
+    },
+    "KABUPATEN_BANGKA_TENGAH": {
+        "bjp_sumur_bor_at_pompa": 15373,
+        "bjp_sumur_terlindungi": 13648,
+        "bjp_mata_air_telindungi": 956,
+        "bjp_air_hujan": 105,
+        "jumlah_rumah_tangga": 46807,
+        "kode_daerah": "1904",
+        "kode_daerah_simspam": "1904"
+    },
+    "KABUPATEN_BELITUNG": {
+        "bjp_sumur_bor_at_pompa": 3656,
+        "bjp_sumur_terlindungi": 23364,
+        "bjp_mata_air_telindungi": 73,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 44399,
+        "kode_daerah": "1902",
+        "kode_daerah_simspam": "1902"
+    },
+    "KABUPATEN_BELITUNG_TIMUR": {
+        "bjp_sumur_bor_at_pompa": 2662,
+        "bjp_sumur_terlindungi": 10841,
+        "bjp_mata_air_telindungi": 810,
+        "bjp_air_hujan": 288,
+        "jumlah_rumah_tangga": 32622,
+        "kode_daerah": "1906",
+        "kode_daerah_simspam": "1906"
+    },
+    "KOTA_PANGKALPINANG": {
+        "bjp_sumur_bor_at_pompa": 31596,
+        "bjp_sumur_terlindungi": 10420,
+        "bjp_mata_air_telindungi": 388,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 50349,
+        "kode_daerah": "1971",
+        "kode_daerah_simspam": "1971"
+    }
+}

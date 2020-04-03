@@ -1,0 +1,128 @@
+{
+    "KABUPATEN_LAMPUNG_BARAT": {
+        "bjp_sumur_bor_at_pompa": 656,
+        "bjp_sumur_terlindungi": 21839,
+        "bjp_mata_air_telindungi": 24514,
+        "bjp_air_hujan": 1085,
+        "jumlah_rumah_tangga": 117023,
+        "kode_daerah": "1804",
+        "kode_daerah_simspam": "1801"
+    },
+    "KABUPATEN_LAMPUNG_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 22458,
+        "bjp_sumur_terlindungi": 63767,
+        "bjp_mata_air_telindungi": 11505,
+        "bjp_air_hujan": 962,
+        "jumlah_rumah_tangga": 248502,
+        "kode_daerah": "1801",
+        "kode_daerah_simspam": "1803"
+    },
+    "KABUPATEN_LAMPUNG_TENGAH": {
+        "bjp_sumur_bor_at_pompa": 7493,
+        "bjp_sumur_terlindungi": 163075,
+        "bjp_mata_air_telindungi": 2483,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 327778,
+        "kode_daerah": "1802",
+        "kode_daerah_simspam": "1805"
+    },
+    "KABUPATEN_LAMPUNG_TIMUR": {
+        "bjp_sumur_bor_at_pompa": 20230,
+        "bjp_sumur_terlindungi": 109192,
+        "bjp_mata_air_telindungi": 470,
+        "bjp_air_hujan": 1178,
+        "jumlah_rumah_tangga": 264823,
+        "kode_daerah": "1807",
+        "kode_daerah_simspam": "1804"
+    },
+    "KABUPATEN_LAMPUNG_UTARA": {
+        "bjp_sumur_bor_at_pompa": 6332,
+        "bjp_sumur_terlindungi": 30915,
+        "bjp_mata_air_telindungi": 1041,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 150709,
+        "kode_daerah": "1803",
+        "kode_daerah_simspam": "1806"
+    },
+    "KABUPATEN_MESUJI": {
+        "bjp_sumur_bor_at_pompa": 2194,
+        "bjp_sumur_terlindungi": 22874,
+        "bjp_mata_air_telindungi": 172,
+        "bjp_air_hujan": 6049,
+        "jumlah_rumah_tangga": 53695,
+        "kode_daerah": "1811",
+        "kode_daerah_simspam": "1811"
+    },
+    "KABUPATEN_PESAWARAN": {
+        "bjp_sumur_bor_at_pompa": 1688,
+        "bjp_sumur_terlindungi": 45424,
+        "bjp_mata_air_telindungi": 14093,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 107802,
+        "kode_daerah": "1809",
+        "kode_daerah_simspam": "1809"
+    },
+    "KABUPATEN_PRINGSEWU": {
+        "bjp_sumur_bor_at_pompa": 11775,
+        "bjp_sumur_terlindungi": 37461,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 99808,
+        "kode_daerah": "1810",
+        "kode_daerah_simspam": "1810"
+    },
+    "KABUPATEN_TANGGAMUS": {
+        "bjp_sumur_bor_at_pompa": 5035,
+        "bjp_sumur_terlindungi": 28799,
+        "bjp_mata_air_telindungi": 11564,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 140200,
+        "kode_daerah": "1806",
+        "kode_daerah_simspam": "1802"
+    },
+    "KABUPATEN_TULANG_BAWANG_BARAT": {
+        "bjp_sumur_bor_at_pompa": 1688,
+        "bjp_sumur_terlindungi": 15069,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 70730,
+        "kode_daerah": "1812",
+        "kode_daerah_simspam": "1812"
+    },
+    "KABUPATEN_TULANGBAWANG": {
+        "bjp_sumur_bor_at_pompa": 12468,
+        "bjp_sumur_terlindungi": 28077,
+        "bjp_mata_air_telindungi": 738,
+        "bjp_air_hujan": 11773,
+        "jumlah_rumah_tangga": 112929,
+        "kode_daerah": "1805",
+        "kode_daerah_simspam": "1808"
+    },
+    "KABUPATEN_WAY_KANAN": {
+        "bjp_sumur_bor_at_pompa": 2529,
+        "bjp_sumur_terlindungi": 3978,
+        "bjp_mata_air_telindungi": 1437,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 112964,
+        "kode_daerah": "1808",
+        "kode_daerah_simspam": "1807"
+    },
+    "KOTA_BANDAR_LAMPUNG": {
+        "bjp_sumur_bor_at_pompa": 104519,
+        "bjp_sumur_terlindungi": 46605,
+        "bjp_mata_air_telindungi": 1823,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 225302,
+        "kode_daerah": "1871",
+        "kode_daerah_simspam": "1871"
+    },
+    "KOTA_METRO": {
+        "bjp_sumur_bor_at_pompa": 5820,
+        "bjp_sumur_terlindungi": 22237,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 40501,
+        "kode_daerah": "1872",
+        "kode_daerah_simspam": "1872"
+    }
+}

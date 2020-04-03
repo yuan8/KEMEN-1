@@ -1,0 +1,101 @@
+{
+    "KABUPATEN_FAK_FAK": {
+        "bjp_sumur_bor_at_pompa": 0,
+        "bjp_sumur_terlindungi": 0,
+        "bjp_mata_air_telindungi": 1967,
+        "bjp_air_hujan": 5985,
+        "jumlah_rumah_tangga": 16884,
+        "kode_daerah": "9203",
+        "kode_daerah_simspam": "9101"
+    },
+    "KABUPATEN_KAIMANA": {
+        "bjp_sumur_bor_at_pompa": 199,
+        "bjp_sumur_terlindungi": 3863,
+        "bjp_mata_air_telindungi": 424,
+        "bjp_air_hujan": 2654,
+        "jumlah_rumah_tangga": 13062,
+        "kode_daerah": "9208",
+        "kode_daerah_simspam": "9102"
+    },
+    "KABUPATEN_MANOKWARI": {
+        "bjp_sumur_bor_at_pompa": 6750,
+        "bjp_sumur_terlindungi": 15280,
+        "bjp_mata_air_telindungi": 5319,
+        "bjp_air_hujan": 1266,
+        "jumlah_rumah_tangga": 49017,
+        "kode_daerah": "9202",
+        "kode_daerah_simspam": "9105"
+    },
+    "KABUPATEN_MAYBRAT": {
+        "bjp_sumur_bor_at_pompa": 0,
+        "bjp_sumur_terlindungi": 0,
+        "bjp_mata_air_telindungi": 1762,
+        "bjp_air_hujan": 21,
+        "jumlah_rumah_tangga": 9689,
+        "kode_daerah": "9210",
+        "kode_daerah_simspam": "9110"
+    },
+    "KABUPATEN_RAJA_AMPAT": {
+        "bjp_sumur_bor_at_pompa": 1705,
+        "bjp_sumur_terlindungi": 2034,
+        "bjp_mata_air_telindungi": 547,
+        "bjp_air_hujan": 402,
+        "jumlah_rumah_tangga": 10580,
+        "kode_daerah": "9205",
+        "kode_daerah_simspam": "9108"
+    },
+    "KABUPATEN_SORONG": {
+        "bjp_sumur_bor_at_pompa": 3702,
+        "bjp_sumur_terlindungi": 590,
+        "bjp_mata_air_telindungi": 494,
+        "bjp_air_hujan": 9420,
+        "jumlah_rumah_tangga": 16902,
+        "kode_daerah": "9201",
+        "kode_daerah_simspam": "9107"
+    },
+    "KABUPATEN_SORONG_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 389,
+        "bjp_sumur_terlindungi": 43,
+        "bjp_mata_air_telindungi": 487,
+        "bjp_air_hujan": 1086,
+        "jumlah_rumah_tangga": 8697,
+        "kode_daerah": "9204",
+        "kode_daerah_simspam": "9106"
+    },
+    "KABUPATEN_TAMBRAW": {
+        "bjp_sumur_bor_at_pompa": 0,
+        "bjp_sumur_terlindungi": 21,
+        "bjp_mata_air_telindungi": 223,
+        "bjp_air_hujan": 4,
+        "jumlah_rumah_tangga": 3502,
+        "kode_daerah": "9209",
+        "kode_daerah_simspam": "9109"
+    },
+    "KABUPATEN_TELUK_BINTUNI": {
+        "bjp_sumur_bor_at_pompa": 3192,
+        "bjp_sumur_terlindungi": 2995,
+        "bjp_mata_air_telindungi": 350,
+        "bjp_air_hujan": 4530,
+        "jumlah_rumah_tangga": 13878,
+        "kode_daerah": "9206",
+        "kode_daerah_simspam": "9104"
+    },
+    "KABUPATEN_TELUK_WONDAMA": {
+        "bjp_sumur_bor_at_pompa": 0,
+        "bjp_sumur_terlindungi": 522,
+        "bjp_mata_air_telindungi": 204,
+        "bjp_air_hujan": 42,
+        "jumlah_rumah_tangga": 6599,
+        "kode_daerah": "9207",
+        "kode_daerah_simspam": "9103"
+    },
+    "KOTA_SORONG": {
+        "bjp_sumur_bor_at_pompa": 10583,
+        "bjp_sumur_terlindungi": 4011,
+        "bjp_mata_air_telindungi": 906,
+        "bjp_air_hujan": 1883,
+        "jumlah_rumah_tangga": 31299,
+        "kode_daerah": "9271",
+        "kode_daerah_simspam": "9171"
+    }
+}

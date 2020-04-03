@@ -1,0 +1,101 @@
+{
+    "KABUPATEN_BATANGHARI": {
+        "bjp_sumur_bor_at_pompa": 2360,
+        "bjp_sumur_terlindungi": 22787,
+        "bjp_mata_air_telindungi": 95,
+        "bjp_air_hujan": 314,
+        "jumlah_rumah_tangga": 64422,
+        "kode_daerah": "1504",
+        "kode_daerah_simspam": "1504"
+    },
+    "KABUPATEN_BUNGO": {
+        "bjp_sumur_bor_at_pompa": 4274,
+        "bjp_sumur_terlindungi": 31754,
+        "bjp_mata_air_telindungi": 1192,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 81087,
+        "kode_daerah": "1508",
+        "kode_daerah_simspam": "1509"
+    },
+    "KABUPATEN_KERINCI": {
+        "bjp_sumur_bor_at_pompa": 577,
+        "bjp_sumur_terlindungi": 4057,
+        "bjp_mata_air_telindungi": 3283,
+        "bjp_air_hujan": 305,
+        "jumlah_rumah_tangga": 73364,
+        "kode_daerah": "1501",
+        "kode_daerah_simspam": "1501"
+    },
+    "KABUPATEN_MERANGIN": {
+        "bjp_sumur_bor_at_pompa": 1546,
+        "bjp_sumur_terlindungi": 25993,
+        "bjp_mata_air_telindungi": 2623,
+        "bjp_air_hujan": 135,
+        "jumlah_rumah_tangga": 88897,
+        "kode_daerah": "1502",
+        "kode_daerah_simspam": "1502"
+    },
+    "KABUPATEN_MUARO_JAMBI": {
+        "bjp_sumur_bor_at_pompa": 6216,
+        "bjp_sumur_terlindungi": 47382,
+        "bjp_mata_air_telindungi": 34,
+        "bjp_air_hujan": 1088,
+        "jumlah_rumah_tangga": 97312,
+        "kode_daerah": "1505",
+        "kode_daerah_simspam": "1505"
+    },
+    "KABUPATEN_SAROLANGUN": {
+        "bjp_sumur_bor_at_pompa": 1624,
+        "bjp_sumur_terlindungi": 18494,
+        "bjp_mata_air_telindungi": 186,
+        "bjp_air_hujan": 541,
+        "jumlah_rumah_tangga": 67336,
+        "kode_daerah": "1503",
+        "kode_daerah_simspam": "1503"
+    },
+    "KABUPATEN_TANJUNG_JABUNG_BARAT": {
+        "bjp_sumur_bor_at_pompa": 7062,
+        "bjp_sumur_terlindungi": 9678,
+        "bjp_mata_air_telindungi": 176,
+        "bjp_air_hujan": 43500,
+        "jumlah_rumah_tangga": 75483,
+        "kode_daerah": "1506",
+        "kode_daerah_simspam": "1507"
+    },
+    "KABUPATEN_TANJUNG_JABUNG_TIMUR": {
+        "bjp_sumur_bor_at_pompa": 4545,
+        "bjp_sumur_terlindungi": 2405,
+        "bjp_mata_air_telindungi": 92,
+        "bjp_air_hujan": 39324,
+        "jumlah_rumah_tangga": 56432,
+        "kode_daerah": "1507",
+        "kode_daerah_simspam": "1506"
+    },
+    "KABUPATEN_TEBO": {
+        "bjp_sumur_bor_at_pompa": 5476,
+        "bjp_sumur_terlindungi": 24364,
+        "bjp_mata_air_telindungi": 549,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 83126,
+        "kode_daerah": "1509",
+        "kode_daerah_simspam": "1508"
+    },
+    "KOTA_JAMBI": {
+        "bjp_sumur_bor_at_pompa": 29330,
+        "bjp_sumur_terlindungi": 34277,
+        "bjp_mata_air_telindungi": 568,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 138237,
+        "kode_daerah": "1571",
+        "kode_daerah_simspam": "1571"
+    },
+    "KOTA_SUNGAI_PENUH": {
+        "bjp_sumur_bor_at_pompa": 983,
+        "bjp_sumur_terlindungi": 1745,
+        "bjp_mata_air_telindungi": 54,
+        "bjp_air_hujan": 51,
+        "jumlah_rumah_tangga": 22333,
+        "kode_daerah": "1572",
+        "kode_daerah_simspam": "1572"
+    }
+}

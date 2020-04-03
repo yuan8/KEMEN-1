@@ -1,0 +1,47 @@
+{
+    "KABUPATEN_BANTUL": {
+        "bjp_sumur_bor_at_pompa": 38767,
+        "bjp_sumur_terlindungi": 133818,
+        "bjp_mata_air_telindungi": 3694,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 278339,
+        "kode_daerah": "3402",
+        "kode_daerah_simspam": "3402"
+    },
+    "KABUPATEN_GUNUNG_KIDUL": {
+        "bjp_sumur_bor_at_pompa": 5501,
+        "bjp_sumur_terlindungi": 54436,
+        "bjp_mata_air_telindungi": 10592,
+        "bjp_air_hujan": 38411,
+        "jumlah_rumah_tangga": 204522,
+        "kode_daerah": "3403",
+        "kode_daerah_simspam": "3403"
+    },
+    "KABUPATEN_KULONPROGO": {
+        "bjp_sumur_bor_at_pompa": 4729,
+        "bjp_sumur_terlindungi": 53671,
+        "bjp_mata_air_telindungi": 13461,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 113749,
+        "kode_daerah": "3401",
+        "kode_daerah_simspam": "3401"
+    },
+    "KABUPATEN_SLEMAN": {
+        "bjp_sumur_bor_at_pompa": 23066,
+        "bjp_sumur_terlindungi": 245882,
+        "bjp_mata_air_telindungi": 6043,
+        "bjp_air_hujan": 1,
+        "jumlah_rumah_tangga": 374645,
+        "kode_daerah": "3404",
+        "kode_daerah_simspam": "3404"
+    },
+    "KOTA_YOGYAKARTA": {
+        "bjp_sumur_bor_at_pompa": 37967,
+        "bjp_sumur_terlindungi": 53682,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 139157,
+        "kode_daerah": "3471",
+        "kode_daerah_simspam": "3471"
+    }
+}

@@ -1,0 +1,74 @@
+{
+    "KABUPATEN_LEBAK": {
+        "bjp_sumur_bor_at_pompa": 28993,
+        "bjp_sumur_terlindungi": 45399,
+        "bjp_mata_air_telindungi": 13954,
+        "bjp_air_hujan": 3506,
+        "jumlah_rumah_tangga": 316571,
+        "kode_daerah": "3602",
+        "kode_daerah_simspam": "3602"
+    },
+    "KABUPATEN_PANDEGLANG": {
+        "bjp_sumur_bor_at_pompa": 22883,
+        "bjp_sumur_terlindungi": 29961,
+        "bjp_mata_air_telindungi": 21307,
+        "bjp_air_hujan": 1252,
+        "jumlah_rumah_tangga": 283537,
+        "kode_daerah": "3601",
+        "kode_daerah_simspam": "3601"
+    },
+    "KABUPATEN_SERANG": {
+        "bjp_sumur_bor_at_pompa": 105142,
+        "bjp_sumur_terlindungi": 32935,
+        "bjp_mata_air_telindungi": 9269,
+        "bjp_air_hujan": 4166,
+        "jumlah_rumah_tangga": 325377,
+        "kode_daerah": "3604",
+        "kode_daerah_simspam": "3604"
+    },
+    "KABUPATEN_TANGERANG": {
+        "bjp_sumur_bor_at_pompa": 404107,
+        "bjp_sumur_terlindungi": 40459,
+        "bjp_mata_air_telindungi": 791,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 753141,
+        "kode_daerah": "3603",
+        "kode_daerah_simspam": "3603"
+    },
+    "KOTA_CILEGON": {
+        "bjp_sumur_bor_at_pompa": 64684,
+        "bjp_sumur_terlindungi": 5426,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 90768,
+        "kode_daerah": "3672",
+        "kode_daerah_simspam": "3672"
+    },
+    "KOTA_SERANG": {
+        "bjp_sumur_bor_at_pompa": 80854,
+        "bjp_sumur_terlindungi": 10025,
+        "bjp_mata_air_telindungi": 539,
+        "bjp_air_hujan": 149,
+        "jumlah_rumah_tangga": 135186,
+        "kode_daerah": "3673",
+        "kode_daerah_simspam": "3673"
+    },
+    "KOTA_TANGERANG": {
+        "bjp_sumur_bor_at_pompa": 340029,
+        "bjp_sumur_terlindungi": 5079,
+        "bjp_mata_air_telindungi": 477,
+        "bjp_air_hujan": 2786,
+        "jumlah_rumah_tangga": 521872,
+        "kode_daerah": "3674",
+        "kode_daerah_simspam": "3671"
+    },
+    "KOTA_TANGERANG_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 230532,
+        "bjp_sumur_terlindungi": 6032,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 366398,
+        "kode_daerah": "3674",
+        "kode_daerah_simspam": "3674"
+    }
+}

@@ -1,0 +1,65 @@
+{
+    "KABUPATEN_BINTAN": {
+        "bjp_sumur_bor_at_pompa": 1246,
+        "bjp_sumur_terlindungi": 17289,
+        "bjp_mata_air_telindungi": 2903,
+        "bjp_air_hujan": 101,
+        "jumlah_rumah_tangga": 38459,
+        "kode_daerah": "2101",
+        "kode_daerah_simspam": "2102"
+    },
+    "KABUPATEN_KARIMUN": {
+        "bjp_sumur_bor_at_pompa": 971,
+        "bjp_sumur_terlindungi": 18864,
+        "bjp_mata_air_telindungi": 263,
+        "bjp_air_hujan": 4084,
+        "jumlah_rumah_tangga": 54270,
+        "kode_daerah": "2102",
+        "kode_daerah_simspam": "2101"
+    },
+    "KABUPATEN_KEPULAUAN_ANAMBAS": {
+        "bjp_sumur_bor_at_pompa": 30,
+        "bjp_sumur_terlindungi": 28,
+        "bjp_mata_air_telindungi": 3629,
+        "bjp_air_hujan": 31,
+        "jumlah_rumah_tangga": 10119,
+        "kode_daerah": "2105",
+        "kode_daerah_simspam": "2105"
+    },
+    "KABUPATEN_LINGGA": {
+        "bjp_sumur_bor_at_pompa": 647,
+        "bjp_sumur_terlindungi": 3249,
+        "bjp_mata_air_telindungi": 5185,
+        "bjp_air_hujan": 81,
+        "jumlah_rumah_tangga": 24077,
+        "kode_daerah": "2104",
+        "kode_daerah_simspam": "2104"
+    },
+    "KABUPATEN_NATUNA": {
+        "bjp_sumur_bor_at_pompa": 1189,
+        "bjp_sumur_terlindungi": 1205,
+        "bjp_mata_air_telindungi": 1168,
+        "bjp_air_hujan": 167,
+        "jumlah_rumah_tangga": 19646,
+        "kode_daerah": "2103",
+        "kode_daerah_simspam": "2103"
+    },
+    "KOTA_BATAM": {
+        "bjp_sumur_bor_at_pompa": 3506,
+        "bjp_sumur_terlindungi": 29881,
+        "bjp_mata_air_telindungi": 1137,
+        "bjp_air_hujan": 3702,
+        "jumlah_rumah_tangga": 320442,
+        "kode_daerah": "2171",
+        "kode_daerah_simspam": "2171"
+    },
+    "KOTA_TANJUNG_PINANG": {
+        "bjp_sumur_bor_at_pompa": 1297,
+        "bjp_sumur_terlindungi": 21739,
+        "bjp_mata_air_telindungi": 137,
+        "bjp_air_hujan": 87,
+        "jumlah_rumah_tangga": 51868,
+        "kode_daerah": "2172",
+        "kode_daerah_simspam": "2172"
+    }
+}

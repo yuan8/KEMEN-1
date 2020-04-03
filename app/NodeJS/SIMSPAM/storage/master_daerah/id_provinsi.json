@@ -1,0 +1,172 @@
+[
+    {
+        "id_permendagri": "11",
+        "nama": "PROVINSI ACEH",
+        "id": "11"
+    },
+    {
+        "id_permendagri": "12",
+        "nama": "PROVINSI SUMATERA UTARA",
+        "id": "12"
+    },
+    {
+        "id_permendagri": "13",
+        "nama": "PROVINSI SUMATERA BARAT",
+        "id": "13"
+    },
+    {
+        "id_permendagri": "14",
+        "nama": "PROVINSI RIAU",
+        "id": "14"
+    },
+    {
+        "id_permendagri": "15",
+        "nama": "PROVINSI JAMBI",
+        "id": "15"
+    },
+    {
+        "id_permendagri": "16",
+        "nama": "PROVINSI SUMATERA SELATAN",
+        "id": "16"
+    },
+    {
+        "id_permendagri": "17",
+        "nama": "PROVINSI BENGKULU",
+        "id": "17"
+    },
+    {
+        "id_permendagri": "18",
+        "nama": "PROVINSI LAMPUNG",
+        "id": "18"
+    },
+    {
+        "id_permendagri": "19",
+        "nama": "PROVINSI KEPULAUAN BANGKA BELITUNG",
+        "id": "19"
+    },
+    {
+        "id_permendagri": "21",
+        "nama": "PROVINSI KEPULAUAN RIAU",
+        "id": "21"
+    },
+    {
+        "id_permendagri": "31",
+        "nama": "PROVINSI DKI JAKARTA",
+        "id": "31"
+    },
+    {
+        "id_permendagri": "32",
+        "nama": "PROVINSI JAWA BARAT",
+        "id": "32"
+    },
+    {
+        "id_permendagri": "33",
+        "nama": "PROVINSI JAWA TENGAH",
+        "id": "33"
+    },
+    {
+        "id_permendagri": "34",
+        "nama": "PROVINSI DI YOGYAKARTA",
+        "id": "34"
+    },
+    {
+        "id_permendagri": "35",
+        "nama": "PROVINSI JAWA TIMUR",
+        "id": "35"
+    },
+    {
+        "id_permendagri": "36",
+        "nama": "PROVINSI BANTEN",
+        "id": "36"
+    },
+    {
+        "id_permendagri": "51",
+        "nama": "PROVINSI BALI",
+        "id": "51"
+    },
+    {
+        "id_permendagri": "52",
+        "nama": "PROVINSI NUSA TENGGARA BARAT",
+        "id": "52"
+    },
+    {
+        "id_permendagri": "53",
+        "nama": "PROVINSI NUSA TENGGARA TIMUR",
+        "id": "53"
+    },
+    {
+        "id_permendagri": "61",
+        "nama": "PROVINSI KALIMANTAN BARAT",
+        "id": "61"
+    },
+    {
+        "id_permendagri": "62",
+        "nama": "PROVINSI KALIMANTAN TENGAH",
+        "id": "62"
+    },
+    {
+        "id_permendagri": "63",
+        "nama": "PROVINSI KALIMANTAN SELATAN",
+        "id": "63"
+    },
+    {
+        "id_permendagri": "64",
+        "nama": "PROVINSI KALIMANTAN TIMUR",
+        "id": "64"
+    },
+    {
+        "id_permendagri": "65",
+        "nama": "PROVINSI KALIMANTAN UTARA",
+        "id": "65"
+    },
+    {
+        "id_permendagri": "71",
+        "nama": "PROVINSI SULAWESI UTARA",
+        "id": "71"
+    },
+    {
+        "id_permendagri": "72",
+        "nama": "PROVINSI SULAWESI TENGAH",
+        "id": "72"
+    },
+    {
+        "id_permendagri": "73",
+        "nama": "PROVINSI SULAWESI SELATAN",
+        "id": "73"
+    },
+    {
+        "id_permendagri": "74",
+        "nama": "PROVINSI SULAWESI TENGGARA",
+        "id": "74"
+    },
+    {
+        "id_permendagri": "75",
+        "nama": "PROVINSI GORONTALO",
+        "id": "75"
+    },
+    {
+        "id_permendagri": "76",
+        "nama": "PROVINSI SULAWESI BARAT",
+        "id": "76"
+    },
+    {
+        "id_permendagri": "81",
+        "nama": "PROVINSI MALUKU",
+        "id": "81"
+    },
+    {
+        "id_permendagri": "82",
+        "nama": "PROVINSI MALUKU UTARA",
+        "id": "82"
+    },
+    {
+        "id_permendagri": "92",
+        "nama": "PROVINSI PAPUA BARAT",
+        "id": "91"
+    },
+    {
+        "id_permendagri": "91",
+        "nama": "PROVINSI PAPUA",
+        "id": "94"
+    }
+]

@@ -1,0 +1,92 @@
+{
+    "KABUPATEN_BENGKULU_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 3825,
+        "bjp_sumur_terlindungi": 8054,
+        "bjp_mata_air_telindungi": 80,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 37077,
+        "kode_daerah": "1701",
+        "kode_daerah_simspam": "1701"
+    },
+    "KABUPATEN_BENGKULU_TENGAH": {
+        "bjp_sumur_bor_at_pompa": 618,
+        "bjp_sumur_terlindungi": 1838,
+        "bjp_mata_air_telindungi": 200,
+        "bjp_air_hujan": 71,
+        "jumlah_rumah_tangga": 25792,
+        "kode_daerah": "1709",
+        "kode_daerah_simspam": "1709"
+    },
+    "KABUPATEN_BENGKULU_UTARA": {
+        "bjp_sumur_bor_at_pompa": 965,
+        "bjp_sumur_terlindungi": 6328,
+        "bjp_mata_air_telindungi": 1800,
+        "bjp_air_hujan": 72,
+        "jumlah_rumah_tangga": 73177,
+        "kode_daerah": "1703",
+        "kode_daerah_simspam": "1703"
+    },
+    "KABUPATEN_KAUR": {
+        "bjp_sumur_bor_at_pompa": 143,
+        "bjp_sumur_terlindungi": 4572,
+        "bjp_mata_air_telindungi": 392,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 27856,
+        "kode_daerah": "1704",
+        "kode_daerah_simspam": "1704"
+    },
+    "KABUPATEN_KEPAHIANG": {
+        "bjp_sumur_bor_at_pompa": 2126,
+        "bjp_sumur_terlindungi": 633,
+        "bjp_mata_air_telindungi": 3711,
+        "bjp_air_hujan": 185,
+        "jumlah_rumah_tangga": 35586,
+        "kode_daerah": "1708",
+        "kode_daerah_simspam": "1708"
+    },
+    "KABUPATEN_LEBONG": {
+        "bjp_sumur_bor_at_pompa": 298,
+        "bjp_sumur_terlindungi": 422,
+        "bjp_mata_air_telindungi": 2303,
+        "bjp_air_hujan": 118,
+        "jumlah_rumah_tangga": 28726,
+        "kode_daerah": "1707",
+        "kode_daerah_simspam": "1707"
+    },
+    "KABUPATEN_MUKOMUKO": {
+        "bjp_sumur_bor_at_pompa": 4105,
+        "bjp_sumur_terlindungi": 14438,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 42165,
+        "kode_daerah": "1706",
+        "kode_daerah_simspam": "1706"
+    },
+    "KABUPATEN_REJANG_LEBONG": {
+        "bjp_sumur_bor_at_pompa": 5583,
+        "bjp_sumur_terlindungi": 1508,
+        "bjp_mata_air_telindungi": 3555,
+        "bjp_air_hujan": 86,
+        "jumlah_rumah_tangga": 67935,
+        "kode_daerah": "1702",
+        "kode_daerah_simspam": "1702"
+    },
+    "KABUPATEN_SELUMA": {
+        "bjp_sumur_bor_at_pompa": 938,
+        "bjp_sumur_terlindungi": 9982,
+        "bjp_mata_air_telindungi": 51,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 48167,
+        "kode_daerah": "1705",
+        "kode_daerah_simspam": "1705"
+    },
+    "KOTA_BENGKULU": {
+        "bjp_sumur_bor_at_pompa": 22596,
+        "bjp_sumur_terlindungi": 19931,
+        "bjp_mata_air_telindungi": 157,
+        "bjp_air_hujan": 223,
+        "jumlah_rumah_tangga": 89245,
+        "kode_daerah": "1771",
+        "kode_daerah_simspam": "1771"
+    }
+}

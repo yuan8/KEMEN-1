@@ -1,0 +1,110 @@
+{
+    "KABUPATEN_BENGKALIS": {
+        "bjp_sumur_bor_at_pompa": 23002,
+        "bjp_sumur_terlindungi": 37209,
+        "bjp_mata_air_telindungi": 362,
+        "bjp_air_hujan": 30251,
+        "jumlah_rumah_tangga": 123459,
+        "kode_daerah": "1403",
+        "kode_daerah_simspam": "1408"
+    },
+    "KABUPATEN_INDRAGIRI_HILIR": {
+        "bjp_sumur_bor_at_pompa": 11193,
+        "bjp_sumur_terlindungi": 9598,
+        "bjp_mata_air_telindungi": 319,
+        "bjp_air_hujan": 121286,
+        "jumlah_rumah_tangga": 173900,
+        "kode_daerah": "1404",
+        "kode_daerah_simspam": "1403"
+    },
+    "KABUPATEN_INDRAGIRI_HULU": {
+        "bjp_sumur_bor_at_pompa": 13989,
+        "bjp_sumur_terlindungi": 29626,
+        "bjp_mata_air_telindungi": 2532,
+        "bjp_air_hujan": 2094,
+        "jumlah_rumah_tangga": 98776,
+        "kode_daerah": "1402",
+        "kode_daerah_simspam": "1402"
+    },
+    "KABUPATEN_KAMPAR": {
+        "bjp_sumur_bor_at_pompa": 49021,
+        "bjp_sumur_terlindungi": 59009,
+        "bjp_mata_air_telindungi": 7685,
+        "bjp_air_hujan": 660,
+        "jumlah_rumah_tangga": 182203,
+        "kode_daerah": "1401",
+        "kode_daerah_simspam": "1406"
+    },
+    "KABUPATEN_KEPULAUAN_MERANTI": {
+        "bjp_sumur_bor_at_pompa": 1330,
+        "bjp_sumur_terlindungi": 293,
+        "bjp_mata_air_telindungi": 58,
+        "bjp_air_hujan": 31767,
+        "jumlah_rumah_tangga": 41699,
+        "kode_daerah": "1410",
+        "kode_daerah_simspam": "1410"
+    },
+    "KABUPATEN_KUANTAN_SINGINGI": {
+        "bjp_sumur_bor_at_pompa": 3059,
+        "bjp_sumur_terlindungi": 34234,
+        "bjp_mata_air_telindungi": 888,
+        "bjp_air_hujan": 1293,
+        "jumlah_rumah_tangga": 76549,
+        "kode_daerah": "1409",
+        "kode_daerah_simspam": "1401"
+    },
+    "KABUPATEN_PELALAWAN": {
+        "bjp_sumur_bor_at_pompa": 33709,
+        "bjp_sumur_terlindungi": 13323,
+        "bjp_mata_air_telindungi": 165,
+        "bjp_air_hujan": 4058,
+        "jumlah_rumah_tangga": 95992,
+        "kode_daerah": "1405",
+        "kode_daerah_simspam": "1404"
+    },
+    "KABUPATEN_ROKAN_HILIR": {
+        "bjp_sumur_bor_at_pompa": 17337,
+        "bjp_sumur_terlindungi": 40348,
+        "bjp_mata_air_telindungi": 150,
+        "bjp_air_hujan": 35539,
+        "jumlah_rumah_tangga": 143469,
+        "kode_daerah": "1407",
+        "kode_daerah_simspam": "1409"
+    },
+    "KABUPATEN_ROKAN_HULU": {
+        "bjp_sumur_bor_at_pompa": 6462,
+        "bjp_sumur_terlindungi": 58705,
+        "bjp_mata_air_telindungi": 980,
+        "bjp_air_hujan": 901,
+        "jumlah_rumah_tangga": 137898,
+        "kode_daerah": "1406",
+        "kode_daerah_simspam": "1407"
+    },
+    "KABUPATEN_SIAK": {
+        "bjp_sumur_bor_at_pompa": 44066,
+        "bjp_sumur_terlindungi": 16968,
+        "bjp_mata_air_telindungi": 95,
+        "bjp_air_hujan": 10706,
+        "jumlah_rumah_tangga": 108039,
+        "kode_daerah": "1408",
+        "kode_daerah_simspam": "1405"
+    },
+    "KOTA_DUMAI": {
+        "bjp_sumur_bor_at_pompa": 19367,
+        "bjp_sumur_terlindungi": 14255,
+        "bjp_mata_air_telindungi": 579,
+        "bjp_air_hujan": 8521,
+        "jumlah_rumah_tangga": 66104,
+        "kode_daerah": "1472",
+        "kode_daerah_simspam": "1473"
+    },
+    "KOTA_PEKANBARU": {
+        "bjp_sumur_bor_at_pompa": 190503,
+        "bjp_sumur_terlindungi": 27999,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 366,
+        "jumlah_rumah_tangga": 263411,
+        "kode_daerah": "1471",
+        "kode_daerah_simspam": "1471"
+    }
+}

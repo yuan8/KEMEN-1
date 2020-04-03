@@ -1,0 +1,128 @@
+{
+    "KABUPATEN_BARITO_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 656,
+        "bjp_sumur_terlindungi": 3733,
+        "bjp_mata_air_telindungi": 652,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 34605,
+        "kode_daerah": "6204",
+        "kode_daerah_simspam": "6204"
+    },
+    "KABUPATEN_BARITO_TIMUR": {
+        "bjp_sumur_bor_at_pompa": 7381,
+        "bjp_sumur_terlindungi": 4416,
+        "bjp_mata_air_telindungi": 751,
+        "bjp_air_hujan": 276,
+        "jumlah_rumah_tangga": 30106,
+        "kode_daerah": "6213",
+        "kode_daerah_simspam": "6212"
+    },
+    "KABUPATEN_BARITO_UTARA": {
+        "bjp_sumur_bor_at_pompa": 1162,
+        "bjp_sumur_terlindungi": 3464,
+        "bjp_mata_air_telindungi": 546,
+        "bjp_air_hujan": 264,
+        "jumlah_rumah_tangga": 31131,
+        "kode_daerah": "6205",
+        "kode_daerah_simspam": "6205"
+    },
+    "KABUPATEN_GUNUNG_MAS": {
+        "bjp_sumur_bor_at_pompa": 4181,
+        "bjp_sumur_terlindungi": 501,
+        "bjp_mata_air_telindungi": 501,
+        "bjp_air_hujan": 230,
+        "jumlah_rumah_tangga": 25079,
+        "kode_daerah": "6210",
+        "kode_daerah_simspam": "6211"
+    },
+    "KABUPATEN_KAPUAS": {
+        "bjp_sumur_bor_at_pompa": 10336,
+        "bjp_sumur_terlindungi": 1126,
+        "bjp_mata_air_telindungi": 193,
+        "bjp_air_hujan": 13674,
+        "jumlah_rumah_tangga": 90991,
+        "kode_daerah": "6203",
+        "kode_daerah_simspam": "6203"
+    },
+    "KABUPATEN_KATINGAN": {
+        "bjp_sumur_bor_at_pompa": 12856,
+        "bjp_sumur_terlindungi": 2577,
+        "bjp_mata_air_telindungi": 19,
+        "bjp_air_hujan": 1016,
+        "jumlah_rumah_tangga": 43195,
+        "kode_daerah": "6206",
+        "kode_daerah_simspam": "6209"
+    },
+    "KABUPATEN_KOTA_WARINGIN_BARAT": {
+        "bjp_sumur_bor_at_pompa": 17091,
+        "bjp_sumur_terlindungi": 15066,
+        "bjp_mata_air_telindungi": 268,
+        "bjp_air_hujan": 482,
+        "jumlah_rumah_tangga": 73213,
+        "kode_daerah": "6201",
+        "kode_daerah_simspam": "6201"
+    },
+    "KABUPATEN_KOTA_WARINGIN_TIMUR": {
+        "bjp_sumur_bor_at_pompa": 8486,
+        "bjp_sumur_terlindungi": 12236,
+        "bjp_mata_air_telindungi": 145,
+        "bjp_air_hujan": 18361,
+        "jumlah_rumah_tangga": 107674,
+        "kode_daerah": "6202",
+        "kode_daerah_simspam": "6202"
+    },
+    "KABUPATEN_LAMANDAU": {
+        "bjp_sumur_bor_at_pompa": 1741,
+        "bjp_sumur_terlindungi": 7576,
+        "bjp_mata_air_telindungi": 2208,
+        "bjp_air_hujan": 96,
+        "jumlah_rumah_tangga": 19245,
+        "kode_daerah": "6209",
+        "kode_daerah_simspam": "6207"
+    },
+    "KABUPATEN_MURUNG_RAYA": {
+        "bjp_sumur_bor_at_pompa": 1586,
+        "bjp_sumur_terlindungi": 264,
+        "bjp_mata_air_telindungi": 2107,
+        "bjp_air_hujan": 46,
+        "jumlah_rumah_tangga": 25217,
+        "kode_daerah": "6212",
+        "kode_daerah_simspam": "6213"
+    },
+    "KABUPATEN_PULANG_PISAU": {
+        "bjp_sumur_bor_at_pompa": 4855,
+        "bjp_sumur_terlindungi": 995,
+        "bjp_mata_air_telindungi": 397,
+        "bjp_air_hujan": 9675,
+        "jumlah_rumah_tangga": 32782,
+        "kode_daerah": "6211",
+        "kode_daerah_simspam": "6210"
+    },
+    "KABUPATEN_SERUYAN": {
+        "bjp_sumur_bor_at_pompa": 7777,
+        "bjp_sumur_terlindungi": 13030,
+        "bjp_mata_air_telindungi": 1284,
+        "bjp_air_hujan": 912,
+        "jumlah_rumah_tangga": 49138,
+        "kode_daerah": "6207",
+        "kode_daerah_simspam": "6208"
+    },
+    "KABUPATEN_SUKAMARA": {
+        "bjp_sumur_bor_at_pompa": 6297,
+        "bjp_sumur_terlindungi": 1359,
+        "bjp_mata_air_telindungi": 159,
+        "bjp_air_hujan": 1531,
+        "jumlah_rumah_tangga": 14267,
+        "kode_daerah": "6208",
+        "kode_daerah_simspam": "6206"
+    },
+    "KOTA_PALANGKARAYA": {
+        "bjp_sumur_bor_at_pompa": 46040,
+        "bjp_sumur_terlindungi": 169,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 72430,
+        "kode_daerah": "6271",
+        "kode_daerah_simspam": "6271"
+    }
+}

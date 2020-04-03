@@ -1,0 +1,56 @@
+{
+    "DKI_JAKARTA": {
+        "bjp_sumur_bor_at_pompa": 56,
+        "bjp_sumur_terlindungi": 4582,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 735,
+        "jumlah_rumah_tangga": 5575,
+        "kode_daerah": "3101",
+        "kode_daerah_simspam": "3101"
+    },
+    "KOTA_JAKARTA_BARAT": {
+        "bjp_sumur_bor_at_pompa": 109238,
+        "bjp_sumur_terlindungi": 3037,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 240654,
+        "kode_daerah": "3173",
+        "kode_daerah_simspam": "3173"
+    },
+    "KOTA_JAKARTA_PUSAT": {
+        "bjp_sumur_bor_at_pompa": 409963,
+        "bjp_sumur_terlindungi": 12545,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 542495,
+        "kode_daerah": "3171",
+        "kode_daerah_simspam": "3171"
+    },
+    "KOTA_JAKARTA_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 367868,
+        "bjp_sumur_terlindungi": 5354,
+        "bjp_mata_air_telindungi": 496,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 656467,
+        "kode_daerah": "3174",
+        "kode_daerah_simspam": "3174"
+    },
+    "KOTA_JAKARTA_TIMUR": {
+        "bjp_sumur_bor_at_pompa": 73233,
+        "bjp_sumur_terlindungi": 31266,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 455317,
+        "kode_daerah": "3175",
+        "kode_daerah_simspam": "3175"
+    },
+    "KOTA_JAKARTA_UTARA": {
+        "bjp_sumur_bor_at_pompa": 458810,
+        "bjp_sumur_terlindungi": 11272,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 731435,
+        "kode_daerah": "3172",
+        "kode_daerah_simspam": "3172"
+    }
+}

@@ -1,0 +1,83 @@
+{
+    "KABUPATEN_BERAU": {
+        "bjp_sumur_bor_at_pompa": 1727,
+        "bjp_sumur_terlindungi": 2852,
+        "bjp_mata_air_telindungi": 1087,
+        "bjp_air_hujan": 4303,
+        "jumlah_rumah_tangga": 49336,
+        "kode_daerah": "6403",
+        "kode_daerah_simspam": "6405"
+    },
+    "KABUPATEN_KUTAI_BARAT": {
+        "bjp_sumur_bor_at_pompa": 3080,
+        "bjp_sumur_terlindungi": 5376,
+        "bjp_mata_air_telindungi": 2130,
+        "bjp_air_hujan": 184,
+        "jumlah_rumah_tangga": 43749,
+        "kode_daerah": "6407",
+        "kode_daerah_simspam": "6402"
+    },
+    "KABUPATEN_KUTAI_KARTANEGARA": {
+        "bjp_sumur_bor_at_pompa": 17075,
+        "bjp_sumur_terlindungi": 11138,
+        "bjp_mata_air_telindungi": 4821,
+        "bjp_air_hujan": 4109,
+        "jumlah_rumah_tangga": 177201,
+        "kode_daerah": "6402",
+        "kode_daerah_simspam": "6403"
+    },
+    "KABUPATEN_KUTAI_TIMUR": {
+        "bjp_sumur_bor_at_pompa": 4698,
+        "bjp_sumur_terlindungi": 8983,
+        "bjp_mata_air_telindungi": 3491,
+        "bjp_air_hujan": 5089,
+        "jumlah_rumah_tangga": 83520,
+        "kode_daerah": "6408",
+        "kode_daerah_simspam": "6404"
+    },
+    "KABUPATEN_PASER": {
+        "bjp_sumur_bor_at_pompa": 3951,
+        "bjp_sumur_terlindungi": 8520,
+        "bjp_mata_air_telindungi": 686,
+        "bjp_air_hujan": 7431,
+        "jumlah_rumah_tangga": 67439,
+        "kode_daerah": "6401",
+        "kode_daerah_simspam": "6401"
+    },
+    "KABUPATEN_PENAJAM_PASER_UTARA": {
+        "bjp_sumur_bor_at_pompa": 9722,
+        "bjp_sumur_terlindungi": 9459,
+        "bjp_mata_air_telindungi": 181,
+        "bjp_air_hujan": 1320,
+        "jumlah_rumah_tangga": 40014,
+        "kode_daerah": "6409",
+        "kode_daerah_simspam": "6409"
+    },
+    "KOTA_BALIKPAPAN": {
+        "bjp_sumur_bor_at_pompa": 13762,
+        "bjp_sumur_terlindungi": 11033,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 6360,
+        "jumlah_rumah_tangga": 159553,
+        "kode_daerah": "6471",
+        "kode_daerah_simspam": "6471"
+    },
+    "KOTA_BONTANG": {
+        "bjp_sumur_bor_at_pompa": 3754,
+        "bjp_sumur_terlindungi": 2757,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 650,
+        "jumlah_rumah_tangga": 41861,
+        "kode_daerah": "6474",
+        "kode_daerah_simspam": "6474"
+    },
+    "KOTA_SAMARINDA": {
+        "bjp_sumur_bor_at_pompa": 23042,
+        "bjp_sumur_terlindungi": 4476,
+        "bjp_mata_air_telindungi": 2603,
+        "bjp_air_hujan": 2938,
+        "jumlah_rumah_tangga": 205690,
+        "kode_daerah": "6472",
+        "kode_daerah_simspam": "6472"
+    }
+}

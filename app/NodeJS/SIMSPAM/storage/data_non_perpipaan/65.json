@@ -1,0 +1,47 @@
+{
+    "KABUPATEN_BULUNGAN": {
+        "bjp_sumur_bor_at_pompa": 265,
+        "bjp_sumur_terlindungi": 506,
+        "bjp_mata_air_telindungi": 773,
+        "bjp_air_hujan": 9147,
+        "jumlah_rumah_tangga": 27584,
+        "kode_daerah": "6501",
+        "kode_daerah_simspam": "6501"
+    },
+    "KABUPATEN_MALINAU": {
+        "bjp_sumur_bor_at_pompa": 3622,
+        "bjp_sumur_terlindungi": 1673,
+        "bjp_mata_air_telindungi": 282,
+        "bjp_air_hujan": 16267,
+        "jumlah_rumah_tangga": 36698,
+        "kode_daerah": "6502",
+        "kode_daerah_simspam": "6502"
+    },
+    "KABUPATEN_NUNUKAN": {
+        "bjp_sumur_bor_at_pompa": 163,
+        "bjp_sumur_terlindungi": 19,
+        "bjp_mata_air_telindungi": 3336,
+        "bjp_air_hujan": 1744,
+        "jumlah_rumah_tangga": 16105,
+        "kode_daerah": "6503",
+        "kode_daerah_simspam": "6503"
+    },
+    "KABUPATEN_TANA_TIDUNG": {
+        "bjp_sumur_bor_at_pompa": 1315,
+        "bjp_sumur_terlindungi": 62,
+        "bjp_mata_air_telindungi": 114,
+        "bjp_air_hujan": 2351,
+        "jumlah_rumah_tangga": 4615,
+        "kode_daerah": "6504",
+        "kode_daerah_simspam": "6504"
+    },
+    "KOTA_TARAKAN": {
+        "bjp_sumur_bor_at_pompa": 6799,
+        "bjp_sumur_terlindungi": 1290,
+        "bjp_mata_air_telindungi": 892,
+        "bjp_air_hujan": 19002,
+        "jumlah_rumah_tangga": 52602,
+        "kode_daerah": "6571",
+        "kode_daerah_simspam": "6571"
+    }
+}

@@ -1,0 +1,56 @@
+{
+    "KABUPATEN_BOALEMO": {
+        "bjp_sumur_bor_at_pompa": 9068,
+        "bjp_sumur_terlindungi": 28076,
+        "bjp_mata_air_telindungi": 5074,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 86242,
+        "kode_daerah": "7502",
+        "kode_daerah_simspam": "7502"
+    },
+    "KABUPATEN_BONE_BOLANGO": {
+        "bjp_sumur_bor_at_pompa": 3484,
+        "bjp_sumur_terlindungi": 7448,
+        "bjp_mata_air_telindungi": 381,
+        "bjp_air_hujan": 75,
+        "jumlah_rumah_tangga": 33419,
+        "kode_daerah": "7503",
+        "kode_daerah_simspam": "7503"
+    },
+    "KABUPATEN_GORONTALO": {
+        "bjp_sumur_bor_at_pompa": 2257,
+        "bjp_sumur_terlindungi": 8185,
+        "bjp_mata_air_telindungi": 3871,
+        "bjp_air_hujan": 42,
+        "jumlah_rumah_tangga": 35134,
+        "kode_daerah": "7505",
+        "kode_daerah_simspam": "7501"
+    },
+    "KABUPATEN_GORONTALO_UTARA": {
+        "bjp_sumur_bor_at_pompa": 751,
+        "bjp_sumur_terlindungi": 9178,
+        "bjp_mata_air_telindungi": 2139,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 28700,
+        "kode_daerah": "7505",
+        "kode_daerah_simspam": "7505"
+    },
+    "KABUPATEN_POHUWATO": {
+        "bjp_sumur_bor_at_pompa": 2004,
+        "bjp_sumur_terlindungi": 8527,
+        "bjp_mata_air_telindungi": 3723,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 37855,
+        "kode_daerah": "7504",
+        "kode_daerah_simspam": "7504"
+    },
+    "KOTA_GORONTALO": {
+        "bjp_sumur_bor_at_pompa": 11129,
+        "bjp_sumur_terlindungi": 6959,
+        "bjp_mata_air_telindungi": 451,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 51937,
+        "kode_daerah": "7571",
+        "kode_daerah_simspam": "7571"
+    }
+}

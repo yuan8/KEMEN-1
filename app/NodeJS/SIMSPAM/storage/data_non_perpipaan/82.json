@@ -1,0 +1,83 @@
+{
+    "KABUPATEN_HALMAHERA_BARAT": {
+        "bjp_sumur_bor_at_pompa": 148,
+        "bjp_sumur_terlindungi": 2815,
+        "bjp_mata_air_telindungi": 574,
+        "bjp_air_hujan": 1976,
+        "jumlah_rumah_tangga": 23446,
+        "kode_daerah": "8201",
+        "kode_daerah_simspam": "8201"
+    },
+    "KABUPATEN_HALMAHERA_SELATAN": {
+        "bjp_sumur_bor_at_pompa": 1514,
+        "bjp_sumur_terlindungi": 10278,
+        "bjp_mata_air_telindungi": 2049,
+        "bjp_air_hujan": 0,
+        "jumlah_rumah_tangga": 42922,
+        "kode_daerah": "8204",
+        "kode_daerah_simspam": "8204"
+    },
+    "KABUPATEN_HALMAHERA_TENGAH": {
+        "bjp_sumur_bor_at_pompa": 73,
+        "bjp_sumur_terlindungi": 1936,
+        "bjp_mata_air_telindungi": 2141,
+        "bjp_air_hujan": 43,
+        "jumlah_rumah_tangga": 9662,
+        "kode_daerah": "8202",
+        "kode_daerah_simspam": "8202"
+    },
+    "KABUPATEN_HALMAHERA_TIMUR": {
+        "bjp_sumur_bor_at_pompa": 648,
+        "bjp_sumur_terlindungi": 5118,
+        "bjp_mata_air_telindungi": 245,
+        "bjp_air_hujan": 154,
+        "jumlah_rumah_tangga": 19319,
+        "kode_daerah": "8206",
+        "kode_daerah_simspam": "8206"
+    },
+    "KABUPATEN_HALMAHERA_UTARA": {
+        "bjp_sumur_bor_at_pompa": 1411,
+        "bjp_sumur_terlindungi": 8146,
+        "bjp_mata_air_telindungi": 1091,
+        "bjp_air_hujan": 48,
+        "jumlah_rumah_tangga": 36240,
+        "kode_daerah": "8203",
+        "kode_daerah_simspam": "8205"
+    },
+    "KABUPATEN_KEPULAUAN_SULA": {
+        "bjp_sumur_bor_at_pompa": 409,
+        "bjp_sumur_terlindungi": 5498,
+        "bjp_mata_air_telindungi": 565,
+        "bjp_air_hujan": 140,
+        "jumlah_rumah_tangga": 31978,
+        "kode_daerah": "8205",
+        "kode_daerah_simspam": "8203"
+    },
+    "KABUPATEN_PULAU_MOROTAI": {
+        "bjp_sumur_bor_at_pompa": 35,
+        "bjp_sumur_terlindungi": 2549,
+        "bjp_mata_air_telindungi": 2941,
+        "bjp_air_hujan": 195,
+        "jumlah_rumah_tangga": 13027,
+        "kode_daerah": "8207",
+        "kode_daerah_simspam": "8207"
+    },
+    "KOTA_TERNATE": {
+        "bjp_sumur_bor_at_pompa": 631,
+        "bjp_sumur_terlindungi": 4174,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 3466,
+        "jumlah_rumah_tangga": 46482,
+        "kode_daerah": "8271",
+        "kode_daerah_simspam": "8271"
+    },
+    "KOTA_TIDORE_KEPULAUAN": {
+        "bjp_sumur_bor_at_pompa": 277,
+        "bjp_sumur_terlindungi": 10153,
+        "bjp_mata_air_telindungi": 0,
+        "bjp_air_hujan": 2767,
+        "jumlah_rumah_tangga": 21069,
+        "kode_daerah": "8272",
+        "kode_daerah_simspam": "8272"
+    }
+}
