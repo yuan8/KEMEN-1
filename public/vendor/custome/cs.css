@@ -1,0 +1,132 @@
+.cursor-link:hover {
+ cursor:pointer;
+ background: yellow;
+}
+
+.sidebar-menu li>a>.pull-right-container>.fa-angle-left {
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    padding: 0;
+    border-radius: 100%;
+    background: #ddd;
+    color: #222;
+}
+
+.text-dark{
+	color: #222!important;
+}
+
+.select2-container{
+	width: 100%!important;
+}
+
+div.scrollmenu {
+  background-color: #333;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px;
+  text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+  background-color: #777;
+}
+
+.bg-dark{
+  background: #ddd;
+}
+
+.bg-default{
+  background: #f1f1f1;
+}
+
+.fa-number-1:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "1.";
+    border:1px;
+
+}
+
+.fa-number-2:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "2.";
+}
+
+.fa-number-3:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "3.";
+}
+
+.fa-number-4:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "4.";
+}
+
+.fa-number-5:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "5.";
+}
+
+.fa-number-6:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "6.";
+}
+
+.fa-number-7:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "7.";
+}
+
+.fa-number-8:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "8.";
+}
+
+.fa-number-9:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "9.";
+}
+
+.fa-number-10:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "10.";
+}
+
+.fa-sub:before {
+    font-weight:bold;
+    font-style:normal;
+    content: "-";
+}
+
+.modal-footer{
+  border-color: #222;
+}
+.content-header{
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 7px;
+  background: #ddd!important;
+  padding-top: 0px;
+}
+
+.bg-nav-top{
+  padding: 4px 15px 4px 15px;
+  background: #10162d;
+  color:#fff;
+}
