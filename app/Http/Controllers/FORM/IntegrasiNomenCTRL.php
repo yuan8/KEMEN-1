@@ -9,7 +9,7 @@ use Hp;
 use Carbon\Carbon;
 use Alert;
 
-class IntegrasiNomenCTRL extends Controller
+class IntegrasiNomenCTRL  extends Controller
 {
     //
 

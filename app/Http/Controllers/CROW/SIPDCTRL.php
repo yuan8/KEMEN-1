@@ -96,25 +96,30 @@ class SIPDCTRL extends Controller
 			if($file){
 				$data_recorded=[];
 		   		$file=json_decode($file,true);
+		   		// dd($file);
 
-		   		if($file!=[]){
-		   			Storage::put('bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$kodepemda.'.json',json_encode($file,JSON_PRETTY_PRINT));
-		   		}
+		   		// if($file!=[]){
+		   		// 	Storage::put('bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$kodepemda.'.json',json_encode($file,JSON_PRETTY_PRINT));
+		   		// }
 
 		   		foreach ($file as $key => $value) {
 		   			$data=[];
+		   			$kode_skpd=isset($value['kodeskpd'])?$value['kodeskpd']:null;
 
 
 		   			foreach ($value['program'] as $key2 => $value2) {
 		   				# code...
+
 		   				$kodeprogram=(isset($value2['kodeprogram'])?$value2['kodeprogram']:null);
 
+		   				$id_bidang_daerah=isset($value2['kodebidang'])?$value2['kodebidang']:null;
 		   				$data=array(
 		   					'kode_pro'=>$tahun.'d'.$kodepemda.'@'.$kodeprogram,
+		   					'kodeskpd'=>$kode_skpd,
+		   					'id_bidang_daerah'=>$id_bidang_daerah,
 		   					'kode'=>$kodeprogram,
-		   					'uraian'=>static::lower(isset($value2['uraiprogram'])?$value2['uraiprogram']:null),
-		   					'id_bidang_daerah'=>isset($value2['kodebidang'])?$value2['kodebidang']:null,
 		   					'uraian_bidang_daerah'=>isset($value2['uraibidang'])?$value2['uraibidang']:null,
+		   					'uraian'=>static::lower(isset($value2['uraiprogram'])?$value2['uraiprogram']:null),
 		   					'tahun'=>$tahun,
 		   					'kode_daerah'=>$kodepemda,
 		   					'id_nomenlatur'=>null,
@@ -139,6 +144,8 @@ class SIPDCTRL extends Controller
 		   					foreach ($value2['capaian'] as $key3 => $value3) {
 		   						$indikator=array(
 		   							'kode_ind'=>$tahun.'d'.$kodepemda.'@'.$kodeprogram.'.ind.'.$value3['kodeindikator'],
+		   							'kodeskpd'=>$kode_skpd,
+		   							'id_bidang_daerah'=>$id_bidang_daerah,
 		   							'kode'=>isset($value3['kodeindikator'])?$value3['kodeindikator']:NULL,
 		   							'kode_program'=>$kodeprogram,
 		   							'id_nomenlatur'=>null,
@@ -167,6 +174,9 @@ class SIPDCTRL extends Controller
 			   						'kode_keg'=>$tahun.'d'.$kodepemda.'@'.$kodeprogram.'.k.'.$value3['kodekegiatan'],
 		   							'kode'=>isset($value3['kodekegiatan'])?$value3['kodekegiatan']:null,
 		   							'uraian'=>static::lower(isset($value3['uraikegiatan'])?$value3['uraikegiatan']:null),
+		   							'kodeskpd'=>$kode_skpd,
+		   							'id_bidang_daerah'=>$id_bidang_daerah,
+
 		   							'anggaran'=>isset($value3['pagu'])?(float)$value3['pagu']:null,
 		   							'tahun'=>$tahun,
 		   							'kode_daerah'=>$kodepemda,
@@ -182,6 +192,8 @@ class SIPDCTRL extends Controller
 		   									'kode'=>isset($value4['kodeindikator'])?$value4['kodeindikator']:null,
 					   						'kode_kegiatan'=>$value3['kodekegiatan'],
 				   							'uraian'=>static::lower(isset($value4['tolokukur'])?$value4['tolokukur']:null),
+		   									'kodeskpd'=>$kode_skpd,
+		   									'id_bidang_daerah'=>$id_bidang_daerah,
 				   							'kode_daerah'=>$kodepemda,
 				   							'anggaran'=>isset($value4['pagu'])?(float)$value4['pagu']:null,
 		   									'satuan_target'=>isset($value4['satuan'])?$value4['satuan']:null,
@@ -357,17 +369,21 @@ class SIPDCTRL extends Controller
             	[
             		['kode_daerah','=',$d['kode_daerah']],
             		['kode_program','=',$d['kode']],
-            		['tahun','=',$d['tahun']]
+            		['tahun','=',$d['tahun']],
+            		['kodeskpd','=',$d['kodeskpd']],
+            		['id_bidang_daerah','=',$d['id_bidang_daerah']]
             	])
             ->orWhere([
             		['kode_daerah','=',$d['kode_daerah']],
             		['uraian','ilike',$d['uraian']],
-            		['tahun','=',$d['tahun']]
-            	])->pluck('id')->first();
+            		['tahun','=',$d['tahun']],
+            		['kodeskpd','=',$d['kodeskpd']],
+            		['id_bidang_daerah','=',$d['id_bidang_daerah']]
 
-            // dd(DB::connection('sink_prokeg')->getQueryLog());
 
-            // dd($idp);
+            ])->pluck('id')->first();
+
+           
 
             if(!$idp){
                 $idp=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_program')
@@ -376,6 +392,9 @@ class SIPDCTRL extends Controller
                     'kode_program'=>$d['kode'],
                     'uraian'=>$d['uraian'],
                     'tahun'=>$d['tahun'],
+            		'kodeskpd'=>$d['kodeskpd'],
+            		'id_bidang_daerah'=>$d['id_bidang_daerah'],
+
                     'created_at'=>Carbon::now(),
                     'updated_at'=>Carbon::now(),
                 ]);
@@ -388,6 +407,8 @@ class SIPDCTRL extends Controller
                     'kode_daerah'=>$d2['kode_daerah'],
                     'kode_kegiatan'=>$d2['kode'],
                     'tahun'=>$d2['tahun'],
+                    'kodeskpd'=>$d2['kodeskpd'],
+            		'id_bidang_daerah'=>$d2['id_bidang_daerah']
 
                 ])->pluck('id')->first();
                 if(!$idk){
@@ -402,6 +423,8 @@ class SIPDCTRL extends Controller
                         'anggaran'=>$d2['anggaran'],
                         'created_at'=>Carbon::now(),
                         'updated_at'=>Carbon::now(),
+                        'kodeskpd'=>$d2['kodeskpd'],
+            			'id_bidang_daerah'=>$d2['id_bidang_daerah']
                     ]);
 
                 }
@@ -413,7 +436,9 @@ class SIPDCTRL extends Controller
                         'id_kegiatan'=>$idk,
                         'kode_ind'=>$i['kode'],
                         'kode_daerah'=>$i['kode_daerah'],
-                        'tahun'=>$i['tahun']
+                        'tahun'=>$i['tahun'],
+                        'kodeskpd'=>$i['kodeskpd'],
+            			'id_bidang_daerah'=>$i['id_bidang_daerah']
 
                     ])->pluck('id')->first();
                     if(!$idik){
@@ -428,6 +453,9 @@ class SIPDCTRL extends Controller
                         'kode_daerah'=>$i['kode_daerah'],
                         'created_at'=>Carbon::now(),
                         'updated_at'=>Carbon::now(),
+                        'kodeskpd'=>$i['kodeskpd'],
+            			'id_bidang_daerah'=>$i['id_bidang_daerah']
+
 
                         ]);
                     }
@@ -446,7 +474,8 @@ class SIPDCTRL extends Controller
                     'kode_ind'=>$ip['kode'],
                     'tahun'=>$ip['tahun'],
                     'kode_daerah'=>$ip['kode_daerah'],
-
+                    'kodeskpd'=>$ip['kodeskpd'],
+            		'id_bidang_daerah'=>$ip['id_bidang_daerah']
 
                 ])->pluck('id')->first();
 
@@ -462,7 +491,10 @@ class SIPDCTRL extends Controller
 
                     'created_at'=>Carbon::now(),
                     'updated_at'=>Carbon::now(),
-                        'tahun'=>$ip['tahun']
+                     'tahun'=>$ip['tahun'],
+                     'kodeskpd'=>$ip['kodeskpd'],
+            		'id_bidang_daerah'=>$ip['id_bidang_daerah']
+
 
                     ]);
                 }
@@ -485,6 +517,7 @@ class SIPDCTRL extends Controller
     	$kode_bid=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_map_urusan')
     			->where('id_urusan','=',null)
     			->where('kode_daerah',$kodepemda)->get();
+
     	foreach ($kode_bid as $key => $k) {
     		$bid=DB::table('master_urusan')->where('nama','ilike',('%'.$k->uraian_urusan_daerah.'%'))->first();
     		if($bid){
@@ -527,5 +560,9 @@ class SIPDCTRL extends Controller
     }
 
 
+
+    public function storeUpdateTagging(){
+    	
+    }
 
 }

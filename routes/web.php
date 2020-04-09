@@ -31,6 +31,19 @@ Route::get('/get-sipd/',function(){
 })->name('sipdd');
 
 
+Route::get('program-kegiatan-urusan','FRONT\ProgramKegiatan@index');
+Route::get('program-kegiatan-daerah','FRONT\ProgramKegiatan@daerah');
+Route::get('program-kegiatan/daerah','FRONT\ProgramKegiatan@per_provinsi');
+Route::get('program-kegiatan-per-kota/{id}','FRONT\ProgramKegiatan@per_kota');
+
+Route::get('program-kegiatan-data/{id}','FRONT\ProgramKegiatan@data')->name('pr.data');
+
+
+
+Route::get('program-kegiatan/urusan','FRONT\ProgramKegiatan@per_urusan');
+Route::get('program-kegiatan-per-sub-urusan/{id}','FRONT\ProgramKegiatan@per_sub_urusan');
+Route::get('program-kegiatan-per-program/{id}','FRONT\ProgramKegiatan@per_program');
+
 
 
 
