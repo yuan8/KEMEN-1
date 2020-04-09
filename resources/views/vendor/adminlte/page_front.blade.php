@@ -92,17 +92,19 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+              <section class="content-header">
+                 <div class="row">
+                 </div>
+                  @yield('content_header')
+                 
+                
+            </section>
+
             @if(config('ltefron.layout') == 'top-nav')
             <div class="container-fluid">
             @endif
 
             <!-- Content Header (Page header) -->
-            <section class="content-header">
-                 <div class="row">
-                  
-                 </div>
-                @yield('content_header')
-            </section>
 
             <!-- Main content -->
             <section class="content" style="min-height: 100vh">
