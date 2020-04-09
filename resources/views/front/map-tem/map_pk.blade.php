@@ -6,6 +6,7 @@
 		<table class="table table-bordered" id="table-pro-ind">
 			<thead>
 				<tr>
+					<th>Aaction</th>
 					<th>Program</th>
 					<th>Jumlah Indikator</th>
 					<th>Jumlah Kegiatan</th>
@@ -16,7 +17,8 @@
 			</thead>
 			<tbody>
 				@foreach($data['data'] as $d)
-				<tr>
+				<tr>	
+						<td><a href="{{route('pr.program.det',['id'=>$d->id])}}" target="_blank" class="btn btn-primary btn-xs">Detail</a></td>
 						<td>{{$d->nama}}</td>
 						<td>{{$d->jumlah_ind}}</td>
 						<td>{{$d->jumlah_kegiatan}}</td>

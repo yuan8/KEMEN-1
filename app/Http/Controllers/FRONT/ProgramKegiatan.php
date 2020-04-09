@@ -391,4 +391,25 @@ public function per_kota($id){
 
 
         }
+
+
+        public function detail_program($id){
+            $tahun=2020;
+            $program=DB::connection('sink_prokeg')
+            ->table(DB::raw('prokeg.tb_'.$tahun.'_'.'program as p'))->find($id);
+
+            $data=DB::connection('sink_prokeg')
+            ->table(DB::raw('prokeg.tb_'.$tahun.'_'.'program as p'))
+            ->join(DB::raw('prokeg.tb_'.$tahun.'_'.'ind_program as ip'),'ip.id_program','=','p.id')
+            ->select(
+                'ip.id',
+                "ip.indikator"
+            )
+            ->where('ip.indikator','!=',null)
+            ->where('p.id',$id)
+            ->get();
+
+            return view('front.detail_program')->with('data',$data)
+            ->with('program',$program);
+        }
 }
