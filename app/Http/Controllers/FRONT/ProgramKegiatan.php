@@ -200,7 +200,7 @@ public function per_program($id){
         return view('front.map-tem.map_pk')
         ->with('data',$data_return)
         ->with('id_dom',$id_dom)
-        ->with('title','PROGRAM  '.$urusan->nama)
+        ->with('title','PROGRAM  SUBURUSAN '.$urusan->nama)
         ->with('next','');
 
         
@@ -543,8 +543,67 @@ public function per_kota($id){
         ->with('data',$data_return)
         ->with('id_dom',$id_dom)
         ->with('title','PROGRAM KEGIATAN '.$daerah->nama.' SUBURUSAN '.$urusan->nama)
-        ->with('next','pp');
+        ->with('next','program-kegiatan-per-daerah-sub-urusan-per-program/'.$daerah->id);
 
+    }
+
+    public function dearah_per_program($kode_daerah,$id_sub_urusan){
+        $tahun=2020;
+        $id_dom='per_suu';
+        $daerah=DB::table('master_daerah')->find($kode_daerah);
+        $urusan =DB::table('master_sub_urusan')->find($id_sub_urusan);
+        DB::connection('sink_prokeg')->enableQueryLog();
+        $data=DB::connection('sink_prokeg')
+        ->table('prokeg.tb_'.$tahun.'_'.'kegiatan as k')
+        ->whereNotNull('k.id_sub_urusan')
+        ->whereNotNull('k.id_urusan')
+        ->whereNotNull('k.id_program')
+        ->where('k.kode_daerah',$kode_daerah)
+        ->where('k.id_sub_urusan',$id_sub_urusan)
+        ->select(
+            "k.id_program as id",
+            DB::raw("(select uraian from prokeg.tb_".$tahun."_program as p where p.id=k.id_program) as nama"),
+            DB::raw("(select count(*) from prokeg.tb_".$tahun."_ind_program as ip where ip.id_program=k.id_program) as jumlah_ind"),
+            DB::raw("count(k.*) as jumlah_kegiatan"),
+            DB::raw("sum(k.anggaran)::numeric as jumlah_anggaran")
+        )
+        ->groupBy('k.id_program')
+        ->orderBy(DB::raw("jumlah_kegiatan "),'DESC')
+        ->get();
+
+
+
+        // dd(DB::connection('sink_prokeg')->getQueryLog());
+
+        $data_return=[
+            'category'=>[],
+            'series'=>[
+                0=>[
+                                    'name'=>'Jumlah Kegiatan',
+                                    'data'=>[],
+                    ],
+                1=>[
+                                    'name'=>'anggaran',
+                                    'data'=>[]
+                    ],
+
+            ],
+            'data'=>[]
+        ];
+
+        foreach ($data as $key => $d) {
+        $data_return['category'][]=$d->nama;
+        $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
+        // $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
+        $data_return['series'][1]['data'][]=(float)$d->jumlah_anggaran;
+        $data_return['data'][]=$d;
+        }
+
+         return view('front.map-tem.map_pk')
+        ->with('data',$data_return)
+        ->with('id_dom',$id_dom)
+        ->with('title',$daerah->nama.' PROGRAM SUBURUSAN '.$urusan->nama)
+        ->with('next','pp');
     }
 
 }
