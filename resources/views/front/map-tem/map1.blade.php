@@ -14,7 +14,7 @@
   				<thead>
   					<tr>
   						<th>Category</th>
-  						@if($id_dom=='per_kota')
+  						@if(in_array($id_dom,['per_kota','per_provinsi']) )
   						<th>Detail</th>
   						@endif
   						<th>Jumlah Program</th>
@@ -26,7 +26,7 @@
   					@foreach($data['data'] as $d)
   					<tr>
   						<td>{{$d->nama}}</td>
-  						@if($id_dom=='per_kota')
+  						@if(in_array($id_dom,['per_kota','per_provinsi']) )
   						<td><a href="{{route('pr.data',['id'=>$d->id])}}" target="_blank" class="btn btn-primary btn-xs">Detail</a></td>
   						@endif
   						<td>{{$d->jumlah_program}}</td>

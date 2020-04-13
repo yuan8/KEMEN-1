@@ -95,6 +95,7 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/pp', 'FORM\KebijakanCtrl@store_pp')->name('kebijakan.pusat.store.mandat.pp');
 
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/perpres', 'FORM\KebijakanCtrl@store_perpres')->name('kebijakan.pusat.store.mandat.perpres');
+
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/permen', 'FORM\KebijakanCtrl@store_permen')->name('kebijakan.pusat.store.mandat.permen');
 
 		});
@@ -184,8 +185,10 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 		Route::prefix('integrasi/')->group(function(){
 		
 			Route::get('/', 'FORM\IntegrasiCtrl@index')->name('integrasi.index');
+			
 			Route::get('/provinsi', 'FORM\IntegrasiCtrl@provinsi')->name('integrasi.provinsi');
-			Route::get('/kota-kab', 'FORM\IntegrasiCtrl@kota')->name('integrasi.kota');
+			
+			Route::get('/kota-kab', 'FORM\IntegrasiKabKotaCtrl@index')->name('integrasi.kota');
 
 			Route::get('/provinsi/{id}', 'FORM\IntegrasiCtrl@detail_provinsi')->name('integrasi.provinsi.detail');
 
@@ -200,14 +203,15 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::post('/map/provinsi-store/{id}', 'FORM\IntegrasiCtrl@mapingProStore')->name('map.provinsi.store');
 
 			Route::get('/result/provinsi/', 'FORM\IntegrasiCtrl@result_pro')->name('res.pro');
+			
 			Route::post('/pel-nomen/provinsi/{id}', 'FORM\IntegrasiNomenCTRL@store_pel_nomen_pro')->name('pel.pro');
 
-
 			Route::get('/provinsi-nomen/', 'FORM\IntegrasiNomenCTRL@index_pro')->name('nomen.pro.index');
+			
 			Route::get('/provinsi-nomen/{kode_daerah}', 'FORM\IntegrasiNomenCTRL@detail_pro')->name('nomen.pro.detail');
 
 
-
+			// Route::get('//{kode_daerah}', 'FORM\IntegrasiNomenCTRL@detail_pro')->name('nomen.pro.detail');
 
 
 			
@@ -219,10 +223,8 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::get('/detail/{id?}','FORM\ProgramKegiatanCtrl@detail')->name('pk.detail');
 			Route::get('/detail-pemetaan/{id?}','FORM\ProgramKegiatanCtrl@detail_pemetaan')->name('pk.peta.detail');
 			Route::post('/detail-pemetaan/{id?}','FORM\ProgramKegiatanCtrl@store_pemetaan')->name('pk.peta.store');
-
-
-
 			Route::get('create-program-kegiatan-template','DokumentCtrl@createTemplate')->name('program.kegiatan.download-template');
+
 
 		
 			

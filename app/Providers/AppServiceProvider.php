@@ -111,7 +111,6 @@ class AppServiceProvider extends ServiceProvider
                             [
                                 'text'=>'MAP NOMENLATUR ',
                                 'url'=>route('integrasi.index'),
-
                             ],
                             [
                                 'text'=>'INTEGRASI NOMENKLATUR',
@@ -144,7 +143,7 @@ class AppServiceProvider extends ServiceProvider
                             ],
                              [
                                 'text'=>'INTEGRASI NOMENLATUR ',
-                                // 'url'=>route('integrasi.provinsi'),
+                                'url'=>route('integrasi.kota'),
 
                             ],
                              [

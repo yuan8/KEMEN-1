@@ -214,8 +214,7 @@ class HelperProvider extends ServiceProvider
                 created_at timestamp NULL,
                 updated_at timestamp NULL,
                 CONSTRAINT "."tb_".$tahun."_program_pkey PRIMARY KEY (id),
-            
-              
+
                 CONSTRAINT "."tb_".$tahun."_program_id_psn_foreign FOREIGN KEY (id_psn) REFERENCES ".$db_main.".master_psn(id) ON UPDATE CASCADE ON DELETE CASCADE,
                 CONSTRAINT "."tb_".$tahun."_program_id_sdgs_foreign FOREIGN KEY (id_sdgs) REFERENCES ".$db_main.".master_sdgs(id) ON UPDATE CASCADE ON DELETE CASCADE,
                 CONSTRAINT "."tb_".$tahun."_program_id_spm_foreign FOREIGN KEY (id_spm) REFERENCES ".$db_main.".master_spm(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -242,7 +241,7 @@ class HelperProvider extends ServiceProvider
                 id_program int8 NOT NULL,
                 uraian text NOT NULL,
                 anggaran float8 NULL,
-
+                
                 id_urusan int8 NULL,
                 id_sub_urusan int8 NULL,
                 pelaksana text NULL,
