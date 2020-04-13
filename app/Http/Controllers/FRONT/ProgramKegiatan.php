@@ -282,6 +282,7 @@ public function per_kota($id){
     $tahun=2020;
         $id_dom='per_kota';
 
+        $daerah=DB::table('master_daerah')->find($id);
         $data=DB::connection('sink_prokeg')
         ->table('public.master_daerah as u')
         ->Leftjoin(DB::raw('prokeg.tb_'.$tahun.'_'.'kegiatan as k'),'k.kode_daerah','ilike',DB::raw("CONCAT(u.id,'%')"))
@@ -337,7 +338,7 @@ public function per_kota($id){
         return view('front.map-tem.map1')
         ->with('data',$data_return)
         ->with('id_dom',$id_dom)
-        ->with('title','PROGRAM KEGIATAN PER KOTA/KAB')
+        ->with('title','PROGRAM KEGIATAN '.$daerah->nama.' PER KOTA/KAB')
         ->with('next','program-kegiatan-per-daerah-urusan');
         // dd($data);
 
