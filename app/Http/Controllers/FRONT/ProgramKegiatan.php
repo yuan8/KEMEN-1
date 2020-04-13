@@ -543,7 +543,7 @@ public function per_kota($id){
    return view('front.map-tem.map1')
         ->with('data',$data_return)
         ->with('id_dom',$id_dom)
-        ->with('title','PROGRAM KEGIATAN '.$daerah->nama.' SUBURUSAN '.$urusan->nama)
+        ->with('title','PROGRAM KEGIATAN '.$daerah->nama.' SUBURUSAN DARI'.$urusan->nama)
         ->with('next','program-kegiatan-per-daerah-sub-urusan-per-program/'.$daerah->id);
 
     }
