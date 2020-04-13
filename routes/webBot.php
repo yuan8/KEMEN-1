@@ -10,3 +10,9 @@ Route::prefix('bot/simspam')->group(function(){
 
 	Route::post('/download','CROW\SIMSPAMCTRL@download')->name('bot.simspam.download');
 });
+
+
+Route::prefix('bot/sipd')->group(function(){
+	Route::get('get-data/{tahun}','BOT\SIPDStatusRkpd@getData');
+
+});

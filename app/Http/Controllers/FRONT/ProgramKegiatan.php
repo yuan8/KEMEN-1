@@ -12,6 +12,35 @@ class ProgramKegiatan extends Controller
         return view('front.index');
     }
 
+    static function status($status){
+        switch ((int)$status) {
+            case 1:
+
+            $status= 'Persiapan';
+            break;
+            case 2:
+            $status= 'RANWAL';
+            break;
+            case 3:
+            $status= 'RANRKPD';
+            break;
+            case 4:
+            $status= 'RANHIR';
+            break;
+            case 5:
+            $status= 'FINAL';
+            break;
+        
+            default:
+                # code...
+            $status= 'UNKNOWN';
+
+            break;
+        }
+
+        return $status;
+    }
+
     public function per_urusan(){
     	$tahun=2020;
         $id_dom='per_u';
@@ -219,7 +248,7 @@ public function per_provinsi(){
 
         $data=DB::connection('sink_prokeg')
         ->table('public.master_daerah as u')
-        ->Leftjoin(DB::raw('prokeg.tb_'.$tahun.'_'.'kegiatan as k'),'k.kode_daerah','ilike',DB::raw("CONCAT(u.id,'%')"))
+        ->Leftjoin(DB::raw('prokeg.tb_'.$tahun.'_'.'kegiatan as k'),'k.kode_daerah','=',DB::raw("CONCAT(u.id)"))
         ->whereNotNull('k.id_sub_urusan')
         ->whereNotNull('k.id_urusan')
         ->whereNotNull('k.id_program')
@@ -227,6 +256,7 @@ public function per_provinsi(){
 
         ->select(
             "u.id as id",
+              DB::raw("(select status from "."prokeg.tb_".$tahun."_status_file_daerah as f where f.kode_daerah = u.id limit 1) as status"),
             DB::raw("u.nama as nama"),
             DB::raw("count(k.*) as jumlah_kegiatan"),
             DB::raw("count(DISTINCT(k.id_program)) as jumlah_program"),
@@ -261,6 +291,7 @@ public function per_provinsi(){
         ];
 
         foreach ($data as $key => $d) {
+        $d->nama=$d->nama.' ['.static::status($d->status).']';
         $data_return['category'][]=$d->nama;
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
@@ -293,6 +324,7 @@ public function per_kota($id){
 
         ->select(
             "u.id as id",
+            DB::raw("(select status from "."prokeg.tb_".$tahun."_status_file_daerah as f where f.kode_daerah = u.id limit 1) as status"),
             DB::raw("u.nama as nama"),
             DB::raw("count(k.*) as jumlah_kegiatan"),
             DB::raw("count(DISTINCT(k.id_program)) as jumlah_program"),
@@ -327,6 +359,9 @@ public function per_kota($id){
         ];
 
         foreach ($data as $key => $d) {
+
+        $d->nama=$d->nama.' ['.static::status($d->status).']';
+
         $data_return['category'][]=$d->nama;
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         $data_return['series'][1]['data'][]=(int)$d->jumlah_program;

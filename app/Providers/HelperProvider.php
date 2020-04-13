@@ -143,7 +143,7 @@ class HelperProvider extends ServiceProvider
                 CONSTRAINT map_nomen_pro_".$tahun."_pkey PRIMARY KEY (id),
                 CONSTRAINT map_nomen_pro_".$tahun."_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES master_daerah(id) ON UPDATE CASCADE,
                 CONSTRAINT map_nomen_pro_".$tahun."_id_nomen_foreign FOREIGN KEY (id_nomen) REFERENCES master_nomenklatur_provinsi(id) ON UPDATE CASCADE ON DELETE CASCADE,
-                CONSTRAINT map_nomen_pro_".$tahun."_tahun_kode_daerah_id_nomen_unique UNIQUE (tahun, kode_daerah, id_nomen,'kodeskpd')
+                CONSTRAINT map_nomen_pro_".$tahun."_tahun_kode_daerah_id_nomen_unique UNIQUE (tahun, kode_daerah, id_nomen,'kode_skpd')
 
                 );
                
@@ -199,8 +199,6 @@ class HelperProvider extends ServiceProvider
                 id bigserial NOT NULL,
                 tahun int4 NOT NULL,
                 kode_daerah varchar(4) NOT NULL,
-                kodeskpd varchar(255) NOT NULL,
-                id_bidang_daerah varchar(255) NOT NULL,
                 kode_program varchar(255) NOT NULL,
                 uraian text NOT NULL,
                 id_urusan int8 NULL,
@@ -211,6 +209,8 @@ class HelperProvider extends ServiceProvider
                 id_sdgs int8 NULL,
                 id_nspk int8 NULL,
                 tag varchar(255) NULL,
+                kode_skpd varchar(50) NULL,
+                kode_bidang varchar(50) NULL,
                 created_at timestamp NULL,
                 updated_at timestamp NULL,
                 CONSTRAINT "."tb_".$tahun."_program_pkey PRIMARY KEY (id),
@@ -221,7 +221,7 @@ class HelperProvider extends ServiceProvider
                 CONSTRAINT "."tb_".$tahun."_program_id_sub_urusan_foreign FOREIGN KEY (id_sub_urusan) REFERENCES ".$db_main.".master_sub_urusan(id) ON UPDATE CASCADE ON DELETE CASCADE,
                 CONSTRAINT "."tb_".$tahun."_program_id_urusan_foreign FOREIGN KEY (id_urusan) REFERENCES ".$db_main.".master_urusan(id) ON UPDATE CASCADE ON DELETE CASCADE,
                 CONSTRAINT "."tb_".$tahun."_program_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES ".$db_main.".master_daerah(id) ON UPDATE CASCADE ON DELETE CASCADE,
-                CONSTRAINT "."tb_".$tahun."_program_tahun_kode_daerah_kode_program_unique UNIQUE (tahun, kode_daerah, kode_program,kodeskpd,id_bidang_daerah)
+                CONSTRAINT "."tb_".$tahun."_program_tahun_kode_daerah_kode_program_unique UNIQUE (tahun, kode_daerah, kode_program,kode_skpd,kode_bidang)
             )
         ");
        }
@@ -234,14 +234,11 @@ class HelperProvider extends ServiceProvider
             CREATE TABLE ".$schema."."."tb_".$tahun."_kegiatan (
                 id bigserial NOT NULL,
                 tahun int4 NOT NULL,
-                kodeskpd varchar(255) NOT NULL,
-                id_bidang_daerah varchar(255) NOT NULL,
                 kode_daerah varchar(4) NOT NULL,
                 kode_kegiatan varchar(255) NOT NULL,
                 id_program int8 NOT NULL,
                 uraian text NOT NULL,
                 anggaran float8 NULL,
-                
                 id_urusan int8 NULL,
                 id_sub_urusan int8 NULL,
                 pelaksana text NULL,
@@ -250,7 +247,9 @@ class HelperProvider extends ServiceProvider
                 id_sdgs int8 NULL,
                 id_nspk int8 NULL,
                 tag varchar(255) NULL,
-                final bool NULL DEFAULT false,
+                kode_skpd varchar(50) NULL,
+                kode_bidang varchar(50) NULL,
+                status int4 NULL DEFAULT 0,
                 created_at timestamp NULL,
                 updated_at timestamp NULL,
                 CONSTRAINT "."tb_".$tahun."_kegiatan_pkey PRIMARY KEY (id),
@@ -261,7 +260,7 @@ class HelperProvider extends ServiceProvider
                 CONSTRAINT "."tb_".$tahun."_kegiatan_id_urusan_foreign FOREIGN KEY (id_urusan) REFERENCES ".$db_main.".master_urusan(id) ON UPDATE CASCADE ON DELETE CASCADE,
                 CONSTRAINT "."tb_".$tahun."_kegiatan_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES ".$db_main.".master_daerah(id) ON UPDATE CASCADE ON DELETE CASCADE,
                 CONSTRAINT "."tb_".$tahun."_kegiatan_id_program_foreign FOREIGN KEY (id_program) REFERENCES ".$schema.".tb_".$tahun."_program(id) ON UPDATE CASCADE ON DELETE CASCADE,
-                CONSTRAINT "."tb_".$tahun."_kegiatan_tahun_kode_daerah_kode_kegiatan_unique UNIQUE (tahun, kode_daerah, kode_kegiatan,kodeskpd,id_bidang_daerah)
+                CONSTRAINT "."tb_".$tahun."_kegiatan_tahun_kode_daerah_kode_kegiatan_unique UNIQUE (tahun, kode_daerah, kode_kegiatan,kode_skpd,kode_bidang)
             )
         ");
         }
@@ -274,8 +273,6 @@ class HelperProvider extends ServiceProvider
                 CREATE TABLE ".$schema."."."tb_".$tahun."_ind_kegiatan (
                     id bigserial NOT NULL,
                     tahun int4 NOT NULL,
-                     kodeskpd varchar(255) NOT NULL,
-                     id_bidang_daerah varchar(255) NOT NULL,
                     kode_daerah varchar(4) NOT NULL,
                     kode_ind varchar NULL,
                     id_kegiatan int8 NOT NULL,
@@ -286,12 +283,14 @@ class HelperProvider extends ServiceProvider
                     anggaran float8 NULL,
                     pelaksana text NULL,
                     keterangan text NULL,
+                    kode_skpd varchar(50) NULL,
+                    kode_bidang varchar(50) NULL,
                     created_at timestamp NULL,
                     updated_at timestamp NULL,
                     CONSTRAINT "."tb_".$tahun."_ind_kegiatan_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES ".$db_main.".master_daerah(id) ON UPDATE CASCADE ON DELETE CASCADE,
                     CONSTRAINT "."tb_".$tahun."_ind_kegiatan_pkey PRIMARY KEY (id),
                     CONSTRAINT "."tb_".$tahun."_kegiatan_id_kegiatan_foreign FOREIGN KEY (id_kegiatan) REFERENCES ".$schema.".tb_".$tahun."_kegiatan(id) ON UPDATE CASCADE ON DELETE CASCADE,
-                    CONSTRAINT "."tb_".$tahun."_ind_kegiatan_tahun_kode_daerah_kode_ind_id_kegiatan_unique UNIQUE (tahun, kode_daerah,kode_ind,id_kegiatan,kodeskpd,id_bidang_daerah)
+                    CONSTRAINT "."tb_".$tahun."_ind_kegiatan_tahun_kode_daerah_kode_ind_id_kegiatan_unique UNIQUE (tahun, kode_daerah,kode_ind,id_kegiatan,kode_skpd,kode_bidang)
                 );
             ");
 
@@ -303,26 +302,26 @@ class HelperProvider extends ServiceProvider
          if(!$ind_pro->exist){
             DB::connection('sink_prokeg')->statement("
                 CREATE TABLE ".$schema."."."tb_".$tahun."_ind_program (
-                    id bigserial NOT NULL,
+                   id bigserial NOT NULL,
                     tahun int4 NOT NULL,
                     kode_daerah varchar(4) NOT NULL,
-                    kodeskpd varchar(255) NOT NULL,
-                    id_bidang_daerah varchar(255) NOT NULL,
                     kode_ind varchar NULL,
                     id_program int8 NOT NULL,
                     indikator text NOT NULL,
-                    target_awal text NULL,
-                    target_ahir text NULL,
+                    target_awal varchar(255) NULL,
+                    target_ahir varchar(255) NULL,
                     satuan varchar(255) NULL,
                     anggaran float8 NULL,
                     pelaksana text NULL,
                     keterangan text NULL,
+                    kode_skpd varchar(50) NULL,
+                    kode_bidang varchar(50) NULL,
                     created_at timestamp NULL,
                     updated_at timestamp NULL,
                     CONSTRAINT "."tb_".$tahun."_ind_program_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES ".$db_main.".master_daerah(id) ON UPDATE CASCADE ON DELETE CASCADE,
                     CONSTRAINT "."tb_".$tahun."_ind_program_pkey PRIMARY KEY (id),
                     CONSTRAINT "."tb_".$tahun."_ind_program_id_program_foreign FOREIGN KEY (id_program) REFERENCES ".$schema."."."tb_".$tahun."_program(id) ON UPDATE CASCADE ON DELETE CASCADE,
-                    CONSTRAINT "."tb_".$tahun."_ind_program_tahun_kode_daerah_kode_ind_id_program_unique UNIQUE (tahun, kode_daerah,kode_ind,id_program,kodeskpd,id_bidang_daerah)
+                    CONSTRAINT "."tb_".$tahun."_ind_program_tahun_kode_daerah_kode_ind_id_program_unique UNIQUE (tahun, kode_daerah,kode_ind,id_program,kode_skpd,kode_bidang)
                 );
             ");
 
@@ -335,15 +334,34 @@ class HelperProvider extends ServiceProvider
                 CREATE TABLE ".$schema."."."tb_".$tahun."_map_urusan (
                     id bigserial NOT NULL,
                     kode_daerah varchar(4) NOT NULL,
-                    kodeskpd varchar(255)  NULL,
-                    id_bidang_daerah varchar(255)  NULL,
+                    kode_skpd varchar(255)  NULL,
+                    kode_bidang varchar(255)  NULL,
                     uraian_urusan_daerah text NOT NULL,
                     kode_urusan varchar NULL,
                     id_urusan int8 NULL,
                     created_at timestamp NULL,
+                    updated_at timestamp NULL,
                     CONSTRAINT "."tb_".$tahun."_map_urusan_pkey PRIMARY KEY (id),
                     CONSTRAINT "."tb_".$tahun."_map_urusan_id_urusan_foreign FOREIGN KEY (id_urusan) REFERENCES ".$db_main."."."master_urusan(id) ON UPDATE CASCADE ON DELETE CASCADE,
-                    CONSTRAINT "."tb_".$tahun."_map_urusan_kode_daerah_kode_urusan_unique UNIQUE (kode_daerah, kode_urusan,kodeskpd,id_bidang_daerah)
+                    CONSTRAINT "."tb_".$tahun."_map_urusan_kode_daerah_kode_urusan_unique UNIQUE (kode_daerah, kode_urusan,kode_skpd,kode_bidang)
+                );
+            ");
+
+         }
+
+          $ind_pro= DB::connection('sink_prokeg')->select("select exists (select * FROM information_schema.tables where table_schema='".$schema."' and table_name = '"."tb_".$tahun."_status_file_daerah') as exist")[0];
+
+         if(!$ind_pro->exist){
+            DB::connection('sink_prokeg')->statement("
+                CREATE TABLE ".$schema."."."tb_".$tahun."_status_file_daerah (
+                    id bigserial NOT NULL,
+                    kode_daerah varchar(4) NOT NULL,
+                    status int4 NULL DEFAULT 0,
+                    last_date varchar(255) NULL ,
+                    created_at timestamp NULL,
+                    updated_at timestamp NULL,
+                    CONSTRAINT "."tb_".$tahun."_status_file_daerah_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES ".$db_main.".master_daerah(id) ON UPDATE CASCADE ON DELETE CASCADE,
+                    CONSTRAINT "."tb_".$tahun."_status_file_daerah_kode_daerah_unique UNIQUE (kode_daerah)
                 );
             ");
 

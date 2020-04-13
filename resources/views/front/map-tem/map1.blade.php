@@ -52,6 +52,10 @@
 	Highcharts.chart('{{$id_dom}}chart_container', {
     chart: {
         type: 'column',
+         scrollablePlotArea: {
+            maxWidth: '100%',
+            scrollPositionX: 1
+        },
         events:{
               click:function(e){
 
@@ -89,7 +93,7 @@
     },
     plotOptions: {
         series: {
-            borderWidth: 0,
+            borderWidth: 1,
             dataLabels: {
                 enabled: true,
                 format: '{point.y}'
