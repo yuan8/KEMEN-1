@@ -142,7 +142,10 @@
 
 @section('adminlte_js')
     <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
-    <script type="text/javascript" src="{{url('vendor/highchart/highcharts.js')}}"></script>
+    <!-- <script type="text/javascript" src="{{url('vendor/highchart/highcharts.src.js')}}"></script> -->
+    <script src="http://github.highcharts.com/highstock.src.js"></script>
+    <script src="http://code.highcharts.com/maps/modules/map.js"></script>
+
     @stack('js')
     @yield('js')
 

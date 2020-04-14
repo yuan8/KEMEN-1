@@ -1,5 +1,5 @@
 	<div class="row">
-		<div class="col-md-12" id="{{$id_dom}}chart_container" style="min-height: 500px;">
+		<div class="col-md-12" id="{{$id_dom}}chart_container" style="min-height: 500px; max-width: 100%;">
 		
 	</div>
 	</div>	
@@ -46,15 +46,19 @@
    </div>
 
   <script type="text/javascript">
+
   	$('#{{$id_dom}}_table').DataTable();
 
 	var {{$id_dom}}data_r=<?php echo json_encode($data['data']) ?>;
 	Highcharts.chart('{{$id_dom}}chart_container', {
     chart: {
         type: 'column',
-         scrollablePlotArea: {
-            scrollPositionX: 1
-        },
+        //  scrollablePlotArea: {
+        //     scrollPositionX: 1
+        // },
+        //   mapNavigation: {
+        //     enableMouseWheelZoom: true
+        // },
         events:{
               click:function(e){
 
@@ -67,43 +71,41 @@
         },
 
     },
-    scrollbar:{
-      enabled:true
-    },
+  
     title: {
         text: '{{$title}}'
     },
     subtitle: {
         text: 'Sumber Data RKPD'
     },
-    accessibility: {
-        announceNewData: {
-            enabled: true
-        }
-    },
+    // accessibility: {
+    //     announceNewData: {
+    //         enabled: true
+    //     }
+    // },
     xAxis: {
       min:0,
-      max:8,
+      max:5,
+      categories: <?php  echo json_encode($data['category']); ?>,
       scrollbar:{
         enabled:true
       },
-      categories: <?php  echo json_encode($data['category']); ?>,
     },
     yAxis: {
+
         title: {
             text: 'PROGRAM KEGIATAN'
-        }
-
+        },
+       
     },
     legend: {
         enabled: true
     },
     plotOptions: {
-      scrollbar:{
-        enabled:true
-      },
+    
         series: {
-            borderWidth: 1,
+            // stacking: 'normal',
+            // borderWidth: 50,
             dataLabels: {
                 enabled: true,
                 format: '{point.y}'
