@@ -642,4 +642,28 @@ public function per_kota($id){
         ->with('next','pp');
     }
 
+
+    public function dash_daerah($tahun=2020){
+        $d=DB::table('master_daerah as d')
+        ->Leftjoin('prokeg.tb_'.$tahun.'_status_file_daerah as fd','fd.kode_daerah','=','d.id')
+        ->orderBy('status','DESC')
+        ->select(
+            'd.id',
+            'd.nama',
+            'd.kode_daerah_parent',
+            'd.logo',
+            DB::raw("(select string_agg(id_urusan,',') from (select distinct(id_urusan)::text 
+            from prokeg.tb_".$tahun."_kegiatan where kode_daerah=d.id and id_urusan is not null and id_sub_urusan
+            is not null group by id_urusan order by id_urusan ASC) as g) as list_id_urusan"),
+            DB::raw("case when (select id from prokeg.tb_".$tahun."_kegiatan where kode_daerah=d.id and id_urusan is not null and id_sub_urusan is not null limit 1) is not null then 1 else 0 end as existing_data"),
+            DB::raw("(case when fd.status is null then 0 else fd.status end) as status"),
+            'fd.last_date'
+        )
+        ->get();
+
+        return view('front.dash.index')->with('data',$d)->with('tahun',$tahun);
+    }
+
+
+
 }

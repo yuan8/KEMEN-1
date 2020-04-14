@@ -36,6 +36,8 @@ Route::get('program-kegiatan-daerah','FRONT\ProgramKegiatan@daerah');
 Route::get('program-kegiatan/daerah','FRONT\ProgramKegiatan@per_provinsi');
 Route::get('program-kegiatan-per-kota/{id}','FRONT\ProgramKegiatan@per_kota');
 Route::get('program-kegiatan-per-daerah-urusan/{id}','FRONT\ProgramKegiatan@dearah_per_urusan');
+Route::get('program-kegiatan-rkpd','FRONT\ProgramKegiatan@dash_daerah')->name('pp.index');
+
 
 Route::get('program-kegiatan-per-daerah-sub-urusan/{id}/{id_urusan}','FRONT\ProgramKegiatan@dearah_per_sub_urusan');
 Route::get('program-kegiatan-per-daerah-sub-urusan-per-program/{id}/{id_sub_urusan}','FRONT\ProgramKegiatan@dearah_per_program');
@@ -226,7 +228,6 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::get('create-program-kegiatan-template','DokumentCtrl@createTemplate')->name('program.kegiatan.download-template');
 
 
-		
 			
 		});
 

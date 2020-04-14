@@ -53,7 +53,6 @@
     chart: {
         type: 'column',
          scrollablePlotArea: {
-            maxWidth: '100%',
             scrollPositionX: 1
         },
         events:{
@@ -68,6 +67,9 @@
         },
 
     },
+    scrollbar:{
+      enabled:true
+    },
     title: {
         text: '{{$title}}'
     },
@@ -80,7 +82,12 @@
         }
     },
     xAxis: {
-        categories: <?php  echo json_encode($data['category']); ?>,
+      min:0,
+      max:8,
+      scrollbar:{
+        enabled:true
+      },
+      categories: <?php  echo json_encode($data['category']); ?>,
     },
     yAxis: {
         title: {
@@ -92,6 +99,9 @@
         enabled: true
     },
     plotOptions: {
+      scrollbar:{
+        enabled:true
+      },
         series: {
             borderWidth: 1,
             dataLabels: {
