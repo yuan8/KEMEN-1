@@ -23,6 +23,7 @@
 							<th>LOGO</th>
 							<th>NAMA DAERAH</th>
 							<th>STATUS DATA SIPD</th>
+							<th>URUSAN DALAM RKPD</th>
 							<th>LAST UPDATE</th>
 							<th>STATUS</th>
 							<th>URUSAN TERTAGING</th>
@@ -82,6 +83,25 @@
 				}
 			},
 			{
+				data:'list_id_urusan',
+				type:'string',
+				render:function(data){
+						// console.log(data);
+						var str='';
+
+						if(data!=null){
+							data= data.split(',');
+							for(var i in data){
+								str+='<span class="btn btn-info btn-xs col-md-12" style="margin-bottom:5px;">'+data[i]+'</span>';
+							}
+						}else{
+							return '';
+						}
+
+						return str;
+				}
+			},
+			{
 
 				type:'string',
 				render:function(data,type,data_meta){
@@ -135,8 +155,8 @@
 				}
 			},
 			{
-				data:'list_id_urusan',
-				type:'string',
+				data:'list_id_urusan_taging',
+				type:'html',
 				render:function(data){
 						// console.log(data);
 						var str='';

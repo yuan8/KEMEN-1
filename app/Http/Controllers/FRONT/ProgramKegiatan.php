@@ -654,9 +654,14 @@ public function per_kota($id){
             'd.logo',
             DB::raw("(select string_agg(g.nama,',') from (select distinct(uu.nama)::text 
             from prokeg.tb_".$tahun."_kegiatan as kg
-            left join public.master_urusan as uu on uu.id =  kg.id_urusan
+            join public.master_urusan as uu on uu.id =  kg.id_urusan
             where kg.kode_daerah=d.id and kg.id_urusan is not null 
             group by uu.nama ) as g) as list_id_urusan"),
+            DB::raw("(select string_agg(g.nama,',') from (select distinct(uu.nama)::text 
+            from prokeg.tb_".$tahun."_kegiatan as kg
+            join public.master_urusan as uu on uu.id =  kg.id_urusan
+            where kg.kode_daerah=d.id and kg.id_urusan is not null  and kg.id_sub_urusan is not null
+            group by uu.nama ) as g) as list_id_urusan_taging"),
 
             DB::raw("case when (select id from prokeg.tb_".$tahun."_kegiatan where kode_daerah=d.id and id_urusan is not null and id_sub_urusan is not null limit 1) is not null then 1 else 0 end as existing_data"),
             DB::raw("(case when fd.status is null then 0 else fd.status end) as status"),
