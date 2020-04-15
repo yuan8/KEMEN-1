@@ -22,8 +22,10 @@
 						<tr>
 							<th>LOGO</th>
 							<th>NAMA DAERAH</th>
+							<th>STATUS DATA SIPD</th>
 							<th>LAST UPDATE</th>
 							<th>STATUS</th>
+							<th>URUSAN TERTAGING</th>
 							<th>ACTION</th>
 						</tr>
 					</thead>
@@ -58,6 +60,26 @@
 			{
 				data:'nama',
 				type:'string'
+			},
+			{
+				data:'status',
+				type:'string',
+				render:function(data,type,data_meta){
+					var status='';
+					var exist='';
+
+					if(data!=0){
+						status='TERDAPAT DATA';
+					}else{
+						staus='TIDAK TERDAPAT DATA';
+					}
+
+					if(data_meta.existing_data){
+						 exist='<span class="btn btn-primary btn-xs">TERCOPY</span>';
+					}
+
+					return status+'<br>'+exist;
+				}
 			},
 			{
 
@@ -98,18 +120,37 @@
 
 					if(data_meta.existing_data){
 						var kelengkapan='';
-						if('{{env('HANDLE_URUSAN')}}'==data_meta.list_id_urusan){
-							kelengkapan='<span class="badge badge-primary">7 URUSAN LENGKAP</span>';
-						}else{
-							var jumlh=data_meta.list_id_urusan.split(',');
-							kelengkapan='<span class="badge badge-info">'+jumlh.length+' URUSAN</span>';
-						}
+						// if('{{env('HANDLE_URUSAN')}}'==data_meta.list_id_urusan){
+						// 	kelengkapan='<span class="badge badge-primary">7 URUSAN LENGKAP</span>';
+						// }else{
+						// 	var jumlh=data_meta.list_id_urusan.split(',');
+						// 	kelengkapan='<span class="badge badge-info">'+jumlh.length+' URUSAN</span>';
+						// }
 
 						return status+'<br>'+kelengkapan;
 					}else{
 						return '';
 					}
 
+				}
+			},
+			{
+				data:'list_id_urusan',
+				type:'string',
+				render:function(data){
+						// console.log(data);
+						var str='';
+
+						if(data!=null){
+							data= data.split(',');
+							for(var i in data){
+								str+='<span class="btn btn-info btn-xs col-md-12" style="margin-bottom:5px;">'+data[i]+'</span>';
+							}
+						}else{
+							return '';
+						}
+
+						return str;
 				}
 			},
 			{
