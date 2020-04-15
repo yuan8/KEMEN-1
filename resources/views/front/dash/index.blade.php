@@ -24,7 +24,7 @@
 							<th>NAMA DAERAH</th>
 							<th>STATUS DATA SIPD</th>
 							<th>URUSAN DALAM RKPD</th>
-							<th>LAST UPDATE</th>
+							<th>LAST UPDATE SIPD</th>
 							<th>STATUS</th>
 							<th>URUSAN TERTAGING</th>
 							<th>ACTION</th>
