@@ -170,6 +170,47 @@ class SIPDStatusRkpd extends Controller
 	    return $buffer;
  	}
 
+    public static function getRakorteX($tahun,$kodepemda){
+        $token='d1d1ab9140c249e34ce356c91e9166a6';
+        $host='https://sipd.go.id/';
+        $opts = [
+            "http" => [
+                "method" => "GET",
+                "header" => "Authorization: Bearer ".$token
+            ]
+        ];
+
+         if(strlen($kodepemda)<4){
+            $kodepemda=$kodepemda.'00';
+
+        }
+        $kode_daerah=str_replace('00', '', $kodepemda);
+
+
+        if(file_exists(storage_path('app/'.'BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json'))){
+            $data=file_get_contents(storage_path('app/'.'BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json'));
+            $data=trim($data,true);
+            $data=json_decode($data,true);
+            return $data;
+
+        }
+
+
+        $context = stream_context_create($opts);
+
+       
+
+        $path=$host.'run/serv/get_rakortek.php?kodepemda='.$kodepemda;
+        $path=urldecode($path);
+        $data=file_get_contents($path,false, $context);
+        $data=trim($data,true);
+      
+        $data=json_decode($data,true);
+        Storage::put('BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json',json_encode($data,JSON_PRETTY_PRINT));
+
+        return $data;
+    }
+
    
 
 
