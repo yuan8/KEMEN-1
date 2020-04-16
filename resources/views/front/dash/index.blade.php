@@ -12,7 +12,32 @@
 @stop
 
 @section('content')
+<style type="text/css">
+	.select2-container--default .select2-selection--multiple .select2-selection__choice{
+		background-color:#00a65a!important; 
+	}
+
+</style>
 <?php $mix=date('m_s'); ?>
+<div class="row" style="margin-bottom: 15px;">
+	<div class="col-md-6">
+		<label>EXISTING DATA</label>
+		<select class="form-control use-select-2" multiple="" id="multiple">
+			@foreach($urusan as $u)
+			<option value="{{$u->id}}">{{$u->nama}}</option>
+			@endforeach
+		</select>
+	</div>
+	<div class="col-md-6">
+		<label>UNEXISTING DATA</label>
+
+		<select class="form-control use-select-2" multiple="" id="multiple_negasi">
+			@foreach($urusan as $u)
+			<option value="{{$u->id}}">{{$u->nama}}</option>
+			@endforeach
+		</select>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-12">
 		<div class="box box-warning">
@@ -40,6 +65,8 @@
 @stop
 
 @section('js')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script type="text/javascript">
 
 
@@ -98,7 +125,7 @@
 								}
 
 								str+='<span class="btn '+(sipd?(tertaging?'btn-success':'btn-warning'):'btn-danger')+' btn-xs " style="margin-bottom:5px;">'+data[i].nama+' '+
-									(sipd?(tertaging?'[TERTAGGING]':'[BELUM TAGGING]'):'[DATA TIADK TERSEDIA]')
+									(sipd?(tertaging?'[TERTAGGING]':'[BELUM TAGGING]'):'[DATA TIDAK TERSEDIA]')
 									+'</span><br>';
 							}
 						}else{
@@ -159,6 +186,54 @@
 	});
 
 	tb_data{{$mix}}.rows.add(data{{$mix}}).draw();
+
+	$.fn.dataTable.ext.search.push(
+		    function( settings, data, dataIndex ) {
+
+		    	var validate=1;
+		    	var list_data_urusan=[];
+		    	var list_in=$('#multiple').val();
+		    	var list_out=$('#multiple_negasi').val();
+		    	var validate_out=1;
+		    	console.log(list_in);
+
+		    	for(var i in data{{$mix}}[dataIndex].urusan){
+		    		if(data{{$mix}}[dataIndex].urusan[i].tertaging_supd){
+		    			list_data_urusan.push(parseInt(i));
+		    		}
+		    	}
+
+		    	for(var i in list_in){
+		    		if(!list_data_urusan.includes(parseInt(list_in[i]))){
+		    			validate=0;
+		    		}
+		    	}
+		    	
+
+
+		    	if(validate_out && (list_out.length>0)){
+		    		for(var i in list_out){
+		    			if(list_data_urusan.includes(parseInt(list_out[i]))){
+		    				validate_out=0;
+		    			}
+		    		}
+		    	}
+
+		
+		    	if(validate && validate_out){
+		    		return true;
+		    	}else{
+		    		return false;
+		    	}
+		    }
+		);
+
+	$('.use-select-2').select2();
+
+	$('.use-select-2').on('change',function(){
+				tb_data{{$mix}}.draw();
+	});
+
 
 
 

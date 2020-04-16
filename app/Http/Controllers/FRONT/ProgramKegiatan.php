@@ -723,7 +723,7 @@ public function per_kota($id){
         }
 
         $data_return=array_values($data_return);
-        return view('front.dash.index')->with('data',$data_return)->with('tahun',$tahun);
+        return view('front.dash.index')->with('data',$data_return)->with('tahun',$tahun)->with('urusan',$urusan_db);
     }
 
     public function dash_urusan(Request $request){
