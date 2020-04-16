@@ -644,32 +644,96 @@ public function per_kota($id){
 
 
     public function dash_daerah($tahun=2020){
-        $d=DB::table('master_daerah as d')
-        ->Leftjoin('prokeg.tb_'.$tahun.'_status_file_daerah as fd','fd.kode_daerah','=','d.id')
-        ->orderBy('status','DESC')
+        $data=DB::table(DB::raw("master_daerah as d"))
+        ->Leftjoin("prokeg.tb_".$tahun."_status_file_daerah as s","s.kode_daerah", "=","d.id")
+        ->Leftjoin("prokeg.tb_".$tahun."_kegiatan as tk",'tk.kode_daerah','=','d.id')
+        ->Leftjoin("prokeg.tb_".$tahun."_ind_kegiatan as tik","tik.id_kegiatan","=","tk.id")
+        ->Leftjoin("public.master_urusan as u","u.id","=","tk.id_urusan")
+        ->orderBy('d.id','ASC')
+        ->groupBy("d.id")
+        ->groupBy("u.id")
         ->select(
-            'd.id',
-            'd.nama',
-            'd.kode_daerah_parent',
-            'd.logo',
-            DB::raw("(select string_agg(g.nama,',') from (select distinct(uu.nama)::text 
-            from prokeg.tb_".$tahun."_kegiatan as kg
-            join public.master_urusan as uu on uu.id =  kg.id_urusan
-            where kg.kode_daerah=d.id and kg.id_urusan is not null 
-            group by uu.nama ) as g) as list_id_urusan"),
-            DB::raw("(select string_agg(g.nama,',') from (select distinct(uu.nama)::text 
-            from prokeg.tb_".$tahun."_kegiatan as kg
-            join public.master_urusan as uu on uu.id =  kg.id_urusan
-            where kg.kode_daerah=d.id and kg.id_urusan is not null  and kg.id_sub_urusan is not null
-            group by uu.nama ) as g) as list_id_urusan_taging"),
-
-            DB::raw("case when (select id from prokeg.tb_".$tahun."_kegiatan where kode_daerah=d.id and id_urusan is not null and id_sub_urusan is not null limit 1) is not null then 1 else 0 end as existing_data"),
-            DB::raw("(case when fd.status is null then 0 else fd.status end) as status"),
-            'fd.last_date'
-        )
+            DB::raw("(select concat(logo,'@',nama) from public.master_daerah md  where md.id=d.id) as nama_daerah,
+            max(u.nama) as nama_urusan"),
+            "d.id as kode_daerah",
+            "u.id as id_urusan",
+             DB::raw("max(s.status) as status") ,
+             DB::raw("max(s.last_date ) as status_last_date") ,
+             DB::raw("sum(case when tk.id_urusan is not null then tk.anggaran else 0 end) as total_anggaran"),
+             DB::raw("sum(case when tk.id_urusan is not null then 1 else 0 end) as jumlah_kegiatan"),
+             DB::raw("sum(case when ((tk.id_urusan is not null)and(tk.id_sub_urusan is not null)) then 1 else 0 end  ) as jumlah_kegiatan_tertaging"),
+             DB::raw("sum(case when (tik.id) is not null then 1 else 0 end  ) as jumlah_ind
+                "))
+        ->whereIn('u.id',explode(',', env('HANDLE_URUSAN')))
+        ->orWhere('u.id',null)
         ->get();
 
-        return view('front.dash.index')->with('data',$d)->with('tahun',$tahun);
+       $urusan_db= DB::table('master_urusan')
+        ->select('id','nama')
+        ->whereIn('id',explode(',',env('HANDLE_URUSAN')))->get();
+        $urusan=[];
+        foreach ($urusan_db as $key => $d) {
+            $urusan[$d->id]=array(
+                'id'=>$d->id,
+                'nama'=>$d->nama,
+                'existing_data_sipd'=>0,
+                'tertaging_supd'=>0,
+
+            );
+        }
+        $data_return=[];
+        foreach($data as $d){
+            $cor=[];
+            if(!isset($data_return[$d->kode_daerah])){
+                $cor['kode_daerah']=$d->kode_daerah;
+                $cor['logo']=explode('@', $d->nama_daerah)[0];
+                $cor['nama_daerah']=explode('@', $d->nama_daerah)[1];
+                $cor['status_data_sipd']=0;
+                $cor['urusan']=$urusan;
+                $cor['updated_last_date_sipd']=0;
+                $cor['lengkap']=0;
+            }else{
+                $cor=$data_return[$d->kode_daerah];
+            }
+            if($d->status){
+                $cor['status_data_sipd']=$d->status;
+                $cor['updated_last_date_sipd']=$d->status_last_date;
+                if(($d->id_urusan!=99)&&!empty($d->id_urusan)){
+                    if($d->jumlah_kegiatan_tertaging>0){
+                          $cor['urusan'][$d->id_urusan]['tertaging_supd']=1;
+                    }
+                    if($d->jumlah_kegiatan>0){
+                          $cor['urusan'][$d->id_urusan]['existing_data_sipd']=1;
+                    }
+                }
+            }
+            $data_return[$d->kode_daerah]=$cor;
+        }
+
+        $data_return=array_values($data_return);
+        return view('front.dash.index')->with('data',$data_return)->with('tahun',$tahun);
+    }
+
+    public function dash_urusan(Request $request){
+        $tahun=2020;
+        $data=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_kegiatan as k')
+        ->select(
+            DB::raw("(select nama from public.master_daerah as d where d.id=k.kode_daerah) as nama_daerah"),DB::raw("string_agg(distinct(CONCAT('@',id_urusan))::text,',') as list_id_urusan")
+
+        )->where('k.id_urusan','!=',null);
+
+        if($request->negation){
+
+        }else{
+
+        }
+
+        $data=$data->groupBy('k.kode_daerah')
+        ->get();
+        dd($data);
+
+
+
     }
 
 

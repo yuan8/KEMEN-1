@@ -37,6 +37,8 @@ Route::get('program-kegiatan/daerah','FRONT\ProgramKegiatan@per_provinsi');
 Route::get('program-kegiatan-per-kota/{id}','FRONT\ProgramKegiatan@per_kota');
 Route::get('program-kegiatan-per-daerah-urusan/{id}','FRONT\ProgramKegiatan@dearah_per_urusan');
 Route::get('program-kegiatan-rkpd','FRONT\ProgramKegiatan@dash_daerah')->name('pp.index');
+Route::get('program-kegiatan-rkpd/urusan','FRONT\ProgramKegiatan@dash_urusan')->name('pp.urusan');
+
 
 
 Route::get('program-kegiatan-per-daerah-sub-urusan/{id}/{id_urusan}','FRONT\ProgramKegiatan@dearah_per_sub_urusan');

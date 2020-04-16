@@ -24,9 +24,7 @@
 							<th>NAMA DAERAH</th>
 							<th>STATUS DATA SIPD</th>
 							<th>URUSAN DALAM RKPD</th>
-							<th>LAST UPDATE SIPD</th>
 							<th>STATUS</th>
-							<th>URUSAN TERTAGING</th>
 							<th>ACTION</th>
 						</tr>
 					</thead>
@@ -59,12 +57,12 @@
 			},
 
 			{
-				data:'nama',
+				data:'nama_daerah',
 				type:'string'
 			},
 			{
-				data:'status',
-				type:'string',
+				data:'status_data_sipd',
+				type:'html',
 				render:function(data,type,data_meta){
 					var status='';
 					var exist='';
@@ -75,7 +73,7 @@
 						staus='TIDAK TERDAPAT DATA';
 					}
 
-					if(data_meta.existing_data){
+					if(data_meta.tertaging_supd){
 						 exist='<span class="btn btn-primary btn-xs">TERCOPY</span>';
 					}
 
@@ -83,16 +81,25 @@
 				}
 			},
 			{
-				data:'list_id_urusan',
-				type:'string',
+				data:'urusan',
+				type:'html',
 				render:function(data){
-						// console.log(data);
 						var str='';
 
-						if(data!=null){
-							data= data.split(',');
+						if(data!={}){
 							for(var i in data){
-								str+='<span class="btn btn-info btn-xs col-md-12" style="margin-bottom:5px;">'+data[i]+'</span>';
+								var sipd=0;
+								if(data[i].existing_data_sipd){
+									sipd=1
+								}
+								var tertaging=0;
+								if(data[i].tertaging_supd){
+									tertaging=1;
+								}
+
+								str+='<span class="btn '+(sipd?(tertaging?'btn-primary':'btn-success'):'btn-danger')+' btn-xs " style="margin-bottom:5px;">'+data[i].nama+' '+
+									(sipd?(tertaging?'[TERTAGGING]':'[BELUM TAGGING]'):'[DATA TIDKA TERSEDIA]')
+									+'</span><br>';
 							}
 						}else{
 							return '';
@@ -101,19 +108,9 @@
 						return str;
 				}
 			},
+			
 			{
-
-				type:'string',
-				render:function(data,type,data_meta){
-					if(data_meta.existing_data){
-						return data_meta.last_date;
-					}else{
-						return 'TIDAK MELAPOR';
-					}
-				}
-			},
-			{
-				data:'status',
+				data:'status_data_sipd',
 				type:'string',
 				render:function(data,type,data_meta){
 					var status='';
@@ -137,51 +134,24 @@
 						status= 'FINAL';
 						break;
 					}
-
-					if(data_meta.existing_data){
-						var kelengkapan='';
-						// if('{{env('HANDLE_URUSAN')}}'==data_meta.list_id_urusan){
-						// 	kelengkapan='<span class="badge badge-primary">7 URUSAN LENGKAP</span>';
-						// }else{
-						// 	var jumlh=data_meta.list_id_urusan.split(',');
-						// 	kelengkapan='<span class="badge badge-info">'+jumlh.length+' URUSAN</span>';
-						// }
-
-						return status+'<br>'+kelengkapan;
+					var kelengkapan='';
+					if(data_meta.lengkap){
+						kelengkapan='(LENGKAP)';	
 					}else{
-						return '';
+						
 					}
 
+					return status+'<br>'+kelengkapan;
+
+
 				}
 			},
-			{
-				data:'list_id_urusan_taging',
-				type:'html',
-				render:function(data){
-						// console.log(data);
-						var str='';
-
-						if(data!=null){
-							data= data.split(',');
-							for(var i in data){
-								str+='<span class="btn btn-info btn-xs col-md-12" style="margin-bottom:5px;">'+data[i]+'</span>';
-							}
-						}else{
-							return '';
-						}
-
-						return str;
-				}
-			},
+			
 			{
 				data:'id',
 				type:'html',
 				render:function(data,type,data_meta){
-					if(data_meta.existing_data){
 						return '<a target="_blank" href="{{url('program-kegiatan-data').'/'}}'+data+'" class="btn btn-warning btn-xs ">Detail</a>';
-					}else{
-						return '';
-					}
 					
 				}
 			}
