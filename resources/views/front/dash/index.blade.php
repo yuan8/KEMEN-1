@@ -98,7 +98,7 @@
 								}
 
 								str+='<span class="btn '+(sipd?(tertaging?'btn-success':'btn-warning'):'btn-danger')+' btn-xs " style="margin-bottom:5px;">'+data[i].nama+' '+
-									(sipd?(tertaging?'[TERTAGGING]':'[BELUM TAGGING]'):'[DATA TIDKA TERSEDIA]')
+									(sipd?(tertaging?'[TERTAGGING]':'[BELUM TAGGING]'):'[DATA TIADK TERSEDIA]')
 									+'</span><br>';
 							}
 						}else{
