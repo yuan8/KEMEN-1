@@ -97,7 +97,7 @@
 									tertaging=1;
 								}
 
-								str+='<span class="btn '+(sipd?(tertaging?'btn-primary':'btn-success'):'btn-danger')+' btn-xs " style="margin-bottom:5px;">'+data[i].nama+' '+
+								str+='<span class="btn '+(sipd?(tertaging?'btn-success':'btn-warning'):'btn-danger')+' btn-xs " style="margin-bottom:5px;">'+data[i].nama+' '+
 									(sipd?(tertaging?'[TERTAGGING]':'[BELUM TAGGING]'):'[DATA TIDKA TERSEDIA]')
 									+'</span><br>';
 							}
