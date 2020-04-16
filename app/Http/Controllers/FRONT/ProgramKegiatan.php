@@ -689,6 +689,7 @@ public function per_kota($id){
                 $cor['logo']=explode('@', $d->nama_daerah)[0];
                 $cor['nama_daerah']=explode('@', $d->nama_daerah)[1];
                 $cor['status_data_sipd']=0;
+                $cor['exist_data']=$d->jumlah_kegiatan?1:0;
                 $cor['urusan']=$urusan;
                 $cor['updated_last_date_sipd']=0;
                 $cor['lengkap']=0;

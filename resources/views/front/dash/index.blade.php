@@ -20,7 +20,7 @@
 </style>
 <?php $mix=date('m_s'); ?>
 <div class="row" style="margin-bottom: 15px;">
-	<div class="col-md-6">
+	<div class="col-md-3">
 		<label>EXISTING DATA</label>
 		<select class="form-control use-select-2" multiple="" id="multiple">
 			@foreach($urusan as $u)
@@ -28,10 +28,28 @@
 			@endforeach
 		</select>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-3">
 		<label>UNEXISTING DATA</label>
 
 		<select class="form-control use-select-2" multiple="" id="multiple_negasi">
+			@foreach($urusan as $u)
+			<option value="{{$u->id}}">{{$u->nama}}</option>
+			@endforeach
+		</select>
+	</div>
+	<div class="col-md-3">
+		<label>TAGGED</label>
+
+		<select class="form-control use-select-2" multiple="" id="multiple_taged">
+			@foreach($urusan as $u)
+			<option value="{{$u->id}}">{{$u->nama}}</option>
+			@endforeach
+		</select>
+	</div>
+	<div class="col-md-3">
+		<label>UNTAGGED</label>
+
+		<select class="form-control use-select-2" multiple="" id="multiple_taged_negasi">
 			@foreach($urusan as $u)
 			<option value="{{$u->id}}">{{$u->nama}}</option>
 			@endforeach
@@ -97,10 +115,10 @@
 					if(data!=0){
 						status='TERDAPAT DATA';
 					}else{
-						staus='TIDAK TERDAPAT DATA';
+						status='TIDAK TERDAPAT DATA';
 					}
 
-					if(data_meta.tertaging_supd){
+					if(data_meta.exist_data){
 						 exist='<span class="btn btn-primary btn-xs">TERCOPY</span>';
 					}
 
@@ -194,22 +212,51 @@
 		    	var list_data_urusan=[];
 		    	var list_in=$('#multiple').val();
 		    	var list_out=$('#multiple_negasi').val();
+		    	var list_in_tagged=$('#multiple_taged').val();
+		    	var list_out_tagged=$('#multiple_taged_negasi').val();
+
+		    	var list_data_urusan_taging=[];
 		    	var validate_out=1;
-		    	console.log(list_in);
+		    	var validate_taged=1;
+		    	var validate_out_tagged=1;
+
 
 		    	for(var i in data{{$mix}}[dataIndex].urusan){
-		    		if(data{{$mix}}[dataIndex].urusan[i].tertaging_supd){
+		    		if(data{{$mix}}[dataIndex].urusan[i].existing_data_sipd){
 		    			list_data_urusan.push(parseInt(i));
+
+		    			if((data{{$mix}}[dataIndex].urusan[i].tertaging_supd)){
+		    				list_data_urusan_taging.push(parseInt(i));
+		    			}
 		    		}
+
+		    		
 		    	}
+
 
 		    	for(var i in list_in){
 		    		if(!list_data_urusan.includes(parseInt(list_in[i]))){
 		    			validate=0;
 		    		}
 		    	}
-		    	
 
+		    	for(var i in list_in_tagged){
+		    		if(!list_data_urusan_taging.includes(parseInt(list_in_tagged[i]))){
+		    			validate_taged=0;
+		    		}
+		    	}
+
+		    	for(var i in list_out_tagged){
+		    		if(list_data_urusan.includes(parseInt(list_out_tagged[i]))){
+			    		if((list_data_urusan_taging.includes(parseInt(list_out_tagged[i])))){
+			    			validate_out_tagged=0;
+			    		}
+			    	}else{
+			    		validate_out_tagged=0; 
+			    	}
+		    	}
+
+		   	
 
 		    	if(validate_out && (list_out.length>0)){
 		    		for(var i in list_out){
@@ -220,7 +267,7 @@
 		    	}
 
 		
-		    	if(validate && validate_out){
+		    	if((validate && validate_out)&&(validate_taged && validate_out_tagged ) ){
 		    		return true;
 		    	}else{
 		    		return false;
