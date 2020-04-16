@@ -380,10 +380,11 @@ public function per_kota($id){
 }
 
 
-        public function data($id){
+        public function data($id,Request $request){
             $tahun=2020;
             $daerah=DB::table('master_daerah')->find($id);
 
+            $urusan=DB::table('master_urusan')->whereIn('id',explode(',', env('HANDLE_URUSAN')))->get();
             $data=DB::connection('sink_prokeg')
             ->table(DB::raw('prokeg.tb_'.$tahun.'_'.'kegiatan as k'))
             ->Leftjoin(DB::raw('prokeg.tb_'.$tahun.'_'.'program as p'),'p.id','=','k.id_program')
@@ -412,8 +413,13 @@ public function per_kota($id){
             ->whereNotNull('k.id_sub_urusan')
             ->whereNotNull('k.id_urusan')
             ->whereNotNull('k.id_program')
-            ->where('k.kode_daerah',$id)
-            ->orderBy('k.id_urusan','ASC')
+            ->where('k.kode_daerah',$id);
+
+            if($request->urusan && (($request->urusan!=[null]))){
+                $data->whereIn('k.id_urusan',$request->urusan);
+            }
+
+            $data=$data->orderBy('k.id_urusan','ASC')
             ->orderBy('k.id_sub_urusan','ASC')
             ->orderBy('p.id','ASC')
             ->orderBy('ip.id','ASC')
@@ -423,8 +429,9 @@ public function per_kota($id){
 
 
 
-            return view('front.table_daerah')->with('data',$data)->with('daerah',$daerah);
-
+            return view('front.table_daerah')
+            ->with('urusan',$urusan)
+            ->with('data',$data)->with('daerah',$daerah);
 
         }
 
@@ -722,9 +729,12 @@ public function per_kota($id){
             $data_return[$d->kode_daerah]=$cor;
         
         }
+        $pro=DB::table('master_daerah')->where('kode_daerah_parent',null)->orderBy('nama','ASC')->get();
 
         $data_return=array_values($data_return);
-        return view('front.dash.index')->with('data',$data_return)->with('tahun',$tahun)->with('urusan',$urusan_db);
+        return view('front.dash.index')
+        ->with('provinsi',$pro)
+        ->with('data',$data_return)->with('tahun',$tahun)->with('urusan',$urusan_db);
     }
 
     public function dash_urusan(Request $request){

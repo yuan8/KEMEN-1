@@ -15,6 +15,17 @@
 @section('content')
 	<div class="row">
 		<div class="col-md-12">
+			<div class="form-group">
+				<label>FILTER URUSAN</label>
+				<form action="{{url()->current()}}" method="get">
+					<select class="form-control use-select-2" name="urusan[]"  onchange="$(this).parent().submit()" multiple="">
+					<option value="">-SEMUA-</option>
+					<?php foreach ($urusan as $key => $u): ?>
+						<option value="{{$u->id}}" {{isset($_GET['urusan'])?in_array($u->id,$_GET['urusan'])?'selected':'':''}}>{{$u->nama}}</option>	
+					<?php endforeach ?>
+				</select>
+				</form>
+			</div>
 			<div class="box box-primary">
 				<div class="box-body">
 					<table class="table table-bordered">
@@ -108,5 +119,13 @@
 		
 	</div>
 
+
+@stop
+
+@section('js')
+<script type="text/javascript">
+	$('.use-select-2').select2();
+	
+</script>
 
 @stop

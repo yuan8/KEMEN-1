@@ -20,8 +20,48 @@
 </style>
 <?php $mix=date('m_s'); ?>
 <div class="row" style="margin-bottom: 15px;">
+	<div class="col-md-12">
+		<div class="row">
 	<div class="col-md-3">
-		<label>EXISTING DATA</label>
+		<label>PROVINSI</label>
+		<select class="form-control use-select-2" id="provinsi">
+			<option value="" >-SEMUA-</option>
+			<?php foreach ($provinsi as $key => $p): ?>
+				<option value="{{'@'.$p->id}}">{{$p->nama}}</option>
+			<?php endforeach ?>
+		</select>
+	</div>
+	<div class="col-md-3">
+		<label>EXISTING SIPD</label>
+		<select class="form-control use-select-2" id="exist_sipd">
+			<option value="" >-SEMUA-</option>
+			<option value="1" >TERDAPAT DATA</option>
+			<option value="0" >TIDAK TERDAPAT DATA</option>
+		</select>
+	</div>
+	<div class="col-md-3">
+		<label>EXISTING SUPD</label>
+		<select class="form-control use-select-2" id="exist_supd">
+			<option value="" >-SEMUA-</option>
+			<option value="1" >TERDAPAT DATA</option>
+			<option value="0" >TIDAK TERDAPAT DATA</option>
+		</select>
+	</div>
+	<div class="col-md-3">
+		<label>STATUS</label>
+		<select class="form-control use-select-2" id="status_sipd">
+			<option value="" >-SEMUA-</option>
+			<option value="1" >PERENCANAAN</option>
+			<option value="2" >RANRKPD</option>
+			<option value="3" >RANWAL</option>
+			<option value="4" >RANHIR</option>
+			<option value="5" >FINAL</option>
+		</select>
+	</div>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<label>EXISTING DATA URUSAN</label>
 		<select class="form-control use-select-2" multiple="" id="multiple">
 			@foreach($urusan as $u)
 			<option value="{{$u->id}}">{{$u->nama}}</option>
@@ -29,7 +69,7 @@
 		</select>
 	</div>
 	<div class="col-md-3">
-		<label>UNEXISTING DATA</label>
+		<label>UNEXISTING DATA URUSAN</label>
 
 		<select class="form-control use-select-2" multiple="" id="multiple_negasi">
 			@foreach($urusan as $u)
@@ -55,6 +95,7 @@
 			@endforeach
 		</select>
 	</div>
+	
 </div>
 <div class="row">
 	<div class="col-md-12">
@@ -83,8 +124,8 @@
 @stop
 
 @section('js')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script> -->
 <script type="text/javascript">
 
 
@@ -193,7 +234,7 @@
 			},
 			
 			{
-				data:'id',
+				data:'kode_daerah',
 				type:'html',
 				render:function(data,type,data_meta){
 						return '<a target="_blank" href="{{url('program-kegiatan-data').'/'}}'+data+'" class="btn btn-warning btn-xs ">Detail</a>';
@@ -219,6 +260,49 @@
 		    	var validate_out=1;
 		    	var validate_taged=1;
 		    	var validate_out_tagged=1;
+		    	var status_sipd=$('#status_sipd').val();
+		    	var exist_sipd=$('#exist_sipd').val();
+		    	var exist_supd=$('#exist_supd').val();
+		    	var validate_exist_sipd=1;
+		    	var validate_exist_supd=1;
+		    	var validate_status_sipd=1;
+		    	var provinsi=$('#provinsi').val();
+		    	var validate_pro=1;
+		    	var pro='@'+data{{$mix}}[dataIndex].kode_daerah;
+		    	
+		    	if(provinsi!=''){
+		    		
+
+		    		if(!pro.includes(provinsi)){
+		    			validate_pro=0;
+		    		}
+		    	}
+
+		    	if(exist_sipd!=''){
+		    		if(exist_sipd==0){
+		    			if(data{{$mix}}[dataIndex].status_data_sipd!=0){
+		    				validate_exist_sipd=0;
+			    		}
+		    		}else{
+		    			if(data{{$mix}}[dataIndex].status_data_sipd==0){
+		    				validate_exist_sipd=0;
+			    		}
+		    		}
+
+		    	}
+
+		    	if(exist_supd!=''){
+		    		if(data{{$mix}}[dataIndex].exist_data!=exist_supd){
+		    			validate_exist_supd=0;
+		    		}
+		    	}
+
+		    	if(status_sipd!=''){
+		    		if(data{{$mix}}[dataIndex].status_data_sipd!=status_sipd){
+		    			validate_status_sipd=0;
+		    		}
+		    	}
+
 
 
 		    	for(var i in data{{$mix}}[dataIndex].urusan){
@@ -267,7 +351,7 @@
 		    	}
 
 		
-		    	if((validate && validate_out)&&(validate_taged && validate_out_tagged ) ){
+		    	if(((validate && validate_out)&&(validate_taged && validate_out_tagged ))&&(( validate_exist_sipd && validate_status_sipd)&&(validate_exist_supd && validate_pro) ) ){
 		    		return true;
 		    	}else{
 		    		return false;

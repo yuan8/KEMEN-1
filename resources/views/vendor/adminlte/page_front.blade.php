@@ -14,6 +14,11 @@
 ][config('ltefron.layout')] : '') . (config('ltefron.collapse_sidebar') ? ' sidebar-collapse ' : ''))
 
 @section('body')
+    <style type="text/css">
+        .skin-yellow .main-header .navbar .nav>li>a,.text-dark{
+            color:#222!important;
+        }
+    </style>
     <div class="wrapper">
 
         <!-- Main Header -->
@@ -22,7 +27,7 @@
             <nav class="navbar navbar-static-top">
                 <div class="container">
                     <div class="navbar-header">
-                        <a href="{{ url(config('ltefron.dashboard_url', 'home')) }}" class="navbar-brand">
+                        <a href="{{ url(config('ltefron.dashboard_url', 'home')) }}" class="navbar-brand text-dark">
                             {!! config('ltefron.logo', '<b>Admin</b>LTE') !!}
                         </a>
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
@@ -32,7 +37,7 @@
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-nav text-dark">
                             @include('adminlte::partials.nav')
                         </ul>
                     </div>
