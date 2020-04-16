@@ -707,7 +707,19 @@ public function per_kota($id){
                     }
                 }
             }
+            $count_tag=0;
+            foreach ($cor['urusan'] as $key => $du) {
+                if($du['tertaging_supd']){
+                    $count_tag+=1;
+                };
+            }
+
+            if($count_tag==count(explode(',',env('HANDLE_URUSAN')))){
+                $cor['lengkap']=1;
+            }
+
             $data_return[$d->kode_daerah]=$cor;
+        
         }
 
         $data_return=array_values($data_return);
