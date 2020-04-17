@@ -27,7 +27,7 @@
 				</form>
 			</div>
 			<div class="box box-primary">
-				<div class="box-body">
+				<div class="box-body table-responsive">
 					<table class="table table-bordered">
 						<thead>
 							<tr>
@@ -54,15 +54,17 @@
 							?>
 							@foreach($data as $d)
 								@if($idb!=$d->id_urusan)
-								<tr class="bg  bg-primary cls" data-show="true" trgr=".u{{$d->id_urusan}}" onclick="collapsing(this)">
+								<tr class="bg  bg-primary cls linke-link" data-show="true" trgr=".u{{$d->id_urusan}}" onclick="collapsing(this)">
 									<td colspan="7" class="cur">{{$d->nama_urusan}}</td>
 								</tr>
 
 								<?php  $idb=$d->id_urusan;?>
+								<?php  $idsb=null?>
+
 								@endif
 
 								@if($idsb!=$d->id_sub_urusan)
-								<tr class="bg bg-success cls u{{$idb}}" data-show="true" trgr=".su{{$d->id_sub_urusan}}" onclick="collapsing(this)">
+								<tr class="bg bg-success linke-link cls u{{$idb}}" data-show="true" trgr=".su{{$d->id_sub_urusan}}" onclick="collapsing(this)">
 									<td></td>
 									<td colspan="6" class="cur">{{$d->nama_sub_urusan}}</td>
 								</tr>
@@ -123,6 +125,11 @@
 @stop
 
 @section('js')
+<style type="text/css">
+.linke-link:hover {
+	 cursor:pointer;
+}
+</style>
 <script type="text/javascript">
 	$('.use-select-2').select2();
 	
@@ -130,7 +137,7 @@
 
 		if($(dom).attr('data-show')=='true'){
 			var idd=$(dom).attr('trgr');
-			$(idd).css('visibility','hidden');
+			$(idd).css('visibility','collapse');
 			$(dom).find('td.cur').append('<span class="caret"></span>');
 
 			$(dom).attr('data-show','false');
