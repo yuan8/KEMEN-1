@@ -93,6 +93,8 @@ class ProgramKegiatan extends Controller
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
         $data_return['series'][2]['data'][]=(float)$d->jumlah_anggaran;
+        $data_return['series'][2]['visible']=false;
+
         $data_return['data'][]=$d;
 
         }
@@ -160,6 +162,8 @@ class ProgramKegiatan extends Controller
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
         $data_return['series'][2]['data'][]=(float)$d->jumlah_anggaran;
+        $data_return['series'][2]['visible']=false;
+
         $data_return['data'][]=$d;
 
 
@@ -222,6 +226,8 @@ public function per_program($id){
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         // $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
         $data_return['series'][1]['data'][]=(float)$d->jumlah_anggaran;
+        $data_return['series'][1]['visible']=false;
+
         $data_return['data'][]=$d;
 
         }
@@ -296,6 +302,8 @@ public function per_provinsi(){
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
         $data_return['series'][2]['data'][]=(float)$d->jumlah_anggaran;
+        $data_return['series'][2]['visible']=false;
+
         $data_return['data'][]=$d;
 
         }
@@ -366,6 +374,8 @@ public function per_kota($id){
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
         $data_return['series'][2]['data'][]=(float)$d->jumlah_anggaran;
+        $data_return['series'][2]['visible']=false;
+
         $data_return['data'][]=$d;
 
         }
@@ -509,6 +519,8 @@ public function per_kota($id){
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
         $data_return['series'][2]['data'][]=(float)$d->jumlah_anggaran;
+        $data_return['series'][2]['visible']=false;
+
         $data_return['data'][]=$d;
 
         }
@@ -577,6 +589,7 @@ public function per_kota($id){
         $data_return['category'][]=$d->nama;
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
+        $data_return['series'][2]['visible']=false;
         $data_return['series'][2]['data'][]=(float)$d->jumlah_anggaran;
         $data_return['data'][]=$d;
 
@@ -639,6 +652,8 @@ public function per_kota($id){
         $data_return['series'][0]['data'][]=(int)$d->jumlah_kegiatan;
         // $data_return['series'][1]['data'][]=(int)$d->jumlah_program;
         $data_return['series'][1]['data'][]=(float)$d->jumlah_anggaran;
+        $data_return['series'][1]['visible']=false;
+
         $data_return['data'][]=$d;
         }
 
