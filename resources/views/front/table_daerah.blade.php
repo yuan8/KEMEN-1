@@ -54,24 +54,24 @@
 							?>
 							@foreach($data as $d)
 								@if($idb!=$d->id_urusan)
-								<tr class="bg  bg-primary">
-									<td colspan="7">{{$d->nama_urusan}}</td>
+								<tr class="bg  bg-primary cls" data-show="true" trgr=".u{{$d->id_urusan}}" onclick="collapsing(this)">
+									<td colspan="7" class="cur">{{$d->nama_urusan}}</td>
 								</tr>
 
 								<?php  $idb=$d->id_urusan;?>
 								@endif
 
 								@if($idsb!=$d->id_sub_urusan)
-								<tr class="bg bg-success">
+								<tr class="bg bg-success cls u{{$idb}}" data-show="true" trgr=".su{{$d->id_sub_urusan}}" onclick="collapsing(this)">
 									<td></td>
-									<td colspan="6">{{$d->nama_sub_urusan}}</td>
+									<td colspan="6" class="cur">{{$d->nama_sub_urusan}}</td>
 								</tr>
 
 								<?php  $idsb=$d->id_sub_urusan;?>
 								@endif
 
 								@if($idp!=$d->id_program)
-								<tr class="bg bg-warning">
+								<tr class="bg bg-warning cls u{{$idb}} su{{$idsb}}">
 									<td colspan="2"></td>
 									<td colspan="5">{{$d->nama_program}}</td>
 								</tr>
@@ -80,7 +80,7 @@
 								@endif
 
 								@if($idinp!=$d->id_ind_p)
-								<tr>
+								<tr class="cls u{{$idb}} su{{$idsb}}">
 									<td colspan="5"></td>
 									<td><b>(IP)</b> {{$d->nama_ind_p}}</td>
 									<td>{{$d->target_ind_p}} {{$d->satuan_ind_p}}</td>
@@ -90,7 +90,7 @@
 								@endif
 
 								@if($idk!=$d->id_kegiatan)
-								<tr>
+								<tr class="cls u{{$idb}} su{{$idsb}}">
 									<td colspan="3"></td>
 									<td>{{$d->nama_kegiatan}}</td>
 									<td>{{$d->anggaran}}</td>
@@ -101,7 +101,7 @@
 
 
 								@if(($idink!=$d->id_ind_k)&&($d->id_ind_k!=null))
-								<tr>
+								<tr class="cls u{{$idb}} su{{$idsb}}">
 									<td colspan="5"></td>
 									<td><b>(IK)</b> {{$d->nama_ind_k}}</td>
 									<td>{{$d->target_ind_k}} {{$d->satuan_ind_k}}</td>
@@ -126,6 +126,25 @@
 <script type="text/javascript">
 	$('.use-select-2').select2();
 	
+	function collapsing(dom){
+
+		if($(dom).attr('data-show')=='true'){
+			var idd=$(dom).attr('trgr');
+			$(idd).css('visibility','hidden');
+			$(dom).find('td.cur').append('<span class="caret"></span>');
+
+			$(dom).attr('data-show','false');
+
+		}else{
+			var idd=$(dom).attr('trgr');
+			$(idd).css('visibility','visible');
+			$(dom).find('td span.caret').remove();
+			$(idd+' td span.caret').remove();
+
+			$(dom).attr('data-show','true');
+		}
+
+	}
 </script>
 
 @stop

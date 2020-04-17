@@ -80,7 +80,7 @@ class ProgramKegiatan extends Controller
                                     'data'=>[]
                                     ],
                 2=>[
-                                    'name'=>'anggaran',
+                                    'name'=>'Anggaran',
                                     'data'=>[]
                                     ],
 
@@ -149,7 +149,7 @@ class ProgramKegiatan extends Controller
                                     'data'=>[]
                                     ],
                 2=>[
-                                    'name'=>'anggaran',
+                                    'name'=>'Anggaran',
                                     'data'=>[]
                                     ],
 
@@ -213,7 +213,7 @@ public function per_program($id){
                                     'data'=>[],
                     ],
                 1=>[
-                                    'name'=>'anggaran',
+                                    'name'=>'Anggaran',
                                     'data'=>[]
                     ],
 
@@ -288,7 +288,7 @@ public function per_provinsi(){
                                     'data'=>[]
                                     ],
                 2=>[
-                                    'name'=>'anggaran',
+                                    'name'=>'Anggaran',
                                     'data'=>[]
                                     ],
 
@@ -358,7 +358,7 @@ public function per_kota($id){
                                     'data'=>[]
                                     ],
                 2=>[
-                                    'name'=>'anggaran',
+                                    'name'=>'Anggaran',
                                     'data'=>[]
                                     ],
 
@@ -506,7 +506,7 @@ public function per_kota($id){
                                     'data'=>[]
                                     ],
                 2=>[
-                                    'name'=>'anggaran',
+                                    'name'=>'Anggaran',
                                     'data'=>[]
                                     ],
 
@@ -577,7 +577,7 @@ public function per_kota($id){
                                     'data'=>[]
                                     ],
                 2=>[
-                                    'name'=>'anggaran',
+                                    'name'=>'Anggaran',
                                     'data'=>[]
                                     ],
 
@@ -639,7 +639,7 @@ public function per_kota($id){
                                     'data'=>[],
                     ],
                 1=>[
-                                    'name'=>'anggaran',
+                                    'name'=>'Anggaran',
                                     'data'=>[]
                     ],
 
