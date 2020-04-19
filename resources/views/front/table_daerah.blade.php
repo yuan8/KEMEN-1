@@ -27,8 +27,8 @@
 				</form>
 			</div>
 			<div class="box box-primary">
-				<div class="box-body table-responsive">
-					<table class="table table-bordered">
+				<div class="box-body table-responsive ">
+					<table class="table table-bordered table-fixed">
 						<thead>
 							<tr>
 								<th>URUSAN</th>

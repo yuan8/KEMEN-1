@@ -112,7 +112,7 @@ Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 		});
 
 		Route::prefix('program-kegiatan')->group(function(){
-			Route::get('get-daerah','FORM\ProgramKegiatanCTRL@api_get_daerah')->name('api.pk.daerah');
+			Route::get('get-daerah','FORM\ProgramKegiatanCtrl@api_get_daerah')->name('api.pk.daerah');
 
 		});
 

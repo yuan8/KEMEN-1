@@ -10,6 +10,7 @@
  * Core: General Layout Style
  * -------------------------
  */
+
 html,
 body {
   height: 100%;
@@ -5555,4 +5556,7 @@ hr {
   .table-responsive > .table tr td {
     white-space: normal !important;
   }
+}
+.text-dark{
+  color:#222!important;
 }
