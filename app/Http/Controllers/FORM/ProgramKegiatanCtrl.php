@@ -160,26 +160,26 @@ class ProgramKegiatanCtrl extends Controller
 						['k.id_urusan','=',$id_urusan],
 						['k.uraian','ilike',('%'.$request->q.'%')]
 						
-					])
-				
-					->orWhere([
-						['k.kode_daerah','=',$id],
-						['k.id_urusan','=',null],
-						['k.uraian','ilike',('%'.$request->q.'%')]
-
 					]);
+				
+					// ->orWhere([
+					// 	['k.kode_daerah','=',$id],
+					// 	['k.id_urusan','=',null],
+					// 	['k.uraian','ilike',('%'.$request->q.'%')]
+
+					// ]);
 
 				}else{
 
 					$data=$data->where([
 						['k.kode_daerah','=',$id],
 						['k.id_urusan','=',$id_urusan]
-					])
-				
-					->orWhere([
-						['k.kode_daerah','=',$id],
-						['k.id_urusan','=',null],
 					]);
+				
+					// ->orWhere([
+					// 	['k.kode_daerah','=',$id],
+					// 	['k.id_urusan','=',null],
+					// ]);
 				}
 				
 				

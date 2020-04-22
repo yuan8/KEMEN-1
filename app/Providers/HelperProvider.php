@@ -190,6 +190,31 @@ class HelperProvider extends ServiceProvider
         $db_main='public';
         $schema='prokeg';
 
+        $mastter_ind= DB::connection('sink_prokeg')->select("select exists (select * FROM information_schema.tables where table_schema='".$schema."' and table_name = '"."tb_".$tahun."_master_indikator') as exist")[0];
+       if(!$mastter_ind->exist){
+          DB::connection('sink_prokeg')->statement("
+            CREATE TABLE ".$schema."."."tb_".$tahun."_master_indikator (
+                kode varchar(225) NOT NULL,
+                uraian text NOT NULL,
+                id_urusan int8 NULL,
+                id_sub_urusan int8 NULL,
+                pelaksana text NULL,
+                target text NULL,
+                target_max text NULL,
+                satuan varchar(200) NULL,
+                jenis varchar(100) NULL,
+                data_type varchar(20) NULL,
+                cal_type varchar(20) NULL,
+                created_at timestamp NULL,
+                updated_at timestamp NULL,
+                CONSTRAINT "."tb_".$tahun."_master_indikator_pkey PRIMARY KEY (kode),
+                CONSTRAINT "."tb_".$tahun."_mastre_indkator_id_urusan_foreign FOREIGN KEY (id_urusan) REFERENCES ".$db_main.".master_urusan(id) ON UPDATE CASCADE ON DELETE CASCADE,
+                 CONSTRAINT "."tb_".$tahun."_mastre_indkator_id_sub_urusan_foreign FOREIGN KEY (id_sub_urusan) REFERENCES ".$db_main.".master_sub_urusan(id) ON UPDATE CASCADE ON DELETE CASCADE
+            )
+        ");
+
+       }
+
 
        $pro= DB::connection('sink_prokeg')->select("select exists (select * FROM information_schema.tables where table_schema='".$schema."' and table_name = '"."tb_".$tahun."_program') as exist")[0];
 
@@ -360,10 +385,51 @@ class HelperProvider extends ServiceProvider
                     last_date varchar(255) NULL ,
                     created_at timestamp NULL,
                     updated_at timestamp NULL,
+                    CONSTRAINT "."tb_".$tahun."_map_urusan_pkey PRIMARY KEY (id),
                     CONSTRAINT "."tb_".$tahun."_status_file_daerah_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES ".$db_main.".master_daerah(id) ON UPDATE CASCADE ON DELETE CASCADE,
                     CONSTRAINT "."tb_".$tahun."_status_file_daerah_kode_daerah_unique UNIQUE (kode_daerah)
                 );
             ");
+
+         }
+
+          $map_ind= DB::connection('sink_prokeg')->select("select exists (select * FROM information_schema.tables where table_schema='".$schema."' and table_name = '"."tb_".$tahun."_map_kegiatan_indikator_pusat') as exist")[0];
+
+           if(!$map_ind->exist){
+            DB::connection('sink_prokeg')->statement("
+                CREATE TABLE ".$schema."."."tb_".$tahun."_map_kegiatan_indikator_pusat (
+                    kode_kegiatan varchar(100) NOT NULL,
+                    kode_indikator varchar(100) NOT NULL,
+                    kode_daerah varchar(4) NOT NULL,
+                    created_at timestamp NULL,
+                    updated_at timestamp NULL,
+                    CONSTRAINT "."tb_".$tahun."_map_kegiatan_indikator_pusat_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES ".$db_main.".master_daerah(id) ON UPDATE CASCADE ON DELETE CASCADE,
+                    CONSTRAINT "."tb_".$tahun."_map_kegiatan_indikator_pusat_kode_ind_kode_kode_kegiatan_kode_daerah_unique UNIQUE (kode_daerah,kode_kegiatan,kode_indikator)
+                );
+            ");
+
+            }
+
+
+            $map_ind= DB::connection('sink_prokeg')->select("select exists (select * FROM information_schema.tables where table_schema='".$schema."' and table_name = '"."tb_".$tahun."_map_integarsi') as exist")[0];
+
+           if(!$map_ind->exist){
+            DB::connection('sink_prokeg')->statement("
+                CREATE TABLE ".$schema."."."tb_".$tahun."_map_integarsi (
+                    kode_indikator varchar(100) NOT NULL,
+                    target_daerah text NULL,
+                    kode_daerah varchar(4) NOT NULL,
+                    catatan text NULL,
+                    persetujuan timestamp NULL,
+                    pembuat varchar(255) NULL,
+                    desk varchar(100) NULL,
+                    created_at timestamp NULL,
+                    updated_at timestamp NULL,
+                    CONSTRAINT "."tb_".$tahun."_map_integarsi_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES ".$db_main.".master_daerah(id) ON UPDATE CASCADE ON DELETE CASCADE,
+                    CONSTRAINT "."tb_".$tahun."_map_integarsi_kode_ind_kode_kode_kegiatan_kode_daerah_unique UNIQUE (kode_daerah,kode_indikator)
+                );
+            ");
+
 
          }
 

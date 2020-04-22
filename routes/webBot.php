@@ -15,6 +15,11 @@ Route::prefix('bot/simspam')->group(function(){
 Route::prefix('bot/sipd')->group(function(){
 	Route::get('get-data/{tahun}','BOT\SIPDStatusRkpd@getData');
 	Route::get('rakortek-only-data/{tahun}/{kodepemda}','BOT\SIPDStatusRkpd@getRakorteX');
+	Route::get('get-rakortek/{tahun}/{kodepemda}','CROW\RAKORTEK@getdata')->name('bot.rakortek');
+});
 
-
+Route::prefix('bot')->group(function(){;
+	Route::get('simspam-perpipaan','CROW\SIMSPAMCTRL@storeKodeDaerah');
+	Route::get('simspam-login','CROW\SIMSPAMCTRL@login_form');
+	Route::get('data-rpjmd/{tahun}/{kodepemda}','CROW\SIPDCTRL@getData')->name('get_sipd');
 });

@@ -13,12 +13,16 @@ class SIPDCTRL extends Controller
     //
 
 	static function  host(){
-			if( strpos($_SERVER['HTTP_HOST'], '192.168.123.190') !== false) {
-				return 'http://192.168.123.195/';
-			}else{
-				return 'https://sipd.go.id/';
-			}
+		if( strpos($_SERVER['HTTP_HOST'], '192.168.123.190') !== false) {
+
+			return 'http://192.168.123.195/';
+
+		}else{
+
+			return 'https://sipd.go.id/';
 		}
+
+	}
 
 	static $token='d1d1ab9140c249e34ce356c91e9166a6';
 
@@ -43,7 +47,7 @@ class SIPDCTRL extends Controller
 		// dd($path);
 		$path=urldecode($path);
 		$data=file_get_contents($path,false, $context);
-		dd($data);
+		// dd($data);
 
 	}
 
@@ -75,10 +79,26 @@ class SIPDCTRL extends Controller
 		$file=null;
 		try {
 
-			if(file_exists(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$kodepemda.'.json'))){
-				$file=file_get_contents(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$kodepemda.'.json'));
+			$status=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_status_file_daerah')
+			->where('kode_daerah',$kode_daerah)->pluck('status')->first();
+
+			if($status==null){
+				$status=0;
+			}
+
+
+			if(($status==null)OR($status<=2)){
+				$path=static::host().'run/serv/ranwal.php?tahun='.($tahun).'&kodepemda='.$kode_daerah;
 			}else{
 				$path=static::host().'run/serv/get.php?tahun='.($tahun).'&kodepemda='.$kode_daerah;
+
+			}
+
+			if(file_exists(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'))){
+				
+				$file=file_get_contents(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'));
+			}else{
+
 				$path=urldecode($path);
 				$file=file_get_contents($path,false, $context);
 				if(!(strpos($file, '[')!==false)){
@@ -95,12 +115,10 @@ class SIPDCTRL extends Controller
 		    //optional code that always runs
 			if($file){
 				$data_recorded=[];
-		   		$file=json_decode($file,true);
-		   		// dd($file);
+				Storage::put(('bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'),$file);
 
-		   		// if($file!=[]){
-		   		// 	Storage::put('bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$kodepemda.'.json',json_encode($file,JSON_PRETTY_PRINT));
-		   		// }
+		   		$file=json_decode($file,true);
+
 
 		   		foreach ($file as $key => $value) {
 		   			$data=[];
@@ -115,7 +133,7 @@ class SIPDCTRL extends Controller
 		   				$id_bidang_daerah=isset($value2['kodebidang'])?$value2['kodebidang']:null;
 		   				$data=array(
 		   					'kode_pro'=>$tahun.'d'.$kodepemda.'@'.$kodeprogram,
-		   					'kodeskpd'=>$kode_skpd,
+		   					'kode_skpd'=>$kode_skpd,
 		   					'id_bidang_daerah'=>$id_bidang_daerah,
 		   					'kode'=>$kodeprogram,
 		   					'uraian_bidang_daerah'=>isset($value2['uraibidang'])?$value2['uraibidang']:null,
@@ -144,7 +162,7 @@ class SIPDCTRL extends Controller
 		   					foreach ($value2['capaian'] as $key3 => $value3) {
 		   						$indikator=array(
 		   							'kode_ind'=>$tahun.'d'.$kodepemda.'@'.$kodeprogram.'.ind.'.$value3['kodeindikator'],
-		   							'kodeskpd'=>$kode_skpd,
+		   							'kode_skpd'=>$kode_skpd,
 		   							'id_bidang_daerah'=>$id_bidang_daerah,
 		   							'kode'=>isset($value3['kodeindikator'])?$value3['kodeindikator']:NULL,
 		   							'kode_program'=>$kodeprogram,
@@ -174,12 +192,13 @@ class SIPDCTRL extends Controller
 			   						'kode_keg'=>$tahun.'d'.$kodepemda.'@'.$kodeprogram.'.k.'.$value3['kodekegiatan'],
 		   							'kode'=>isset($value3['kodekegiatan'])?$value3['kodekegiatan']:null,
 		   							'uraian'=>static::lower(isset($value3['uraikegiatan'])?$value3['uraikegiatan']:null),
-		   							'kodeskpd'=>$kode_skpd,
+		   							'kode_skpd'=>$kode_skpd,
 		   							'id_bidang_daerah'=>$id_bidang_daerah,
 
 		   							'anggaran'=>isset($value3['pagu'])?(float)$value3['pagu']:null,
 		   							'tahun'=>$tahun,
 		   							'kode_daerah'=>$kodepemda,
+		   							'status'=>$status,
 		   							'indikator'=>[],
 		   							'sub_kegiatan'=>[],
 			   					);
@@ -192,7 +211,7 @@ class SIPDCTRL extends Controller
 		   									'kode'=>isset($value4['kodeindikator'])?$value4['kodeindikator']:null,
 					   						'kode_kegiatan'=>$value3['kodekegiatan'],
 				   							'uraian'=>static::lower(isset($value4['tolokukur'])?$value4['tolokukur']:null),
-		   									'kodeskpd'=>$kode_skpd,
+		   									'kode_skpd'=>$kode_skpd,
 		   									'id_bidang_daerah'=>$id_bidang_daerah,
 				   							'kode_daerah'=>$kodepemda,
 				   							'anggaran'=>isset($value4['pagu'])?(float)$value4['pagu']:null,
@@ -300,11 +319,7 @@ class SIPDCTRL extends Controller
 		   			Storage::put('bot-sipd/integrasi-sipd/'.$tahun.'/'.$kodepemda.'.json',json_encode($data_recorded,JSON_PRETTY_PRINT));
 		   			$data_dat_recorded=[$kodepemda];
 
-				   	// 		if(file_exists(storage_path('app/bot-sipd/daerah-recorded/'.Carbon::now()->format('Y').'/data.json'))){
-				   	// 			$data_dat_recorded=json_decode(file_get_contents(storage_path('app/bot-sipd/daerah-recorded/'.Carbon::now()->format('Y').'/data.json')));
-								// array_push($data_dat_recorded,$kodepemda);
-								// array_unique($data_dat_recorded);
-				   	// 		}
+				 
 
 		   			$json_2=[];
 			    	foreach ($kode_bidang as  $k) {
@@ -322,6 +337,7 @@ class SIPDCTRL extends Controller
 
 
 		   		}
+
 
 
 
@@ -370,16 +386,15 @@ class SIPDCTRL extends Controller
             		['kode_daerah','=',$d['kode_daerah']],
             		['kode_program','=',$d['kode']],
             		['tahun','=',$d['tahun']],
-            		['kodeskpd','=',$d['kodeskpd']],
-            		['id_bidang_daerah','=',$d['id_bidang_daerah']]
+            		['kode_skpd','=',$d['kode_skpd']],
+            		['kode_bidang','=',$d['id_bidang_daerah']]
             	])
             ->orWhere([
             		['kode_daerah','=',$d['kode_daerah']],
             		['uraian','ilike',$d['uraian']],
             		['tahun','=',$d['tahun']],
-            		['kodeskpd','=',$d['kodeskpd']],
-            		['id_bidang_daerah','=',$d['id_bidang_daerah']]
-
+            		['kode_skpd','=',$d['kode_skpd']],
+            		['kode_bidang','=',$d['id_bidang_daerah']]
 
             ])->pluck('id')->first();
 
@@ -392,9 +407,8 @@ class SIPDCTRL extends Controller
                     'kode_program'=>$d['kode'],
                     'uraian'=>$d['uraian'],
                     'tahun'=>$d['tahun'],
-            		'kodeskpd'=>$d['kodeskpd'],
-            		'id_bidang_daerah'=>$d['id_bidang_daerah'],
-
+            		'kode_skpd'=>$d['kode_skpd'],
+            		'kode_bidang'=>$d['id_bidang_daerah'],
                     'created_at'=>Carbon::now(),
                     'updated_at'=>Carbon::now(),
                 ]);
@@ -407,8 +421,8 @@ class SIPDCTRL extends Controller
                     'kode_daerah'=>$d2['kode_daerah'],
                     'kode_kegiatan'=>$d2['kode'],
                     'tahun'=>$d2['tahun'],
-                    'kodeskpd'=>$d2['kodeskpd'],
-            		'id_bidang_daerah'=>$d2['id_bidang_daerah']
+                    'kode_skpd'=>$d2['kode_skpd'],
+            		'kode_bidang'=>$d2['id_bidang_daerah']
 
                 ])->pluck('id')->first();
                 if(!$idk){
@@ -423,8 +437,8 @@ class SIPDCTRL extends Controller
                         'anggaran'=>$d2['anggaran'],
                         'created_at'=>Carbon::now(),
                         'updated_at'=>Carbon::now(),
-                        'kodeskpd'=>$d2['kodeskpd'],
-            			'id_bidang_daerah'=>$d2['id_bidang_daerah']
+                        'kode_skpd'=>$d2['kode_skpd'],
+            			'kode_bidang'=>$d2['id_bidang_daerah']
                     ]);
 
                 }
@@ -437,8 +451,8 @@ class SIPDCTRL extends Controller
                         'kode_ind'=>$i['kode'],
                         'kode_daerah'=>$i['kode_daerah'],
                         'tahun'=>$i['tahun'],
-                        'kodeskpd'=>$i['kodeskpd'],
-            			'id_bidang_daerah'=>$i['id_bidang_daerah']
+                        'kode_skpd'=>$i['kode_skpd'],
+            			'kode_bidang'=>$i['id_bidang_daerah']
 
                     ])->pluck('id')->first();
                     if(!$idik){
@@ -453,8 +467,8 @@ class SIPDCTRL extends Controller
                         'kode_daerah'=>$i['kode_daerah'],
                         'created_at'=>Carbon::now(),
                         'updated_at'=>Carbon::now(),
-                        'kodeskpd'=>$i['kodeskpd'],
-            			'id_bidang_daerah'=>$i['id_bidang_daerah']
+                        'kode_skpd'=>$i['kode_skpd'],
+            			'kode_bidang'=>$i['id_bidang_daerah']
 
 
                         ]);
@@ -474,8 +488,8 @@ class SIPDCTRL extends Controller
                     'kode_ind'=>$ip['kode'],
                     'tahun'=>$ip['tahun'],
                     'kode_daerah'=>$ip['kode_daerah'],
-                    'kodeskpd'=>$ip['kodeskpd'],
-            		'id_bidang_daerah'=>$ip['id_bidang_daerah']
+                    'kode_skpd'=>$ip['kode_skpd'],
+            		'kode_bidang'=>$ip['id_bidang_daerah']
 
                 ])->pluck('id')->first();
 
@@ -492,8 +506,8 @@ class SIPDCTRL extends Controller
                     'created_at'=>Carbon::now(),
                     'updated_at'=>Carbon::now(),
                      'tahun'=>$ip['tahun'],
-                     'kodeskpd'=>$ip['kodeskpd'],
-            		'id_bidang_daerah'=>$ip['id_bidang_daerah']
+                     'kode_skpd'=>$ip['kode_skpd'],
+            		'kode_bidang'=>$ip['id_bidang_daerah']
 
 
                     ]);

@@ -13,7 +13,7 @@
 
 Route::get('/', 'LoginBarcodeCtrl@landing');
 
-Route::get('/aaa','FORM\IntegrasiCtrl@testing');
+// Route::get('/aaa','FORM\IntegrasiCtrl@testing');
 Route::get('/bot-sipd/{tahun}','BOT\MapProgramKegiatanCTRL@UpdateMap');
 
 
@@ -63,11 +63,7 @@ Route::get('program-kegiatan-per-program/{id}','FRONT\ProgramKegiatan@per_progra
 
 Route::get('/psn','Builder@psn');
 
-Route::prefix('bot')->group(function(){;
-	Route::get('simspam-perpipaan','CROW\SIMSPAMCTRL@storeKodeDaerah');
-	Route::get('simspam-login','CROW\SIMSPAMCTRL@login_form');
-	Route::get('data-rpjmd/{tahun}/{kodepemda}','CROW\SIPDCTRL@getData')->name('get_sipd');
-});
+
 
 Auth::routes();
 
