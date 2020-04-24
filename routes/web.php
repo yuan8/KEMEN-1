@@ -31,33 +31,26 @@ Route::get('/get-sipd/',function(){
 })->name('sipdd');
 
 
-Route::get('program-kegiatan-urusan','FRONT\ProgramKegiatan@index');
-Route::get('program-kegiatan-daerah','FRONT\ProgramKegiatan@daerah');
-Route::get('program-kegiatan/daerah','FRONT\ProgramKegiatan@per_provinsi');
-Route::get('program-kegiatan-per-kota/{id}','FRONT\ProgramKegiatan@per_kota');
-Route::get('program-kegiatan-per-daerah-urusan/{id}','FRONT\ProgramKegiatan@dearah_per_urusan');
-Route::get('program-kegiatan-rkpd','FRONT\ProgramKegiatan@dash_daerah')->name('pp.index');
-Route::get('program-kegiatan-rkpd/urusan','FRONT\ProgramKegiatan@dash_urusan')->name('pp.urusan');
+Route::middleware('auth:web')->group(function(){
+	Route::get('program-kegiatan-urusan','FRONT\ProgramKegiatan@index');
+	Route::get('program-kegiatan-daerah','FRONT\ProgramKegiatan@daerah');
+	Route::get('program-kegiatan/daerah','FRONT\ProgramKegiatan@per_provinsi');
+	Route::get('program-kegiatan-per-kota/{id}','FRONT\ProgramKegiatan@per_kota');
+	Route::get('program-kegiatan-per-daerah-urusan/{id}','FRONT\ProgramKegiatan@dearah_per_urusan');
+	Route::get('program-kegiatan-rkpd','FRONT\ProgramKegiatan@dash_daerah')->name('pp.index');
+	Route::get('program-kegiatan-rkpd/urusan','FRONT\ProgramKegiatan@dash_urusan')->name('pp.urusan');
 
 
+	Route::get('program-kegiatan-per-daerah-sub-urusan/{id}/{id_urusan}','FRONT\ProgramKegiatan@dearah_per_sub_urusan');
+	Route::get('program-kegiatan-per-daerah-sub-urusan-per-program/{id}/{id_sub_urusan}','FRONT\ProgramKegiatan@dearah_per_program');
+	Route::get('program-kegiatan-detail-program/{id}','FRONT\ProgramKegiatan@detail_program')->name('pr.program.det');
+	Route::get('program-kegiatan-data/{id}','FRONT\ProgramKegiatan@data')->name('pr.data');
 
-Route::get('program-kegiatan-per-daerah-sub-urusan/{id}/{id_urusan}','FRONT\ProgramKegiatan@dearah_per_sub_urusan');
-Route::get('program-kegiatan-per-daerah-sub-urusan-per-program/{id}/{id_sub_urusan}','FRONT\ProgramKegiatan@dearah_per_program');
+	Route::get('program-kegiatan/urusan','FRONT\ProgramKegiatan@per_urusan');
+	Route::get('program-kegiatan-per-sub-urusan/{id}','FRONT\ProgramKegiatan@per_sub_urusan');
+	Route::get('program-kegiatan-per-program/{id}','FRONT\ProgramKegiatan@per_program');
 
-
-
-Route::get('program-kegiatan-detail-program/{id}','FRONT\ProgramKegiatan@detail_program')->name('pr.program.det');
-
-
-Route::get('program-kegiatan-data/{id}','FRONT\ProgramKegiatan@data')->name('pr.data');
-
-
-
-Route::get('program-kegiatan/urusan','FRONT\ProgramKegiatan@per_urusan');
-Route::get('program-kegiatan-per-sub-urusan/{id}','FRONT\ProgramKegiatan@per_sub_urusan');
-Route::get('program-kegiatan-per-program/{id}','FRONT\ProgramKegiatan@per_program');
-
-
+});
 
 
 
@@ -68,6 +61,8 @@ Route::get('/psn','Builder@psn');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/sinkron-home', 'HomeController@sinkhome')->name('sinkron-home');
+
 
 Route::get('meta-login-user','LoginBarcodeCtrl@update_meta')->middleware(['auth:web']);
 Route::post('meta-login-user','LoginBarcodeCtrl@update_meta_action')->middleware(['auth:web']);
@@ -81,6 +76,7 @@ Route::get('init-refresing/','InitCtrl@refresh')->middleware(['auth:web','can:if
 
 	
 Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
+
 	
 	// -----------------------------------------------------------------------------------
 
@@ -139,20 +135,14 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::post('/sub-urusan/{id}/tambah-indikator', 'FORM\PelaksanaanUrusanCtrl@store_indikator')->name('pelaksanaan.urusan.store.indikator');
 
 			Route::post('/sub-urusan/{id}/indikator/{id_indikator}/tambah-data', 'FORM\PelaksanaanUrusanCtrl@store_data')->name('pelaksanaan.urusan.store.data');
-
-
 			
 		});
 
 		Route::prefix('kebijakan-pusat-5-tahun/')->group(function(){
-		
 			Route::get('/', 'FORM\Kebijakan5Ctrl@index')->name('kebijakan.pusat.5.tahun.index');
-
-			
 		});
 
 		Route::prefix('kebijakan-pusat-tahunan/')->group(function(){
-		
 			Route::get('/', 'FORM\KebijakanTahunanCtrl@index')->name('kebijakan.pusat.tahunan.index');
 			Route::post('/tambah/pn', 'FORM\KebijakanTahunanCtrl@store_pn')->name('kebijakan.pusat.tahunan.store.pn');
 			Route::post('/tambah/pn/{id}/pp', 'FORM\KebijakanTahunanCtrl@store_pp')->name('kebijakan.pusat.tahunan.store.pp');

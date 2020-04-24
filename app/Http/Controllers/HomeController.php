@@ -23,6 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        return view('indexing_first');
+    }
+
+    public function sinkhome(){
         return view('home');
     }
 }
