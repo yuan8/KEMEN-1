@@ -31,7 +31,7 @@ body{
       </a>
     </li>
     <li>
-      <a href="route('pp.index')">
+      <a href="{{route('pp.index')}}">
         <i class="icon-bar-chart">
         </i>
         <div>
