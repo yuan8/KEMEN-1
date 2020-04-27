@@ -102,6 +102,7 @@ class RAKORTEK extends Controller
 
     	if($request->langsung){
     			$daerah=DB::table('master_daerah')->where('id','>',$kode_daerah)
+    			->orderBy('id','ASC')
     			->first();
 
     		return view('bot.rakortek')->with('daerah',$daerah);
