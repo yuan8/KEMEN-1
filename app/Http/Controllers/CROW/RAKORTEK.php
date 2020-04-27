@@ -73,8 +73,8 @@ class RAKORTEK extends Controller
     	$code_list=[];
 
     	$data='[]';
-    	if(file_exists(storage_path('app/BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json'))){
-    		$data=file_get_contents(storage_path('app/BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json'));
+    	if(file_exists(storage_path('app/public/BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json'))){
+    		$data=file_get_contents(storage_path('app/public/BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json'));
 
     	}else{
 		$opts = [
@@ -90,16 +90,18 @@ class RAKORTEK extends Controller
 			$kodepemda=$kodepemda.'00';
 		}
 
-		$path=static::host().'run/serv/get.php?tahun='.($tahun).'&kodepemda='.$kodepemda;
+		$path=static::host().'run/serv/get_rakortek.php?tahun='.($tahun).'&kodepemda='.$kodepemda;
 		$path=urldecode($path);
 		$data=file_get_contents($path,false, $context);
 
     	}
 
     	$data=json_decode($data,true);
+    	Storage::put('public/BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json',json_encode($data,JSON_PRETTY_PRINT));
     	$data_cal=$data;
 
-    	$kode_daerah=str_replace('00', '', $data['kodepemda']);
+
+    	// $kode_daerah=str_replace('00', '', $data['kodepemda']);
 
     	foreach ($data['indikator kinerja urusan'] as $key => $d) {
     		if(!empty($d['nama_indikator'])){
@@ -176,14 +178,38 @@ class RAKORTEK extends Controller
 
 	    	}
     	}
+    	
+
+    	return $data;
+
+    	$daerah=DB::table('master_daerah')->where('id','>',$kode_daerah)
+    	->first();
+
+    	return view('bot.rakortek')->with('daerah',$daerah);
+
+    }
+
+    public function viewRakotek(){
+    	$daerah=DB::table('master_daerah')->orderBy('id','ASC')->get();
+    	$daerah_return=[];
+    	foreach ($daerah as $key => $d) {
+    		
+    		$data=(array)$d;
+    		$data['exist']=false;
+    		$data['file']='';
 
 
+    		if(file_exists(storage_path('app/public/BOT/SIPD/RAKORTEK/2021/'.$d->id.'.json'))){
+    			$data['exist']=true;
+    			$data['file']='storage/BOT/SIPD/RAKORTEK/2021/'.$d->id.'.json';
 
-    
+    		}
+
+    		$daerah_return[]=$data;
+    	}
 
 
-    	dd('done');
-
+    	return view('bot.rakortek_view')->with('data',$daerah_return);
 
     }
 }

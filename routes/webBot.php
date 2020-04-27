@@ -13,6 +13,7 @@ Route::prefix('bot/simspam')->group(function(){
 
 
 Route::prefix('bot/sipd')->group(function(){
+	Route::get('rakortek','CROW\RAKORTEK@viewRakotek');
 	Route::get('get-data/{tahun}','BOT\SIPDStatusRkpd@getData');
 	Route::get('rakortek-only-data/{tahun}/{kodepemda}','BOT\SIPDStatusRkpd@getRakorteX');
 	Route::get('get-rakortek/{tahun}/{kodepemda}','CROW\RAKORTEK@getdata')->name('bot.rakortek');
