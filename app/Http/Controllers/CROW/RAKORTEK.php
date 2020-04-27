@@ -62,7 +62,7 @@ class RAKORTEK extends Controller
 		return $return;
 	}
 
-    public function getData($tahun,$kodepemda){
+    public function getData($tahun,$kodepemda,Request $request){
 
     	$kode_daerah=str_replace('00', '', $kodepemda);
 
@@ -107,7 +107,7 @@ class RAKORTEK extends Controller
     		return view('bot.rakortek')->with('daerah',$daerah);
 
     	}
-    	
+
     	return $data;
 
 
