@@ -99,6 +99,8 @@ class RAKORTEK extends Controller
     	$data=json_decode($data,true);
     	Storage::put('public/BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json',json_encode($data,JSON_PRETTY_PRINT));
     	$data_cal=$data;
+    	return $data;
+    	
 
 
     	// $kode_daerah=str_replace('00', '', $data['kodepemda']);
