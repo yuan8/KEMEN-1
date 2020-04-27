@@ -24,7 +24,7 @@
         <!-- Main Header -->
         <header class="main-header">
             @if(config('ltefron.layout') == 'top-nav')
-            <nav class="navbar navbar-static-top">
+            <nav class="navbar navbar-fixed-top">
                 <div class="container">
                     <div class="navbar-header">
                         <a href="{{ url(config('ltefron.dashboard_url', 'home')) }}" class="navbar-brand text-dark">
@@ -39,6 +39,60 @@
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav text-dark">
                             @include('adminlte::partials.nav')
+                        </ul>
+                       
+                    </div>
+                    <div class="navbar-custom-menu">
+                         <ul class="nav navbar-nav"> 
+                         @if(isset($name_right_side_bar))                      
+                            <li>
+                                <a href="#" data-toggle="control-sidebar">
+                                    <i class="fas fa-check-square"></i>  {{$name_right_side_bar}}
+                                </a>
+                            </li>
+                            @endif
+                            <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                              <img src="{{asset('ava.png')}}" class="user-image" alt="User Image">
+                              <span class="hidden-xs"> {{strtoupper(Auth::User()->name)}} ({{Hp::fokus_tahun()}})</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                              <!-- User image -->
+                              <li class="user-header">
+                                <img src="{{asset('ava.png')}}" class="img-circle" alt="User Image">
+
+                                <p>
+                                  {{strtoupper(Auth::User()->name)}}
+                                  <small>{{Auth::User()->email}} </small>
+                                  <b>{{Hp::fokus_tahun()}}</b>
+                                </p>
+                              </li>
+                              <!-- Menu Body -->
+                              <li class="user-body">
+                              <!--   <div class="row">
+                                  <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                  </div>
+                                  <div class="col-xs-4 text-center">
+                                    <a href="#">Sales</a>
+                                  </div>
+                                  <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                  </div>
+                                </div> -->
+                                <!-- /.row -->
+                              </li>
+                              <!-- Menu Footer-->
+                              <li class="user-footer">
+                                <div class="pull-left">
+                                  <!-- <a href="#" class="btn btn-default btn-flat">Profile</a> -->
+                                </div>
+                                <div class="pull-right">
+                                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                </div>
+                              </li>
+                            </ul>
+                          </li>
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
@@ -131,15 +185,12 @@
         </footer>
         @endif
 
-        @if(config('ltefron.right_sidebar') and (config('ltefron.layout') != 'top-nav'))
-            <aside class="control-sidebar control-sidebar-{{config('ltefron.right_sidebar_theme')}}">
+            <aside class="control-sidebar control-sidebar-{{config('ltefron.right_sidebar_theme')}}" style="position: fixed;">
                 @yield('right-sidebar')
-                @include('partials.right_side_bar')
             </aside>
             <!-- /.control-sidebar -->
             <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
             <div class="control-sidebar-bg"></div>
-        @endif
 
     </div>
     <!-- ./wrapper -->

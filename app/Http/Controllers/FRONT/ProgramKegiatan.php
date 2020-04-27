@@ -5,6 +5,8 @@ namespace App\Http\Controllers\FRONT;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use DB;
+use Auth;
+use Carbon\Carbon;
 class ProgramKegiatan extends Controller
 {
     //
@@ -437,10 +439,21 @@ public function per_kota($id){
             ->orderBy('ik.id','ASC')
             ->get();
 
+            $tahun=2020;
+            $catatan=DB::connection('analis')->table('tb_'.$tahun.'_rkpd_catatan_daerah as d')
+            ->where('kode_daerah',$id)
+            ->select('d.*','u.name')
+            ->leftJoin('public.users as u','u.id','=','d.id_user')
+            ->first();
+
+
+
 
 
             return view('front.table_daerah')
             ->with('urusan',$urusan)
+            ->with('catatan',$catatan)
+            ->with('name_right_side_bar','Buat Catatan')
             ->with('data',$data)->with('daerah',$daerah);
 
         }
@@ -769,6 +782,41 @@ public function per_kota($id){
         $data=$data->groupBy('k.kode_daerah')
         ->get();
         dd($data);
+
+
+
+    }
+
+    public function storeCatatan($id,Request $request){
+
+        $uid=Auth::User()->id;
+        $tahun=2020;
+
+      $catatan=DB::connection('analis')->table('tb_'.$tahun.'_rkpd_catatan_daerah')
+        ->where('kode_daerah',$id)
+        ->first();
+
+        if($catatan){
+            DB::connection('analis')->table('tb_'.$tahun.'_rkpd_catatan_daerah')
+             ->where('kode_daerah',$id)->update([
+            'catatan'=>$request->catatan,
+            'id_user'=>$uid,
+            'updated_at'=>Carbon::now()
+            ]);
+        }else{
+             DB::connection('analis')->table('tb_'.$tahun.'_rkpd_catatan_daerah')
+             ->insert([
+            'catatan'=>$request->catatan,
+            'id_user'=>$uid,
+            'kode_daerah'=>$id,
+            'updated_at'=>Carbon::now(),
+            'created_at'=>Carbon::now()
+
+            ]);
+        }
+
+
+        return back();
 
 
 

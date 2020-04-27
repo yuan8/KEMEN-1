@@ -50,6 +50,9 @@ Route::middleware('auth:web')->group(function(){
 	Route::get('program-kegiatan-per-sub-urusan/{id}','FRONT\ProgramKegiatan@per_sub_urusan');
 	Route::get('program-kegiatan-per-program/{id}','FRONT\ProgramKegiatan@per_program');
 
+	Route::post('catatan/{id}','FRONT\ProgramKegiatan@storeCatatan')->name('front.store.catatan');
+
+
 });
 
 
