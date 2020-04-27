@@ -19,7 +19,7 @@
 		</thead>
 		<tbody>
 			@foreach($data as $d)
-				<tr>
+				<tr class="{{$d['exist']?'':'bg bg-danger'}}">
 					<td>{{$d['id']}}</td>
 
 					<td>{{$d['nama']}}</td>
