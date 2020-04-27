@@ -7,7 +7,7 @@
 		<div class="col-md-12">
 			<div class="box ">
 				<div class="box-body">
-					<table class="table-bordered table">
+					<table class="table-bordered table" id="tbd">
 		<thead>
 			<th>nama daerah</th>
 			<th>DOKUMEN RAKORTEK</th>
@@ -47,5 +47,8 @@
 
 
 @section('js')
+<script type="text/javascript">
 
+	$('#tbd').DataTable();
+</script>
 @stop
