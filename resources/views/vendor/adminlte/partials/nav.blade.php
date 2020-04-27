@@ -11,12 +11,12 @@
             		STATUS DATA RKPD
             </a>
     	</li>
-    	 <li class="">
+    	<!--  <li class="">
         	<a href="{{route('pp.urusan')}}">
             	<i class="far fa-circle "></i>
             		URUSAN DALAM RKPD
             </a>
-    	</li>
+    	</li> -->
     </ul>
 </li>
 <li class="nav-item">
