@@ -10,7 +10,8 @@
 				<div class="box-body">
 					<table class="table-bordered table" id="tbd">
 		<thead>
-			<th>nama daerah</th>
+			<th>KODE</th>
+			<th>NAMA DAERAH</th>
 			<th>DOKUMEN RAKORTEK</th>
 			<th>JSON</th>
 
@@ -19,6 +20,8 @@
 		<tbody>
 			@foreach($data as $d)
 				<tr>
+					<td>{{$d['id']}}</td>
+
 					<td>{{$d['nama']}}</td>
 					<td>{{$d['exist']?'EXIST':''}}</td>
 					<td>
