@@ -204,6 +204,7 @@ class RAKORTEK extends Controller
     public function viewRakotek(){
     	$daerah=DB::table('master_daerah')->orderBy('id','ASC')->get();
     	$daerah_return=[];
+    	$retambil=0;
     	foreach ($daerah as $key => $d) {
     		
     		$data=(array)$d;
@@ -214,6 +215,7 @@ class RAKORTEK extends Controller
     		if(file_exists(storage_path('app/public/BOT/SIPD/RAKORTEK/2021/'.$d->id.'.json'))){
     			$data['exist']=true;
     			$data['file']='storage/BOT/SIPD/RAKORTEK/2021/'.$d->id.'.json';
+    			$retambil+=1;
 
     		}
 
@@ -221,7 +223,7 @@ class RAKORTEK extends Controller
     	}
 
 
-    	return view('bot.rakortek_view')->with('data',$daerah_return);
+    	return view('bot.rakortek_view')->with('data',$daerah_return)->with('terambil',$retambil);
 
     }
 }

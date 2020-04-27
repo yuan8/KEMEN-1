@@ -5,6 +5,7 @@
 @section('content')
 	<div class="row" style="margin-top: 20px;">
 		<div class="col-md-12">
+			<h5><b>{{$terambil }} DAERAH TERAMBIL</b></h5>
 			<div class="box ">
 				<div class="box-body">
 					<table class="table-bordered table" id="tbd">
