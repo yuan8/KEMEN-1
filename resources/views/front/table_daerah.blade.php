@@ -7,7 +7,7 @@
     		<h3 class="text-uppercase text-center">PROGRAM KEGIATAN {{$daerah->nama}}</h3>
     	</div>
     </div>
-   
+
     <?php
 ?>
 @stop
@@ -17,7 +17,7 @@
 		@if($catatan)
 		<div class="col-md-12">
 			<div class="panel">
-				
+
 				<div class="panel-body">
 					<div class="text-center">
 						<b>{{strtoupper($catatan->name)}} - {{\Carbon\Carbon::parse($catatan->updated_at)->format('d F Y')}}</b>
@@ -32,14 +32,14 @@
 
 		@endif
 		<div class="col-md-12">
-			
+
 			<div class="form-group">
 				<label>FILTER URUSAN</label>
 				<form action="{{url()->current()}}" method="get">
 					<select class="form-control use-select-2" name="urusan[]"  onchange="$(this).parent().submit()" multiple="">
 					<option value="">-SEMUA-</option>
 					<?php foreach ($urusan as $key => $u): ?>
-						<option value="{{$u->id}}" {{isset($_GET['urusan'])?in_array($u->id,$_GET['urusan'])?'selected':'':''}}>{{$u->nama}}</option>	
+						<option value="{{$u->id}}" {{isset($_GET['urusan'])?in_array($u->id,$_GET['urusan'])?'selected':'':''}}>{{$u->nama}}</option>
 					<?php endforeach ?>
 				</select>
 				</form>
@@ -71,7 +71,7 @@
 
 							?>
 							@foreach($data as $d)
-								@if($idb!=$d->id_urusan && $d->id_urusan!=null)
+								@if(($idb!=$d->id_urusan) && ($d->id_urusan!=null))
 								<tr class="bg  bg-primary cls linke-link" data-show="true" trgr=".u{{$d->id_urusan}}" onclick="collapsing(this)">
 									<td colspan="7" class="cur">{{$d->nama_urusan}}</td>
 								</tr>
@@ -81,7 +81,7 @@
 
 								@endif
 
-								@if($idsb!=$d->id_sub_urusan && ($d->id_sub_urusan))
+								@if(($idsb!=$d->id_sub_urusan) && ($d->id_sub_urusan))
 								<tr class="bg bg-success linke-link cls u{{$idb}} coll" data-show="true" trgr=".su{{$d->id_sub_urusan}}" onclick="collapsing(this)">
 									<td></td>
 									<td colspan="6" class="cur">{{$d->nama_sub_urusan}}</td>
@@ -99,7 +99,7 @@
 								<?php  $idp=$d->id_program;?>
 								@endif
 
-								@if($idinp!=$d->id_ind_p && $d->id_ind_p!=null))
+								@if(($idinp!=$d->id_ind_p) && ($d->id_ind_p!=null))
 								<tr class="cls u{{$idb}} su{{$idsb}}">
 									<td colspan="5"></td>
 									<td><b>(IP)</b> {{$d->nama_ind_p}}</td>
@@ -136,7 +136,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
 
 
@@ -154,7 +154,7 @@
 	$('.use-select-2').select2();
 
 
-	
+
 	function collapsing(dom){
 
 		if($(dom).attr('data-show')=='true'){
@@ -175,7 +175,7 @@
 
 	}
 
-	setTimeout(function(){
+  setTimeout(function(){
 		$('.coll').click();
 	},500);
 </script>
@@ -194,11 +194,11 @@
 	<div class="col-md-12">
 		<form action="{{route('front.store.catatan',['id'=>$daerah->id])}}" method="post">
 			@csrf
-				
+
 			<h5 class="text-center">CATATAN {{$daerah->nama}}</h5>
 			<textarea class="form-control" name="catatan" style="min-height: 400px">{{$catatan?$catatan->catatan:''}}</textarea>
 			<button type="submit" class="btn btn-warning text-center btn-sm col-lg-12 col-xs-12" >SIMPAN</button>
-			
+
 		</form>
 	</div>
 </div>

@@ -424,6 +424,8 @@ public function per_kota($id){
             )
             ->whereNotNull('k.id_sub_urusan')
             ->whereNotNull('k.id_urusan')
+            ->whereRaw('k.id_urusan in ('.env('HANDLE_URUSAN').')')
+
             ->whereNotNull('k.id_program')
             ->where('k.kode_daerah',$id);
 
