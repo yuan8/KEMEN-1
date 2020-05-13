@@ -14,20 +14,17 @@
 ][config('ltefron.layout')] : '') . (config('ltefron.collapse_sidebar') ? ' sidebar-collapse ' : ''))
 
 @section('body')
-    <style type="text/css">
-        .skin-yellow .main-header .navbar .nav>li>a,.text-dark{
-            color:#222!important;
-        }
-    </style>
+    <script src="{{ asset('vendor/highchart/highcharts.js') }}"></script>
+
     <div class="wrapper">
 
         <!-- Main Header -->
         <header class="main-header">
             @if(config('ltefron.layout') == 'top-nav')
-            <nav class="navbar navbar-fixed-top">
+            <nav class="navbar navbar-static-top">
                 <div class="container">
                     <div class="navbar-header">
-                        <a href="{{ url(config('ltefron.dashboard_url', 'home')) }}" class="navbar-brand text-dark">
+                        <a href="{{ url(config('ltefron.dashboard_url', 'home')) }}" class="navbar-brand">
                             {!! config('ltefron.logo', '<b>Admin</b>LTE') !!}
                         </a>
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
@@ -37,62 +34,8 @@
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-                        <ul class="nav navbar-nav text-dark">
+                        <ul class="nav navbar-nav">
                             @include('adminlte::partials.nav')
-                        </ul>
-                       
-                    </div>
-                    <div class="navbar-custom-menu">
-                         <ul class="nav navbar-nav"> 
-                         @if(isset($name_right_side_bar))                      
-                            <li>
-                                <a href="#" data-toggle="control-sidebar">
-                                    <i class="fas fa-check-square"></i>  {{$name_right_side_bar}}
-                                </a>
-                            </li>
-                            @endif
-                            <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                              <img src="{{asset('ava.png')}}" class="user-image" alt="User Image">
-                              <span class="hidden-xs"> {{strtoupper(Auth::User()->name)}} ({{Hp::fokus_tahun()}})</span>
-                            </a>
-                            <ul class="dropdown-menu">
-                              <!-- User image -->
-                              <li class="user-header">
-                                <img src="{{asset('ava.png')}}" class="img-circle" alt="User Image">
-
-                                <p>
-                                  {{strtoupper(Auth::User()->name)}}
-                                  <small>{{Auth::User()->email}} </small>
-                                  <b>{{Hp::fokus_tahun()}}</b>
-                                </p>
-                              </li>
-                              <!-- Menu Body -->
-                              <li class="user-body">
-                              <!--   <div class="row">
-                                  <div class="col-xs-4 text-center">
-                                    <a href="#">Followers</a>
-                                  </div>
-                                  <div class="col-xs-4 text-center">
-                                    <a href="#">Sales</a>
-                                  </div>
-                                  <div class="col-xs-4 text-center">
-                                    <a href="#">Friends</a>
-                                  </div>
-                                </div> -->
-                                <!-- /.row -->
-                              </li>
-                              <!-- Menu Footer-->
-                              <li class="user-footer">
-                                <div class="pull-left">
-                                  <!-- <a href="#" class="btn btn-default btn-flat">Profile</a> -->
-                                </div>
-                                <div class="pull-right">
-                                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                                </div>
-                              </li>
-                            </ul>
-                          </li>
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
@@ -119,7 +62,38 @@
 
                     <ul class="nav navbar-nav">
 
+                       
+                         <li>
+                            <a href="javascript:void(0)" onclick="$('#modal-pindah-tahun-fokus').modal()"><i class="fas fa-history"></i> Tahun</a>
+                        </li>
+                         @if(config('ltefron.right_sidebar') and (config('ltefron.layout') != 'top-nav'))
+                        <!-- Control Sidebar Toggle Button -->
+                            <li>
+                                <a href="#" data-toggle="control-sidebar" @if(!config('ltefron.right_sidebar_slide')) data-controlsidebar-slide="false" @endif>
+                                    <i class="{{config('ltefron.right_sidebar_icon')}}"></i> Urusan
+                                </a>
+                            </li>
+                        @endif
                         
+                        <li>
+                            @if(config('ltefron.logout_method') == 'GET' || !config('ltefron.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
+                                <a href="{{ url(config('ltefron.logout_url', 'auth/logout')) }}">
+                                    <i class="fa fa-fw fa-power-off"></i> {{ strtoupper(Auth::User()->name) }}
+                                </a>
+                            @else
+                                <a href="#"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                >
+                                    <i class="fa fa-fw fa-power-off"></i> {{ strtoupper(Auth::User()->name) }}
+                                </a>
+                                <form id="logout-form" action="{{ url(config('ltefron.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
+                                    @if(config('ltefron.logout_method'))
+                                        {{ method_field(config('ltefron.logout_method')) }}
+                                    @endif
+                                    {{ csrf_field() }}
+                                </form>
+                            @endif
+                        </li>
                        
                     </ul>
                 </div>
@@ -151,22 +125,18 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-              <section class="content-header">
-                 <div class="row">
-                 </div>
-                  @yield('content_header')
-                 
-                
-            </section>
-
             @if(config('ltefron.layout') == 'top-nav')
-            <div class="container-fluid">
+            <div class="">
             @endif
 
             <!-- Content Header (Page header) -->
+            <section class="content-header">
+                 
+                @yield('content_header')
+            </section>
 
             <!-- Main content -->
-            <section class="content" style="min-height: 100vh">
+            <section class="content-fluid" style="min-height: 100vh">
 
                 @yield('content')
 
@@ -185,12 +155,15 @@
         </footer>
         @endif
 
-            <aside class="control-sidebar control-sidebar-{{config('ltefron.right_sidebar_theme')}}" style="position: fixed;">
+        @if(config('ltefron.right_sidebar') and (config('ltefron.layout') != 'top-nav'))
+            <aside class="control-sidebar control-sidebar-{{config('ltefron.right_sidebar_theme')}}">
                 @yield('right-sidebar')
+                @include('partials.right_side_bar')
             </aside>
             <!-- /.control-sidebar -->
             <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
             <div class="control-sidebar-bg"></div>
+        @endif
 
     </div>
     <!-- ./wrapper -->
@@ -198,11 +171,10 @@
 
 @section('adminlte_js')
     <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
-    <!-- <script type="text/javascript" src="{{url('vendor/highchart/highcharts.src.js')}}"></script> -->
-    <script src="http://github.highcharts.com/highstock.src.js"></script>
-    <script src="http://code.highcharts.com/maps/modules/map.js"></script>
+
 
     @stack('js')
+
     @yield('js')
 
     <div class="modal fade  " id="modal-info">
@@ -215,5 +187,9 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        $('.use-select-2-def').select2();
+    </script>
 
 @stop

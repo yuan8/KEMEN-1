@@ -75,7 +75,6 @@ class RAKORTEK extends Controller
     	$data='[]';
     	if(file_exists(storage_path('app/public/BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json'))){
     		$data=file_get_contents(storage_path('app/public/BOT/SIPD/RAKORTEK/'.$tahun.'/'.$kode_daerah.'.json'));
-
     	}else{
 		$opts = [
 		    "http" => [

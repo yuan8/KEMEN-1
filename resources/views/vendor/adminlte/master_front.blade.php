@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('title_prefix', config('ltefron.title_prefix', ''))
-@yield('title', config('ltefron.title', 'DSS'))
-@yield('title_postfix', config('ltefron.title_postfix', ''))</title>
+    <title>@yield('title_prefix', config('adminlte.title_prefix', ''))
+@yield('title', config('adminlte.title', 'DSS'))
+@yield('title_postfix', config('adminlte.title_postfix', ''))</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -72,9 +72,9 @@
 @yield('body')
 
 <script src="{{ asset('vendor/adminlte/vendor/jquery/dist/jquery.slimscroll.min.js') }}"></script>
-<script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('vendor/adminlte/vendor/bootstrap/dist/js/bootstrap.js') }}"></script>
 <script src="{{ asset('vendor/bootstrap-toggle/js/bootstrap-toggle.min.js') }}"></script>
-<script type="text/javascript" src="{{url('vendor/Datatable/datatables.js')}}"></script>
+
 
 @include('adminlte::plugins', ['type' => 'js'])
 
@@ -187,6 +187,17 @@ function pindahUrusan(tahun=null){
                 <form action="{{route('init.tahun')}}" method="post">
 
                     <div class="box-body text-center">
+
+                                <h4 id="ww">PINDAH TAHUN AKSES </h4>
+                                    @csrf
+
+                                    <select name="tahun" class="form-control" id="pilihan-pindah-tahun">
+                                           @foreach(Hp::pilihan_tahun() as $i)
+
+                                            <option value="{{$i}}" {{Hp::fokus_tahun()==$i?'selected':''}}>{{$i}}</option>
+                                        @endforeach
+                                    </select>
+                                    <br>
 
 
                     </div>

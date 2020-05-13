@@ -29,6 +29,11 @@ class HelperProvider extends ServiceProvider
         //
     }
 
+    static function DSS_TOKEN(){
+      return 'g'.md5(date('y-mm-ymm'));
+    }
+
+
     static function ToObject($Array) { 
       
     // Create new stdClass object 
