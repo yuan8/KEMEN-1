@@ -50,7 +50,7 @@
                             @foreach($data as $d)
                                 @if($idp!=$d->id_program)
                                 <tr>
-                                    <td>{{$d->uraian_program}}</td>
+                                    <td>{{$d->uraian_program}} <br> <small><b><i>{{$d->uraian_sub_urusan}}</i></b></small></td>
                                     <td colspan="6"></td>
                                 </tr>
                                 <?php $idp=$d->id_program; ?>

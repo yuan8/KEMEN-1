@@ -342,12 +342,14 @@
 
 		   	
 
-		    	if(validate_out && (list_out.length>0)){
+		    	if(list_out!=null){
+		    		if(validate_out && (list_out.length>0)){
 		    		for(var i in list_out){
 		    			if(list_data_urusan.includes(parseInt(list_out[i]))){
 		    				validate_out=0;
 		    			}
 		    		}
+		    	}
 		    	}
 
 		

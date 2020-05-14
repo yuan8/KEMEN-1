@@ -13,7 +13,7 @@ class SIPDStatusRkpd extends Controller
     //
 
 
-     public  function getData($tahun=2020){
+     public static  function getData($tahun=2020){
 
     	$time=((int)microtime(true));
     	$schema='prokeg';
@@ -33,6 +33,7 @@ class SIPDStatusRkpd extends Controller
     		'tahun'=>$tahun
     	));
 
+
     	if($connection){
     		$con=file_get_contents(storage_path('app/cookies/sipd_micro.json'));
      		$con=json_decode($con,true);
@@ -40,8 +41,10 @@ class SIPDStatusRkpd extends Controller
 
 
     		$list_get='https://sipd.go.id/'.$con['url'].'?m=pusat_rkpd_dashboard&f=ajax_list_pemda&tipe=murni&_='.$time;
-    		 $data=static::con($list_get,'GET','');
-    		 // https://sipd.go.id/run/a4c3e21ce8161a3c63310f40238a424536a5fabb/?m=pusat_rkpd_dashboard&f=ajax_list_pemda&tipe=murni&_=15867 79469816
+    		$data=static::con($list_get,'GET','');
+
+
+    		
     		 $data=json_decode($data,true);
     		 // return $data;
 
@@ -102,9 +105,11 @@ class SIPDStatusRkpd extends Controller
     		
 
     		 Storage::put('BOT/SIPD/'.$tahun.'/status_daerah.json',json_encode($data_return,JSON_PRETTY_PRINT));
-    		 dd('done');
+    		 return true;
 
-    	}
+    	}else{
+            return false;
+        }
 
 
 
@@ -115,7 +120,7 @@ class SIPDStatusRkpd extends Controller
 	static function con($url, $method='', $vars=''){
 
 		if(!file_exists(storage_path('app/cookies/sipd_cookies.txt')) ){
-			// Storage::put('cookies/sipd_cookies.text','');
+			Storage::put('cookies/sipd_cookies.txt','');
 		}
 
     	$time=((int)microtime(true));
@@ -132,10 +137,6 @@ class SIPDStatusRkpd extends Controller
 	    $agent  = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.92 Safari/537.36";
 
 
-	// begin script
-	// $ch = curl_init(); 
-
-		// extra headers
 		$headers[] = "Accept: */*";
 		$headers[] = "Connection: Keep-Alive";
 
@@ -157,10 +158,17 @@ class SIPDStatusRkpd extends Controller
 
         $matches=[];
 	    preg_match_all("!$prefix(.*?)$suffix!", (string)$buffer, $matches);
+
 	    
-	    if((count($matches)>0)and(isset($matches[0][0]))){
-	    	$data_to_bobol=array('url'=>$matches[0][0],'time'=>$time);
-	    	Storage::put(('cookies/sipd_micro.json'),json_encode($data_to_bobol));
+	    if((count($matches)>0)and(isset($matches[0]))){
+	    	foreach ($matches[1] as $uk=>$u) {
+                $temp=(trim(str_replace('/','', str_replace('"','', $u))));
+                if($temp!=''){
+                    $data_to_bobol=array('url'=>$matches[0][$uk],'time'=>$time);
+                    Storage::put(('cookies/sipd_micro.json'),json_encode($data_to_bobol));
+                }
+                # code...
+            }
 	    }
 
 

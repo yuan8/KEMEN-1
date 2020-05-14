@@ -51,10 +51,84 @@ class SIPDCTRL extends Controller
 
 	}
 
+	public function getJson($tahun,$kodepemda){
+		try {
+        	// Hp::checkDBProKeg($tahun);
+			$file=null;
+
+			if(strpos($kodepemda, '00')!==false){
+				$kodepemda=str_replace('00', '', $kodepemda);
+			}
+
+			if(strlen($kodepemda)<4){
+				$kode_daerah=$kodepemda.'00';
+			}else{
+				$kode_daerah=$kodepemda;
+			}
+
+			$status=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_status_file_daerah')
+			->where('kode_daerah',$kodepemda)->pluck('status')->first();
+			if($status==null){
+				$status=0;
+			}
+			
+
+			if(($status==null)OR($status<=2)){
+				$path=static::host().'run/serv/ranwal.php?tahun='.($tahun).'&kodepemda='.$kode_daerah;
+			}else{
+				$path=static::host().'run/serv/get.php?tahun='.($tahun).'&kodepemda='.$kode_daerah;
+			}
+
+	    	$opts = [
+			    "http" => [
+			        "method" => "GET",
+			          "header" => "Authorization: bearer ".static::$token
+
+			    ]
+			];
+
+		
+
+			$context = stream_context_create($opts);
+
+			if(file_exists(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'))&&false ){
+				
+				$file=file_get_contents(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'));
+			
+			}else{
+
+				$path=urldecode($path);
+				$file=file_get_contents($path,false, $context);
+				if(!(strpos($file, '[')!==false)){
+					$file='[]';
+				}
+			}
+
+			if($file){
+				Storage::put(('bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'),$file);
+				$file=json_decode($file);
+
+				Storage::put(('bot-sipd/rkpd/'.$tahun.'/'.$kodepemda.'.json'),json_encode(['status'=>$status,'data'=>$file]));
+			}
+
+			$dae=DB::table('master_daerah')->where(DB::raw('id::numeric'),'>',(int)$kodepemda)->pluck('id')->first();
+
+			return 'done '.$kode_daerah.' status dokumen '.$status.'<script> window.location.href="http://localhost/dss/bot/sipd/rkpd/'.$tahun.'/'.$dae.'"  </script>';
+
+
+		}catch(exception $e){
+			dd($e);
+		}
+
+	}
+
     public function getData($tahun,$kodepemda){
 
+    	// \App\Http\Controllers\BOT\SIPDStatusRkpd::getData($tahun);
+    
 
         Hp::checkDBProKeg($tahun);
+    	Artisan::call('sipd:status-rkpd '.$tahun);
 
     	set_time_limit(-1);
 
@@ -94,9 +168,10 @@ class SIPDCTRL extends Controller
 
 			}
 
-			if(file_exists(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'))){
+			if(file_exists(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'))&&false ){
 				
 				$file=file_get_contents(storage_path('app/bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'));
+			
 			}else{
 
 				$path=urldecode($path);
@@ -116,6 +191,7 @@ class SIPDCTRL extends Controller
 			if($file){
 				$data_recorded=[];
 				Storage::put(('bot-sipd/pro-keg-data-daerah/'.$tahun.'/'.$status.'/'.$kodepemda.'.json'),$file);
+				return ($status.'----'.substr($file, 0,4000));
 
 		   		$file=json_decode($file,true);
 
@@ -334,7 +410,6 @@ class SIPDCTRL extends Controller
 				  	->insertOrIgnore($json_2);
 
 		   			Storage::put('bot-sipd/daerah-recorded/'.Carbon::now()->format('Y').'/data.json',json_encode($data_dat_recorded,JSON_PRETTY_PRINT));
-
 
 		   		}
 

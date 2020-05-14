@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/app/NodeJs/SIMSPAM/node_modules/*
+/app/NodeJs/SIPD/node_modules/*
 /storage/*.key
 /vendor
 .env

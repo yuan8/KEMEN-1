@@ -26,8 +26,8 @@ class ProgramKegiatanCtrl extends Controller
 			DB::raw("count(k.id) as jumlah_kegiatan")
 		)
 		->leftJoin(DB::raw($schema.".tb_".($tahun-1)."_kegiatan as k"),function($q) use ($id_urusan){
-			return $q->on('k.kode_daerah','=','d.id');
-			// ->on('k.id_urusan','=',DB::raw($id_urusan));
+			return $q->on('k.kode_daerah','=','d.id')
+			->on('k.id_urusan','=',DB::raw($id_urusan));
 		})
 		->groupBy('d.id')
 		->orderBy(DB::raw("count(k.id)"),'DESC')
