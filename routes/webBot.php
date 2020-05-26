@@ -19,7 +19,14 @@ Route::prefix('bot/sipd')->group(function(){
 	Route::get('get-rakortek/{tahun}/{kodepemda}','CROW\RAKORTEK@getdata')->name('bot.rakortek');
 });
 
-Route::prefix('bot')->group(function(){;
+Route::prefix('bot')->group(function(){
+	Route::prefix('sipd')->group(function(){
+		Route::get('data/{tahun}/{kodepemda}','SISTEM\BOTSIPD@getDataJson');
+		Route::get('make-data/{tahun}/{kodepemda}','SISTEM\BOTSIPD@makeData');
+		Route::get('store-data/{tahun}/{kodepemda}','SISTEM\BOTSIPD@storingFile');
+		Route::get('change-data','SISTEM\BOTSIPD@change');
+
+	});
 	Route::get('simspam-perpipaan','CROW\SIMSPAMCTRL@storeKodeDaerah');
 	Route::get('simspam-login','CROW\SIMSPAMCTRL@login_form');
 	Route::get('data-rpjmd/{tahun}/{kodepemda}','CROW\SIPDCTRL@getData')->name('get_sipd');

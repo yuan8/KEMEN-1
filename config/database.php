@@ -74,7 +74,7 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'schema' => 'public',
+            'schema' => ['public','prokeg','kebijakan','analis','rakortek'],
             'sslmode' => 'prefer',
         ],
 
@@ -92,6 +92,7 @@ return [
             'schema' => 'prokeg',
             'sslmode' => 'prefer',
         ],
+       
         'analis' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

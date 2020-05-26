@@ -29,7 +29,6 @@ async function login(){
 
 	const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(50000);
-    console.log('attemp login');
     await page.goto(env.parsed.BOT_SIPD_DOMAIN_RKPD,{ waitUntil: 'networkidle0' });
     await page.type('#userX',(env.parsed.BOT_SIPD_USER+''));
     await page.type('#passX',(env.parsed.BOT_SIPD_PASS+''));
@@ -46,14 +45,12 @@ async function login(){
           page.click('button[type="submit"]')
           // ,page.waitForNavigation({ waitUntil: 'networkidle0' })
     ]);
-    console.log('login success');
 
 
       getData(page);
    	
 
 	}catch(e){
-		console.log(e);
     process.exit(0);
 
 	}
@@ -61,7 +58,6 @@ async function login(){
 
 
 async function getData(page){
-  console.log('get data status rkpd');
     const result = await page.evaluate(()=>{
           return new Promise((resove,reject)=>{
               console.log('myscript injected');
@@ -91,7 +87,6 @@ async function getData(page){
 
 
     await fs.writeFileSync(__dirname+'/storage/file-status-rkpd-'+tahun+'.json',JSON.stringify(data_daerah,undefined,4));
-  console.log('success');
      
     process.exit(0);
 

@@ -233,6 +233,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Hp'=> App\Providers\HelperProvider::class,
+        'DBINIT'=> App\Providers\DBINITProvider::class,
+
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
 
         'FCM'      => LaravelFCM\Facades\FCM::class,

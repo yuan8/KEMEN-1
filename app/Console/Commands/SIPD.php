@@ -13,7 +13,7 @@ class SIPD extends Command
      *
      * @var string
      */
-    protected $signature = 'sipd:status-rkpd {tahun}';
+    protected $signature = 'sipd:status-rkpd {tahun} {kodepemda?}';
 
     /**
      * The console command description.
@@ -41,12 +41,22 @@ class SIPD extends Command
     {
         //
         $tahun=$this->argument('tahun');
+        $kode_daerah=$this->argument('kodepemda')?$this->argument('kodepemda').'':null;
+        if($kode_daerah){
+             if(strpos('00',$kode_daerah)!==false){
+                $kode_daerah=str_replace('00', '', $kode_daerah);
+            }
+
+        }
+
+
         $process = new Process('node '.app_path('NodeJS/SIPD/index.js').' '.$tahun); 
+
         $process->setTimeout(10000);
         $process->setPty(true);
-        $process->run(function ($type, $buffer) {
-            echo $buffer;
-        });
+        // $process->run(function ($type, $buffer) {
+        //     echo $buffer;
+        // });
 
         $schema='prokeg';
 
@@ -78,7 +88,7 @@ class SIPD extends Command
                 }
 
                 $kodar=str_replace('00', '', $d['kodepemda']);
-                $data_return[]=array('kode_daerah'=>$kodar,'status'=>$status,'updated_at'=>Carbon::now(),'last_date'=>$d['lastpost']);
+                $data_return[$kodar]=array('kode_daerah'=>$kodar,'status'=>$status,'updated_at'=>Carbon::now(),'last_date'=>$d['lastpost']);
 
              }
 
@@ -86,6 +96,7 @@ class SIPD extends Command
 
 
                 if(substr($d['kode_daerah'],0,2)!='99'){
+
                     $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
                     ->where(
                         [
@@ -93,13 +104,15 @@ class SIPD extends Command
                             ['status','!=',$d['status']]
                         ]
                     )->first();
-                    if($ds){
+                    if(($ds)AND($ds->status!=$d['status'])){
                         $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
                         ->where('id',$ds->id)
                         ->update($d);
-                        $this->info($d['kode_daerah'].' Updated status '.$d['status']);
 
-                    }else{
+                    }else if($ds){
+
+                    }
+                    else{
 
                         $di=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
                         ->where('kode_daerah',$d['kode_daerah'])->insertOrIgnore([
@@ -111,9 +124,15 @@ class SIPD extends Command
                         ]);
                     }
                 }else{
+
+
                 }
              }
 
+
+             if($kode_daerah){
+                return $data_return[$kode_daerah];
+             }
 
              return 1;
 

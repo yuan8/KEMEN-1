@@ -41,18 +41,16 @@ Route::middleware('auth:web')->group(function(){
 				Route::post('/iku/bidang/{kode_daerah?}/{kode_ind?}','FRONT\Rakortek@iku_catatan')->name('front.r.iku.catatan');
 				Route::post('/iku/bidang-pendukung/{kode_daerah?}/{kode_ind?}','FRONT\Rakortek@data_iku_pendukung')->name('front.r.iku.pendukung');
 
+				Route::post('api/pad-kode-daerah','FRONT\APBD@api_selected_daerah')->name('pad.api.kode_daerah');
+
+
 			
 		});
 
-			
-
-
-
-
+		
 
 	});
 
-
-
-
+	Route::get('pad','FRONT\APBD@index')->name('pad.index');
+	
 });

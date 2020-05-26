@@ -37,6 +37,9 @@
 
     </ul>
 </li>
+<li class="nav-item">
+    <a href="{{route('pad.index')}}">PAD</a>
+</li>
 
 
 
