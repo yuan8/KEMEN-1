@@ -24,7 +24,7 @@
 			<div class="form-group">
 				<label>PROVINSI</label>
 				<select class="form-control" id="provinsi_select" name="provinsi">
-					<option value="">- NASIOANAL -</option>
+					<option value="">- NASIONAL -</option>
 					@foreach($provinsi as $p)
 
 						<option value="{{$p->id}}" {{isset($_GET['provinsi'])?($_GET['provinsi']==$p->id?'selected':''):''}}>{{strtoupper($p->nama)}}</option>
@@ -55,7 +55,7 @@
 		<div class="col-md-12">
 			<div class="box-warning box">
 				<div class="box-body table-responsive">
-					<table class="table table-bordered">
+					<table class="table table-bordered" id="table_data">
 							<thead>
 								<tr>
 									<th colspan="3">AKUN</th>
@@ -168,6 +168,17 @@
 	});
 
 	$('#provinsi_select').trigger('change');
+
+
+
+	 $('#table_data').DataTable( {
+	 	sort:false,
+	 	 "paging": false,
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
 });
 
 

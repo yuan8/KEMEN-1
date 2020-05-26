@@ -76,6 +76,9 @@
 <script src="{{ asset('vendor/bootstrap-toggle/js/bootstrap-toggle.min.js') }}"></script>
 
 
+
+
+
 @include('adminlte::plugins', ['type' => 'js'])
 
 @yield('adminlte_js')
