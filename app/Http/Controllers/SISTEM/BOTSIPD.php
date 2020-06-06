@@ -380,6 +380,7 @@ class BOTSIPD extends Controller
 			    						'kode_skpd'=>$k['kode_skpd'],
 			    						'id_program'=>$id_program,
 			    						'kode_bidang'=>$k['kode_bidang'],
+			    					
 			    					])->first();
 
 			    					if(($exk)AND ($exk->status!=$k['status'])){

@@ -129,7 +129,7 @@ class DBINITProvider extends ServiceProvider
                 // $table->text('pelaksana')->nullable();
                 $table->text('keterangan')->nullable();
                 $table->timestamps();
-                $table->unique(['kode_kegiatan','kode_daerah','kode_skpd','kode_bidang','status']);
+                $table->unique(['kode_kegiatan','kode_daerah','kode_skpd','kode_bidang','status','id_program']);
                 $table->index('kode_daerah');
 
                 $table->foreign('id_urusan')
@@ -199,7 +199,9 @@ class DBINITProvider extends ServiceProvider
                 $table->double('pagu',12,3)->nullable()->default(0);
                 $table->timestamps();
 
+
                 $table->index(['id_kegiatan','kode_daerah']);
+                $table->unique(['kode_dana','id_kegiatan']);
 
                 $table->foreign('id_kegiatan')
                 ->references('id')->on('prokeg.tb_'.$tahun.'_kegiatan')
