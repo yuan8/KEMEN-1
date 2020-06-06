@@ -41,9 +41,11 @@ async function login(){
 
               });
      });
-     await Promise.all([
+     console.log('a');
+
+    await Promise.all([
           page.click('button[type="submit"]')
-          // ,page.waitForNavigation({ waitUntil: 'networkidle0' })
+          ,page.waitForNavigation({ waitUntil: 'networkidle0' })
     ]);
 
 
@@ -51,6 +53,7 @@ async function login(){
    	
 
 	}catch(e){
+    console.log(e);
     process.exit(0);
 
 	}

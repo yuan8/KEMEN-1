@@ -8,10 +8,26 @@ Route::prefix('bot/simspam')->group(function(){
 	Route::post('/download','CROW\SIMSPAMCTRL@download')->name('bot.simspam.download');
 });
 
+Route::prefix('bot/rpjmn')->group(function(){
+	Route::get('','SISTEM\RPJMN@index');
+	Route::get('/build','SISTEM\RPJMN@build');
+
+	
+});
+
+
 
 Route::prefix('bot/sipd')->group(function(){
+	Route::prefix('data-rkpd')->group(function(){
+		// Route::get('/{tahun}/{kodepemda}','CROW\SIPDCTRL@getJson');
+			Route::get('show/{tahun}','SISTEM\BOTSIPD@indexing');
+			Route::get('store/{tahun}/{kodepemda}','SISTEM\BOTSIPD@getDataJson')->name('bot.sipd.rkpd.store');
 
-	Route::get('rkpd/{tahun}/{kodepemda}','CROW\SIPDCTRL@getJson');
+
+	});
+
+
+
 	
 	Route::get('rakortek','CROW\RAKORTEK@viewRakotek');
 	Route::get('get-data/{tahun}','BOT\SIPDStatusRkpd@getData');

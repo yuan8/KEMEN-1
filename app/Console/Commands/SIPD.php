@@ -101,9 +101,10 @@ class SIPD extends Command
                     ->where(
                         [
                             ['kode_daerah','=',$d['kode_daerah']],
-                            ['status','!=',$d['status']]
+                            // ['status','!=',$d['status']]
                         ]
                     )->first();
+
                     if(($ds)AND($ds->status!=$d['status'])){
                         $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
                         ->where('id',$ds->id)
@@ -111,6 +112,9 @@ class SIPD extends Command
 
                     }else if($ds){
 
+                        $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
+                        ->where('id',$ds->id)
+                        ->update(['updated_at'=>Carbon::now()]);
                     }
                     else{
 

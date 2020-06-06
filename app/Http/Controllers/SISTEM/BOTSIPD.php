@@ -116,6 +116,9 @@ class BOTSIPD extends Controller
 
 		static::makeData($tahun,$kodepemda);
 
+
+		return back();
+
 		return 'data-transform-done';
 
     }
@@ -254,8 +257,7 @@ class BOTSIPD extends Controller
     		}
 
     		Storage::put('BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json',json_encode(array('status'=>$status,'data'=>$data_return),JSON_PRETTY_PRINT));
-
-    		static::storingFile($tahun,$kodepemda);
+    			static::storingFile($tahun,$kodepemda);
 
     	}else{
 
@@ -278,6 +280,7 @@ class BOTSIPD extends Controller
     	if($in_status!=5){
 	    	if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json'))){
 	    		$data=json_decode(file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json')),true);
+
 	    		$status=$data['status'];
 	    		if(true){
 	    			// $in_status!=$data['status']
@@ -545,23 +548,41 @@ class BOTSIPD extends Controller
 
     public function change($tahun=2020){
     	DBINIT::rkpd_db($tahun);
-    	// $datax=DB::table('prokeg_2.tb_'.$tahun.'_program')->orderBy('id','asc')
-    	// ->select('id','kode_daerah','kode_program','kode_skpd','kode_bidang','pelaksana as uraian_skpd','uraian','id_urusan','id_sub_urusan')->chunk(100, function($data)use ($tahun){
-    	// 	$data=json_decode(json_encode($data),true);
-    	// 	DB::table('prokeg.tb_'.$tahun.'_program')->insertOrIgnore($data);
-    	// });
-
-    	// $datax=DB::table('prokeg_2.tb_'.$tahun.'_kegiatan')->orderBy('id','asc')
-    	// ->select('id','kode_daerah','kode_kegiatan','anggaran','status','id_program','kode_skpd','kode_bidang','pelaksana as uraian_skpd','uraian','id_urusan','id_sub_urusan')->chunk(500, function($data)use ($tahun){
-    	// 	$data=json_decode(json_encode($data),true);
-    	// 	DB::table('prokeg.tb_'.$tahun.'_kegiatan')->insertOrIgnore($data);
-    	// });
+    
 
     	$datax=DB::table('prokeg_2.tb_'.$tahun.'_ind_program')->orderBy('id','asc')
     	->select('id','kode_daerah','kode_ind','anggaran','id_program','kode_skpd','kode_bidang','pelaksana as uraian_skpd','indikator')->chunk(500, function($data)use ($tahun){
     		$data=json_decode(json_encode($data),true);
     		DB::table('prokeg.tb_'.$tahun.'_ind_program')->insertOrIgnore($data);
     	});
+
+    }
+
+
+    public function indexing($tahun=2020,Request $request){
+
+    	$provinsi=DB::table('master_daerah as d')->where('kode_daerah_parent',null)->get();
+
+    	$data=DB::table('master_daerah as d')
+    	->leftJoin("prokeg.tb_".$tahun."_status_file_daerah as f",'f.kode_daerah','=','d.id')
+    	->select(
+    		DB::RAW("(SELECT count(k.*) as exist FROM prokeg.tb_".$tahun."_kegiatan as k where k.kode_daerah=d.id group by k.kode_daerah limit 1) as exist"),
+    		DB::RAW("(SELECT (k.status) as status FROM prokeg.tb_".$tahun."_kegiatan as k where k.kode_daerah=d.id  limit 1) as status"),
+    		'd.nama',
+    		'f.status as status_sipd',
+    		'd.id as id',
+    		DB::raw($tahun.' as tahun'),
+    		DB::raw("(select concat(c.nama,
+                (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=d.id) as nama_daerah")
+    	);
+    	if($request->provinsi){
+    		$data=$data->where('d.kode_daerah_parent',$request->provinsi)->OrWhere('d.id',$request->provinsi);
+    	}
+    	$data=$data->orderBy('d.id','asc')->paginate(20);
+    	$data->appends(['provinsi'=>$request->provinsi]);
+
+    	return view('sistem.sipd.rkpd.index')->with('data',$data)->with('tahun',$tahun)->with('provinsi',$provinsi);
+
 
     }
 }

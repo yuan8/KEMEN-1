@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd117e8811b9cf9480f9ed0d99973377",
+    "content-hash": "4017da075b5dfd46a2a4f2cbb46c199b",
     "packages": [
         {
             "name": "brozot/laravel-fcm",
@@ -1752,6 +1752,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -1798,6 +1799,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {
@@ -2961,16 +2963,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.10.1",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "1648dc9ebef6ebe0c5a172e16cf66732918416e0"
+                "reference": "f79611d6dc1f6b7e8e30b738fc371b392001dbfd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/1648dc9ebef6ebe0c5a172e16cf66732918416e0",
-                "reference": "1648dc9ebef6ebe0c5a172e16cf66732918416e0",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/f79611d6dc1f6b7e8e30b738fc371b392001dbfd",
+                "reference": "f79611d6dc1f6b7e8e30b738fc371b392001dbfd",
                 "shasum": ""
             },
             "require": {
@@ -3050,7 +3052,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2019-12-01T23:13:51+00:00"
+            "time": "2020-04-27T08:12:48+00:00"
         },
         {
             "name": "phpoption/phpoption",
