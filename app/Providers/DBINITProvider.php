@@ -56,7 +56,7 @@ class DBINITProvider extends ServiceProvider
                 $table->string('kode_skpd')->nullable();
                 $table->string('uraian_skpd')->nullable();
                 $table->string('kode_bidang')->nullable();
-                $table->string('uraian');
+                $table->text('uraian');
                 $table->bigInteger('id_urusan')->unsigned()->nullable();
                 $table->bigInteger('id_sub_urusan')->unsigned()->nullable();
                 // $table->text('pelaksana')->nullable();
@@ -91,7 +91,7 @@ class DBINITProvider extends ServiceProvider
                 $table->text('target_ahir')->nullable();
                 $table->text('satuan')->nullable();
                 $table->string('kode_skpd')->nullable();
-                $table->string('uraian_skpd')->nullable();
+                $table->text('uraian_skpd')->nullable();
                 $table->string('kode_bidang')->nullable();
                 // $table->text('pelaksana')->nullable();
                 $table->text('keterangan')->nullable();
@@ -121,7 +121,7 @@ class DBINITProvider extends ServiceProvider
                 $table->string('kode_skpd')->nullable();
                 $table->string('uraian_skpd')->nullable();
                 $table->string('kode_bidang')->nullable();
-                $table->string('uraian');
+                $table->text('uraian');
                 $table->double('anggaran',12,3)->nullable()->default(0);
 
                 $table->bigInteger('id_urusan')->unsigned()->nullable();
@@ -195,7 +195,7 @@ class DBINITProvider extends ServiceProvider
                 $table->bigInteger('id_kegiatan')->unsigned();
                 $table->string('kode_sumber_dana')->nullable();
                 $table->integer('kode_sumber_dana_supd')->nullable();
-                $table->string('sumber_dana')->nullable();
+                $table->text('sumber_dana')->nullable();
                 $table->double('pagu',12,3)->nullable()->default(0);
                 $table->timestamps();
 
