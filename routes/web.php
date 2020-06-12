@@ -102,10 +102,6 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::post('/daerah/fokus/{id}/masalah-pokok/{id_ms_pokok}/masalah/{id_masalah}/tambah-akar-masalah', 'FORM\PermasalahanCtrl@store_akar_masalah')->name('permasalahan.daerah.store.akar_masalah');
 			Route::post('/daerah/fokus/{id}/masalah-pokok/{id_ms_pokok}/masalah/{id_masalah}/akar-masalah/{id_akar}/tambah-data-masalah', 'FORM\PermasalahanCtrl@store_data_sukung')->name('permasalahan.daerah.store.data_dukung');
 
-
-
-
-
 			Route::get('/tambah', 'FORM\PermasalahanCtrl@create')->name('permasalahan.create');
 		});
 

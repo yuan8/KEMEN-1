@@ -26,7 +26,7 @@ class BOTSIPD extends Controller
 
 	static $token='d1d1ab9140c249e34ce356c91e9166a6';
     //
-    public function getDataJson($tahun,$kodepemda){	
+    public function getDataJson($tahun,$kodepemda,Request $request){	
     	set_time_limit(-1);
 
 
@@ -73,7 +73,6 @@ class BOTSIPD extends Controller
 				$status=0;
 			}
 
-
 			if($status<=2){
     			curl_setopt($ch, CURLOPT_URL,static::host().'run/serv/ranwal.php?tahun='.($tahun).'&kodepemda='.$kode_daerah);
 
@@ -82,10 +81,28 @@ class BOTSIPD extends Controller
 				# code...
 			}
 
-			$server_output = curl_exec ($ch);
-			$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-			$server_output=substr($server_output, $header_size);
-			curl_close ($ch);
+			$approve=true;
+
+			if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json'))){
+
+				$dt=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json'));
+				$dt=json_decode($dt);
+				if($dt['status']==$status){
+					$approve=false;
+					$server_output=$dt;
+				}
+
+			}
+
+			if($approve){
+
+				$server_output = curl_exec ($ch);
+				$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+				$server_output=substr($server_output, $header_size);
+				curl_close ($ch);
+			}
+
+			
 
 		} catch (Exception $e) {
 		
@@ -98,7 +115,6 @@ class BOTSIPD extends Controller
 				
 			}else{
 				$server_output= json_decode(trim($server_output));
-				
 			}
 			
 		}else{
@@ -113,8 +129,19 @@ class BOTSIPD extends Controller
 
 		Storage::put('BOT/SIPD/JSON/'.$tahun.'/STATUS/'.$status.'/'.$kodepemda.'.json',json_encode(array('status'=>$status,'data'=>$server_output),JSON_PRETTY_PRINT));
 
-
 		static::makeData($tahun,$kodepemda);
+
+
+		if($request->json){
+
+			$nextid=DB::table('master_daerah')->where('id','>',$kodepemda)->first();
+			
+			return view('sistem.sipd.rkpd.next')->with('daerah',$nextid)
+			->with(['tahun'=>$tahun,'kodepemda'=>$kodepemda]);
+
+		}
+
+    	static::storingFile($tahun,$kodepemda);
 
 
 		return back();
@@ -125,6 +152,13 @@ class BOTSIPD extends Controller
 
 
     public static function makeData($tahun,$kodepemda){
+    	$jumlah_kegiatan=0;
+    	$jumlah_program=0;
+    	$jumlah_ind_program=0;
+    	$jumlah_ind_kegiatan=0;
+
+
+
     	$kodepemda=str_replace('00', '', $kodepemda);
     	if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json'))){
     		$data=json_decode(file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json')),true);
@@ -137,7 +171,7 @@ class BOTSIPD extends Controller
     			$kodebidang=$u['kodebidang'];
     			$id_bidang=DB::table('master_urusan')->where('nama','ilike',('%'.$u['uraibidang'].'%'))->pluck('id')->first();
 
-    			$data_return[$u['kodeskpd']]=array(
+    			$data_return['SKPD@'.$u['kodeskpd']]=array(
     				'kode_daerah'=>$kodepemda,
     				'uraian'=>$u['uraibidang'],
     				'kode_bidang'=>$kodebidang,
@@ -149,9 +183,11 @@ class BOTSIPD extends Controller
     			);
 
     			foreach ($u['program'] as  $p) {
+    				$jumlah_program+=1;
+
     				$kodeprogram=$p['kodeprogram'];
     			
-    				$data_return[$kodeskpd]['program'][$kodeprogram]=array(
+    				$data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]=array(
     					'kode_daerah'=>$kodepemda,
     					'kode_program'=>$p['kodeprogram'],
     					'uraian'=>trim($p['uraiprogram']),
@@ -165,8 +201,10 @@ class BOTSIPD extends Controller
     				);
 
     				foreach ($p['capaian'] as $ip) {
+    					$jumlah_ind_program+=1;
+
     					$kode_indikator_p=$ip['kodeindikator'];
-    					$data_return[$kodeskpd]['program'][$kodeprogram]['indikator'][$kode_indikator_p]=array(
+    					$data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]['indikator'][$kode_indikator_p]=array(
     						'kode_daerah'=>$kodepemda,
     						'status'=>$status,
     						'kode_bidang'=>$kodebidang,
@@ -182,7 +220,15 @@ class BOTSIPD extends Controller
 
     				foreach ($p['kegiatan'] as $k) {
     					$kode_kegiatan=$k['kodekegiatan'];
-    					$data_return[$kodeskpd]['program'][$kodeprogram]['kegiatan'][$kode_kegiatan]=array(
+    					if(isset($data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]['kegiatan']['KEGIATAN@'.$kode_kegiatan])){
+    					
+    					}else{
+    					$jumlah_kegiatan+=1;
+
+    					}
+    					
+
+    					$data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]['kegiatan']['KEGIATAN@'.$kode_kegiatan]=array(
     						'kode_daerah'=>$kodepemda,
     						'id_urusan'=>$id_bidang,
     						'kode_kegiatan'=>$kode_kegiatan,
@@ -208,7 +254,7 @@ class BOTSIPD extends Controller
     							$sumberdana=isset($sd['kodelokasi'])?((strpos($sd['kodelokasi'],'APBD')!==false)?'APBD':''):'';
     						}
 
-    						$data_return[$kodeskpd]['program'][$kodeprogram]['kegiatan'][$kode_kegiatan]['sumber_dana'][]=array(
+    						$data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]['kegiatan']['KEGIATAN@'.$kode_kegiatan]['sumber_dana'][]=array(
     							'kode_dana'=>$kodepemda.'@'.$kodeskpd.'@'.$kodebidang.'@'.$kode_kegiatan.'@'.$isd,
     							'status'=>$status,
     							'kode_daerah'=>$kodepemda,
@@ -216,7 +262,7 @@ class BOTSIPD extends Controller
 	    						'kode_bidang'=>$kodebidang,
 			    				'kode_skpd'=>$kodeskpd,
 			    				'uraian_skpd'=>$uraiskpd,
-    							'pagu'=>(float)$sd['pagu'],
+    							'pagu'=>(float)isset($sd['pagu'])?$sd['pagu']:0,
     							'sumber_dana'=>strtoupper($sumberdana),
     							'kode_sumber_dana'=>isset($sd['kodesumberdana'])?$sd['kodesumberdana']:null
 
@@ -225,8 +271,10 @@ class BOTSIPD extends Controller
     					}
 
     					foreach ($k['indikator'] as $ik) {
+    							$jumlah_ind_kegiatan+=1;
+
     							$kode_kegiatan_k=$ik['kodeindikator'];
-	    						$data_return[$kodeskpd]['program'][$kodeprogram]['kegiatan'][$kode_kegiatan]['indikator'][$ik['kodeindikator']]=array(
+	    						$data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]['kegiatan']['KEGIATAN@'.$kode_kegiatan]['indikator'][$ik['kodeindikator']]=array(
 	    							'kode_daerah'=>$kodepemda,
 		    						'kode_ind'=>$kode_kegiatan_k,
 		    						'uraian'=>trim($ik['tolokukur']),
@@ -256,8 +304,7 @@ class BOTSIPD extends Controller
 
     		}
 
-    		Storage::put('BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json',json_encode(array('status'=>$status,'data'=>$data_return),JSON_PRETTY_PRINT));
-    			static::storingFile($tahun,$kodepemda);
+    		Storage::put('BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json',json_encode(array('status'=>$status,'jumlah_program'=>$jumlah_program,'jumlah_kegiatan'=>$jumlah_kegiatan,'data'=>$data_return),JSON_PRETTY_PRINT));
 
     	}else{
 
@@ -271,6 +318,7 @@ class BOTSIPD extends Controller
     	$now=Carbon::now();
     	DBINIT::rkpd_db($tahun);
     	$approve=false;
+    	$jumlah_kegiatan=0;
 
     	$kodepemda=str_replace('00', '', $kodepemda);
     	$in_status=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_kegiatan')->where([
@@ -373,6 +421,7 @@ class BOTSIPD extends Controller
 		    					}
 
 		    					foreach ($p['kegiatan'] as $k) {
+		    						$jumlah_kegiatan+=1;
 		    						$id_kegiatan=null;
 			    					$exk=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_kegiatan as k')->where([
 			    						'kode_daerah'=>$k['kode_daerah'],
@@ -380,7 +429,7 @@ class BOTSIPD extends Controller
 			    						'kode_skpd'=>$k['kode_skpd'],
 			    						'id_program'=>$id_program,
 			    						'kode_bidang'=>$k['kode_bidang'],
-			    					
+
 			    					])->first();
 
 			    					if(($exk)AND ($exk->status!=$k['status'])){
@@ -390,7 +439,7 @@ class BOTSIPD extends Controller
 			    							'uraian'=>$k['uraian'],
 			    							'anggaran'=>$k['anggaran'],
 			    						]);
-				    						$approve=true;
+				    					$approve=true;
 
 
 			    					}else if(empty($exk)){
@@ -529,7 +578,6 @@ class BOTSIPD extends Controller
 							['status','!=',$status],
 						])->delete();
 
-						dd('del');
 				    }
 
 
@@ -541,7 +589,7 @@ class BOTSIPD extends Controller
     	}
 
 	    
-	    
+	    // dd($jumlah_kegiatan);
 
 
     } 
@@ -568,7 +616,7 @@ class BOTSIPD extends Controller
     	->leftJoin("prokeg.tb_".$tahun."_status_file_daerah as f",'f.kode_daerah','=','d.id')
     	->select(
     		DB::RAW("(SELECT count(k.*) as exist FROM prokeg.tb_".$tahun."_kegiatan as k where k.kode_daerah=d.id group by k.kode_daerah limit 1) as exist"),
-    		DB::RAW("(SELECT (k.status) as status FROM prokeg.tb_".$tahun."_kegiatan as k where k.kode_daerah=d.id  limit 1) as status"),
+    		DB::RAW("(SELECT (k.status) as status FROM prokeg.tb_".$tahun."_program as k where k.kode_daerah=d.id  limit 1) as status"),
     		'd.nama',
     		'f.status as status_sipd',
     		'd.id as id',
