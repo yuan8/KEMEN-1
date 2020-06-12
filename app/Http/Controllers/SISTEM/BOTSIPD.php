@@ -133,12 +133,12 @@ class BOTSIPD extends Controller
 
 
 		if($request->json){
-
+			
 			$nextid=DB::table('master_daerah')->where('id','>',$kodepemda)->first();
 			
 			return view('sistem.sipd.rkpd.next')->with('daerah',$nextid)
-			->with(['tahun'=>$tahun,'kodepemda'=>$kodepemda]);
-
+				   ->with(['tahun'=>$tahun,'kodepemda'=>$kodepemda]);
+			
 		}
 
     	static::storingFile($tahun,$kodepemda);
