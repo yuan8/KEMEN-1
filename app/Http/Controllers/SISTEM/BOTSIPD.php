@@ -85,11 +85,11 @@ class BOTSIPD extends Controller
 
 			if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json'))){
 
-				$dt=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json'));
-				$dt=json_decode($dt);
+				$dt=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json'));
+				$dt=json_decode($dt,true);
 				if($dt['status']==$status){
 					$approve=false;
-					$server_output=$dt;
+					$server_output=$dt['data'];
 				}
 
 			}
@@ -132,14 +132,15 @@ class BOTSIPD extends Controller
 		static::makeData($tahun,$kodepemda);
 
 
-		if($request->json){
-			
+		if($request->json==true){
+
 			$nextid=DB::table('master_daerah')->where('id','>',$kodepemda)->first();
 			
 			return view('sistem.sipd.rkpd.next')->with('daerah',$nextid)
 				   ->with(['tahun'=>$tahun,'kodepemda'=>$kodepemda]);
 			
 		}
+
 
     	static::storingFile($tahun,$kodepemda);
 
@@ -156,7 +157,6 @@ class BOTSIPD extends Controller
     	$jumlah_program=0;
     	$jumlah_ind_program=0;
     	$jumlah_ind_kegiatan=0;
-
 
 
     	$kodepemda=str_replace('00', '', $kodepemda);
@@ -233,7 +233,7 @@ class BOTSIPD extends Controller
     						'id_urusan'=>$id_bidang,
     						'kode_kegiatan'=>$kode_kegiatan,
     						'uraian'=>trim($k['uraikegiatan']),
-    						'anggaran'=>(float)$k['pagu'],
+    						'anggaran'=>(float)($k['pagu']?$k['pagu']:0),
     						'status'=>$status,
     						'kode_bidang'=>$kodebidang,
 		    				'kode_skpd'=>$kodeskpd,
@@ -323,13 +323,12 @@ class BOTSIPD extends Controller
     		'kode_daerah'=>$kodepemda
     	])->pluck('status')->first();
 
-    	if($in_status!=5){
+    	if(true){
 	    	if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json'))){
 	    		$data=json_decode(file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json')),true);
 
 	    		$status=$data['status'];
 	    		if(true){
-	    			// $in_status!=$data['status']
 	    			foreach ($data['data'] as $key => $u){
 	    				$id_program=null;
 	    				$id_kegiatan=null;
@@ -529,7 +528,7 @@ class BOTSIPD extends Controller
 				    						DB::table('prokeg.tb_'.$tahun.'_s_dana as k')->insertOrIgnore([
 				    							'status'=>$ksd['status'],
 				    							'sumber_dana'=>$ksd['sumber_dana'],
-				    							'pagu'=>$ksd['pagu'],
+				    							'pagu'=>(float)$ksd['pagu'],
 				    							'kode_sumber_dana'=>$ksd['kode_sumber_dana'],	
 				    							'kode_daerah'=>$ksd['kode_daerah'],
 					    						'kode_skpd'=>$ksd['kode_skpd'],
@@ -559,22 +558,27 @@ class BOTSIPD extends Controller
 							['status','!=',$status],
 						])->delete();
 
-						DB::table('prokeg.tb_'.$tahun.'_kegiatan')->where([
+						$kk=DB::table('prokeg.tb_'.$tahun.'_kegiatan')->where([
 							['kode_daerah','=',$kodepemda],
 							['status','!=',$status],
 						])->delete();
+						
 						DB::table('prokeg.tb_'.$tahun.'_ind_program')->where([
 							['kode_daerah','=',$kodepemda],
 							['status','!=',$status],
 						])->delete();
+						
 						DB::table('prokeg.tb_'.$tahun.'_ind_kegiatan')->where([
 							['kode_daerah','=',$kodepemda],
 							['status','!=',$status],
 						])->delete();
+						
 						DB::table('prokeg.tb_'.$tahun.'_s_dana')->where([
 							['kode_daerah','=',$kodepemda],
 							['status','!=',$status],
 						])->delete();
+
+						dd($kk);
 
 				    }
 
@@ -622,6 +626,7 @@ class BOTSIPD extends Controller
     		DB::raw("(select concat(c.nama,
                 (case when length(c.id)>3 then (select concat(' / ',d5.nama) from public.master_daerah as d5 where d5.id = left(c.id,2) ) end  )) from public.master_daerah as c where c.id=d.id) as nama_daerah")
     	);
+
     	if($request->provinsi){
     		$data=$data->where('d.kode_daerah_parent',$request->provinsi)->OrWhere('d.id',$request->provinsi);
     	}

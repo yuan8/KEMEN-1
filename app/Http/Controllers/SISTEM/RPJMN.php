@@ -14,6 +14,11 @@ class RPJMN extends Controller
 
     static function trimParse($text){
 
+    	if(strpos(trim($text),trim('PROGRAM  PRIORITAS  (PP)/ KEGIATAN PRIORITAS  (KP)/ PROYEK PRIORITAS (PROP)/ PROYEK'))!==false){
+
+    		return '';
+    	}
+
     	if(strpos($text,'A.')!==false){
     		return '';
     	}
@@ -84,8 +89,9 @@ class RPJMN extends Controller
     		foreach ($sheet->toArray() as $key => $d) {
 
 
-    			
-    			if((static::trimParse($d[0])!='') OR (static::trimParse($d[1])!='')){
+    			if(strpos(static::trimParse($d[2]),'INDIKASI  TARGET')===false){
+
+    					if((static::trimParse($d[0])!='') OR (static::trimParse($d[1])!='')){
 
     				// print_r($d);
     				// print('<br>');
@@ -96,9 +102,7 @@ class RPJMN extends Controller
     					// print('-----PN--');
     					// print('<br>');
 			    		$pnk+=1;
-			    		if($pnk==2){
-			    			$pnk=3;
-			    		}
+			    	
 
 	    				$pn[$pnk]=[
 				    		'id'=>'RPJMN.'.static::numering($pnk),
@@ -271,7 +275,9 @@ class RPJMN extends Controller
 	    				}
 
 	    				if(static::trimParse($d[1])!=''){
-	    					
+	    					if(!isset($pointer_ind)){
+	    						dd($d);
+	    					}
 	    					switch ($pointer_ind) {
 	    						case 'PP':
 	    							$indikator+=1;
@@ -411,11 +417,13 @@ class RPJMN extends Controller
     			}else{
     				
     			}
+    			}	
+    		
 
     		}
     	}
 
-    	Storage::put('RPJMN_FINAL.json',json_encode(static::convert_from_latin1_to_utf8_recursively($pn),JSON_PRETTY_PRINT));
+    	Storage::put('RPJMN_FINAL_2.json',json_encode(static::convert_from_latin1_to_utf8_recursively($pn),JSON_PRETTY_PRINT));
     	// dd($pn[1]['child'][1]);
 
 
@@ -533,7 +541,7 @@ class RPJMN extends Controller
    public function build(){
 
 
-   		$data=file_get_contents(storage_path('app/RPJMN_FINAL.json'));
+   		$data=file_get_contents(storage_path('app/RPJMN_FINAL_2.json'));
    		$data=json_decode($data,true);
 
    		$spreadsheet = new Spreadsheet();

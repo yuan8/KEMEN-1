@@ -179,7 +179,6 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 
 			// Route::get('//{kode_daerah}', 'FORM\IntegrasiNomenCTRL@detail_pro')->name('nomen.pro.detail');
 
-
 			
 		});
 

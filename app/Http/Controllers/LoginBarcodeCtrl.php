@@ -64,9 +64,12 @@ class LoginBarcodeCtrl extends Controller
 
 
 		$date_in=date('mdi');
+
 		$date_in=base64_encode($date_in);
+
 		$url=route('br.login');
 		$url=str_replace('http://localhost', 'http://'.$ip, $url);
+
 		$url=base64_encode($url);
 
 		$return=$url.'Ka&'.$date_in.'MT|'.$key_token;
@@ -76,28 +79,26 @@ class LoginBarcodeCtrl extends Controller
 		}
 
     	$options = new QROptions([
-			'version'    => 5,
+			'version'    => QRCode::VERSION_AUTO,
 			'outputType' => QRCode::OUTPUT_MARKUP_SVG,
 			'eccLevel'   => QRCode::ECC_L,
 		]);
 
 
-
 		// invoke a fresh QRCode instance
 		$qrcode = new QRCode($options);
 
-		// and dump the output
-		$generator=$qrcode->render($return);
+	
+        $data=base64_encode($return);
+
+        $generator=$qrcode->render($return);
+
 
 		return ($generator);
 
 	}
 
     public function landing(Request $request){
-    
-
-    	
-
 
     	
     	$finger=$request->fingerprint();
@@ -258,10 +259,10 @@ class LoginBarcodeCtrl extends Controller
     			}
 
     		}else{
-    				return array('code'=>200,'message'=>'gagal login');
+    				return array('code'=>401,'message'=>'gagal login');
     		}
     	}else{
-    		return array('code'=>200,'message'=>'gagal login');
+    		return array('code'=>401,'message'=>'gagal login');
     	}
 
     }

@@ -43,8 +43,8 @@ class SIPD extends Command
         $tahun=$this->argument('tahun');
         $kode_daerah=$this->argument('kodepemda')?$this->argument('kodepemda').'':null;
         if($kode_daerah){
-             if(strpos('00',$kode_daerah)!==false){
-                $kode_daerah=str_replace('00', '', $kode_daerah);
+             if(strpos(($kode_daerah.''),'00')!==false){
+                $kode_daerah=str_replace('00', '', ($kode_daerah.''));
             }
 
         }
@@ -54,9 +54,9 @@ class SIPD extends Command
 
         $process->setTimeout(10000);
         $process->setPty(true);
-        // $process->run(function ($type, $buffer) {
-        //     echo $buffer;
-        // });
+        $process->run(function ($type, $buffer) {
+            echo $buffer;
+        });
 
         $schema='prokeg';
 
@@ -106,6 +106,7 @@ class SIPD extends Command
                     )->first();
 
                     if(($ds)AND($ds->status!=$d['status'])){
+
                         $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
                         ->where('id',$ds->id)
                         ->update($d);
@@ -114,7 +115,7 @@ class SIPD extends Command
 
                         $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
                         ->where('id',$ds->id)
-                        ->update(['updated_at'=>Carbon::now()]);
+                        ->update(['updated_at'=>Carbon::now(),'status'=>$d['status']]);
                     }
                     else{
 
