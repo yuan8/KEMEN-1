@@ -16,6 +16,8 @@ var width=1300;
 var height=750;
 var args=[];
 args.push(`--window-size=${width},${height}`)
+args.push('--no-sandbox')
+
 
 const puppeteer = require('puppeteer');
 tahun=process.argv[process.argv.length -1];
@@ -25,7 +27,9 @@ async function login(){
 	try{
 
 
-	const browser =  await puppeteer.launch({headless: false,ignoreHTTPSErrors: true,defaultViewport:null,args});
+	const browser =  await puppeteer.launch({headless: false,ignoreHTTPSErrors: true,defaultViewport:null,args,
+      args: ['--no-sandbox']
+  });
 
 	const page = await browser.newPage();
     await page.setDefaultNavigationTimeout(50000);
