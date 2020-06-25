@@ -16,7 +16,11 @@ Route::prefix('bot/rpjmn')->group(function(){
 
 
 Route::prefix('bot/sipd')->group(function(){
+	Route::get('/init/{tahun}','SISTEM\BOTSIPD@init');
+
 	Route::prefix('data-rkpd')->group(function(){
+			Route::get('/listing/{tahun}','SISTEM\BOTSIPD@listing');
+
 		// Route::get('/{tahun}/{kodepemda}','CROW\SIPDCTRL@getJson');
 			Route::get('show/{tahun}','SISTEM\BOTSIPD@indexing');
 			Route::get('store/{tahun}/{kodepemda}','SISTEM\BOTSIPD@getDataJson')->name('bot.sipd.rkpd.store');

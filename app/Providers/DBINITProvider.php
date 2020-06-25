@@ -36,7 +36,7 @@ class DBINITProvider extends ServiceProvider
                 $table->bigIncrements('id');
                 $table->integer('status')->nullable();
                 $table->string('kode_daerah',4)->unsigned();
-              
+                $table->double('anggaran',20,3)->nullable();
                 $table->text('last_date')->nullable();
                 $table->timestamps();
                 $table->index('kode_daerah');
@@ -85,6 +85,8 @@ class DBINITProvider extends ServiceProvider
                 $table->string('kode_daerah',4)->unsigned();
                 $table->bigInteger('id_program')->unsigned();
                 $table->string('kode_ind')->nullable();
+                $table->bigInteger('kode_lintas_urusan')->nullable();
+                $table->bigInteger('jenis')->nullable();
                 $table->text('indikator');
                 $table->double('anggaran',12,3)->nullable()->default(0);
                 $table->text('target_awal')->nullable();
@@ -121,12 +123,13 @@ class DBINITProvider extends ServiceProvider
                 $table->string('kode_skpd')->nullable();
                 $table->string('uraian_skpd')->nullable();
                 $table->string('kode_bidang')->nullable();
+                $table->bigInteger('kode_lintas_urusan')->nullable();
+                $table->bigInteger('jenis')->nullable();
                 $table->text('uraian');
                 $table->double('anggaran',12,3)->nullable()->default(0);
-
                 $table->bigInteger('id_urusan')->unsigned()->nullable();
                 $table->bigInteger('id_sub_urusan')->unsigned()->nullable();
-                // $table->text('pelaksana')->nullable();
+
                 $table->text('keterangan')->nullable();
                 $table->timestamps();
                 $table->unique(['kode_kegiatan','kode_daerah','kode_skpd','kode_bidang','status','id_program']);
@@ -155,12 +158,13 @@ class DBINITProvider extends ServiceProvider
                 $table->string('kode_daerah',4)->unsigned();
                 $table->bigInteger('id_kegiatan')->unsigned();
                 $table->string('kode_ind')->nullable();
+                $table->bigInteger('kode_lintas_urusan')->nullable();
+                $table->bigInteger('jenis')->nullable();
                 $table->text('indikator');
                 $table->double('anggaran',12,3)->nullable()->default(0);
                 $table->text('target_awal')->nullable();
                 $table->text('target_ahir')->nullable();
                 $table->text('satuan')->nullable();
-         
                 $table->string('kode_skpd')->nullable();
                 $table->string('uraian_skpd')->nullable();
                 $table->string('kode_bidang')->nullable();

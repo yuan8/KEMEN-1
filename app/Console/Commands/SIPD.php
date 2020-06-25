@@ -88,7 +88,15 @@ class SIPD extends Command
                 }
 
                 $kodar=str_replace('00', '', $d['kodepemda']);
-                $data_return[$kodar]=array('kode_daerah'=>$kodar,'status'=>$status,'updated_at'=>Carbon::now(),'last_date'=>$d['lastpost']);
+                $pagu=str_replace(',', '.', (str_replace('.', '',$d['pagu'])));
+                $data_return[$kodar]=array(
+                    'kode_daerah'=>$kodar,
+                    'status'=>$status,
+                    'anggaran'=>$d['pagu'],
+                    'updated_at'=>Carbon::now(),
+                    'last_date'=>$d['lastpost'],
+                    'anggaran'=>(float)$pagu
+                );
 
              }
 
@@ -115,7 +123,9 @@ class SIPD extends Command
 
                         $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
                         ->where('id',$ds->id)
-                        ->update(['updated_at'=>Carbon::now(),'status'=>$d['status']]);
+                        ->update(
+                            $d
+                        );
                     }
                     else{
 
@@ -123,6 +133,7 @@ class SIPD extends Command
                         ->where('kode_daerah',$d['kode_daerah'])->insertOrIgnore([
                             'kode_daerah'=>$d['kode_daerah'],
                             'status'=>$d['status'],
+                            'anggaran'=>$d['anggaran'],
                             'last_date'=>$d['last_date'],
                             'created_at'=>Carbon::now(),
                             'updated_at'=>Carbon::now()

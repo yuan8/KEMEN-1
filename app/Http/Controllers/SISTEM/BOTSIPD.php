@@ -9,29 +9,76 @@ use DB;
 use Storage;
 use DBINIT;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 class BOTSIPD extends Controller
 {
 
+	static public function listing($tahun,$cron=false){
+    	// set_time_limit(-1);
+  //   	$dt='1';
+		// if(file_exists(storage_path('app/chace-cron.text'))){
+		// 	$dt=file_get_contents(storage_path('app/chace-cron.text'));
+		// }
+
+		$data=DB::table(DB::raw("(select d.id as kode_daerah,d.nama,(select f.anggaran from prokeg.tb_".$tahun."_status_file_daerah as f where f.kode_daerah=d.id)::numeric as sipd_anggaran,(select f.status from prokeg.tb_".$tahun."_status_file_daerah as f where f.kode_daerah=d.id)::numeric as sipd_status ,max(k.status)::numeric as status ,sum(k.anggaran)::numeric as  anggaran from public.master_daerah as d 
+			left join prokeg.tb_".$tahun."_kegiatan as k on k.kode_daerah=d.id where d.id <> '33' group by d.id) as t"))
+		->where([
+			['sipd_status','!=',DB::raw('status')],
+			['sipd_status','>=',DB::raw('4')],
+
+		])
+		->OrWhere([
+			[DB::raw("round( CAST(anggaran as numeric), 0)"),'!=',DB::raw("round( CAST(sipd_anggaran as numeric), 0)")],
+			['sipd_status','>=',4],
+		])
+		->OrWhere([
+			['status','=',null],
+			['sipd_status','>=',4],
+
+		])
+		->orderBy('sipd_anggaran','desc')->first();
+
+
+
+		if($data){
+
+			$request=new Request;
+			$kodepemda=$data->kode_daerah;
+			$s=static::getDataJson($tahun,$kodepemda,true,$request);
+
+			if($cron){
+				Log::info('SIPD '.$data->nama.'||'.$data->kode_daerah.' --- done');
+
+				echo 'SIPD '.$data->nama.'||'.$data->kode_daerah.' --- done';
+			}
+			Storage::put('chace-cron.text',$data->kode_daerah);
+		}
+
+		return (array) $data;
+
+	}
+
+
+	static public function init($tahun){
+    	DBINIT::rkpd_db($tahun);
+	}
+
 	static function  host(){
-		if( strpos($_SERVER['HTTP_HOST'], '192.168.123.190') !== false) {
+		// if( strpos($_SERVER['HTTP_HOST'], '192.168.123.190') !== false) {
 
-			return 'http://192.168.123.195/';
+		// 	return 'http://192.168.123.195/';
 
-		}else{
+		// }else{
 
 			return 'https://sipd.go.id/';
-		}
+		// }
 
 	}
 
 	static $token='d1d1ab9140c249e34ce356c91e9166a6';
     //
-    public function getDataJson($tahun,$kodepemda,Request $request){	
+    static public function getDataJson($tahun,$kodepemda,$cron=false,Request $request){	
     	set_time_limit(-1);
-
-
-
-    	DBINIT::rkpd_db($tahun);
 
 		if(strlen($kodepemda)<4){
 			$kode_daerah=$kodepemda.'00';
@@ -58,12 +105,13 @@ class BOTSIPD extends Controller
 		$server_output=null;
 
 		try {
+
 			$status=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_status_file_daerah')
-			->where('kode_daerah',$kodepemda)->where('updated_at','>',Carbon::now()->add(-1, 'hour'))->pluck('status')->first();
+			->where('kode_daerah',$kodepemda)->where('updated_at','>',Carbon::now()->add(-4, 'hour'))->pluck('status')->first();
 			if($status){
 
-
 			}else{
+				// dd(Carbon::now()->add(-4, 'hour'));
 				\Artisan::call('sipd:status-rkpd '.$tahun);
 				$status=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_status_file_daerah')
 				->where('kode_daerah',$kodepemda)->pluck('status')->first();
@@ -88,8 +136,11 @@ class BOTSIPD extends Controller
 				$dt=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json'));
 				$dt=json_decode($dt,true);
 				if($dt['status']==$status){
-					$approve=false;
-					$server_output=$dt['data'];
+					if($dt['data']!=[]){
+						$approve=false;
+						$server_output=$dt['data'];
+					}
+					
 				}
 
 			}
@@ -122,15 +173,12 @@ class BOTSIPD extends Controller
 		}
 
 
-
-
 		Storage::put('BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json',json_encode(array('status'=>$status,'data'=>$server_output),JSON_PRETTY_PRINT));
 
 
 		Storage::put('BOT/SIPD/JSON/'.$tahun.'/STATUS/'.$status.'/'.$kodepemda.'.json',json_encode(array('status'=>$status,'data'=>$server_output),JSON_PRETTY_PRINT));
 
 		static::makeData($tahun,$kodepemda);
-
 
 		if($request->json==true){
 
@@ -143,6 +191,10 @@ class BOTSIPD extends Controller
 
 
     	static::storingFile($tahun,$kodepemda);
+
+    	if($cron){
+    		return true;
+    	}
 
 
 		return back();
@@ -157,6 +209,7 @@ class BOTSIPD extends Controller
     	$jumlah_program=0;
     	$jumlah_ind_program=0;
     	$jumlah_ind_kegiatan=0;
+    	$jumlah_anggaran=0;
 
 
     	$kodepemda=str_replace('00', '', $kodepemda);
@@ -186,7 +239,13 @@ class BOTSIPD extends Controller
     				$jumlah_program+=1;
 
     				$kodeprogram=$p['kodeprogram'];
-    			
+
+    				$id_bidang=DB::table('master_urusan')->where('nama','ilike',('%'.$p['uraibidang'].'%'))->pluck('id')->first();
+    				$kodebidang=$p['kodebidang'];
+
+    				if(isset($data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram])){
+    				}
+
     				$data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]=array(
     					'kode_daerah'=>$kodepemda,
     					'kode_program'=>$p['kodeprogram'],
@@ -220,13 +279,18 @@ class BOTSIPD extends Controller
 
     				foreach ($p['kegiatan'] as $k) {
     					$kode_kegiatan=$k['kodekegiatan'];
+
     					if(isset($data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]['kegiatan']['KEGIATAN@'.$kode_kegiatan])){
+    						dd($k);
     					
     					}else{
     					$jumlah_kegiatan+=1;
 
     					}
-    					
+
+    					$jumlah_anggaran+=(float)($k['pagu']?$k['pagu']:0);
+
+ 
 
     					$data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]['kegiatan']['KEGIATAN@'.$kode_kegiatan]=array(
     						'kode_daerah'=>$kodepemda,
@@ -302,7 +366,7 @@ class BOTSIPD extends Controller
 
     		}
 
-    		Storage::put('BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json',json_encode(array('status'=>$status,'jumlah_program'=>$jumlah_program,'jumlah_kegiatan'=>$jumlah_kegiatan,'data'=>$data_return),JSON_PRETTY_PRINT));
+    		Storage::put('BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json',json_encode(array('status'=>$status,'jumlah_program'=>$jumlah_program,'jumlah_kegiatan'=>$jumlah_kegiatan,'jumlah_anggaran'=>$jumlah_anggaran,'data'=>$data_return),JSON_PRETTY_PRINT));
 
     	}else{
 
@@ -343,8 +407,9 @@ class BOTSIPD extends Controller
 	    						'kode_bidang'=>$p['kode_bidang'],
 	    					])->first();
 
-
+    						
 	    					if(($exp) AND ($exp->status!=$p['status'])){
+
 	    						$id_kegiatan=$exp->id;
 	    						DB::table('prokeg.tb_'.$tahun.'_program  as k')->where('id',$id_kegiatan)->update([
 	    							'status'=>$p['status'],
@@ -578,7 +643,7 @@ class BOTSIPD extends Controller
 							['status','!=',$status],
 						])->delete();
 
-						dd($kk);
+						// dd($kk);
 
 				    }
 
