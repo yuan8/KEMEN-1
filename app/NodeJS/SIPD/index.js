@@ -27,7 +27,7 @@ async function login(){
 	try{
 
 
-	const browser =  await puppeteer.launch({headless: false,ignoreHTTPSErrors: true,defaultViewport:null,args,
+	const browser =  await puppeteer.launch({headless: false,ignoreHTTPSErrors: true,defaultViewport:null,
       args: ['--no-sandbox']
   });
 
