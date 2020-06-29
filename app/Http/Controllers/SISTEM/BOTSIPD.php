@@ -197,7 +197,7 @@ class BOTSIPD extends Controller
 			if(is_array($server_output)){
 				
 			}else{
-				$server_output= json_decode(trim($server_output));
+				$server_output= json_decode(trim($server_output),true);
 			}
 			
 		}else{
