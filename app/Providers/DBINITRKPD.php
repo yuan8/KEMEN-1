@@ -104,7 +104,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->mediumText('uraiprogram');
                     $table->string('kodeskpd');
                     $table->string('uraiskpd');
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','id_urusan'],'program_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','id_urusan'],'program_un'.$tahun);
                     // $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram']);
 
                 
@@ -148,7 +148,7 @@ class DBINITRKPD extends ServiceProvider
                     ->references('id')->on($schema.'master_'.$tahun.'_program')
                     ->onDelete('cascade')->onUpdate('cascade');
 
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodeindikator','id_program'],'program_capaian_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodeindikator','id_program'],'program_capaian_un'.$tahun);
                 
                 });
 
@@ -178,7 +178,7 @@ class DBINITRKPD extends ServiceProvider
                     ->references('id')->on($schema.'master_'.$tahun.'_program')
                     ->onDelete('cascade')->onUpdate('cascade');
 
-                     $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodeprioritas','jenis','id_program'],'program_prio_un');
+                     $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodeprioritas','jenis','id_program'],'program_prio_un'.$tahun);
                 
                 });
 
@@ -212,7 +212,7 @@ class DBINITRKPD extends ServiceProvider
                     }
 
 
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','id_urusan','id_program'],'kegiatan_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','id_urusan','id_program'],'kegiatan_un'.$tahun);
                    
 
                      $table->foreign('id_program')
@@ -254,7 +254,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->double('pagu_n1',20,3)->nullable();
 
 
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeindikator','id_kegiatan'],'kegiatan_indikator_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeindikator','id_kegiatan'],'kegiatan_indikator_un'.$tahun);
 
                     // $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeindikator'],'kegiatan_indikator_index_un');
 
@@ -286,7 +286,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->double('pagu',20,2)->default(0);
 
                
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesumberdana','id_kegiatan','sumberdana'],'kegiatan_sumberdana_index_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesumberdana','id_kegiatan','sumberdana'],'kegiatan_sumberdana_index_un'.$tahun);
 
                      $table->foreign('id_kegiatan')
                     ->references('id')->on($schema.'master_'.$tahun.'_kegiatan')
@@ -316,7 +316,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->mediumText('detaillokasi')->nullable();
 
                  
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodelokasi','id_kegiatan'],'kegiatan_lokasi_index_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodelokasi','id_kegiatan'],'kegiatan_lokasi_index_un'.$tahun);
 
                      $table->foreign('id_kegiatan')
                     ->references('id')->on($schema.'master_'.$tahun.'_kegiatan')
@@ -345,7 +345,7 @@ class DBINITRKPD extends ServiceProvider
 
                     // $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeprioritas'],'kegiatan_prio_un');
 
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeprioritas','id_kegiatan','jenis'],'kegiatan_prio_index_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeprioritas','id_kegiatan','jenis'],'kegiatan_prio_index_un'.$tahun);
 
                      $table->foreign('id_kegiatan')
                     ->references('id')->on($schema.'master_'.$tahun.'_kegiatan')
@@ -377,7 +377,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->double('pagu_p',20,3)->default(0);
 
                     // $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan'],'sub_un');
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','id_kegiatan'],'sub_index_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','id_kegiatan'],'sub_index_un'.$tahun);
 
                      $table->foreign('id_kegiatan')
                     ->references('id')->on($schema.'master_'.$tahun.'_kegiatan')
@@ -420,7 +420,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->double('pagu_n1',20,3)->nullable();
 
 
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodeindikator'],'sub_indikator_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodeindikator'],'sub_indikator_un'.$tahun);
                  
                      $table->foreign('id_sub_kegiatan')
                     ->references('id')->on($schema.'master_'.$tahun.'_kegiatan_sub')
@@ -450,7 +450,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->mediumText('lokasi')->nullable();
                     $table->mediumText('detaillokasi')->nullable();
 
-                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodelokasi','id_sub_kegiatan'],'sub_lokasi_un');
+                    $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodelokasi','id_sub_kegiatan'],'sub_lokasi_un_'.$tahun);
                     // $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodelokasi','kodesubkegiatan','id_sub_kegiatan'],'sub_lokasi_index_un');
 
                      $table->foreign('id_sub_kegiatan')
@@ -479,7 +479,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('jenis',50)->nullable();
                     $table->mediumText('uraiprioritas')->nullable();
 
-                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodeprioritas','jenis',],'subprioun');
+                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodeprioritas','jenis',],'subprioun'.$tahun);
                    
                      $table->foreign('id_sub_kegiatan')
                     ->references('id')->on($schema.'master_'.$tahun.'_kegiatan_sub')
