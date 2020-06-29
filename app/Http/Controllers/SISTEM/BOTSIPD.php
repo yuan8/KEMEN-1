@@ -776,7 +776,7 @@ class BOTSIPD extends Controller
 		   				}else{
 		   					$dt['id_program']=$id_program;
 		   					DB::connection($con)->table($schema.'master_'.$tahun.'_program_capaian')
-		   					->insertGetId(static::dataInsert($dt));
+		   					->insertOrIgnore(static::dataInsert($dt));
 		   				}
 	   					# code...
 	   				}
@@ -823,8 +823,8 @@ class BOTSIPD extends Controller
 			   					->where('id',$px->id)->update(static::dataInsert($dk));
 			   				}else{
 			   					$dk['id_kegiatan']=$id_kegiatan;
-			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_indikator')
-			   					->insertGetId(static::dataInsert($dk));
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_indikator')
+			   					->insertOrIgnore(static::dataInsert($dk));
 			   				}
 
 		   				}
@@ -847,7 +847,7 @@ class BOTSIPD extends Controller
 			   					->where('id',$px->id)->update(static::dataInsert($dk));
 			   				}else{
 			   					$dk['id_kegiatan']=$id_kegiatan;
-			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sumberdana')
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sumberdana')
 			   					->insertGetId(static::dataInsert($dk));
 			   				}
 
@@ -871,7 +871,7 @@ class BOTSIPD extends Controller
 			   					->where('id',$px->id)->update(static::dataInsert($dk));
 			   				}else{
 			   					$dk['id_kegiatan']=$id_kegiatan;
-			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_lokasi')
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_lokasi')
 			   					->insertGetId(static::dataInsert($dk));
 			   				}
 
