@@ -101,7 +101,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('uraibidang');
                     $table->integer('id_urusan')->nullable();
                     $table->string('kodeprogram');
-                    $table->text('uraiprogram');
+                    $table->mediumText('uraiprogram');
                     $table->string('kodeskpd');
                     $table->string('uraiskpd');
                     $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','id_urusan'],'program_un');
@@ -125,18 +125,18 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeprogram');
                     $table->string('kodeskpd');
                     $table->string('kodeindikator')->nullable();
-                    $table->text('tolokukur');
-                    $table->text('satuan')->nullable();
-                    $table->text('real_p3')->nullable();
+                    $table->mediumText('tolokukur');
+                    $table->mediumText('satuan')->nullable();
+                    $table->mediumText('real_p3')->nullable();
                     $table->double('pagu_p3',20,3)->nullable();
-                    $table->text('real_p2')->nullable();
+                    $table->mediumText('real_p2')->nullable();
                     $table->double('pagu_p2',20,3)->nullable();
-                    $table->text('real_p1')->nullable();
+                    $table->mediumText('real_p1')->nullable();
                     $table->double('pagu_p1',20,3)->nullable();
-                    $table->text('target')->nullable();
+                    $table->mediumText('target')->nullable();
                     $table->double('pagu',20,3)->nullable();
                     $table->double('pagu_p',20,3)->nullable();
-                    $table->text('target_n1')->nullable();
+                    $table->mediumText('target_n1')->nullable();
                     $table->double('pagu_n1',20,3)->nullable();
 
                     if($schema!=''){
@@ -169,7 +169,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeprogram');
                     $table->string('kodeprioritas')->nullable();
                     $table->string('jenis')->nullable();
-                    $table->text('uraiprioritas')->nullable();
+                    $table->mediumText('uraiprioritas')->nullable();
 
                     // $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodeprioritas']);
                    
@@ -200,7 +200,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeskpd');
                     $table->string('kodeprogram');
                     $table->string('kodekegiatan');
-                    $table->text('uraikegiatan');
+                    $table->mediumText('uraikegiatan');
                     $table->double('pagu',20,3)->nullable()->default(0);
                     $table->double('pagu_p',20,3)->nullable()->default(0);
 
@@ -239,18 +239,18 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeprogram');
                     $table->string('kodekegiatan');
                     $table->string('kodeindikator')->nullable();
-                    $table->text('tolokukur');
-                    $table->text('satuan')->nullable();
-                    $table->text('real_p3')->nullable();
+                    $table->mediumText('tolokukur');
+                    $table->mediumText('satuan')->nullable();
+                    $table->mediumText('real_p3')->nullable();
                     $table->double('pagu_p3',20,3)->nullable();
-                    $table->text('real_p2')->nullable();
+                    $table->mediumText('real_p2')->nullable();
                     $table->double('pagu_p2',20,3)->nullable();
-                    $table->text('real_p1')->nullable();
+                    $table->mediumText('real_p1')->nullable();
                     $table->double('pagu_p1',20,3)->nullable();
-                    $table->text('target')->nullable();
+                    $table->mediumText('target')->nullable();
                     $table->double('pagu',20,3)->nullable();
                     $table->double('pagu_p',20,3)->nullable();
-                    $table->text('target_n1')->nullable();
+                    $table->mediumText('target_n1')->nullable();
                     $table->double('pagu_n1',20,3)->nullable();
 
 
@@ -312,8 +312,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeprogram');
                     $table->string('kodekegiatan');
                     $table->string('kodelokasi')->nullable();
-                    $table->text('lokasi',1000)->nullable();
-                    $table->text('detaillokasi',1000)->nullable();
+                    $table->mediumText('lokasi')->nullable();
+                    $table->mediumText('detaillokasi')->nullable();
 
                  
                     $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodelokasi','id_kegiatan','detaillokasi'],'kegiatan_lokasi_index_un');
@@ -341,7 +341,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodekegiatan');
                     $table->string('kodeprioritas')->nullable();
                     $table->string('jenis')->nullable();
-                    $table->text('uraiprioritas')->nullable();
+                    $table->mediumText('uraiprioritas')->nullable();
 
                     // $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeprioritas'],'kegiatan_prio_un');
 
@@ -372,7 +372,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeprogram');
                     $table->string('kodekegiatan');
                     $table->string('kodesubkegiatan')->nullable();
-                    $table->text('uraisubkegiatan')->nullable();
+                    $table->mediumText('uraisubkegiatan')->nullable();
                     $table->double('pagu',20,3)->default(0);
                     $table->double('pagu_p',20,3)->default(0);
 
@@ -405,18 +405,18 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodekegiatan');
                     $table->string('kodesubkegiatan')->nullable();
                     $table->string('kodeindikator')->nullable();
-                    $table->text('tolokukur');
-                    $table->text('satuan')->nullable();
-                    $table->text('real_p3')->nullable();
+                    $table->mediumText('tolokukur');
+                    $table->mediumText('satuan')->nullable();
+                    $table->mediumText('real_p3')->nullable();
                     $table->double('pagu_p3',20,3)->nullable();
-                    $table->text('real_p2')->nullable();
+                    $table->mediumText('real_p2')->nullable();
                     $table->double('pagu_p2',20,3)->nullable();
-                    $table->text('real_p1')->nullable();
+                    $table->mediumText('real_p1')->nullable();
                     $table->double('pagu_p1',20,3)->nullable();
-                    $table->text('target')->nullable();
+                    $table->mediumText('target')->nullable();
                     $table->double('pagu',20,3)->nullable();
                     $table->double('pagu_p',20,3)->nullable();
-                    $table->text('target_n1')->nullable();
+                    $table->mediumText('target_n1')->nullable();
                     $table->double('pagu_n1',20,3)->nullable();
 
 
@@ -447,8 +447,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodekegiatan');
                     $table->string('kodesubkegiatan');
                     $table->string('kodelokasi')->nullable();
-                    $table->text('lokasi',1000)->nullable();
-                    $table->text('detaillokasi',1000)->nullable();
+                    $table->mediumText('lokasi')->nullable();
+                    $table->mediumText('detaillokasi')->nullable();
 
                     $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodelokasi','detaillokasi','id_sub_kegiatan'],'sub_lokasi_un');
                     // $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodelokasi','kodesubkegiatan','id_sub_kegiatan'],'sub_lokasi_index_un');
@@ -477,7 +477,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodesubkegiatan');
                     $table->string('kodeprioritas')->nullable();
                     $table->string('jenis',50)->nullable();
-                    $table->text('uraiprioritas')->nullable();
+                    $table->mediumText('uraiprioritas')->nullable();
 
                     $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodeprioritas','jenis',],'subprioun');
                    
