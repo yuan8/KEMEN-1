@@ -7,6 +7,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use App\Policies\PostPolicy;
 use Illuminate\Support\Facades\Gate;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use Illuminate\Support\Facades\Schema;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Dispatcher $events)
     {
         //
+        Schema::defaultStringLength(151);
 
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
             $event->menu->add('MAIN NAVIGATION');

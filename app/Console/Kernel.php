@@ -26,9 +26,22 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
+
         $schedule->call(function () {
-            BOTSIPD::listing(2021,true);
+            BOTSIPD::listing(2021,4,true);
+        })->everyFiveMinutes()->timezone('Asia/Jakarta');
+
+
+        $schedule->call(function () {
+            BOTSIPD::listing(2021,0,true);
+        })->everyTenMinutes()->timezone('Asia/Jakarta');
+
+
+        $schedule->call(function () {
+            BOTSIPD::listing(2020,4,true);
         })->everyThirtyMinutes()->timezone('Asia/Jakarta');
+
+        
     }
 
     /**

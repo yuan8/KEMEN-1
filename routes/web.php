@@ -11,6 +11,11 @@
 |
 */
 
+Route::get('rkpd-i',function(){
+	RKPDProvider::init(2021);
+	return 'done';
+});
+
 Route::get('/', 'LoginBarcodeCtrl@landing');
 
 // Route::get('/aaa','FORM\IntegrasiCtrl@testing');

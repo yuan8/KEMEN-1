@@ -100,51 +100,31 @@ class SIPD extends Command
 
              }
 
-             foreach ($data_return as $key => $d) {
+             $cons=[
+                'myranwal'=>'',
+                'myfinal'=>'',
+                'pgsql'=>'rkpd.'
+             ];
+
+            foreach ($cons as $con => $schema) {
+                # code...
+                foreach ($data_return as $key => $d) {
+                    $data=[
+                        'kodepemda'=>$d['kode_daerah'],
+                        'status'=>$d['status'],
+                        'anggaran'=>$d['anggaran'],
+                        'last_date'=>$d['last_date'],
+                        'created_at'=>Carbon::now(),
+                        'updated_at'=>Carbon::now()
+                    ];
+
+                    DB::connection($con)->table($schema.'master_'.$tahun.'_status')->updateOrInsert([
+                        'kodepemda'=>$data['kodepemda']
+                    ],$data);
+                 }
 
 
-                if(substr($d['kode_daerah'],0,2)!='99'){
-
-                    $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
-                    ->where(
-                        [
-                            ['kode_daerah','=',$d['kode_daerah']],
-                            // ['status','!=',$d['status']]
-                        ]
-                    )->first();
-
-                    if(($ds)AND($ds->status!=$d['status'])){
-
-                        $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
-                        ->where('id',$ds->id)
-                        ->update($d);
-
-                    }else if($ds){
-
-                        $ds=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
-                        ->where('id',$ds->id)
-                        ->update(
-                            $d
-                        );
-                    }
-                    else{
-
-                        $di=DB::connection('sink_prokeg')->table($schema."."."tb_".$tahun."_status_file_daerah")
-                        ->where('kode_daerah',$d['kode_daerah'])->insertOrIgnore([
-                            'kode_daerah'=>$d['kode_daerah'],
-                            'status'=>$d['status'],
-                            'anggaran'=>$d['anggaran'],
-                            'last_date'=>$d['last_date'],
-                            'created_at'=>Carbon::now(),
-                            'updated_at'=>Carbon::now()
-                        ]);
-                    }
-                }else{
-
-
-                }
-             }
-
+            }
 
              if($kode_daerah){
                 return $data_return[$kode_daerah];

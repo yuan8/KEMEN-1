@@ -20,6 +20,7 @@ Route::prefix('bot/sipd')->group(function(){
 
 	Route::prefix('data-rkpd')->group(function(){
 			Route::get('/listing/{tahun}','SISTEM\BOTSIPD@listing');
+			Route::get('test/{tahun}/{kodepemda}/{d?}','SISTEM\BOTSIPD@building');
 
 		// Route::get('/{tahun}/{kodepemda}','CROW\SIPDCTRL@getJson');
 			Route::get('show/{tahun}','SISTEM\BOTSIPD@indexing');

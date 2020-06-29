@@ -234,9 +234,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Hp'=> App\Providers\HelperProvider::class,
         'DBINIT'=> App\Providers\DBINITProvider::class,
-
+        'RKPDProvider'=> App\Providers\DBINITRKPD::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
-
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class,
 

@@ -13,27 +13,41 @@ use Illuminate\Support\Facades\Log;
 class BOTSIPD extends Controller
 {
 
-	static public function listing($tahun,$cron=false){
-    	// set_time_limit(-1);
+	static public function listing($tahun,$status_min=0,$cron=false){
+    	set_time_limit(-1);
+    	if($status_min<4){
+    		$con='myranwal';
+    		$schema='';
+    	}else if($status_sipd>=4){
+    		$con='myfinal';
+    		$schema='';
+    	}else if($status_min==6){
+    		$con='pgsql';
+    		$schema='rkpd.';
+    	}
+
+
+
   //   	$dt='1';
 		// if(file_exists(storage_path('app/chace-cron.text'))){
 		// 	$dt=file_get_contents(storage_path('app/chace-cron.text'));
+
 		// }
 
-		$data=DB::table(DB::raw("(select d.id as kode_daerah,d.nama,(select f.anggaran from prokeg.tb_".$tahun."_status_file_daerah as f where f.kode_daerah=d.id)::numeric as sipd_anggaran,(select f.status from prokeg.tb_".$tahun."_status_file_daerah as f where f.kode_daerah=d.id)::numeric as sipd_status ,max(k.status)::numeric as status ,sum(k.anggaran)::numeric as  anggaran from public.master_daerah as d 
-			left join prokeg.tb_".$tahun."_kegiatan as k on k.kode_daerah=d.id where d.id <> '33' group by d.id) as t"))
+		$data=DB::connection($con)->table(DB::raw("(select d.id as kodepemda,d.nama,(select f.anggaran from ".$schema."master_".$tahun."_status as f where f.kodepemda=d.id)".($schema!=''?'::numeric':'')." as sipd_anggaran,(select f.status from ".$schema."master_".$tahun."_status as f where f.kodepemda=d.id)".($schema!=''?'::numeric':'')." as sipd_status ,max(k.status)".($schema!=''?'::numeric':'')." as status ,sum(k.pagu)".($schema!=''?'::numeric':'')." as  anggaran from ".$schema."master_daerah as d 
+			left join ".$schema."master_".$tahun."_kegiatan as k on k.kodepemda=d.id  group by d.id) as t"))
 		->where([
 			['sipd_status','!=',DB::raw('status')],
-			['sipd_status','>=',DB::raw('4')],
+			['sipd_status','>=',DB::raw($status_min)],
 
 		])
 		->OrWhere([
-			[DB::raw("round( CAST(anggaran as numeric), 0)"),'!=',DB::raw("round( CAST(sipd_anggaran as numeric), 0)")],
-			['sipd_status','>=',4],
+			[($schema!=''?DB::raw("round( CAST(anggaran as numeric), 0)"):'anggaran'),'!=',($schema!=''?DB::raw("round( CAST(sipd_anggaran as numeric), 0)"):'anggaran')],
+			['sipd_status','>=',$status_min],
 		])
 		->OrWhere([
 			['status','=',null],
-			['sipd_status','>=',4],
+			['sipd_status','>=',$status_min],
 
 		])
 		->orderBy('sipd_anggaran','desc')->first();
@@ -43,15 +57,21 @@ class BOTSIPD extends Controller
 		if($data){
 
 			$request=new Request;
-			$kodepemda=$data->kode_daerah;
-			$s=static::getDataJson($tahun,$kodepemda,true,$request);
+			$kodepemda=$data->kodepemda;
+
+			$s=static::getDataJson($tahun,$kodepemda,$status_min,true,$request);
+
+
 
 			if($cron){
-				Log::info('SIPD '.$data->nama.'||'.$data->kode_daerah.' --- done');
+				Log::info('SIPD '.$data->nama.'||'.$data->kodepemda.' --- done');
 
-				echo 'SIPD '.$data->nama.'||'.$data->kode_daerah.' --- done';
+				echo 'SIPD '.$data->nama.'||'.$data->kodepemda.' --- done';
 			}
-			Storage::put('chace-cron.text',$data->kode_daerah);
+			Storage::put('chace-cron.text',$data->kodepemda);
+		}else{
+
+			\Artisan::call('sipd:status-rkpd '.$tahun);
 		}
 
 		return (array) $data;
@@ -77,7 +97,7 @@ class BOTSIPD extends Controller
 
 	static $token='d1d1ab9140c249e34ce356c91e9166a6';
     //
-    static public function getDataJson($tahun,$kodepemda,$cron=false,Request $request){	
+    static public function getDataJson($tahun,$kodepemda,$min_status,$cron=false,Request $request){	
     	set_time_limit(-1);
 
 		if(strlen($kodepemda)<4){
@@ -87,6 +107,18 @@ class BOTSIPD extends Controller
 		}
 		$kodepemda=str_replace('00', '',$kodepemda);
 		$status=0;
+
+
+		$schema='';
+
+		if($min_status<4){
+			$con='myranwal';
+		}else if($min_status==6){
+			$con='pgsql';
+			$schema='rkpd.';
+		}else{
+			$con='myfinal';
+		}
 
     	
 
@@ -106,15 +138,15 @@ class BOTSIPD extends Controller
 
 		try {
 
-			$status=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_status_file_daerah')
-			->where('kode_daerah',$kodepemda)->where('updated_at','>',Carbon::now()->add(-4, 'hour'))->pluck('status')->first();
+			$status=DB::connection($con)->table($schema.'master_'.$tahun.'_status')
+			->where('kodepemda',$kodepemda)->where('updated_at','>',Carbon::now()->add(-3, 'hour'))->pluck('status')->first();
 			if($status){
 
 			}else{
 				// dd(Carbon::now()->add(-4, 'hour'));
 				\Artisan::call('sipd:status-rkpd '.$tahun);
-				$status=DB::connection('sink_prokeg')->table('tb_'.$tahun.'_status_file_daerah')
-				->where('kode_daerah',$kodepemda)->pluck('status')->first();
+				$status=DB::connection($con)->table($schema.'master_'.$tahun.'_status')
+				->where('kodepemda',$kodepemda)->pluck('status')->first();
 			}
 
 			if($status==null){
@@ -131,7 +163,7 @@ class BOTSIPD extends Controller
 
 			$approve=true;
 
-			if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA_MAKE/'.$kodepemda.'.json'))){
+			if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/BUILD/'.$kodepemda.'.json'))){
 
 				$dt=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json'));
 				$dt=json_decode($dt,true);
@@ -173,12 +205,14 @@ class BOTSIPD extends Controller
 		}
 
 
-		Storage::put('BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json',json_encode(array('status'=>$status,'data'=>$server_output),JSON_PRETTY_PRINT));
+		$data_json=array('status'=>$status,'data'=>$server_output);
+
+		Storage::put('BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json',json_encode($data_json,JSON_PRETTY_PRINT));
 
 
-		Storage::put('BOT/SIPD/JSON/'.$tahun.'/STATUS/'.$status.'/'.$kodepemda.'.json',json_encode(array('status'=>$status,'data'=>$server_output),JSON_PRETTY_PRINT));
+		Storage::put('BOT/SIPD/JSON/'.$tahun.'/STATUS/'.$status.'/'.$kodepemda.'.json',json_encode($data_json,JSON_PRETTY_PRINT));
 
-		static::makeData($tahun,$kodepemda);
+		$data_returning_build=static::building($tahun,$kodepemda,$data_json);
 
 		if($request->json==true){
 
@@ -190,7 +224,7 @@ class BOTSIPD extends Controller
 		}
 
 
-    	static::storingFile($tahun,$kodepemda);
+    	static::storingData($tahun,$kodepemda,$data_returning_build,$min_status);
 
     	if($cron){
     		return true;
@@ -202,6 +236,798 @@ class BOTSIPD extends Controller
 		return 'data-transform-done';
 
     }
+
+
+
+   public static function  building($tahun,$kodepemda,$data=null){
+    	set_time_limit(-1);
+
+
+   	if(strpos((string)$kodepemda, '00')!==false){
+   		$kodepemda=str_replace('00', '', (string)$kodepemda);
+   	
+   	}
+
+   	if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json'))){
+   		if($data==null){
+   			$data=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json'));
+   			$data=json_decode($data,true);
+   		}
+   		
+   		$status=$data['status'];
+   		$nama_daerah=DB::table('master_daerah')->where('id',$kodepemda)->pluck('nama')->first();
+   		$data_return=[
+   			'kodepemda'=>$kodepemda,
+   			'nama_daerah'=>$nama_daerah,
+   			'status'=>$status,
+   			'jumlah_kegiatan'=>0,
+   			'jumlah_program'=>0,
+   			'jumlah_anggaran'=>0,
+   			'jumlah_indikator_program'=>0,
+   			'jumlah_indikator_kegiatan'=>0,
+   			'data'=>[]
+   		];
+
+
+   		$kodecapaian=0;
+   		$kodeprioritas=0;
+   		$kodekegiatansumberdata=0;
+
+
+   		foreach ($data['data'] as $key => $u) {
+   			foreach ($u['program'] as $key => $p) {
+   				$id_urusan=DB::table('master_urusan')->where('nama','ilike',('%'.$u['uraibidang'].'%'))->pluck('id')->first();
+
+   				$kodeskpd=$u['kodeskpd'];
+   				$uraiskpd=$u['uraiskpd'];
+   				$kodebidang=$p['kodebidang'];
+   				$uraibidang=$p['uraibidang'];
+   				$kodeprogram=$p['kodeprogram'];
+
+   				$kode_p='P.'.$kodebidang.'.'.$kodeskpd.'.'.$kodeprogram;
+
+   				if(!isset($data_return['data'][$kode_p])){
+   					$data_return['jumlah_program']+=1;
+
+   					$data_return['data'][$kode_p]=array(
+   						'status'=>$status,
+   						'kodepemda'=>$kodepemda,
+   						'tahun'=>$tahun,
+   						'kodebidang'=>$kodebidang,
+   						'uraibidang'=>$uraibidang,
+   						'id_urusan'=>$id_urusan,
+   						'kodeprogram'=>$kodeprogram,
+   						'uraiprogram'=>$p['uraiprogram'],
+   						'kodeskpd'=>$kodeskpd,
+   						'uraiskpd'=>$uraiskpd,
+   						'capaian'=>[],
+   						'prioritas'=>[],
+   						'kegiatan'=>[]
+   					);
+   				}
+
+   				foreach ($p['capaian'] as $key => $c) {
+
+   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
+
+   						$data_return['jumlah_indikator_program']+=1;
+
+						$data_return['data'][$kode_p]['capaian'][]=array(
+							'status'=>$status,
+
+							'kodepemda'=>$kodepemda,
+							'tahun'=>$tahun,
+							'kodebidang'=>$kodebidang,
+							'kodeskpd'=>$kodeskpd,
+							'kodeprogram'=>$kodeprogram,
+							'kodeindikator'=>$c['kodeindikator'],
+							'tolokukur'=>$c['tolokukur'],
+							'satuan'=>$c['satuan'],
+							'satuan'=>$c['satuan'],
+							'real_p3'=>$c['real_p3'],
+							'pagu_p3'=>(float)$c['pagu_p3'],
+							'real_p2'=>$c['real_p2'],
+							'pagu_p2'=>(float)$c['pagu_p2'],
+							'real_p1'=>$c['real_p1'],
+							'pagu_p1'=>(float)$c['pagu_p1'],
+							'target'=>$c['target'],
+							'pagu'=>(float)$c['pagu'],
+							'pagu_p'=>(float)$c['pagu_p'],
+							'pagu_n1'=>(float)$c['pagu_n1'],
+
+						);	
+
+   					}
+
+					
+   				}
+
+   				foreach ($p['prioritas'] as $l => $pprio) {
+   					foreach ($pprio as $keypprio => $prio) {
+
+	   					if((!empty($prio))AND($prio!='')){
+
+							$data_return['data'][$kode_p]['prioritas'][]=array(
+								'status'=>$status,
+
+								'kodepemda'=>$kodepemda,
+								'tahun'=>$tahun,
+								'kodebidang'=>$kodebidang,
+								'kodeskpd'=>$kodeskpd,
+								'kodeprogram'=>$kodeprogram,
+								'kodeprioritas'=>$l,
+								'jenis'=>$keypprio,
+								'uraiprioritas'=>$prio
+							);
+
+	   					}
+   						# code...
+   					}
+					
+   				}
+
+
+
+   				foreach ($p['kegiatan'] as $key => $k) {
+
+   					$kodekegiatan=$k['kodekegiatan'];
+
+   					$kode_k=$kode_p.'.'.$kodekegiatan;
+
+   					if(!isset($data_return['data'][$kode_p]['kegiatan'][$kode_k])){
+   						$data_return['jumlah_kegiatan']+=1;
+   						$data_return['jumlah_anggaran']+=$k['pagu'];
+
+
+   						$data_return['data'][$kode_p]['kegiatan'][$kode_k]=array(
+   							'status'=>$status,
+   							'kodepemda'=>$kodepemda,
+   							'tahun'=>$tahun,
+   							'kodebidang'=>$kodebidang,
+   							'id_urusan'=>$id_urusan,
+   							'kodeskpd'=>$kodeskpd,
+   							'kodeprogram'=>$kodeprogram,
+   							'kodekegiatan'=>$kodekegiatan,
+   							'uraikegiatan'=>$k['uraikegiatan'],
+   							'pagu'=>(float)$k['pagu'],
+   							'pagu_p'=>(float)$k['pagu_p'],
+   							'sumberdana'=>[],
+   							'prioritas'=>[],
+   							'lokasi'=>[],
+   							'indikator'=>[],
+   							'sub_kegiatan'=>[]
+
+   						);
+
+   					}
+
+   					foreach ($k['prioritas'] as $l => $pprio) {
+	   					foreach ($pprio as $keypprio => $prio) {
+
+		   					if((!empty($prio))AND($prio!='')){
+
+								$data_return['data'][$kode_p]['kegiatan'][$kode_k]['prioritas'][]=array(
+									'status'=>$status,
+
+									'kodepemda'=>$kodepemda,
+									'tahun'=>$tahun,
+									'kodebidang'=>$kodebidang,
+									'kodeskpd'=>$kodeskpd,
+   									'kodeprogram'=>$kodeprogram,
+									'kodekegiatan'=>$kodekegiatan,
+									'kodeprioritas'=>$l,
+									'jenis'=>$keypprio,
+									'uraiprioritas'=>$prio,
+								);	
+
+		   					}
+	   						# code...
+	   					}
+						
+	   				}
+
+	   				if(is_array($k['sumberdana'])){
+	   					foreach ($k['sumberdana'] as $keyl => $c) {
+
+
+		   					if((!empty($c['sumberdana']))AND($c['sumberdana']!='')){
+
+		   						$kode_sd=strtolower(str_replace(' ', '_', trim($c['sumberdana'])));
+
+								if(!isset($data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd])){
+									$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd]=array(
+										'status'=>$status,
+										'kodepemda'=>$kodepemda,
+										'tahun'=>$tahun,
+										'kodebidang'=>$kodebidang,
+										'kodeskpd'=>$kodeskpd,
+		   								'kodeprogram'=>$kodeprogram,
+										'kodekegiatan'=>$kodekegiatan,
+										'kodesumberdana'=>$c['kodesumberdana']!=''?$c['kodesumberdana']:$keyl,
+										'sumberdana'=>$c['sumberdana'],
+										'pagu'=>(isset($c['pagu']))?(float)$c['pagu']:0,
+									);	
+								}else{
+									$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd]+=(isset($c['pagu']))?(float)$c['pagu']:0;
+								}
+
+		   					}
+
+	   					}
+	   				}
+
+
+	   				foreach ($k['lokasi'] as $keyl => $c) {
+
+	   					if((!empty($c['lokasi']))AND($c['lokasi']!='')){
+
+							$data_return['data'][$kode_p]['kegiatan'][$kode_k]['lokasi'][]=array(
+								'status'=>$status,
+
+								'kodepemda'=>$kodepemda,
+								'tahun'=>$tahun,
+								'kodebidang'=>$kodebidang,
+								'kodeskpd'=>$kodeskpd,
+   								'kodeprogram'=>$kodeprogram,
+								'kodekegiatan'=>$kodekegiatan,
+								'kodelokasi'=>$c['kodelokasi']!=''?$c['kodelokasi']:$keyl,
+								'lokasi'=>$c['lokasi'],
+								'detaillokasi'=>$c['detaillokasi'],
+							);	
+
+	   					}
+
+	   				}
+
+
+
+	   				foreach ($k['indikator'] as $key => $c) {
+
+	   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
+
+	   						$data_return['jumlah_indikator_kegiatan']+=1;
+							$data_return['data'][$kode_p]['kegiatan'][$kode_k]['indikator'][]=array(
+								'status'=>$status,
+								'kodepemda'=>$kodepemda,
+								'tahun'=>$tahun,
+								'kodebidang'=>$kodebidang,
+								'kodeskpd'=>$kodeskpd,
+   								'kodeprogram'=>$kodeprogram,
+								'kodekegiatan'=>$kodekegiatan,
+								'kodeindikator'=>$c['kodeindikator'],
+								'tolokukur'=>$c['tolokukur'],
+								'satuan'=>$c['satuan'],
+								'satuan'=>$c['satuan'],
+								'real_p3'=>$c['real_p3'],
+								'pagu_p3'=>(float)$c['pagu_p3'],
+								'real_p2'=>$c['real_p2'],
+								'pagu_p2'=>(float)$c['pagu_p2'],
+								'real_p1'=>$c['real_p1'],
+								'pagu_p1'=>(float)$c['pagu_p1'],
+								'target'=>$c['target'],
+								'pagu'=>(float)$c['pagu'],
+								'pagu_p'=>(float)$c['pagu_p'],
+								'pagu_n1'=>(isset($c['pagu_n1']))?(float)$c['pagu_n1']:0,
+
+							);	
+
+	   					}
+
+						
+	   				}
+
+	   				if(isset($k['sub_kegiatan'])){
+	   					foreach ($k['sub_kegiatan'] as $key => $s) {
+		   					$kodesubkegiatan=$s['kodesubkegiatan'];
+		   					$kode_s=$kode_k.'.'.$kodesubkegiatan;
+
+		   					if(!isset($data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s])){
+
+
+		   						$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]=array(
+									'status'=>$status,
+		   							'kodepemda'=>$kodepemda,
+		   							'tahun'=>$tahun,
+		   							'kodebidang'=>$kodebidang,
+		   							'id_urusan'=>$id_urusan,
+		   							'kodeskpd'=>$kodeskpd,
+		   							'kodeprogram'=>$kodeprogram,
+		   							'kodekegiatan'=>$kodekegiatan,
+		   							'kodesubkegiatan'=>$kodesubkegiatan,
+		   							'uraisubkegiatan'=>$s['uraisubkegiatan'],
+		   							'pagu'=>(float)$s['pagu'],
+		   							'pagu_p'=>(float)$s['pagu_p'],
+		   							'prioritas'=>[],
+		   							'lokasi'=>[],
+		   							'indikator'=>[],
+		   							'sub_kegiatan'=>[]
+		   						);
+
+		   					}
+
+
+
+	   						foreach ($s['prioritas'] as $l => $pprio) {
+			   					foreach ($pprio as $keypprio => $prio) {
+
+				   					if((!empty($prio))AND($prio!='')){
+
+										$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['prioritas'][]=array(
+											'status'=>$status,
+											'kodepemda'=>$kodepemda,
+											'tahun'=>$tahun,
+											'kodebidang'=>$kodebidang,
+											'kodeskpd'=>$kodeskpd,
+											'kodeprogram'=>$kodeprogram,
+											'kodekegiatan'=>$kodekegiatan,
+											'kodesubkegiatan'=>$kodesubkegiatan,
+											'kodeprioritas'=>$l,
+											'jenis'=>$keypprio,
+											'uraiprioritas'=>$prio,
+										);	
+
+				   					}
+			   						# code...
+			   					}
+								
+			   				}
+
+
+			   				foreach ($s['lokasi'] as $keyl => $c) {
+
+			   					if((!empty($c['lokasi']))AND($c['lokasi']!='')){
+
+									$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['lokasi'][]=array(
+										'status'=>$status,
+
+										'kodepemda'=>$kodepemda,
+										'tahun'=>$tahun,
+										'kodebidang'=>$kodebidang,
+										'kodeskpd'=>$kodeskpd,
+		   								'kodeprogram'=>$kodeprogram,
+										'kodekegiatan'=>$kodekegiatan,
+										'kodesubkegiatan'=>$kodesubkegiatan,
+										'kodelokasi'=>$c['kodelokasi']!=''?$c['kodelokasi']:$keyl,
+										'lokasi'=>$c['lokasi'],
+										'detaillokasi'=>$c['detaillokasi'],
+									);	
+
+			   					}
+
+			   				}
+
+			   				foreach ($s['indikator'] as $key => $c) {
+
+			   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
+
+									$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['indikator'][]=array(
+										'status'=>$status,
+										'kodepemda'=>$kodepemda,
+										'tahun'=>$tahun,
+										'kodebidang'=>$kodebidang,
+										'kodeskpd'=>$kodeskpd,
+		   								'kodeprogram'=>$kodeprogram,
+										'kodekegiatan'=>$kodekegiatan,
+										'kodeindikator'=>$c['kodeindikator'],
+										'tolokukur'=>$c['tolokukur'],
+										'satuan'=>$c['satuan'],
+										'satuan'=>$c['satuan'],
+										'real_p3'=>$c['real_p3'],
+										'pagu_p3'=>(float)$c['pagu_p3'],
+										'real_p2'=>$c['real_p2'],
+										'pagu_p2'=>(float)$c['pagu_p2'],
+										'real_p1'=>$c['real_p1'],
+										'pagu_p1'=>(float)$c['pagu_p1'],
+										'target'=>$c['target'],
+										'pagu'=>(float)$c['pagu'],
+										'pagu_p'=>(float)$c['pagu_p'],
+										'pagu_n1'=>(float)$c['pagu_n1'],
+
+									);	
+
+			   					}
+	
+			   				}
+
+		   				}
+	   				}
+	   				// sub kegiatan
+
+   					
+
+   				}
+   				// kegiatan
+
+
+
+
+   				# code...
+   			}
+   			// pro
+   			# code...
+   		}
+   		// urusan
+
+   		// selesai
+
+   		Storage::put('BOT/SIPD/JSON/'.$tahun.'/BUILD/'.$kodepemda.'.json',json_encode($data_return,JSON_PRETTY_PRINT));
+
+   		return $data_return;
+
+   	}
+
+   	return null;
+
+
+   }
+
+
+   static function dataInsert($data){
+   		$data_return=$data;
+   		foreach ($data as $key => $value) {
+   			if(is_array($data[$key])){
+   				unset($data_return[$key]);
+   			}
+   		}
+
+   		return $data_return;
+
+   }
+
+   static function storingData($tahun,$kodepemda,$data=null,$min_status){
+    	set_time_limit(-1);
+
+
+   		if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/BUILD/'.$kodepemda.'.json'))){
+
+	   		if($data==null){
+	   			$data=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/BUILD/'.$kodepemda.'.json'));
+	   			$data=json_decode($data,true);
+	   		}
+
+	   			$schema='';
+
+	   			if($min_status!=6){
+	   				if((int)$data['status'] >3) {
+	   					$con='myfinal';
+	   					$schema='';
+	   				}else{
+	   					$con='myranwal';
+	   					$schema='';
+	   				}
+
+	   			}else{
+	   				$con='pgsql';
+	   				$schema='rkpd.';
+	   			}
+
+	   			if($schema!=''){
+	   				$sqllike='ilike';
+
+	   			}else{
+	   				$sqllike='like';
+	   			}
+
+
+
+
+	   			foreach ($data['data'] as $key => $p) {
+	   				$px=DB::connection($con)->table($schema.'master_'.$tahun.'_program')
+	   				->where([
+   						['kodepemda','=',$p['kodepemda']],
+	   					['kodebidang','=',$p['kodebidang']],
+	   					['kodeskpd','=',$p['kodeskpd']],
+	   					['kodeprogram','=',$p['kodeprogram']]
+	   				])->first();
+
+	   				if($px){
+	   					DB::connection($con)->table($schema.'master_'.$tahun.'_program')
+	   					->where('id',$px->id)->update(static::dataInsert($p));
+	   					$id_program=$px->id;
+	   				}else{
+
+	   					$id_program=DB::connection($con)->table($schema.'master_'.$tahun.'_program')
+	   					->insertGetId(static::dataInsert($p));
+	   				}
+
+
+	   				foreach($p['prioritas'] as $dt){
+
+	   					$ex=DB::connection($con)->table($schema.'master_'.$tahun.'_program_prio')
+		   				->where([
+		   					['kodepemda','=',$dt['kodepemda']],
+		   					['kodebidang','=',$dt['kodebidang']],
+		   					['kodeskpd','=',$dt['kodeskpd']],
+		   					['kodeprogram','=',$dt['kodeprogram']],
+		   					['jenis','=',$dt['jenis']],
+		   					['uraiprioritas',$sqllike,('%'.$p['uraiprioritas'].'%')],
+		   					['id_program','=',$id_program]
+
+		   				])->first();
+
+		   				if($ex){
+		   					DB::connection($con)->table($schema.'master_'.$tahun.'_program_prio')
+		   					->where('id',$ex->id)->update(static::dataInsert($dt));
+		   				}else{
+		   					$dt['id_program']=$id_program;
+		   					DB::connection($con)->table($schema.'master_'.$tahun.'_program_prio')
+		   					->insertGetId(static::dataInsert($dt));
+		   				}
+	   				}
+
+	   				foreach ($p['capaian'] as $key => $dt) {
+
+	   					$ex=DB::connection($con)->table($schema.'master_'.$tahun.'_program_capaian')
+		   				->where([
+		   					['kodepemda','=',$dt['kodepemda']],
+		   					['kodebidang','=',$dt['kodebidang']],
+		   					['kodeskpd','=',$dt['kodeskpd']],
+		   					['kodeprogram','=',$dt['kodeprogram']],
+		   					['kodeindikator','=',$dt['kodeindikator']],
+		   					['tolokukur',$sqllike,('%'.$dt['tolokukur'].'%')],
+		   					['id_program','=',$id_program]
+
+
+		   				])->first();
+
+		   				if($ex){
+		   					DB::connection($con)->table($schema.'master_'.$tahun.'_program_capaian')
+		   					->where('id',$ex->id)->update(static::dataInsert($dt));
+		   				}else{
+		   					$dt['id_program']=$id_program;
+		   					DB::connection($con)->table($schema.'master_'.$tahun.'_program_capaian')
+		   					->insertGetId(static::dataInsert($dt));
+		   				}
+	   					# code...
+	   				}
+
+
+	   				foreach ($p['kegiatan'] as $key => $dt) {
+
+   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan')
+		   				->where([
+	   						['kodepemda','=',$dt['kodepemda']],
+		   					['kodebidang','=',$dt['kodebidang']],
+		   					['kodeskpd','=',$dt['kodeskpd']],
+		   					['kodeprogram','=',$dt['kodeprogram']],
+		   					['kodekegiatan','=',$dt['kodekegiatan']],
+		   					['id_program','=',$id_program]
+		   				])->first();
+
+		   				if($px){
+		   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan')
+		   					->where('id',$px->id)->update(static::dataInsert($dt));
+		   					$id_kegiatan=$px->id;
+		   				}else{
+		   					$dt['id_program']=$id_program;
+		   					$id_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan')
+		   					->insertGetId(static::dataInsert($dt));
+		   				}
+
+		   				foreach ($dt['indikator'] as $key => $dk) {
+
+	   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_indikator')
+			   				->where([
+		   						['kodepemda','=',$dk['kodepemda']],
+			   					['kodebidang','=',$dk['kodebidang']],
+			   					['kodeskpd','=',$dk['kodeskpd']],
+			   					['kodeprogram','=',$dk['kodeprogram']],
+			   					['kodekegiatan','=',$dk['kodekegiatan']],
+			   					['kodeindikator','=',$dk['kodeindikator']],
+			   					['tolokukur',$sqllike,('%'.$dk['tolokukur'].'%')],
+			   					['id_kegiatan','=',$id_kegiatan]
+			   				])->first();
+
+			   				if($px){
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_indikator')
+			   					->where('id',$px->id)->update(static::dataInsert($dk));
+			   				}else{
+			   					$dk['id_kegiatan']=$id_kegiatan;
+			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_indikator')
+			   					->insertGetId(static::dataInsert($dk));
+			   				}
+
+		   				}
+
+		   				foreach ($dt['sumberdana'] as $key => $dk) {
+
+	   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sumberdana')
+			   				->where([
+		   						['kodepemda','=',$dk['kodepemda']],
+			   					['kodebidang','=',$dk['kodebidang']],
+			   					['kodeskpd','=',$dk['kodeskpd']],
+			   					['kodeprogram','=',$dk['kodeprogram']],
+			   					['kodekegiatan','=',$dk['kodekegiatan']],
+			   					['sumberdana','=',$dk['sumberdana']],
+			   					['id_kegiatan','=',$id_kegiatan]
+			   				])->first();
+
+			   				if($px){
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sumberdana')
+			   					->where('id',$px->id)->update(static::dataInsert($dk));
+			   				}else{
+			   					$dk['id_kegiatan']=$id_kegiatan;
+			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sumberdana')
+			   					->insertGetId(static::dataInsert($dk));
+			   				}
+
+		   				}
+
+		   				foreach ($dt['lokasi'] as $key => $dk) {
+
+	   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_lokasi')
+			   				->where([
+		   						['kodepemda','=',$dk['kodepemda']],
+			   					['kodebidang','=',$dk['kodebidang']],
+			   					['kodeskpd','=',$dk['kodeskpd']],
+			   					['kodeprogram','=',$dk['kodeprogram']],
+			   					['kodekegiatan','=',$dk['kodekegiatan']],
+			   					['detaillokasi',$sqllike,('%'.$dk['detaillokasi'].'%')],
+			   					['id_kegiatan','=',$id_kegiatan]
+			   				])->first();
+
+			   				if($px){
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_lokasi')
+			   					->where('id',$px->id)->update(static::dataInsert($dk));
+			   				}else{
+			   					$dk['id_kegiatan']=$id_kegiatan;
+			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_lokasi')
+			   					->insertGetId(static::dataInsert($dk));
+			   				}
+
+		   				}
+
+		   				foreach ($dt['prioritas'] as $key => $dk) {
+
+	   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prio')
+			   				->where([
+		   						['kodepemda','=',$dk['kodepemda']],
+			   					['kodebidang','=',$dk['kodebidang']],
+			   					['kodeskpd','=',$dk['kodeskpd']],
+			   					['kodeprogram','=',$dk['kodeprogram']],
+			   					['kodekegiatan','=',$dk['kodekegiatan']],
+			   					['jenis','=',$dk['jenis']],
+			   					['uraiprioritas',$sqllike,('%'.$dk['uraiprioritas'].'%')],
+			   					['id_kegiatan','=',$id_kegiatan]
+			   				])->first();
+
+			   				if($px){
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prio')
+			   					->where('id',$px->id)->update(static::dataInsert($dk));
+			   				}else{
+			   					$dk['id_kegiatan']=$id_kegiatan;
+			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prio')
+			   					->insertGetId(static::dataInsert($dk));
+			   				}
+
+		   				}
+
+
+
+		   				foreach ($dt['sub_kegiatan'] as $key => $dk) {
+
+	   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub')
+			   				->where([
+		   						['kodepemda','=',$dk['kodepemda']],
+			   					['kodebidang','=',$dk['kodebidang']],
+			   					['kodeskpd','=',$dk['kodeskpd']],
+			   					['kodeprogram','=',$dk['kodeprogram']],
+			   					['kodekegiatan','=',$dk['kodekegiatan']],
+			   					['kodesubkegiatan','=',$dk['kodesubkegiatan']],
+			   					['id_kegiatan','=',$id_kegiatan]
+			   				])->first();
+
+			   				if($px){
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub')
+			   					->where('id',$px->id)->update(static::dataInsert($dk));
+			   					$id_sub_kegiatan=$px->id;
+			   				}else{
+			   					$dk['id_kegiatan']=$id_kegiatan;
+			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub')
+			   					->insertGetId(static::dataInsert($dk));
+			   				}
+
+
+			   				foreach($dk['lokasi'] as $key => $ds) {
+			   					$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_lokasi')
+				   				->where([
+			   						['kodepemda','=',$ds['kodepemda']],
+				   					['kodebidang','=',$ds['kodebidang']],
+				   					['kodeskpd','=',$ds['kodeskpd']],
+				   					['kodeprogram','=',$ds['kodeprogram']],
+				   					['kodekegiatan','=',$ds['kodekegiatan']],
+				   					['kodesubkegiatan','=',$ds['kodesubkegiatan']],
+				   					['kodelokasi','=',$ds['kodelokasi']],
+				   					['detaillokasi',$sqllike,('%'.$ds['detaillokasi'].'%')],
+				   					['id_sub_kegiatan','=',$id_sub_kegiatan]
+				   				])->first();
+
+				   				if($px){
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_lokasi')
+				   					->where('id',$px->id)->update(static::dataInsert($ds));
+				   				}else{
+				   					$ds['id_sub_kegiatan']=$id_sub_kegiatan;
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_lokasi')
+				   					->insertGetId(static::dataInsert($ds));
+				   				}
+			   					# code...
+			   				}
+
+			   				foreach($dk['indikator'] as $key => $ds) {
+			   					$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_indikator')
+				   				->where([
+			   						['kodepemda','=',$ds['kodepemda']],
+				   					['kodebidang','=',$ds['kodebidang']],
+				   					['kodeskpd','=',$ds['kodeskpd']],
+				   					['kodeprogram','=',$ds['kodeprogram']],
+				   					['kodekegiatan','=',$ds['kodekegiatan']],
+				   					['kodesubkegiatan','=',$ds['kodesubkegiatan']],
+				   					['kodeindikator','=',$ds['kodeindikator']],
+				   					['tolokukur',$sqllike,('%'.$ds['tolokukur'].'%')],
+				   					['id_sub_kegiatan','=',$id_sub_kegiatan]
+				   				])->first();
+
+				   				if($px){
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_indikator')
+				   					->where('id',$px->id)->update(static::dataInsert($ds));
+				   				}else{
+				   					$ds['id_sub_kegiatan']=$id_sub_kegiatan;
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_indikator')
+				   					->insertGetId(static::dataInsert($ds));
+				   				}
+			   					# code...
+			   				}
+
+			   				foreach($dk['prioritas'] as $key => $ds) {
+			   					$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_prio')
+				   				->where([
+			   						['kodepemda','=',$ds['kodepemda']],
+				   					['kodebidang','=',$ds['kodebidang']],
+				   					['kodeskpd','=',$ds['kodeskpd']],
+				   					['kodeprogram','=',$ds['kodeprogram']],
+				   					['kodekegiatan','=',$ds['kodekegiatan']],
+				   					['kodesubkegiatan','=',$ds['kodesubkegiatan']],
+				   					['jenis','=',$ds['jenis']],
+				   					['uraiprioritas',$sqllike,('%'.$ds['uraiprioritas'].'%')],
+				   					['id_sub_kegiatan','=',$id_sub_kegiatan]
+				   				])->first();
+
+				   				if($px){
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_prio')
+				   					->where('id',$px->id)->update(static::dataInsert($ds));
+				   				}else{
+				   					$ds['id_sub_kegiatan']=$id_sub_kegiatan;
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_prio')
+				   					->insertGetId(static::dataInsert($ds));
+				   				}
+			   					# code...
+			   				}
+
+
+		   				}
+		   				// sub kegiatan
+
+
+
+
+	   				}
+	   				// kegiatan
+
+	   			}
+	   			// program
+
+
+	   	}
+
+	   	// deleteing
+
+
+
+
+
+
+   } 
+
 
 
     public static function makeData($tahun,$kodepemda){
@@ -222,7 +1048,7 @@ class BOTSIPD extends Controller
     			$kodeskpd=$u['kodeskpd'];
     			$uraiskpd=$u['uraiskpd'];
     			$kodebidang=$u['kodebidang'];
-    			$id_bidang=DB::table('master_urusan')->where('nama','ilike',('%'.$u['uraibidang'].'%'))->pluck('id')->first();
+    			$id_bidang=DB::table('master_urusan')->where('nama',$sqllike,('%'.$u['uraibidang'].'%'))->pluck('id')->first();
 
     			$data_return['SKPD@'.$u['kodeskpd']]=array(
     				'kode_daerah'=>$kodepemda,
@@ -240,7 +1066,7 @@ class BOTSIPD extends Controller
 
     				$kodeprogram=$p['kodeprogram'];
 
-    				$id_bidang=DB::table('master_urusan')->where('nama','ilike',('%'.$p['uraibidang'].'%'))->pluck('id')->first();
+    				$id_bidang=DB::table('master_urusan')->where('nama',$sqllike,('%'.$p['uraibidang'].'%'))->pluck('id')->first();
     				$kodebidang=$p['kodebidang'];
 
     				if(isset($data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram])){
