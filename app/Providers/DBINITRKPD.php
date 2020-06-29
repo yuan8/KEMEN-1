@@ -312,8 +312,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeprogram');
                     $table->string('kodekegiatan');
                     $table->string('kodelokasi')->nullable();
-                    $table->text('lokasi')->nullable();
-                    $table->text('detaillokasi')->nullable();
+                    $table->text('lokasi',1000)->nullable();
+                    $table->text('detaillokasi',1000)->nullable();
 
                  
                     $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodelokasi','id_kegiatan','detaillokasi'],'kegiatan_lokasi_index_un');
@@ -447,8 +447,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodekegiatan');
                     $table->string('kodesubkegiatan');
                     $table->string('kodelokasi')->nullable();
-                    $table->text('lokasi')->nullable();
-                    $table->text('detaillokasi')->nullable();
+                    $table->text('lokasi',1000)->nullable();
+                    $table->text('detaillokasi',1000)->nullable();
 
                     $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodelokasi','detaillokasi','id_sub_kegiatan'],'sub_lokasi_un');
                     // $table->unique(['kodepemda','tahun','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodelokasi','kodesubkegiatan','id_sub_kegiatan'],'sub_lokasi_index_un');
