@@ -13,6 +13,8 @@
 
 Route::get('rkpd-i',function(){
 	RKPDProvider::init(2021);
+	RKPDProvider::init(2020;
+
 	return 'done';
 });
 
