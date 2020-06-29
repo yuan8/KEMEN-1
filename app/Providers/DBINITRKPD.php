@@ -82,7 +82,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodepemda',4)->unique();
                     $table->integer('tahun')->default($tahun);
                     $table->integer('status')->default(0);
-                    $table->double('anggaran',20,3)->default(0);
+                    $table->double('anggaran',25,3)->default(0);
                     $table->string('last_date')->nullable();
                     $table->timestamps();
                     $table->unique(['kodepemda','tahun']);
@@ -437,7 +437,6 @@ class DBINITRKPD extends ServiceProvider
 
                     $table->bigIncrements('id');
                     $table->integer('status')->nullable();
-
                     $table->bigInteger('id_sub_kegiatan')->unsigned();
                     $table->string('kodepemda',4);
                     $table->integer('tahun')->default($tahun);
