@@ -18,13 +18,20 @@ class BOTSIPD extends Controller
     	if($status_min<4){
     		$con='myranwal';
     		$schema='';
-    	}else if($status_sipd>=4){
+				$stst=[1,2,3];
+
+    	}else if($status_min>=4){
     		$con='myfinal';
+				$stst=[4,5];
     		$schema='';
     	}else if($status_min==6){
     		$con='pgsql';
     		$schema='rkpd.';
+				$stst=[1,2,3,4,5];
+
     	}
+
+
 
 
 
@@ -33,25 +40,25 @@ class BOTSIPD extends Controller
 		// 	$dt=file_get_contents(storage_path('app/chace-cron.text'));
 
 		// }
-
-		$data=DB::connection($con)->table(DB::raw("(select d.id as kodepemda,d.nama,(select f.anggaran from ".$schema."master_".$tahun."_status as f where f.kodepemda=d.id)".($schema!=''?'::numeric':'')." as sipd_anggaran,(select f.status from ".$schema."master_".$tahun."_status as f where f.kodepemda=d.id)".($schema!=''?'::numeric':'')." as sipd_status ,max(k.status)".($schema!=''?'::numeric':'')." as status ,sum(k.pagu)".($schema!=''?'::numeric':'')." as  anggaran from ".$schema."master_daerah as d 
-			left join ".$schema."master_".$tahun."_kegiatan as k on k.kodepemda=d.id  group by d.id) as t"))
+		$data=DB::connection($con)->table(DB::raw("(select d.id as kodepemda,d.nama,
+		(select f.anggaran from ".$schema."master_".$tahun."_status as f where f.kodepemda=d.id)".($schema!=''?'::numeric':'')." as sipd_anggaran,
+		(select f.status from ".$schema."master_".$tahun."_status as f where f.kodepemda=d.id)".($schema!=''?'::numeric':'')." as sipd_status ,max(k.status)".($schema!=''?'::numeric':'')." as status ,sum(k.pagu)".($schema!=''?'::numeric':'')." as  anggaran
+		from ".$schema."master_daerah as d left join ".$schema."master_".$tahun."_kegiatan as k on k.kodepemda=d.id  group by d.id) as t"))
 		->where([
 			['sipd_status','!=',DB::raw('status')],
-			['sipd_status','>=',DB::raw($status_min)],
+			['sipd_status',$stst],
 
 		])
 		->OrWhere([
 			[($schema!=''?DB::raw("round( CAST(anggaran as numeric), 0)"):'anggaran'),'!=',($schema!=''?DB::raw("round( CAST(sipd_anggaran as numeric), 0)"):'anggaran')],
-			['sipd_status','>=',$status_min],
+			['sipd_status',$stst],
 		])
 		->OrWhere([
 			['status','=',null],
-			['sipd_status','>=',$status_min],
+			['sipd_status',$stst],
 
 		])
 		->orderBy('sipd_anggaran','desc')->first();
-
 
 
 		if($data){
@@ -97,7 +104,7 @@ class BOTSIPD extends Controller
 
 	static $token='d1d1ab9140c249e34ce356c91e9166a6';
     //
-    static public function getDataJson($tahun,$kodepemda,$min_status,$cron=false,Request $request){	
+    static public function getDataJson($tahun,$kodepemda,$min_status,$cron=false,Request $request){
     	set_time_limit(-1);
 
 		if(strlen($kodepemda)<4){
@@ -120,7 +127,7 @@ class BOTSIPD extends Controller
 			$con='myfinal';
 		}
 
-    	
+
 
     	$ch = curl_init();
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -163,19 +170,19 @@ class BOTSIPD extends Controller
 
 			$approve=true;
 
-			if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/BUILD/'.$kodepemda.'.json'))){
+			// if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/BUILD/'.$kodepemda.'.json'))){
 
-				$dt=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json'));
-				$dt=json_decode($dt,true);
-				if($dt['status']==$status){
-					if($dt['data']!=[]){
-						$approve=false;
-						$server_output=$dt['data'];
-					}
-					
-				}
+			// 	$dt=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/STATUS/'.$dt['status'].'/'.$kodepemda.'.json'));
+			// 	$dt=json_decode($dt,true);
+			// 	if($dt['status']==$status){
+			// 		if($dt['data']!=[]){
+			// 			$approve=false;
+			// 			$server_output=$dt['data'];
+			// 		}
 
-			}
+			// 	}
+
+			// }
 
 			if($approve){
 
@@ -185,21 +192,21 @@ class BOTSIPD extends Controller
 				curl_close ($ch);
 			}
 
-			
+
 
 		} catch (Exception $e) {
-		
-			$server_output=null;	
+
+			$server_output=null;
 		}
 
 
 		if($server_output){
 			if(is_array($server_output)){
-				
+
 			}else{
 				$server_output= json_decode(trim($server_output),true);
 			}
-			
+
 		}else{
 			$server_output=array();
 		}
@@ -212,19 +219,19 @@ class BOTSIPD extends Controller
 
 		Storage::put('BOT/SIPD/JSON/'.$tahun.'/STATUS/'.$status.'/'.$kodepemda.'.json',json_encode($data_json,JSON_PRETTY_PRINT));
 
-		$data_returning_build=static::building($tahun,$kodepemda,$data_json);
+		$data_returning_build=static::building($tahun,$kodepemda,$data_json,$status);
 
 		if($request->json==true){
 
 			$nextid=DB::table('master_daerah')->where('id','>',$kodepemda)->first();
-			
+
 			return view('sistem.sipd.rkpd.next')->with('daerah',$nextid)
 				   ->with(['tahun'=>$tahun,'kodepemda'=>$kodepemda]);
-			
+
 		}
 
 
-    	static::storingData($tahun,$kodepemda,$data_returning_build,$min_status);
+    	static::storingData($tahun,$kodepemda,$data_returning_build,$min_status,$status);
 
     	if($cron){
     		return true;
@@ -239,115 +246,80 @@ class BOTSIPD extends Controller
 
 
 
-   public static function  building($tahun,$kodepemda,$data=null){
+ 	public static function  building($tahun,$kodepemda,$data=null,$status=null){
     	set_time_limit(-1);
 
 
-   	if(strpos((string)$kodepemda, '00')!==false){
-   		$kodepemda=str_replace('00', '', (string)$kodepemda);
-   	
-   	}
+	   	if(strpos((string)$kodepemda, '00')!==false){
+	   		$kodepemda=str_replace('00', '', (string)$kodepemda);
 
-   	if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json'))){
-   		if($data==null){
-   			$data=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/DATA/'.$kodepemda.'.json'));
-   			$data=json_decode($data,true);
-   		}
-   		
-   		$status=$data['status'];
-   		$nama_daerah=DB::table('master_daerah')->where('id',$kodepemda)->pluck('nama')->first();
-   		$data_return=[
-   			'kodepemda'=>$kodepemda,
-   			'nama_daerah'=>$nama_daerah,
-   			'status'=>$status,
-   			'jumlah_kegiatan'=>0,
-   			'jumlah_program'=>0,
-   			'jumlah_anggaran'=>0,
-   			'jumlah_indikator_program'=>0,
-   			'jumlah_indikator_kegiatan'=>0,
-   			'data'=>[]
-   		];
+	   	}
 
+	   	if($status){
+	   		if($data==null){
+	   			$data=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/STATUS/'.$status.'/'.$kodepemda.'.json'));
+	   			$data=json_decode($data,true);
+	   		}
 
-   		$kodecapaian=0;
-   		$kodeprioritas=0;
-   		$kodekegiatansumberdata=0;
+	   		$status=$data['status'];
+	   		$nama_daerah=DB::table('master_daerah')->where('id',$kodepemda)->pluck('nama')->first();
+	   		$data_return=[
+	   			'kodepemda'=>$kodepemda,
+	   			'nama_daerah'=>$nama_daerah,
+	   			'status'=>$status,
+	   			'jumlah_kegiatan'=>0,
+	   			'jumlah_program'=>0,
+	   			'jumlah_anggaran'=>0,
+	   			'jumlah_indikator_program'=>0,
+	   			'jumlah_indikator_kegiatan'=>0,
+	   			'data'=>[]
+	   		];
 
 
-   		foreach ($data['data'] as $key => $u) {
-   			foreach ($u['program'] as $key => $p) {
-   				$id_urusan=DB::table('master_urusan')->where('nama','ilike',('%'.$u['uraibidang'].'%'))->pluck('id')->first();
+	   		$kodecapaian=0;
+	   		$kodeprioritas=0;
+	   		$kodekegiatansumberdata=0;
 
-   				$kodeskpd=$u['kodeskpd'];
-   				$uraiskpd=$u['uraiskpd'];
-   				$kodebidang=$p['kodebidang'];
-   				$uraibidang=$p['uraibidang'];
-   				$kodeprogram=$p['kodeprogram'];
 
-   				$kode_p='P.'.$kodebidang.'.'.$kodeskpd.'.'.$kodeprogram;
+	   		foreach ($data['data'] as $key => $u) {
+	   			foreach ($u['program'] as $key => $p) {
+	   				$id_urusan=DB::table('master_urusan')->where('nama','ilike',('%'.$u['uraibidang'].'%'))->pluck('id')->first();
 
-   				if(!isset($data_return['data'][$kode_p])){
-   					$data_return['jumlah_program']+=1;
+	   				$kodeskpd=$u['kodeskpd'];
+	   				$uraiskpd=$u['uraiskpd'];
+	   				$kodebidang=$p['kodebidang'];
+	   				$uraibidang=(!empty($p['uraibidang']))?$p['uraibidang']:'';
+	   				$kodeprogram=$p['kodeprogram'];
 
-   					$data_return['data'][$kode_p]=array(
-   						'status'=>$status,
-   						'kodepemda'=>$kodepemda,
-   						'tahun'=>$tahun,
-   						'kodebidang'=>$kodebidang,
-   						'uraibidang'=>$uraibidang,
-   						'id_urusan'=>$id_urusan,
-   						'kodeprogram'=>$kodeprogram,
-   						'uraiprogram'=>$p['uraiprogram'],
-   						'kodeskpd'=>$kodeskpd,
-   						'uraiskpd'=>$uraiskpd,
-   						'capaian'=>[],
-   						'prioritas'=>[],
-   						'kegiatan'=>[]
-   					);
-   				}
+	   				$kode_p='P.'.$kodebidang.'.'.$kodeskpd.'.'.$kodeprogram;
 
-   				foreach ($p['capaian'] as $key => $c) {
+	   				if(!isset($data_return['data'][$kode_p])){
+	   					$data_return['jumlah_program']+=1;
 
-   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
+	   					$data_return['data'][$kode_p]=array(
+	   						'status'=>$status,
+	   						'kodepemda'=>$kodepemda,
+	   						'tahun'=>$tahun,
+	   						'kodebidang'=>$kodebidang,
+	   						'uraibidang'=>$uraibidang,
+	   						'id_urusan'=>$id_urusan,
+	   						'kodeprogram'=>$kodeprogram,
+	   						'uraiprogram'=>$p['uraiprogram'],
+	   						'kodeskpd'=>$kodeskpd,
+	   						'uraiskpd'=>$uraiskpd,
+	   						'capaian'=>[],
+	   						'prioritas'=>[],
+	   						'kegiatan'=>[]
+	   					);
+	   				}
 
-   						$data_return['jumlah_indikator_program']+=1;
+	   				foreach ($p['capaian'] as $key => $c) {
 
-						$data_return['data'][$kode_p]['capaian'][]=array(
-							'status'=>$status,
+	   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
 
-							'kodepemda'=>$kodepemda,
-							'tahun'=>$tahun,
-							'kodebidang'=>$kodebidang,
-							'kodeskpd'=>$kodeskpd,
-							'kodeprogram'=>$kodeprogram,
-							'kodeindikator'=>$c['kodeindikator'],
-							'tolokukur'=>$c['tolokukur'],
-							'satuan'=>$c['satuan'],
-							'satuan'=>$c['satuan'],
-							'real_p3'=>$c['real_p3'],
-							'pagu_p3'=>(float)$c['pagu_p3'],
-							'real_p2'=>$c['real_p2'],
-							'pagu_p2'=>(float)$c['pagu_p2'],
-							'real_p1'=>$c['real_p1'],
-							'pagu_p1'=>(float)$c['pagu_p1'],
-							'target'=>$c['target'],
-							'pagu'=>(float)$c['pagu'],
-							'pagu_p'=>(float)$c['pagu_p'],
-							'pagu_n1'=>(float)$c['pagu_n1'],
+	   						$data_return['jumlah_indikator_program']+=1;
 
-						);	
-
-   					}
-
-					
-   				}
-
-   				foreach ($p['prioritas'] as $l => $pprio) {
-   					foreach ($pprio as $keypprio => $prio) {
-
-	   					if((!empty($prio))AND($prio!='')){
-
-							$data_return['data'][$kode_p]['prioritas'][]=array(
+							$data_return['data'][$kode_p]['capaian'][]=array(
 								'status'=>$status,
 
 								'kodepemda'=>$kodepemda,
@@ -355,145 +327,6 @@ class BOTSIPD extends Controller
 								'kodebidang'=>$kodebidang,
 								'kodeskpd'=>$kodeskpd,
 								'kodeprogram'=>$kodeprogram,
-								'kodeprioritas'=>$l,
-								'jenis'=>$keypprio,
-								'uraiprioritas'=>$prio
-							);
-
-	   					}
-   						# code...
-   					}
-					
-   				}
-
-
-
-   				foreach ($p['kegiatan'] as $key => $k) {
-
-   					$kodekegiatan=$k['kodekegiatan'];
-
-   					$kode_k=$kode_p.'.'.$kodekegiatan;
-
-   					if(!isset($data_return['data'][$kode_p]['kegiatan'][$kode_k])){
-   						$data_return['jumlah_kegiatan']+=1;
-   						$data_return['jumlah_anggaran']+=$k['pagu'];
-
-
-   						$data_return['data'][$kode_p]['kegiatan'][$kode_k]=array(
-   							'status'=>$status,
-   							'kodepemda'=>$kodepemda,
-   							'tahun'=>$tahun,
-   							'kodebidang'=>$kodebidang,
-   							'id_urusan'=>$id_urusan,
-   							'kodeskpd'=>$kodeskpd,
-   							'kodeprogram'=>$kodeprogram,
-   							'kodekegiatan'=>$kodekegiatan,
-   							'uraikegiatan'=>$k['uraikegiatan'],
-   							'pagu'=>(float)$k['pagu'],
-   							'pagu_p'=>(float)$k['pagu_p'],
-   							'sumberdana'=>[],
-   							'prioritas'=>[],
-   							'lokasi'=>[],
-   							'indikator'=>[],
-   							'sub_kegiatan'=>[]
-
-   						);
-
-   					}
-
-   					foreach ($k['prioritas'] as $l => $pprio) {
-	   					foreach ($pprio as $keypprio => $prio) {
-
-		   					if((!empty($prio))AND($prio!='')){
-
-								$data_return['data'][$kode_p]['kegiatan'][$kode_k]['prioritas'][]=array(
-									'status'=>$status,
-
-									'kodepemda'=>$kodepemda,
-									'tahun'=>$tahun,
-									'kodebidang'=>$kodebidang,
-									'kodeskpd'=>$kodeskpd,
-   									'kodeprogram'=>$kodeprogram,
-									'kodekegiatan'=>$kodekegiatan,
-									'kodeprioritas'=>$l,
-									'jenis'=>$keypprio,
-									'uraiprioritas'=>$prio,
-								);	
-
-		   					}
-	   						# code...
-	   					}
-						
-	   				}
-
-	   				if(is_array($k['sumberdana'])){
-	   					foreach ($k['sumberdana'] as $keyl => $c) {
-
-
-		   					if((!empty($c['sumberdana']))AND($c['sumberdana']!='')){
-
-		   						$kode_sd=strtolower(str_replace(' ', '_', trim($c['sumberdana'])));
-
-								if(!isset($data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd])){
-									$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd]=array(
-										'status'=>$status,
-										'kodepemda'=>$kodepemda,
-										'tahun'=>$tahun,
-										'kodebidang'=>$kodebidang,
-										'kodeskpd'=>$kodeskpd,
-		   								'kodeprogram'=>$kodeprogram,
-										'kodekegiatan'=>$kodekegiatan,
-										'kodesumberdana'=>$c['kodesumberdana']!=''?$c['kodesumberdana']:$keyl,
-										'sumberdana'=>$c['sumberdana'],
-										'pagu'=>(isset($c['pagu']))?(float)$c['pagu']:0,
-									);	
-								}else{
-									$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd]+=(isset($c['pagu']))?(float)$c['pagu']:0;
-								}
-
-		   					}
-
-	   					}
-	   				}
-
-
-	   				foreach ($k['lokasi'] as $keyl => $c) {
-
-	   					if((!empty($c['lokasi']))AND($c['lokasi']!='')){
-
-							$data_return['data'][$kode_p]['kegiatan'][$kode_k]['lokasi'][]=array(
-								'status'=>$status,
-
-								'kodepemda'=>$kodepemda,
-								'tahun'=>$tahun,
-								'kodebidang'=>$kodebidang,
-								'kodeskpd'=>$kodeskpd,
-   								'kodeprogram'=>$kodeprogram,
-								'kodekegiatan'=>$kodekegiatan,
-								'kodelokasi'=>$c['kodelokasi']!=''?$c['kodelokasi']:$keyl,
-								'lokasi'=>$c['lokasi'],
-								'detaillokasi'=>$c['detaillokasi'],
-							);	
-
-	   					}
-
-	   				}
-
-
-
-	   				foreach ($k['indikator'] as $key => $c) {
-
-	   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
-
-	   						$data_return['jumlah_indikator_kegiatan']+=1;
-							$data_return['data'][$kode_p]['kegiatan'][$kode_k]['indikator'][]=array(
-								'status'=>$status,
-								'kodepemda'=>$kodepemda,
-								'tahun'=>$tahun,
-								'kodebidang'=>$kodebidang,
-								'kodeskpd'=>$kodeskpd,
-   								'kodeprogram'=>$kodeprogram,
-								'kodekegiatan'=>$kodekegiatan,
 								'kodeindikator'=>$c['kodeindikator'],
 								'tolokukur'=>$c['tolokukur'],
 								'satuan'=>$c['satuan'],
@@ -507,156 +340,327 @@ class BOTSIPD extends Controller
 								'target'=>$c['target'],
 								'pagu'=>(float)$c['pagu'],
 								'pagu_p'=>(float)$c['pagu_p'],
-								'pagu_n1'=>(isset($c['pagu_n1']))?(float)$c['pagu_n1']:0,
+								'pagu_n1'=>(float)$c['pagu_n1'],
 
-							);	
+							);
 
 	   					}
 
-						
+
 	   				}
 
-	   				if(isset($k['sub_kegiatan'])){
-	   					foreach ($k['sub_kegiatan'] as $key => $s) {
-		   					$kodesubkegiatan=$s['kodesubkegiatan'];
-		   					$kode_s=$kode_k.'.'.$kodesubkegiatan;
+	   				foreach ($p['prioritas'] as $l => $pprio) {
+	   					foreach ($pprio as $keypprio => $prio) {
 
-		   					if(!isset($data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s])){
+		   					if((!empty($prio))AND($prio!='')){
 
-
-		   						$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]=array(
+								$data_return['data'][$kode_p]['prioritas'][]=array(
 									'status'=>$status,
-		   							'kodepemda'=>$kodepemda,
-		   							'tahun'=>$tahun,
-		   							'kodebidang'=>$kodebidang,
-		   							'id_urusan'=>$id_urusan,
-		   							'kodeskpd'=>$kodeskpd,
-		   							'kodeprogram'=>$kodeprogram,
-		   							'kodekegiatan'=>$kodekegiatan,
-		   							'kodesubkegiatan'=>$kodesubkegiatan,
-		   							'uraisubkegiatan'=>$s['uraisubkegiatan'],
-		   							'pagu'=>(float)$s['pagu'],
-		   							'pagu_p'=>(float)$s['pagu_p'],
-		   							'prioritas'=>[],
-		   							'lokasi'=>[],
-		   							'indikator'=>[],
-		   							'sub_kegiatan'=>[]
-		   						);
+									'kodepemda'=>$kodepemda,
+									'tahun'=>$tahun,
+									'kodebidang'=>$kodebidang,
+									'kodeskpd'=>$kodeskpd,
+									'kodeprogram'=>$kodeprogram,
+									'kodeprioritas'=>$l,
+									'jenis'=>$keypprio,
+									'uraiprioritas'=>$prio
+								);
 
 		   					}
+	   						# code...
+	   					}
+
+	   				}
 
 
 
-	   						foreach ($s['prioritas'] as $l => $pprio) {
-			   					foreach ($pprio as $keypprio => $prio) {
+	   				foreach ($p['kegiatan'] as $key => $k) {
 
-				   					if((!empty($prio))AND($prio!='')){
+	   					$kodekegiatan=$k['kodekegiatan'];
 
-										$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['prioritas'][]=array(
+	   					$kode_k=$kode_p.'.'.$kodekegiatan;
+
+	   					if(!isset($data_return['data'][$kode_p]['kegiatan'][$kode_k])){
+	   						$data_return['jumlah_kegiatan']+=1;
+	   						$data_return['jumlah_anggaran']+=$k['pagu'];
+
+
+	   						$data_return['data'][$kode_p]['kegiatan'][$kode_k]=array(
+	   							'status'=>$status,
+	   							'kodepemda'=>$kodepemda,
+	   							'tahun'=>$tahun,
+	   							'kodebidang'=>$kodebidang,
+	   							'id_urusan'=>$id_urusan,
+	   							'kodeskpd'=>$kodeskpd,
+	   							'kodeprogram'=>$kodeprogram,
+	   							'kodekegiatan'=>$kodekegiatan,
+	   							'uraikegiatan'=>$k['uraikegiatan'],
+	   							'pagu'=>(float)$k['pagu'],
+	   							'pagu_p'=>(float)$k['pagu_p'],
+	   							'sumberdana'=>[],
+	   							'prioritas'=>[],
+	   							'lokasi'=>[],
+	   							'indikator'=>[],
+	   							'sub_kegiatan'=>[]
+
+	   						);
+
+	   					}
+
+	   					foreach ($k['prioritas'] as $l => $pprio) {
+		   					foreach ($pprio as $keypprio => $prio) {
+
+			   					if((!empty($prio))AND($prio!='')){
+
+									$data_return['data'][$kode_p]['kegiatan'][$kode_k]['prioritas'][]=array(
+										'status'=>$status,
+										'kodepemda'=>$kodepemda,
+										'tahun'=>$tahun,
+										'kodebidang'=>$kodebidang,
+										'kodeskpd'=>$kodeskpd,
+	   									'kodeprogram'=>$kodeprogram,
+										'kodekegiatan'=>$kodekegiatan,
+										'kodeprioritas'=>$l,
+										'jenis'=>$keypprio,
+										'uraiprioritas'=>$prio,
+									);
+
+			   					}
+		   						# code...
+		   					}
+
+		   				}
+
+		   				if(is_array($k['sumberdana'])){
+		   					foreach ($k['sumberdana'] as $keyl => $c) {
+
+			   					if((!empty($c['sumberdana']))AND($c['sumberdana']!='')){
+
+			   						$kode_sd=strtolower(str_replace(' ', '_', trim($c['sumberdana'])));
+
+									if(!isset($data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd])){
+										$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd]=array(
 											'status'=>$status,
 											'kodepemda'=>$kodepemda,
 											'tahun'=>$tahun,
 											'kodebidang'=>$kodebidang,
 											'kodeskpd'=>$kodeskpd,
-											'kodeprogram'=>$kodeprogram,
+			   								'kodeprogram'=>$kodeprogram,
 											'kodekegiatan'=>$kodekegiatan,
-											'kodesubkegiatan'=>$kodesubkegiatan,
-											'kodeprioritas'=>$l,
-											'jenis'=>$keypprio,
-											'uraiprioritas'=>$prio,
-										);	
-
-				   					}
-			   						# code...
-			   					}
-								
-			   				}
-
-
-			   				foreach ($s['lokasi'] as $keyl => $c) {
-
-			   					if((!empty($c['lokasi']))AND($c['lokasi']!='')){
-
-									$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['lokasi'][]=array(
-										'status'=>$status,
-
-										'kodepemda'=>$kodepemda,
-										'tahun'=>$tahun,
-										'kodebidang'=>$kodebidang,
-										'kodeskpd'=>$kodeskpd,
-		   								'kodeprogram'=>$kodeprogram,
-										'kodekegiatan'=>$kodekegiatan,
-										'kodesubkegiatan'=>$kodesubkegiatan,
-										'kodelokasi'=>$c['kodelokasi']!=''?$c['kodelokasi']:$keyl,
-										'lokasi'=>$c['lokasi'],
-										'detaillokasi'=>$c['detaillokasi'],
-									);	
+											'kodesumberdana'=>$keyl,
+											'sumberdana'=>$c['sumberdana'],
+											'pagu'=>(isset($c['pagu']))?(float)$c['pagu']:0,
+										);
+									}else{
+										$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd]+=(isset($c['pagu']))?(float)$c['pagu']:0;
+									}
 
 			   					}
 
-			   				}
+		   					}
+		   				}
 
-			   				foreach ($s['indikator'] as $key => $c) {
 
-			   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
+		   				foreach ($k['lokasi'] as $keyl => $c) {
 
-									$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['indikator'][]=array(
-										'status'=>$status,
-										'kodepemda'=>$kodepemda,
-										'tahun'=>$tahun,
-										'kodebidang'=>$kodebidang,
-										'kodeskpd'=>$kodeskpd,
-		   								'kodeprogram'=>$kodeprogram,
-										'kodekegiatan'=>$kodekegiatan,
-										'kodeindikator'=>$c['kodeindikator'],
-										'tolokukur'=>$c['tolokukur'],
-										'satuan'=>$c['satuan'],
-										'satuan'=>$c['satuan'],
-										'real_p3'=>$c['real_p3'],
-										'pagu_p3'=>(float)$c['pagu_p3'],
-										'real_p2'=>$c['real_p2'],
-										'pagu_p2'=>(float)$c['pagu_p2'],
-										'real_p1'=>$c['real_p1'],
-										'pagu_p1'=>(float)$c['pagu_p1'],
-										'target'=>$c['target'],
-										'pagu'=>(float)$c['pagu'],
-										'pagu_p'=>(float)$c['pagu_p'],
-										'pagu_n1'=>(float)$c['pagu_n1'],
+		   					if((!empty($c['lokasi']))AND($c['lokasi']!='')){
 
-									);	
+								$data_return['data'][$kode_p]['kegiatan'][$kode_k]['lokasi'][]=array(
+									'status'=>$status,
 
-			   					}
-	
-			   				}
+									'kodepemda'=>$kodepemda,
+									'tahun'=>$tahun,
+									'kodebidang'=>$kodebidang,
+									'kodeskpd'=>$kodeskpd,
+	   								'kodeprogram'=>$kodeprogram,
+									'kodekegiatan'=>$kodekegiatan,
+									'kodelokasi'=>$keyl,
+									'lokasi'=>$c['lokasi'],
+									'detaillokasi'=>$c['detaillokasi'],
+								);
+
+		   					}
 
 		   				}
+
+
+
+		   				foreach ($k['indikator'] as $key => $c) {
+
+		   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
+
+		   						$data_return['jumlah_indikator_kegiatan']+=1;
+								$data_return['data'][$kode_p]['kegiatan'][$kode_k]['indikator'][]=array(
+									'status'=>$status,
+									'kodepemda'=>$kodepemda,
+									'tahun'=>$tahun,
+									'kodebidang'=>$kodebidang,
+									'kodeskpd'=>$kodeskpd,
+	   								'kodeprogram'=>$kodeprogram,
+									'kodekegiatan'=>$kodekegiatan,
+									'kodeindikator'=>$c['kodeindikator'],
+									'tolokukur'=>$c['tolokukur'],
+									'satuan'=>$c['satuan'],
+									'satuan'=>$c['satuan'],
+									'real_p3'=>$c['real_p3'],
+									'pagu_p3'=>(float)$c['pagu_p3'],
+									'real_p2'=>$c['real_p2'],
+									'pagu_p2'=>(float)$c['pagu_p2'],
+									'real_p1'=>$c['real_p1'],
+									'pagu_p1'=>(float)$c['pagu_p1'],
+									'target'=>$c['target'],
+									'pagu'=>(float)$c['pagu'],
+									'pagu_p'=>(float)$c['pagu_p'],
+									'pagu_n1'=>(isset($c['pagu_n1']))?(float)$c['pagu_n1']:0,
+
+								);
+
+		   					}
+
+
+		   				}
+
+		   				if(isset($k['sub_kegiatan'])){
+		   					foreach ($k['sub_kegiatan'] as $key => $s) {
+			   					$kodesubkegiatan=$s['kodesubkegiatan'];
+			   					$kode_s=$kode_k.'.'.$kodesubkegiatan;
+
+			   					if(!isset($data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s])){
+
+
+			   						$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]=array(
+										'status'=>$status,
+			   							'kodepemda'=>$kodepemda,
+			   							'tahun'=>$tahun,
+			   							'kodebidang'=>$kodebidang,
+			   							'id_urusan'=>$id_urusan,
+			   							'kodeskpd'=>$kodeskpd,
+			   							'kodeprogram'=>$kodeprogram,
+			   							'kodekegiatan'=>$kodekegiatan,
+			   							'kodesubkegiatan'=>$kodesubkegiatan,
+			   							'uraisubkegiatan'=>$s['uraisubkegiatan'],
+			   							'pagu'=>(float)$s['pagu'],
+			   							'pagu_p'=>(float)$s['pagu_p'],
+			   							'prioritas'=>[],
+			   							'lokasi'=>[],
+			   							'indikator'=>[],
+			   							'sub_kegiatan'=>[]
+			   						);
+
+			   					}
+
+
+
+		   						foreach ($s['prioritas'] as $l => $pprio) {
+				   					foreach ($pprio as $keypprio => $prio) {
+
+					   					if((!empty($prio))AND($prio!='')){
+
+											$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['prioritas'][]=array(
+												'status'=>$status,
+												'kodepemda'=>$kodepemda,
+												'tahun'=>$tahun,
+												'kodebidang'=>$kodebidang,
+												'kodeskpd'=>$kodeskpd,
+												'kodeprogram'=>$kodeprogram,
+												'kodekegiatan'=>$kodekegiatan,
+												'kodesubkegiatan'=>$kodesubkegiatan,
+												'kodeprioritas'=>$l,
+												'jenis'=>$keypprio,
+												'uraiprioritas'=>$prio,
+											);
+
+					   					}
+				   						# code...
+				   					}
+
+				   				}
+
+
+				   				foreach ($s['lokasi'] as $keyl => $c) {
+
+				   					if((!empty($c['lokasi']))AND($c['lokasi']!='')){
+
+										$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['lokasi'][]=array(
+											'status'=>$status,
+
+											'kodepemda'=>$kodepemda,
+											'tahun'=>$tahun,
+											'kodebidang'=>$kodebidang,
+											'kodeskpd'=>$kodeskpd,
+			   								'kodeprogram'=>$kodeprogram,
+											'kodekegiatan'=>$kodekegiatan,
+											'kodesubkegiatan'=>$kodesubkegiatan,
+											'kodelokasi'=>$keyl,
+											'lokasi'=>$c['lokasi'],
+											'detaillokasi'=>$c['detaillokasi'],
+										);
+
+				   					}
+
+				   				}
+
+				   				foreach ($s['indikator'] as $key => $c) {
+
+				   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
+
+										$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['indikator'][]=array(
+											'status'=>$status,
+											'kodepemda'=>$kodepemda,
+											'tahun'=>$tahun,
+											'kodebidang'=>$kodebidang,
+											'kodeskpd'=>$kodeskpd,
+			   								'kodeprogram'=>$kodeprogram,
+											'kodekegiatan'=>$kodekegiatan,
+											'kodeindikator'=>$c['kodeindikator'],
+											'tolokukur'=>$c['tolokukur'],
+											'satuan'=>$c['satuan'],
+											'satuan'=>$c['satuan'],
+											'real_p3'=>$c['real_p3'],
+											'pagu_p3'=>(float)$c['pagu_p3'],
+											'real_p2'=>$c['real_p2'],
+											'pagu_p2'=>(float)$c['pagu_p2'],
+											'real_p1'=>$c['real_p1'],
+											'pagu_p1'=>(float)$c['pagu_p1'],
+											'target'=>$c['target'],
+											'pagu'=>(float)$c['pagu'],
+											'pagu_p'=>(float)$c['pagu_p'],
+											'pagu_n1'=>(float)$c['pagu_n1'],
+
+										);
+
+				   					}
+
+				   				}
+
+			   				}
+		   				}
+		   				// sub kegiatan
+
+
+
 	   				}
-	   				// sub kegiatan
-
-   					
-
-   				}
-   				// kegiatan
+	   				// kegiatan
 
 
 
 
-   				# code...
-   			}
-   			// pro
-   			# code...
+	   				# code...
+	   			}
+	   			// pro
+	   			# code...
+	   		}
+	   		// urusan
+
+	   		// selesai
+
+	   		Storage::put('BOT/SIPD/JSON/'.$tahun.'/BUILD-STATUS/'.$status.'/'.$kodepemda.'.json',json_encode($data_return,JSON_PRETTY_PRINT));
+
+	   		return $data_return;
+
    		}
-   		// urusan
 
-   		// selesai
-
-   		Storage::put('BOT/SIPD/JSON/'.$tahun.'/BUILD/'.$kodepemda.'.json',json_encode($data_return,JSON_PRETTY_PRINT));
-
-   		return $data_return;
-
-   	}
-
-   	return null;
+   		return null;
 
 
    }
@@ -674,14 +678,14 @@ class BOTSIPD extends Controller
 
    }
 
-   static function storingData($tahun,$kodepemda,$data=null,$min_status){
+   static function storingData($tahun,$kodepemda,$data=null,$min_status,$status=null){
     	set_time_limit(-1);
 
 
-   		if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/BUILD/'.$kodepemda.'.json'))){
+   		if(file_exists(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/BUILD-STATUS/'.$status.'/'.$kodepemda.'.json'))){
 
 	   		if($data==null){
-	   			$data=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/BUILD/'.$kodepemda.'.json'));
+	   			$data=file_get_contents(storage_path('app/BOT/SIPD/JSON/'.$tahun.'/BUILD-STATUS/'.$status.'/'.$kodepemda.'.json'));
 	   			$data=json_decode($data,true);
 	   		}
 
@@ -740,7 +744,7 @@ class BOTSIPD extends Controller
 		   					['kodeskpd','=',$dt['kodeskpd']],
 		   					['kodeprogram','=',$dt['kodeprogram']],
 		   					['jenis','=',$dt['jenis']],
-		   					['uraiprioritas',$sqllike,('%'.$p['uraiprioritas'].'%')],
+		   					['kodeprioritas',$dt['kodeprioritas']],
 		   					['id_program','=',$id_program]
 
 		   				])->first();
@@ -838,7 +842,7 @@ class BOTSIPD extends Controller
 			   					['kodeskpd','=',$dk['kodeskpd']],
 			   					['kodeprogram','=',$dk['kodeprogram']],
 			   					['kodekegiatan','=',$dk['kodekegiatan']],
-			   					['sumberdana','=',$dk['sumberdana']],
+			   					['kodesumberdana','=',$dk['kodesumberdana']],
 			   					['id_kegiatan','=',$id_kegiatan]
 			   				])->first();
 
@@ -862,7 +866,7 @@ class BOTSIPD extends Controller
 			   					['kodeskpd','=',$dk['kodeskpd']],
 			   					['kodeprogram','=',$dk['kodeprogram']],
 			   					['kodekegiatan','=',$dk['kodekegiatan']],
-			   					['detaillokasi',$sqllike,('%'.$dk['detaillokasi'].'%')],
+			   					['kodelokasi','=',$dk['kodelokasi']],
 			   					['id_kegiatan','=',$id_kegiatan]
 			   				])->first();
 
@@ -887,7 +891,7 @@ class BOTSIPD extends Controller
 			   					['kodeprogram','=',$dk['kodeprogram']],
 			   					['kodekegiatan','=',$dk['kodekegiatan']],
 			   					['jenis','=',$dk['jenis']],
-			   					['uraiprioritas',$sqllike,('%'.$dk['uraiprioritas'].'%')],
+			   					['kodelokasi','=',$dk['kodelokasi']],
 			   					['id_kegiatan','=',$id_kegiatan]
 			   				])->first();
 
@@ -938,7 +942,6 @@ class BOTSIPD extends Controller
 				   					['kodekegiatan','=',$ds['kodekegiatan']],
 				   					['kodesubkegiatan','=',$ds['kodesubkegiatan']],
 				   					['kodelokasi','=',$ds['kodelokasi']],
-				   					['detaillokasi',$sqllike,('%'.$ds['detaillokasi'].'%')],
 				   					['id_sub_kegiatan','=',$id_sub_kegiatan]
 				   				])->first();
 
@@ -988,7 +991,7 @@ class BOTSIPD extends Controller
 				   					['kodekegiatan','=',$ds['kodekegiatan']],
 				   					['kodesubkegiatan','=',$ds['kodesubkegiatan']],
 				   					['jenis','=',$ds['jenis']],
-				   					['uraiprioritas',$sqllike,('%'.$ds['uraiprioritas'].'%')],
+				   					['kodeprioritas','=',$ds['kodeprioritas']],
 				   					['id_sub_kegiatan','=',$id_sub_kegiatan]
 				   				])->first();
 
@@ -1019,14 +1022,80 @@ class BOTSIPD extends Controller
 
 	   	}
 
+
+	   	if(isset($con)){
+
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_program')
+		   	->where([
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_program_capaian')
+		   	->where([
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan')
+		   	->where([
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_indikator')
+		   	->where([
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prio')
+		   	->where([
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+		   	B::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_lokasi')
+		   	->where([
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+		   	B::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sumberdana')
+		   	->where([
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub')
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+			DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_prio')
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+			DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_indikator')
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+			DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_lokasi')
+		   		['kodepemda','=',$kodepemda],
+		   		['status','!=',$status]
+		   	])->delete();
+
+
+	   	}
+	
+
 	   	// deleteing
 
 
-
-
-
-
-   } 
+   }
 
 
 
@@ -1108,7 +1177,7 @@ class BOTSIPD extends Controller
 
     					if(isset($data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]['kegiatan']['KEGIATAN@'.$kode_kegiatan])){
     						dd($k);
-    					
+
     					}else{
     					$jumlah_kegiatan+=1;
 
@@ -1116,7 +1185,7 @@ class BOTSIPD extends Controller
 
     					$jumlah_anggaran+=(float)($k['pagu']?$k['pagu']:0);
 
- 
+
 
     					$data_return['SKPD@'.$kodeskpd]['program']['PROGRAM@.'.$kodeprogram]['kegiatan']['KEGIATAN@'.$kode_kegiatan]=array(
     						'kode_daerah'=>$kodepemda,
@@ -1135,7 +1204,7 @@ class BOTSIPD extends Controller
 
 
     					foreach ((is_array($k['sumberdana'])?$k['sumberdana']:[]) as $isd=> $sd) {
-    						
+
 
     						$sumberdana='';
     						if(isset($sd['sumberdana'])){
@@ -1180,7 +1249,7 @@ class BOTSIPD extends Controller
     					}
 
     					foreach ($k['subkegiatan'] as $sk) {
-    							
+
     						# code...
     					}
 
@@ -1233,7 +1302,7 @@ class BOTSIPD extends Controller
 	    						'kode_bidang'=>$p['kode_bidang'],
 	    					])->first();
 
-    						
+
 	    					if(($exp) AND ($exp->status!=$p['status'])){
 
 	    						$id_kegiatan=$exp->id;
@@ -1261,7 +1330,7 @@ class BOTSIPD extends Controller
 	    						$id_program=$exp->id;
 	    					}
 
-		    				
+
 		    				if($id_program){
 
 		    					foreach ($p['indikator'] as  $ip) {
@@ -1409,7 +1478,7 @@ class BOTSIPD extends Controller
 				    							'status'=>$ksd['status'],
 				    							'sumber_dana'=>$ksd['sumber_dana'],
 				    							'pagu'=>$ksd['pagu'],
-				    							'kode_sumber_dana'=>$ksd['kode_sumber_dana'],				    							
+				    							'kode_sumber_dana'=>$ksd['kode_sumber_dana'],
 				    						]);
 				    					$approve=true;
 
@@ -1420,12 +1489,12 @@ class BOTSIPD extends Controller
 				    							'status'=>$ksd['status'],
 				    							'sumber_dana'=>$ksd['sumber_dana'],
 				    							'pagu'=>(float)$ksd['pagu'],
-				    							'kode_sumber_dana'=>$ksd['kode_sumber_dana'],	
+				    							'kode_sumber_dana'=>$ksd['kode_sumber_dana'],
 				    							'kode_daerah'=>$ksd['kode_daerah'],
 					    						'kode_skpd'=>$ksd['kode_skpd'],
 					    						'id_kegiatan'=>$id_kegiatan,
 					    						'kode_bidang'=>$ksd['kode_bidang'],
-					    						'kode_dana'=>$ksd['kode_dana']			    							
+					    						'kode_dana'=>$ksd['kode_dana']
 				    						]);
 
 				    					}
@@ -1442,8 +1511,8 @@ class BOTSIPD extends Controller
 		    		}
 
 		    		if($approve){
-	    
-				    
+
+
 				    	DB::table('prokeg.tb_'.$tahun.'_program')->where([
 							['kode_daerah','=',$kodepemda],
 							['status','!=',$status],
@@ -1453,17 +1522,17 @@ class BOTSIPD extends Controller
 							['kode_daerah','=',$kodepemda],
 							['status','!=',$status],
 						])->delete();
-						
+
 						DB::table('prokeg.tb_'.$tahun.'_ind_program')->where([
 							['kode_daerah','=',$kodepemda],
 							['status','!=',$status],
 						])->delete();
-						
+
 						DB::table('prokeg.tb_'.$tahun.'_ind_kegiatan')->where([
 							['kode_daerah','=',$kodepemda],
 							['status','!=',$status],
 						])->delete();
-						
+
 						DB::table('prokeg.tb_'.$tahun.'_s_dana')->where([
 							['kode_daerah','=',$kodepemda],
 							['status','!=',$status],
@@ -1474,23 +1543,23 @@ class BOTSIPD extends Controller
 				    }
 
 
-		    		
+
 	    		}
 
-	    		
+
 	    	}
     	}
 
-	    
+
 	    // dd($jumlah_kegiatan);
 
 
-    } 
+    }
 
 
     public function change($tahun=2020){
     	DBINIT::rkpd_db($tahun);
-    
+
 
     	$datax=DB::table('prokeg_2.tb_'.$tahun.'_ind_program')->orderBy('id','asc')
     	->select('id','kode_daerah','kode_ind','anggaran','id_program','kode_skpd','kode_bidang','pelaksana as uraian_skpd','indikator')->chunk(500, function($data)use ($tahun){
