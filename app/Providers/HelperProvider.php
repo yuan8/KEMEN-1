@@ -75,7 +75,6 @@ class HelperProvider extends ServiceProvider
     static function fokus_tahun(){
        if(Auth::User()){
         static::checked();
-
         $tahun= session('fokus_tahun');
             // dd('u_empty');
 

@@ -12,6 +12,7 @@
 */
 
 Route::get('rkpd-i',function(){
+	dd(\Carbon\Carbon::parse(explode(',', 'Jumat, 01-08-2020 16:50:22')[1]));
 	RKPDProvider::init(2021);
 	RKPDProvider::init(2020);
 

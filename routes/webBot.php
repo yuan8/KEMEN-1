@@ -18,6 +18,11 @@ Route::prefix('bot/rpjmn')->group(function(){
 Route::prefix('bot/sipd')->group(function(){
 	Route::get('/init/{tahun}','SISTEM\BOTSIPD@init');
 
+	Route::get('/init-jjj/',function(){
+		RKPDProvider::init(2020);
+	});
+
+
 	Route::prefix('data-rkpd')->group(function(){
 			Route::get('/listing/{tahun}','SISTEM\BOTSIPD@listing');
 			Route::get('test/{tahun}/{kodepemda}/{d?}','SISTEM\BOTSIPD@building');

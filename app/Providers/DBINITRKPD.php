@@ -46,6 +46,7 @@ class DBINITRKPD extends ServiceProvider
 
 
     static public function init($tahun=2020){
+      
 
         // mysql
         $name_db=['myfinal','myranwal','pgsql'];
@@ -55,7 +56,84 @@ class DBINITRKPD extends ServiceProvider
                 $schema='rkpd.';
                 // dd(Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_status'));
 
+                if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_rkpd_sinkron')){
+                        Schema::connection($n)->create($schema.'master_'.$tahun.'_rkpd_sinkron',function(Blueprint $table)use($tahun,$schema){
+
+                            $table->string('kodepemda',4)->primary();
+                            $table->dateTime('date_updated');
+                            $table->string('flag',50);
+                            $table->unique(['kodepemda','flag']);
+
+
+                        });
+                       
+                }
+
+
+            }else{
+
+                if(!Schema::connection($n)->hasTable($schema.'master_urusan')){
+                    Schema::connection($n)->create($schema.'master_urusan',function(Blueprint $table)use($tahun,$schema){
+
+                        $table->bigIncrements('id');
+                        $table->string('nama')->unique();
+                        $table->timestamps();
+
+                    });
+
+                    $dt=DB::table('master_urusan')->select('id','nama')->get();
+                    $dt=json_encode($dt);
+                    $dt=json_decode($dt,true);
+
+                    DB::connection($n)->table($schema.'master_urusan')->insertOrIgnore($dt);
+
+
+                 }
+
+
+                  if(!Schema::connection($n)->hasTable($schema.'master_urusan_prioritas')){
+                    Schema::connection($n)->create($schema.'master_urusan_prioritas',function(Blueprint $table)use($tahun,$schema){
+
+                        $table->bigIncrements('id');
+                        $table->string('nama')->unique();
+                        $table->timestamps();
+
+                    });
+
+                    // $dt=DB::table('master_urusan')->select('id','nama')->get();
+                    // $dt=json_encode($dt);
+                    // $dt=json_decode($dt,true);
+
+                    // DB::connection($n)->table($schema.'master_urusan')->insertOrIgnore($dt);
+
+
+                 }
+
+                  if(!Schema::connection($n)->hasTable($schema.'master_sub_urusan')){
+                    Schema::connection($n)->create($schema.'master_sub_urusan',function(Blueprint $table)use($tahun,$schema){
+
+                        $table->bigIncrements('id');
+                        $table->string('nama');
+                        $table->bigInteger('id_urusan');
+                        $table->timestamps();
+
+
+                    });
+
+                    $dt=DB::table('master_sub_urusan')->select('id','nama','id_urusan')->get();
+                    $dt=json_encode($dt);
+                    $dt=json_decode($dt,true);
+
+                    DB::connection($n)->table($schema.'master_sub_urusan')->insertOrIgnore($dt);
+
+
+                 }
+
+
+
             }
+
+
              if(!Schema::connection($n)->hasTable($schema.'master_daerah')){
                 Schema::connection($n)->create($schema.'master_daerah',function(Blueprint $table)use($tahun,$schema){
 
@@ -74,11 +152,15 @@ class DBINITRKPD extends ServiceProvider
 
              }
 
+
+
+
             if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_status_data')){
                 Schema::connection($n)->create($schema.'master_'.$tahun.'_status_data',function(Blueprint $table)use($tahun,$schema){
-
-                    $table->string('kodepemda',4)->primary()->unique();
+                    $table->increments('id');
+                    $table->string('kodepemda',4)->unique();
                     $table->integer('status_data')->default(0);
+                    $table->date('push_date')->nullable();
                     $table->timestamps();
 
                 });
@@ -111,13 +193,15 @@ class DBINITRKPD extends ServiceProvider
                     $table->integer('tahun')->default($tahun);
                     $table->string('kodebidang',50);
                     $table->string('uraibidang')->nullable();
+                    $table->bigInteger('kode_urusan_prioritas')->nullable();
                     $table->bigInteger('id_urusan')->nullable();
                     $table->bigInteger('id_sub_urusan')->nullable();
                     $table->string('kodeprogram',100);
                     $table->text('uraiprogram');
                     $table->string('kodeskpd',50);
                     $table->string('uraiskpd');
-                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','id_urusan'],'program_un'.$tahun);
+                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram'],'program_un'.$tahun);
+                    $table->timestamps();
 
                      $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
@@ -154,13 +238,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->text('target_n1')->nullable();
                     $table->double('pagu_n1',20,3)->nullable();
                     $table->integer('jenis')->nullable();
-
-
-
-                    if($schema!=''){
-                        $table->integer('jenis')->nullable();
-                        $table->timestamps();
-                    }
+                    $table->timestamps();
 
                     $table->foreign('id_program')
                     ->references('id')->on($schema.'master_'.$tahun.'_program')
@@ -170,16 +248,16 @@ class DBINITRKPD extends ServiceProvider
                     ->references('id')->on($schema.'master_daerah')
                     ->onDelete('cascade')->onUpdate('cascade');
 
-                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodeindikator','tolokukur','id_program'],'program_capaian_un'.$tahun);
+                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodeindikator','id_program'],'program_capaian_un'.$tahun);
 
                 });
 
 
              }
 
-             if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_program_prio' ) ){
+             if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_program_prioritas' ) ){
 
-                 Schema::connection($n)->create($schema.'master_'.$tahun.'_program_prio',function(Blueprint $table)use($tahun,$schema){
+                 Schema::connection($n)->create($schema.'master_'.$tahun.'_program_prioritas',function(Blueprint $table)use($tahun,$schema){
 
                     $table->bigIncrements('id');
                     $table->integer('status')->nullable();
@@ -192,6 +270,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeprioritas',50)->nullable();
                     $table->string('jenis')->nullable();
                     $table->text('uraiprioritas')->nullable();
+                    $table->timestamps();
+
 
                     $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
@@ -204,7 +284,7 @@ class DBINITRKPD extends ServiceProvider
                     ->references('id')->on($schema.'master_'.$tahun.'_program')
                     ->onDelete('cascade')->onUpdate('cascade');
 
-                     $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodeprioritas','jenis','id_program'],'program_prio_un'.$tahun);
+                     $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodeprioritas','id_program'],'program_prioritas_un'.$tahun);
 
                 });
 
@@ -224,27 +304,25 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodebidang',50);
                     $table->bigInteger('id_urusan')->nullable();
                     $table->bigInteger('id_sub_urusan')->nullable();
-
                     $table->string('kodeskpd',50);
                     $table->string('kodeprogram',100);
                     $table->string('kodekegiatan',100);
                     $table->text('uraikegiatan');
                     $table->double('pagu',20,3)->nullable()->default(0);
                     $table->double('pagu_p',20,3)->nullable()->default(0);
+                    $table->integer('jenis')->nullable();
+                    $table->integer('kode_lintas_urusan')->nullable();
+
+                    $table->timestamps();
+
 
                     $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
                     ->onDelete('cascade')->onUpdate('cascade');
 
-                    if($schema!=''){
-                        $table->integer('jenis')->nullable();
-                        $table->integer('kode_lintas_urusan')->nullable();
+                    
 
-                        $table->timestamps();
-                    }
-
-
-                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','id_urusan','id_program'],'kegiatan_un'.$tahun);
+                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','id_program'],'kegiatan_un'.$tahun);
 
 
                      $table->foreign('id_program')
@@ -285,6 +363,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->text('target_n1')->nullable();
                     $table->double('pagu_n1',20,3)->nullable();
                     $table->integer('jenis')->nullable();
+                    $table->timestamps();
+
 
 
                     $table->foreign('kodepemda')
@@ -294,7 +374,7 @@ class DBINITRKPD extends ServiceProvider
 
                     $table->unique(['kodepemda','kodebidang','kodeskpd','tolokukur','kodeprogram','kodekegiatan','kodeindikator','id_kegiatan'],'kegiatan_indikator_un'.$tahun);
 
-                    // $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeindikator'],'kegiatan_indikator_index_un');
+                   
 
                      $table->foreign('id_kegiatan')
                     ->references('id')->on($schema.'master_'.$tahun.'_kegiatan')
@@ -322,6 +402,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodesumberdana',100)->nullable();
                     $table->string('sumberdana')->nullable();
                     $table->double('pagu',20,2)->default(0);
+                    $table->timestamps();
+
 
                     $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
@@ -356,6 +438,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodelokasi',50)->nullable();
                     $table->text('lokasi')->nullable();
                     $table->text('detaillokasi')->nullable();
+                    $table->timestamps();
+
 
                     $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
@@ -371,9 +455,9 @@ class DBINITRKPD extends ServiceProvider
 
              }
 
-            if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_prio')){
+            if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_prioritas')){
 
-                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_prio',function(Blueprint $table)use($tahun,$schema){
+                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_prioritas',function(Blueprint $table)use($tahun,$schema){
 
                     $table->bigIncrements('id');
                     $table->integer('status')->nullable();
@@ -388,6 +472,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeprioritas',50)->nullable();
                     $table->string('jenis')->nullable();
                     $table->text('uraiprioritas')->nullable();
+                    $table->timestamps();
+
 
                     $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
@@ -395,7 +481,7 @@ class DBINITRKPD extends ServiceProvider
 
                    
 
-                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeprioritas','id_kegiatan','jenis'],'kegiatan_prio_index_un'.$tahun);
+                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodeprioritas','id_kegiatan'],'kegiatan_prioritas_index_un'.$tahun);
 
                      $table->foreign('id_kegiatan')
                     ->references('id')->on($schema.'master_'.$tahun.'_kegiatan')
@@ -406,13 +492,12 @@ class DBINITRKPD extends ServiceProvider
 
              }
 
-              if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_sub')){
+              if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_subkegiatan')){
 
-                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_sub',function(Blueprint $table)use($tahun,$schema){
+                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_subkegiatan',function(Blueprint $table)use($tahun,$schema){
 
                     $table->bigIncrements('id');
                     $table->integer('status')->nullable();
-
                     $table->bigInteger('id_kegiatan')->unsigned();
                     $table->string('kodepemda',4);
                     $table->integer('tahun')->default($tahun);
@@ -426,6 +511,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->text('uraisubkegiatan')->nullable();
                     $table->double('pagu',20,3)->default(0);
                     $table->double('pagu_p',20,3)->default(0);
+                    $table->timestamps();
+
 
                     $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
@@ -443,9 +530,9 @@ class DBINITRKPD extends ServiceProvider
 
              }
 
-            if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_sub_indikator')){
+            if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_subkegiatan_indikator')){
 
-                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_sub_indikator',function(Blueprint $table)use($tahun,$schema){
+                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_subkegiatan_indikator',function(Blueprint $table)use($tahun,$schema){
 
                     $table->bigIncrements('id');
                     $table->integer('status')->nullable();
@@ -458,7 +545,7 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodekegiatan',100);
                     $table->string('kodesubkegiatan',100)->nullable();
                     $table->string('kodeindikator',100)->nullable();
-                    $table->string('tolokukur',500);
+                    $table->text('tolokukur');
                     $table->text('satuan')->nullable();
                     $table->text('real_p3')->nullable();
                     $table->double('pagu_p3',20,3)->nullable();
@@ -471,26 +558,30 @@ class DBINITRKPD extends ServiceProvider
                     $table->double('pagu_p',20,3)->nullable();
                     $table->text('target_n1')->nullable();
                     $table->double('pagu_n1',20,3)->nullable();
+                    $table->timestamps();
+
 
                     $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
                     ->onDelete('cascade')->onUpdate('cascade');
 
 
-                    $table->unique(['kodepemda','kodebidang','kodeskpd','tolokukur','kodeprogram','kodekegiatan','kodesubkegiatan','kodeindikator'],'sub_indikator_un'.$tahun);
-
-                     $table->foreign('id_sub_kegiatan')
-                    ->references('id')->on($schema.'master_'.$tahun.'_kegiatan_sub')
+                   
+                     $table->foreign('id_sub_kegiatan','ski_'.$tahun)
+                    ->references('id')->on($schema.'master_'.$tahun.'_kegiatan_subkegiatan')
                     ->onDelete('cascade')->onUpdate('cascade');
+
+                     $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodeindikator','id_sub_kegiatan'],'sub_indikator_un'.$tahun);
+
 
                 });
 
 
              }
 
-             if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_sub_lokasi')){
+             if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_subkegiatan_lokasi')){
 
-                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_sub_lokasi',function(Blueprint $table)use($tahun,$schema){
+                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_subkegiatan_lokasi',function(Blueprint $table)use($tahun,$schema){
 
                     $table->bigIncrements('id');
                     $table->integer('status')->nullable();
@@ -505,6 +596,8 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodelokasi',50)->nullable();
                     $table->text('lokasi')->nullable();
                     $table->text('detaillokasi')->nullable();
+                    $table->timestamps();
+
 
                     $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
@@ -513,20 +606,19 @@ class DBINITRKPD extends ServiceProvider
                     $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodelokasi','id_sub_kegiatan'],'sub_lokasi_un_'.$tahun);
                     
 
-                     $table->foreign('id_sub_kegiatan')
-                    ->references('id')->on($schema.'master_'.$tahun.'_kegiatan_sub')
+                     $table->foreign('id_sub_kegiatan','skl_'.$tahun)
+                    ->references('id')->on($schema.'master_'.$tahun.'_kegiatan_subkegiatan')
                     ->onDelete('cascade')->onUpdate('cascade');
                 });
 
              }
 
-             if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_sub_prio')){
+             if(!Schema::connection($n)->hasTable($schema.'master_'.$tahun.'_kegiatan_subkegiatan_prioritas')){
 
-                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_sub_prio',function(Blueprint $table)use($tahun,$schema){
+                 Schema::connection($n)->create($schema.'master_'.$tahun.'_kegiatan_subkegiatan_prioritas',function(Blueprint $table)use($tahun,$schema){
 
                     $table->bigIncrements('id');
                     $table->integer('status')->nullable();
-
                     $table->bigInteger('id_sub_kegiatan')->unsigned();
                     $table->string('kodepemda',4);
                     $table->integer('tahun')->default($tahun);
@@ -538,15 +630,16 @@ class DBINITRKPD extends ServiceProvider
                     $table->string('kodeprioritas',50)->nullable();
                     $table->string('jenis',100)->nullable();
                     $table->text('uraiprioritas')->nullable();
+                    $table->timestamps();
 
                     $table->foreign('kodepemda')
                     ->references('id')->on($schema.'master_daerah')
                     ->onDelete('cascade')->onUpdate('cascade');
 
-                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodeprioritas','jenis',],'subprioun'.$tahun);
+                    $table->unique(['kodepemda','kodebidang','kodeskpd','kodeprogram','kodekegiatan','kodesubkegiatan','kodeprioritas'],'subprioun'.$tahun);
 
-                     $table->foreign('id_sub_kegiatan')
-                    ->references('id')->on($schema.'master_'.$tahun.'_kegiatan_sub')
+                     $table->foreign('id_sub_kegiatan','skp_'.$tahun)
+                    ->references('id')->on($schema.'master_'.$tahun.'_kegiatan_subkegiatan')
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 });

@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Dispatcher $events)
     {
         //
+
         Schema::defaultStringLength(151);
 
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {

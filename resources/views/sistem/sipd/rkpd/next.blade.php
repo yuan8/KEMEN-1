@@ -10,7 +10,7 @@
 <script type="text/javascript">
 	
 	setTimeout(function(){
-		window.location.href='{{route('bot.sipd.rkpd.store',['tahun'=>$tahun,'kodepemda'=>$kodepemda,'json'=>true])}}';
+		window.location.href='{{route('bot.sipd.rkpd.store',['tahun'=>$tahun,'kodepemda'=>$daerah->id,'json'=>true])}}';
 	
 
 	},1000);

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 class BOTSIPD extends Controller
 {
 
-	static public function listing($tahun,$status_min=0,$cron=false){
+	static public function listing($tahun,$status_min=5,$cron=false){
     	set_time_limit(-1);
     	if($status_min<4){
     		$con='myranwal';
@@ -33,13 +33,6 @@ class BOTSIPD extends Controller
 
 
 
-
-
-  //   	$dt='1';
-		// if(file_exists(storage_path('app/chace-cron.text'))){
-		// 	$dt=file_get_contents(storage_path('app/chace-cron.text'));
-
-		// }
 		$data=DB::connection($con)->table(DB::raw("(select d.id as kodepemda,d.nama,
 		(select f.anggaran from ".$schema."master_".$tahun."_status as f where f.kodepemda=d.id)".($schema!=''?'::numeric':'')." as sipd_anggaran,
 		(select f.status from ".$schema."master_".$tahun."_status as f where f.kodepemda=d.id)".($schema!=''?'::numeric':'')." as sipd_status ,max(k.status)".($schema!=''?'::numeric':'')." as status ,sum(k.pagu)".($schema!=''?'::numeric':'')." as  anggaran
@@ -75,6 +68,7 @@ class BOTSIPD extends Controller
 
 				echo 'SIPD '.$data->nama.'||'.$data->kodepemda.' --- done';
 			}
+
 			Storage::put('chace-cron.text',$data->kodepemda);
 		}else{
 
@@ -104,7 +98,7 @@ class BOTSIPD extends Controller
 
 	static $token='d1d1ab9140c249e34ce356c91e9166a6';
     //
-    static public function getDataJson($tahun,$kodepemda,$min_status,$cron=false,Request $request){
+    static public function getDataJson($tahun,$kodepemda,$min_status=5,$cron=false,Request $request){
     	set_time_limit(-1);
 
 		if(strlen($kodepemda)<4){
@@ -220,10 +214,19 @@ class BOTSIPD extends Controller
 		Storage::put('BOT/SIPD/JSON/'.$tahun.'/STATUS/'.$status.'/'.$kodepemda.'.json',json_encode($data_json,JSON_PRETTY_PRINT));
 
 		$data_returning_build=static::building($tahun,$kodepemda,$data_json,$status);
+    	static::storingData($tahun,$kodepemda,$data_returning_build,$min_status,$status);
+
 
 		if($request->json==true){
 
-			$nextid=DB::table('master_daerah')->where('id','>',$kodepemda)->first();
+			$nextid=DB::connection($con)->table($schema.'master_'.$tahun.'_status as s')
+				->select(DB::raw("(select nama from master_daerah as d where d.id=s.kodepemda) as nama"),"s.kodepemda as id")
+				->where('s.kodepemda','>',$kodepemda)
+				->where('s.status','>=',$min_status)
+				->first();
+
+
+			// $nextid=DB::table('master_daerah')->where('id','>',$kodepemda)->first();
 
 			return view('sistem.sipd.rkpd.next')->with('daerah',$nextid)
 				   ->with(['tahun'=>$tahun,'kodepemda'=>$kodepemda]);
@@ -231,7 +234,6 @@ class BOTSIPD extends Controller
 		}
 
 
-    	static::storingData($tahun,$kodepemda,$data_returning_build,$min_status,$status);
 
     	if($cron){
     		return true;
@@ -248,7 +250,6 @@ class BOTSIPD extends Controller
 
  	public static function  building($tahun,$kodepemda,$data=null,$status=null){
     	set_time_limit(-1);
-
 
 	   	if(strpos((string)$kodepemda, '00')!==false){
 	   		$kodepemda=str_replace('00', '', (string)$kodepemda);
@@ -294,12 +295,21 @@ class BOTSIPD extends Controller
 	   				$kode_p='P.'.$kodebidang.'.'.$kodeskpd.'.'.$kodeprogram;
 
 	   				if(!isset($data_return['data'][$kode_p])){
+
 	   					$data_return['jumlah_program']+=1;
+	   					$str = explode('.', $kodebidang)[0];
+	   					if(strtoupper($str)=='X'){
+							$kode_urusan_prioritas = 0;
+	   					}else{
+							$kode_urusan_prioritas = intval($str);
+	   					}
+
 
 	   					$data_return['data'][$kode_p]=array(
 	   						'status'=>$status,
 	   						'kodepemda'=>$kodepemda,
 	   						'tahun'=>$tahun,
+	   						'kode_urusan_prioritas'=>$kode_urusan_prioritas,
 	   						'kodebidang'=>$kodebidang,
 	   						'uraibidang'=>$uraibidang,
 	   						'id_urusan'=>$id_urusan,
@@ -313,6 +323,10 @@ class BOTSIPD extends Controller
 	   					);
 	   				}
 
+	   				if(!is_array($p['capaian'])){
+	   					$p['capaian']=[];
+	   				}
+
 	   				foreach ($p['capaian'] as $key => $c) {
 
 	   					if((!empty($c['tolokukur']))AND($c['tolokukur']!='')){
@@ -321,7 +335,6 @@ class BOTSIPD extends Controller
 
 							$data_return['data'][$kode_p]['capaian'][]=array(
 								'status'=>$status,
-
 								'kodepemda'=>$kodepemda,
 								'tahun'=>$tahun,
 								'kodebidang'=>$kodebidang,
@@ -349,7 +362,13 @@ class BOTSIPD extends Controller
 
 	   				}
 
+	   				if(!is_array($p['prioritas'])){
+	   					$p['prioritas']=[];
+	   				}
 	   				foreach ($p['prioritas'] as $l => $pprio) {
+	   					if(!is_array($pprio)){
+	   						$pprio=[];
+	   					}
 	   					foreach ($pprio as $keypprio => $prio) {
 
 		   					if((!empty($prio))AND($prio!='')){
@@ -361,7 +380,7 @@ class BOTSIPD extends Controller
 									'kodebidang'=>$kodebidang,
 									'kodeskpd'=>$kodeskpd,
 									'kodeprogram'=>$kodeprogram,
-									'kodeprioritas'=>$l,
+									'kodeprioritas'=>($l+1),
 									'jenis'=>$keypprio,
 									'uraiprioritas'=>$prio
 								);
@@ -372,7 +391,9 @@ class BOTSIPD extends Controller
 
 	   				}
 
-
+	   				if(!is_array($p['kegiatan'])){
+	   					$p['kegiatan']=[];
+	   				}
 
 	   				foreach ($p['kegiatan'] as $key => $k) {
 
@@ -407,7 +428,14 @@ class BOTSIPD extends Controller
 
 	   					}
 
+	   					if(!is_array($k['prioritas'])){
+		   					$k['prioritas']=[];
+		   				}
+
 	   					foreach ($k['prioritas'] as $l => $pprio) {
+	   						if(!is_array($pprio)){
+		   						$pprio=[];
+		   					}
 		   					foreach ($pprio as $keypprio => $prio) {
 
 			   					if((!empty($prio))AND($prio!='')){
@@ -420,7 +448,7 @@ class BOTSIPD extends Controller
 										'kodeskpd'=>$kodeskpd,
 	   									'kodeprogram'=>$kodeprogram,
 										'kodekegiatan'=>$kodekegiatan,
-										'kodeprioritas'=>$l,
+										'kodeprioritas'=>($l+1),
 										'jenis'=>$keypprio,
 										'uraiprioritas'=>$prio,
 									);
@@ -429,6 +457,10 @@ class BOTSIPD extends Controller
 		   						# code...
 		   					}
 
+		   				}
+
+		   				if(!is_array($k['sumberdana'])){
+		   					$k['sumberdana']=[];
 		   				}
 
 		   				if(is_array($k['sumberdana'])){
@@ -447,12 +479,12 @@ class BOTSIPD extends Controller
 											'kodeskpd'=>$kodeskpd,
 			   								'kodeprogram'=>$kodeprogram,
 											'kodekegiatan'=>$kodekegiatan,
-											'kodesumberdana'=>$keyl,
+											'kodesumberdana'=>($keyl+1),
 											'sumberdana'=>$c['sumberdana'],
 											'pagu'=>(isset($c['pagu']))?(float)$c['pagu']:0,
 										);
 									}else{
-										$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd]+=(isset($c['pagu']))?(float)$c['pagu']:0;
+										$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sumberdana'][$kode_sd]['pagu']+=(isset($c['pagu']))?(float)$c['pagu']:0;
 									}
 
 			   					}
@@ -460,6 +492,9 @@ class BOTSIPD extends Controller
 		   					}
 		   				}
 
+		   				if(!is_array($k['lokasi'])){
+		   					$k['lokasi']=[];
+		   				}
 
 		   				foreach ($k['lokasi'] as $keyl => $c) {
 
@@ -474,15 +509,19 @@ class BOTSIPD extends Controller
 									'kodeskpd'=>$kodeskpd,
 	   								'kodeprogram'=>$kodeprogram,
 									'kodekegiatan'=>$kodekegiatan,
-									'kodelokasi'=>$keyl,
+									'kodelokasi'=>($keyl+1),
 									'lokasi'=>$c['lokasi'],
-									'detaillokasi'=>$c['detaillokasi'],
+									'detaillokasi'=>isset($c['detaillokasi'])?$c['detaillokasi']:null,
 								);
 
 		   					}
 
 		   				}
 
+
+		   				if(!is_array($k['indikator'])){
+		   					$k['indikator']=[];
+		   				}
 
 
 		   				foreach ($k['indikator'] as $key => $c) {
@@ -520,6 +559,15 @@ class BOTSIPD extends Controller
 
 		   				}
 
+		   				if(!isset($k['sub_kegiatan'])){
+		   					$k['sub_kegiatan']=[];
+		   				}
+
+		   				if(!is_array($k['sub_kegiatan'])){
+		   					$k['sub_kegiatan']=[];
+		   				}
+
+
 		   				if(isset($k['sub_kegiatan'])){
 		   					foreach ($k['sub_kegiatan'] as $key => $s) {
 			   					$kodesubkegiatan=$s['kodesubkegiatan'];
@@ -550,8 +598,14 @@ class BOTSIPD extends Controller
 			   					}
 
 
+			   					if(!is_array($s['prioritas'])){
+				   					$s['prioritas']=[];
+				   				}
 
 		   						foreach ($s['prioritas'] as $l => $pprio) {
+		   							if(!is_array($pprio)){
+				   						$pprio=[];
+				   					}
 				   					foreach ($pprio as $keypprio => $prio) {
 
 					   					if((!empty($prio))AND($prio!='')){
@@ -565,7 +619,7 @@ class BOTSIPD extends Controller
 												'kodeprogram'=>$kodeprogram,
 												'kodekegiatan'=>$kodekegiatan,
 												'kodesubkegiatan'=>$kodesubkegiatan,
-												'kodeprioritas'=>$l,
+												'kodeprioritas'=>($l+1),
 												'jenis'=>$keypprio,
 												'uraiprioritas'=>$prio,
 											);
@@ -576,14 +630,15 @@ class BOTSIPD extends Controller
 
 				   				}
 
-
+				   				if(!is_array($s['lokasi'])){
+				   					$s['lokasi']=[];
+				   				}
 				   				foreach ($s['lokasi'] as $keyl => $c) {
 
 				   					if((!empty($c['lokasi']))AND($c['lokasi']!='')){
 
 										$data_return['data'][$kode_p]['kegiatan'][$kode_k]['sub_kegiatan'][$kode_s]['lokasi'][]=array(
 											'status'=>$status,
-
 											'kodepemda'=>$kodepemda,
 											'tahun'=>$tahun,
 											'kodebidang'=>$kodebidang,
@@ -591,13 +646,16 @@ class BOTSIPD extends Controller
 			   								'kodeprogram'=>$kodeprogram,
 											'kodekegiatan'=>$kodekegiatan,
 											'kodesubkegiatan'=>$kodesubkegiatan,
-											'kodelokasi'=>$keyl,
+											'kodelokasi'=>($keyl+1),
 											'lokasi'=>$c['lokasi'],
-											'detaillokasi'=>$c['detaillokasi'],
+											'detaillokasi'=>isset($c['detaillokasi'])?$c['detaillokasi']:null,
 										);
 
 				   					}
 
+				   				}
+				   				if(!is_array($s['indikator'])){
+				   					$s['indikator']=[];
 				   				}
 
 				   				foreach ($s['indikator'] as $key => $c) {
@@ -737,24 +795,23 @@ class BOTSIPD extends Controller
 
 	   				foreach($p['prioritas'] as $dt){
 
-	   					$ex=DB::connection($con)->table($schema.'master_'.$tahun.'_program_prio')
+	   					$ex=DB::connection($con)->table($schema.'master_'.$tahun.'_program_prioritas')
 		   				->where([
 		   					['kodepemda','=',$dt['kodepemda']],
 		   					['kodebidang','=',$dt['kodebidang']],
 		   					['kodeskpd','=',$dt['kodeskpd']],
 		   					['kodeprogram','=',$dt['kodeprogram']],
-		   					['jenis','=',$dt['jenis']],
 		   					['kodeprioritas',$dt['kodeprioritas']],
 		   					['id_program','=',$id_program]
 
 		   				])->first();
 
 		   				if($ex){
-		   					DB::connection($con)->table($schema.'master_'.$tahun.'_program_prio')
+		   					DB::connection($con)->table($schema.'master_'.$tahun.'_program_prioritas')
 		   					->where('id',$ex->id)->update(static::dataInsert($dt));
 		   				}else{
 		   					$dt['id_program']=$id_program;
-		   					DB::connection($con)->table($schema.'master_'.$tahun.'_program_prio')
+		   					DB::connection($con)->table($schema.'master_'.$tahun.'_program_prioritas')
 		   					->insertGetId(static::dataInsert($dt));
 		   				}
 	   				}
@@ -768,7 +825,6 @@ class BOTSIPD extends Controller
 		   					['kodeskpd','=',$dt['kodeskpd']],
 		   					['kodeprogram','=',$dt['kodeprogram']],
 		   					['kodeindikator','=',$dt['kodeindikator']],
-		   					['tolokukur',$sqllike,('%'.$dt['tolokukur'].'%')],
 		   					['id_program','=',$id_program]
 
 
@@ -818,7 +874,7 @@ class BOTSIPD extends Controller
 			   					['kodeprogram','=',$dk['kodeprogram']],
 			   					['kodekegiatan','=',$dk['kodekegiatan']],
 			   					['kodeindikator','=',$dk['kodeindikator']],
-			   					['tolokukur',$sqllike,('%'.$dk['tolokukur'].'%')],
+			   					// ['tolokukur',$sqllike,('%'.$dk['tolokukur'].'%')],
 			   					['id_kegiatan','=',$id_kegiatan]
 			   				])->first();
 
@@ -883,24 +939,23 @@ class BOTSIPD extends Controller
 
 		   				foreach ($dt['prioritas'] as $key => $dk) {
 
-	   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prio')
+	   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prioritas')
 			   				->where([
 		   						['kodepemda','=',$dk['kodepemda']],
 			   					['kodebidang','=',$dk['kodebidang']],
 			   					['kodeskpd','=',$dk['kodeskpd']],
 			   					['kodeprogram','=',$dk['kodeprogram']],
 			   					['kodekegiatan','=',$dk['kodekegiatan']],
-			   					['jenis','=',$dk['jenis']],
-			   					['kodelokasi','=',$dk['kodelokasi']],
+			   					['kodeprioritas','=',$dk['kodeprioritas']],
 			   					['id_kegiatan','=',$id_kegiatan]
 			   				])->first();
 
 			   				if($px){
-			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prio')
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prioritas')
 			   					->where('id',$px->id)->update(static::dataInsert($dk));
 			   				}else{
 			   					$dk['id_kegiatan']=$id_kegiatan;
-			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prio')
+			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prioritas')
 			   					->insertGetId(static::dataInsert($dk));
 			   				}
 
@@ -910,7 +965,7 @@ class BOTSIPD extends Controller
 
 		   				foreach ($dt['sub_kegiatan'] as $key => $dk) {
 
-	   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub')
+	   						$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan')
 			   				->where([
 		   						['kodepemda','=',$dk['kodepemda']],
 			   					['kodebidang','=',$dk['kodebidang']],
@@ -922,18 +977,18 @@ class BOTSIPD extends Controller
 			   				])->first();
 
 			   				if($px){
-			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub')
+			   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan')
 			   					->where('id',$px->id)->update(static::dataInsert($dk));
 			   					$id_sub_kegiatan=$px->id;
 			   				}else{
 			   					$dk['id_kegiatan']=$id_kegiatan;
-			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub')
+			   					$id_sub_kegiatan=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan')
 			   					->insertGetId(static::dataInsert($dk));
 			   				}
 
 
 			   				foreach($dk['lokasi'] as $key => $ds) {
-			   					$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_lokasi')
+			   					$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_lokasi')
 				   				->where([
 			   						['kodepemda','=',$ds['kodepemda']],
 				   					['kodebidang','=',$ds['kodebidang']],
@@ -946,18 +1001,18 @@ class BOTSIPD extends Controller
 				   				])->first();
 
 				   				if($px){
-				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_lokasi')
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_lokasi')
 				   					->where('id',$px->id)->update(static::dataInsert($ds));
 				   				}else{
 				   					$ds['id_sub_kegiatan']=$id_sub_kegiatan;
-				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_lokasi')
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_lokasi')
 				   					->insertGetId(static::dataInsert($ds));
 				   				}
 			   					# code...
 			   				}
 
 			   				foreach($dk['indikator'] as $key => $ds) {
-			   					$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_indikator')
+			   					$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_indikator')
 				   				->where([
 			   						['kodepemda','=',$ds['kodepemda']],
 				   					['kodebidang','=',$ds['kodebidang']],
@@ -966,23 +1021,22 @@ class BOTSIPD extends Controller
 				   					['kodekegiatan','=',$ds['kodekegiatan']],
 				   					['kodesubkegiatan','=',$ds['kodesubkegiatan']],
 				   					['kodeindikator','=',$ds['kodeindikator']],
-				   					['tolokukur',$sqllike,('%'.$ds['tolokukur'].'%')],
 				   					['id_sub_kegiatan','=',$id_sub_kegiatan]
 				   				])->first();
 
 				   				if($px){
-				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_indikator')
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_indikator')
 				   					->where('id',$px->id)->update(static::dataInsert($ds));
 				   				}else{
 				   					$ds['id_sub_kegiatan']=$id_sub_kegiatan;
-				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_indikator')
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_indikator')
 				   					->insertGetId(static::dataInsert($ds));
 				   				}
 			   					# code...
 			   				}
 
 			   				foreach($dk['prioritas'] as $key => $ds) {
-			   					$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_prio')
+			   					$px=DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_prioritas')
 				   				->where([
 			   						['kodepemda','=',$ds['kodepemda']],
 				   					['kodebidang','=',$ds['kodebidang']],
@@ -990,17 +1044,16 @@ class BOTSIPD extends Controller
 				   					['kodeprogram','=',$ds['kodeprogram']],
 				   					['kodekegiatan','=',$ds['kodekegiatan']],
 				   					['kodesubkegiatan','=',$ds['kodesubkegiatan']],
-				   					['jenis','=',$ds['jenis']],
 				   					['kodeprioritas','=',$ds['kodeprioritas']],
 				   					['id_sub_kegiatan','=',$id_sub_kegiatan]
 				   				])->first();
 
 				   				if($px){
-				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_prio')
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_prioritas')
 				   					->where('id',$px->id)->update(static::dataInsert($ds));
 				   				}else{
 				   					$ds['id_sub_kegiatan']=$id_sub_kegiatan;
-				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_prio')
+				   					DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_prioritas')
 				   					->insertGetId(static::dataInsert($ds));
 				   				}
 			   					# code...
@@ -1050,40 +1103,44 @@ class BOTSIPD extends Controller
 		   		['status','!=',$status]
 		   	])->delete();
 
-		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prio')
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_prioritas')
 		   	->where([
 		   		['kodepemda','=',$kodepemda],
 		   		['status','!=',$status]
 		   	])->delete();
 
-		   	B::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_lokasi')
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_lokasi')
 		   	->where([
 		   		['kodepemda','=',$kodepemda],
 		   		['status','!=',$status]
 		   	])->delete();
 
-		   	B::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sumberdana')
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sumberdana')
 		   	->where([
 		   		['kodepemda','=',$kodepemda],
 		   		['status','!=',$status]
 		   	])->delete();
 
-		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub')
+		   	DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan')->where([
+
 		   		['kodepemda','=',$kodepemda],
 		   		['status','!=',$status]
 		   	])->delete();
 
-			DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_prio')
+			DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_prioritas')->where([
+
 		   		['kodepemda','=',$kodepemda],
 		   		['status','!=',$status]
 		   	])->delete();
 
-			DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_indikator')
+			DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_indikator')->where([
+
 		   		['kodepemda','=',$kodepemda],
 		   		['status','!=',$status]
 		   	])->delete();
 
-			DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_sub_lokasi')
+			DB::connection($con)->table($schema.'master_'.$tahun.'_kegiatan_subkegiatan_lokasi')->where([
+
 		   		['kodepemda','=',$kodepemda],
 		   		['status','!=',$status]
 		   	])->delete();
