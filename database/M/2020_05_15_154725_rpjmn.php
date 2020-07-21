@@ -50,7 +50,7 @@ class Rpjmn extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('kebijakan.tb_2020_2024_rpjmn');
+        Schema::dropIfExists($schema.'kebijakan.tb_2020_2024_rpjmn');
 
     }
 }

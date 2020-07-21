@@ -4,7 +4,7 @@
 @section('content_header')
      <div class="row">
     	<div class="col-md-8">
-    		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN 5 TAHUNAN</h3>
+    		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN 5 TAHUNAN ({{$rpjmn['start']}} -  {{$rpjmn['finish']}})</h3>
     		
     	</div>
     	
@@ -13,37 +13,34 @@
 
 
 @section('content')
- <div class="row">
-		<div class="col-md-6">
-			<div class="box box-warning">
-				<div class="box-body">
-					<table class="table" id="data">
-						<thead>
-							<tr>
-								<th>NAMA SUBURUSAN @{{text}}</th>
+<ul class="list-group">
+	<li class="list-group-item ">
+		<p data-toggle="collapse" href="#satu" aria-expanded="false" aria-controls="satu"><b>1</b></p>
 
-							</tr>
-						</thead>
-						<tbody>
-							@foreach($data as $d)
-								<tr class="cursor-link" onclick="window.location='{{route('pelaksanaan.urusan.view',['id'=>$d->id])}}'">
-									<td>
-										{{$d->nama}}
-									</td>
-								</tr>
+<ul class="list-group collapse" id="satu">
+	<li class="list-group-item collapse" >
+	<p data-toggle="collapse" href="#dua" aria-expanded="false" aria-controls="dua"><b>1</b></p>
+		<ul class="list-group collapse" id="dua" >
+			<li class="list-group-item"></li>
+		</ul>
+	</li>
+</ul>
 
-							@endforeach
-							<tr>
-								<td>
-									<input type="" class="form-control" v-model="text" name="">
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div> 	
-	</div>
+	</li>
+	<li class="list-group-item ">
+		<p data-toggle="collapse" href="#satu" aria-expanded="false" aria-controls="satu"><b>1</b></p>
+
+<ul class="list-group collapse" id="satu">
+	<li class="list-group-item collapse" >
+	<p data-toggle="collapse" href="#dua" aria-expanded="false" aria-controls="dua"><b>1</b></p>
+		<ul class="list-group collapse" id="dua" >
+			<li class="list-group-item"></li>
+		</ul>
+	</li>
+</ul>
+	</li>
+</ul>
+  <!-- /.box-body -->
 
 	
 

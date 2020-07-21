@@ -16,6 +16,8 @@ class Kebijakan5Ctrl extends Controller
 
     public function index(){
 
+        $rpjmn=Hp::get_tahun_rpjmn(Hp::fokus_tahun());
+
     	$data=DB::table('master_sub_urusan as  su')
     	->leftJoin('kb5_kondisi_saat_ini as si','si.id_sub_urusan','=','su.id')
     	->leftJoin('kb5_isu_strategis as is','is.id_kb5_kondisi_saat_ini','=','si.id')
@@ -50,7 +52,12 @@ class Kebijakan5Ctrl extends Controller
 		->paginate(50);	
 
 
-    	return view('form.kebijakan-5-tahun.index')->with('data',$data);
+    	return view('form.kebijakan-5-tahun.index')->with([
+            'data'=>$data,
+            'rpjmn'=>$rpjmn
+
+
+        ]);
 
     }
 }

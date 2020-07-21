@@ -19,6 +19,86 @@ class HelperProvider extends ServiceProvider
         //
     }
 
+
+    static function get_tahun_rpjmn($tahun=null){
+        if($tahun==null){
+            $tahun=static::fokus_tahun();
+        }
+
+        $tahun=(int)$tahun;
+
+        $poin_start=2020;
+        $point_finish=$poin_start+4;
+
+        // 2020 - 2024
+        // 2025 - 2029
+
+        if(($poin_start+4)>=$tahun){
+            $index=($poin_start - $tahun)+1;
+            
+        }else{
+              do{
+                $poin_start+=5;
+                $point_finish=$poin_start+4;
+                if(($poin_start<=$tahun)and($point_finish>=$tahun)){
+                    $ok=false;
+
+                }
+
+            }while($ok);
+
+        }
+        $index=($poin_start - $tahun)+1;
+
+
+        return [
+            'tahun_akses'=>$tahun,
+            'index'=>$index,
+            'start'=>$poin_start,
+            'finish'=>$point_finish,
+            'table'=>static::get_rpjmn_table(null,$tahun),
+            'table_indikator'=>static::get_rpjmn_table('indikator',$tahun),
+        ];
+        
+    }
+
+    static function get_rpjmn_table($tambahan=null,$tahun=null){
+        if($tahun==null){
+            $tahun=static::fokus_tahun();
+        }
+
+        $tahun=(int)$tahun;
+
+        $poin_start=2020;
+        $point_finish=$poin_start+4;
+
+        // 2020 - 2024
+        // 2025 - 2029
+
+        if(($poin_start+4)>=$tahun){
+
+             return ('master_'.(($poin_start)).'_'.$point_finish.'_rpjmn'.(!empty($tambahan)?'_'.$tambahan:'') );
+
+        }else{
+              do{
+                $poin_start+=5;
+                $point_finish=$poin_start+4;
+                if(($poin_start<=$tahun)and($point_finish>=$tahun)){
+                    $ok=false;
+
+                }
+
+            }while($ok);
+
+        }
+
+        return ('master_'.(($poin_start)).'_'.$point_finish.'_rpjmn'.(!empty($tambahan)?'_'.$tambahan:'') );
+
+       
+       
+    }
+
+
     /**
      * Bootstrap services.
      *
