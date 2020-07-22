@@ -125,6 +125,10 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 
 		Route::prefix('kebijakan-pusat-5-tahun/')->group(function(){
 			Route::get('/', 'FORM\Kebijakan5Ctrl@index')->name('kebijakan.pusat.5.tahun.index');
+			Route::get('/tambah/kodisi-saat-ini', 'FORM\Kebijakan5Ctrl@create')->name('kebijakan.pusat.5.tahun.create');
+			Route::post('/tambah/kodisi-saat-ini', 'FORM\Kebijakan5Ctrl@store')->name('kebijakan.pusat.5.tahun.store');
+
+
 		});
 
 		Route::prefix('kebijakan-pusat-tahunan/')->group(function(){

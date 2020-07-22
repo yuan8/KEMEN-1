@@ -19,11 +19,12 @@ class Kb5Indikator extends Migration
         if(!Schema::connection('form')->hasTable($schema.'kb5_indikator')){
              Schema::connection('form')->create($schema.'kb5_indikator',function(Blueprint $table) use ($schema){
                  $table->bigIncrements('id');
-                 $table->string('kode')->nullabe();
+                 $table->string('kode')->nullable();
                  $table->integer('tahun_mulai');
                  $table->integer('tahun_selesai');
                  $table->text('uraian');
                  $table->text('target');
+                 $table->text('target_1')->nullable();
                  $table->integer('tipe_value')->default(0);
                  $table->string('satuan');
                  $table->boolean('kw_nas')->default(0);

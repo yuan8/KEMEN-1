@@ -20,7 +20,7 @@ class Kb5KondisiSaatIni extends Migration
          if(!Schema::connection('form')->hasTable($schema.'kb5_kondisi_saat_ini')){
              Schema::connection('form')->create($schema.'kb5_kondisi_saat_ini',function(Blueprint $table){
                  $table->bigIncrements('id');
-                 $table->string('kode')->nullabe();
+                 $table->string('kode')->nullable();
                  $table->integer('tahun_mulai');
                  $table->integer('tahun_selesai');
                  $table->text('uraian');

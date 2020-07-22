@@ -35,8 +35,10 @@
     <link rel="stylesheet" href="{{ asset('vendor/custome/cs.css?v='.((env('DEV')==true) ?date('ymdhis'):'1.1') ) }}">
     <link rel="stylesheet" href="{{ asset('vendor/custome/animated.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/custome/checkbox.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('vendor/tabulator/dist/css/bootstrap/tabulator_bootstrap.min.css') }}">
     <script type="text/javascript" src="{{asset('vendor/custome/axios.js')}}"></script>
+    <script type="text/javascript" src="{{asset('vendor/tabulator/dist/js/tabulator.min.js')}}"></script>
+
 
     <script type="text/javascript">
 
@@ -79,6 +81,7 @@
 @include('adminlte::plugins', ['type' => 'js'])
 
 @yield('adminlte_js')
+    <link rel="stylesheet" href="{{ asset('vendor/custome/css_form.css') }}">
 
 
 @include('sweetalert::alert')

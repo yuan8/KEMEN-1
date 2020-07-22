@@ -20,7 +20,7 @@ class Kb5IsuStategis extends Migration
          if(!Schema::connection('form')->hasTable($schema.'kb5_isu_stategis')){
              Schema::connection('form')->create($schema.'kb5_isu_stategis',function(Blueprint $table) use ($schema){
                  $table->bigIncrements('id');
-                 $table->string('kode')->nullabe();
+                 $table->string('kode')->nullable();
                  $table->integer('tahun_mulai');
                  $table->integer('tahun_selesai');
                  $table->text('uraian');
