@@ -54,6 +54,11 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 	});
 
+	Route::prefix('pelaksanaan-urusan')->group(function(){
+		Route::get('/','INT\PELAKSANAANURUSAN@index')->name('int.pelurusan.index');		
+
+	});
+
 	Route::prefix('indetifikasi-kebijakan-tahunan')->group(function(){
 		Route::get('/','INT\KEBIJAKANPUSAT1TAHUN@index')->name('int.kb1tahun.index');		
 

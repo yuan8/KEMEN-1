@@ -93,9 +93,9 @@
 	 				<td colspan="1" rowspan="2"></td>
 	 			</tr>
 	 			<tr>
-	 				<td>{!!$i['data_dukung_nas']!!}</td>
-	 				<td>{!!$i['data_dukung_p']!!}</td>
-	 				<td>{!!$i['data_dukung_k']!!}</td>
+	 				<td class="{{$i['kw_nas']?'':'bg-danger'}}">{!!$i['data_dukung_nas']!!}</td>
+	 				<td class="{{$i['kw_p']?'':'bg-danger'}}">{!!$i['data_dukung_p']!!}</td>
+	 				<td class="{{$i['kw_k']?'':'bg-danger'}}">{!!$i['data_dukung_k']!!}</td>
 	 			</tr>
 	 		</tbody>
 	 	</table>

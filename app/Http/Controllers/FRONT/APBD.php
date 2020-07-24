@@ -22,6 +22,7 @@ class APBD extends Controller
 	    	->orderBy('tahun','asc')
 	    	->where('kode_daerah','ilike',(int)str_replace('-', '', ($request->daerah)))
 	    	->get();
+            
     	}
 
     	else if(($request->provinsi)){

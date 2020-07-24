@@ -56,7 +56,10 @@
 				<tr>
 
 					<td colspan="5"></td>
-					
+					<td colspan="5"></td>
+									<td>
+										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$pni['id']}})"><i class="fa fa-eye"></i></button>
+									</td>
 					<td><b>{{$pni['kode']}}</b></td>
 					<td>{{$pni['uraian']}}</td>
 					<td>
@@ -113,6 +116,10 @@
 					<tr>
 
 						<td colspan="5"></td>
+						<td colspan="5"></td>
+									<td>
+										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$ppi['id']}})"><i class="fa fa-eye"></i></button>
+									</td>
 						<td><b>{{$ppi['kode']}}</b></td>
 						<td>{{$ppi['uraian']}}</td>
 						<td>
@@ -169,6 +176,10 @@
 					<tr>
 
 						<td colspan="5"></td>
+						<td colspan="5"></td>
+									<td>
+										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$kpi['id']}})"><i class="fa fa-eye"></i></button>
+									</td>
 						<td><b>{{$kpi['kode']}}</b></td>
 						<td>{{$kpi['uraian']}}</td>
 						<td>
@@ -226,6 +237,9 @@
 							<tr>
 
 								<td colspan="5"></td>
+									<td>
+										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$propni['id']}})"><i class="fa fa-eye"></i></button>
+									</td> 
 								<td><b>{{$propni['kode']}}</b></td>
 								<td>{{$propni['uraian']}}</td>
 								<td>
@@ -285,6 +299,9 @@
 								<tr>
 
 									<td colspan="5"></td>
+									<td>
+										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$proyeki['id']}})"><i class="fa fa-eye"></i></button>
+									</td> 
 									<td><b>{{$proyeki['kode']}}</b></td>
 									<td>{{$proyeki['uraian']}}</td>
 									<td>
@@ -334,5 +351,20 @@
 		@endforeach
 	</tbody>
 </table>
+
+@stop
+
+@section('js')
+
+<script type="text/javascript">
+	
+	function showFormDetailIndikator(id){
+		API_CON.get("{{route('int.kb5tahun.indikator.detail',['id'=>null])}}/"+id,).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('DETAIL INDIKATOR {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+</script>
 
 @stop

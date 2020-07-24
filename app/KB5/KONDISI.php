@@ -23,7 +23,7 @@ class KONDISI extends Model
     	return $this->belongsTo(URUSAN::class,'id_urusan');
     }
 
-      public function _indikator(){
+    public function _indikator(){
     	return $this->hasMany(INDIKATOR::class,'id_kondisi');
     }
 

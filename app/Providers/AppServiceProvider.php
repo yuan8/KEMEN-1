@@ -33,57 +33,26 @@ class AppServiceProvider extends ServiceProvider
 
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
             $event->menu->add('PUSAT');
-            // $event->menu->add([
-            //     'text' => 'KEBIJAKAN',
-            //     'icon'=>'fa-number-1',
-            //     'submenu'=>[
-            //         [
-            //             'text'=>'PUSAT',
-            //             'icon'=>'fa-sub',
-
-            //             'url'=>route('kebijakan.pusat.index')
-
-            //         ],
-            //         //  [
-            //         //     'text'=>'DAERAH',
-            //         //     'icon'=>'fa-sub',
-
-            //         //     'url'=>route('kebijakan.daerah.index')
-
-            //         // ]
-            //     ]
-
-            // ]);
+        
             $event->menu->add([
                 'text' => 'INDENTIFIKASI KEBIJAKAN',
                 'url'=>route('kebijakan.pusat.index')
-                
-
             ]);
-
 
             $event->menu->add([
                 'text' => 'KEBIJAKAN PUSAT 5 TAHUNAN',
-
                 'url'=>route('int.kb5tahun.index')
-                
-
             ]);
+
             $event->menu->add([
                 'text' => 'KEBIJAKAN PUSAT TAHUNAN',
                 'url'=>route('int.kb1tahun.index')
-                 // 'submenu'=>[
-                 //    [
-                 //        'text'=>'RPJMN',
-                 //        'url'=>route('kebijakan.pusat.tahunan.index'),
-                 //        'icon'=>'fa-sub',
+            ]);
 
-                 //        ]
-                 //    ]
-                   
-                
-                
+            $event->menu->add([
+                'text' => 'DATA PELAKSANAAN URUSAN',
 
+                'url'=>route('int.pelurusan.index')
             ]);
 
             $event->menu->add('DAERAH');
@@ -98,11 +67,6 @@ class AppServiceProvider extends ServiceProvider
                 'url'=>route('program.kegiatan.index')
             ]);
 
-            $event->menu->add([
-                'text' => 'DATA PELAKSANAAN URUSAN',
-
-                'url'=>route('pelaksanaan.urusan.index')
-            ]);
 
             $event->menu->add('INTEGRASI');
 
@@ -114,7 +78,6 @@ class AppServiceProvider extends ServiceProvider
             $event->menu->add([
                 'text' => 'REKOMENDASI'
             ]);
-
 
 
             $event->menu->add('PENILAIAN INTEGRASI');

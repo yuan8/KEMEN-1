@@ -253,35 +253,6 @@
 
 
 <script type="text/javascript">
-function init_dss_js_f(){
-		$('[collapse-btn-nested]').on('click',function(){
-		var nes_status=(this.getAttribute('collapse-btn-nested').toLowerCase()==='true');
-		var target=this.getAttribute('data-target');
-
-		if(nes_status){
-			$(this.getAttribute('data-target')).css('display','none');
-			this.setAttribute('collapse-btn-nested','false');
-			$(target+' [collapse-btn-nested]').each(function(i,d){
-				$(d).attr('collapse-btn-nested','false');
-			});
-
-
-		}else{
-
-			$(this.getAttribute('data-target')).css('display','revert');
-			this.setAttribute('collapse-btn-nested','true');
-			$(target+' [collapse-btn-nested]').each(function(i,d){
-				$(d).attr('collapse-btn-nested','true');
-			});
-		}
-
-	});
-}
-
-
-init_dss_js_f();
-
-$('.kn[collapse-btn-nested]').trigger('click');
 
 
 
@@ -425,35 +396,6 @@ $('.kn[collapse-btn-nested]').trigger('click');
 
 </script>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modal-global">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"></h4>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-     
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
-<div class="modal fade" tabindex="-1" role="dialog" id="modal-global-lg">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content ">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"></h4>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-     
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-  
 
 @stop
