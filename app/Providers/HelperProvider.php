@@ -171,7 +171,7 @@ class HelperProvider extends ServiceProvider
     }
     static function fokus_urusan(){
        if(Auth::User()){
-
+        
         static::checked();
 
          $urusan=(array)(session('fokus_urusan'));

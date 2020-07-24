@@ -17,12 +17,11 @@ class Kb5IsuStategis extends Migration
         $schema='form.';
 
 
-         if(!Schema::connection('form')->hasTable($schema.'kb5_isu_stategis')){
-             Schema::connection('form')->create($schema.'kb5_isu_stategis',function(Blueprint $table) use ($schema){
+         if(!Schema::connection('form')->hasTable($schema.'kb5_isu_strategis')){
+             Schema::connection('form')->create($schema.'kb5_isu_strategis',function(Blueprint $table) use ($schema){
                  $table->bigIncrements('id');
                  $table->string('kode')->nullable();
-                 $table->integer('tahun_mulai');
-                 $table->integer('tahun_selesai');
+                 $table->integer('tahun');
                  $table->text('uraian');
                  $table->bigInteger('id_kondisi')->unsigned();
                  $table->bigInteger('id_user')->unsigned();
@@ -53,7 +52,7 @@ class Kb5IsuStategis extends Migration
         //
         $schema='form.';
 
-        Schema::connection('form')->dropIfExists($schema.'kb5_isu_stategis');
+        Schema::connection('form')->dropIfExists($schema.'kb5_isu_strategis');
 
     }
 }

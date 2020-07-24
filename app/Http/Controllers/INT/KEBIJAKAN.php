@@ -12,6 +12,8 @@ class KEBIJAKAN extends Controller
 
 
     public function index(){
+    	
+
 
     }
 }

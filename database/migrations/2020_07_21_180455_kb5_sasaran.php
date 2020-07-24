@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Kb5KondisiSaatIni extends Migration
+class Kb5Sasaran extends Migration
 {
     /**
      * Run the migrations.
@@ -14,35 +14,27 @@ class Kb5KondisiSaatIni extends Migration
     public function up()
     {
         //
+                $schema='form.';
 
-        $schema='form.';
-
-         if(!Schema::connection('form')->hasTable($schema.'kb5_kondisi_saat_ini')){
-             Schema::connection('form')->create($schema.'kb5_kondisi_saat_ini',function(Blueprint $table){
+        if(!Schema::connection('form')->hasTable($schema.'kb5_sasaran')){
+             Schema::connection('form')->create($schema.'kb5_sasaran',function(Blueprint $table) use ($schema){
                  $table->bigIncrements('id');
                  $table->string('kode')->nullable();
                  $table->integer('tahun');
-                 $table->integer('tahun_data');
                  $table->text('uraian');
-                 $table->double('nilai',50,3);
-                 $table->integer('tipe_value')->default(1);
-                 $table->string('satuan');
-                 $table->bigInteger('id_urusan')->unsigned();
+                 $table->bigInteger('id_kebijakan')->unsigned();
                  $table->bigInteger('id_user')->unsigned();
                  $table->timestamps();
 
 
-                $table->foreign('id_urusan')
-                    ->references('id')->on('public.master_urusan')
+                $table->foreign('id_kebijakan')
+                    ->references('id')->on($schema.'kb5_arah_kebijakan')
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_user')
                     ->references('id')->on('public.users')
                     ->onDelete('cascade')->onUpdate('cascade');
-
              });
-
-
          }
     }
 
@@ -54,9 +46,7 @@ class Kb5KondisiSaatIni extends Migration
     public function down()
     {
         //
-        $schema='form.';
+        Schema::connection('form')->dropIfExists($schema.'kb5_sasaran');
         
-        Schema::dropIfExists($schema.'kb5_kondisi_saat_ini');
-
     }
 }

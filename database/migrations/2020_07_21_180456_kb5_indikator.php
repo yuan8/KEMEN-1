@@ -19,20 +19,31 @@ class Kb5Indikator extends Migration
         if(!Schema::connection('form')->hasTable($schema.'kb5_indikator')){
              Schema::connection('form')->create($schema.'kb5_indikator',function(Blueprint $table) use ($schema){
                  $table->bigIncrements('id');
+                 $table->string('kode_realistic')->nullable();
                  $table->string('kode')->nullable();
-                 $table->integer('tahun_mulai');
-                 $table->integer('tahun_selesai');
+                 $table->string('kode_turunan_rkp')->nullable();
+                 $table->integer('tahun');
                  $table->text('uraian');
                  $table->text('target');
                  $table->text('target_1')->nullable();
                  $table->integer('tipe_value')->default(0);
+                 $table->integer('tipe_cal')->nullable();
                  $table->string('satuan');
+                 $table->text('lokus')->nullable();
+                 $table->string('satuan_lokus')->nullable();
+                 $table->text('pelaksana')->nullable();
                  $table->boolean('kw_nas')->default(0);
                  $table->boolean('kw_p')->default(0);
                  $table->boolean('kw_k')->default(0);
                  $table->bigInteger('id_kebijakan')->unsigned();
+                 $table->bigInteger('id_kondisi')->unsigned();
+                 $table->bigInteger('id_sasaran')->unsigned();
                  $table->bigInteger('id_sub_urusan')->unsigned();
                  $table->bigInteger('id_user')->unsigned();
+                 $table->text('data_dukung_nas')->nullable();
+                 $table->text('data_dukung_p')->nullable();
+                 $table->text('data_dukung_k')->nullable();
+                 $table->text('keterangan')->nullable();
                  $table->timestamps();
 
 
@@ -42,6 +53,14 @@ class Kb5Indikator extends Migration
 
                 $table->foreign('id_kebijakan')
                     ->references('id')->on($schema.'kb5_arah_kebijakan')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+                $table->foreign('id_kondisi')
+                    ->references('id')->on($schema.'kb5_kondisi_saat_ini')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+                $table->foreign('id_sasaran')
+                    ->references('id')->on($schema.'kb5_sasaran')
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_user')

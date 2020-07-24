@@ -32,141 +32,171 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(151);
 
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-            $event->menu->add('MAIN NAVIGATION');
+            $event->menu->add('PUSAT');
+            // $event->menu->add([
+            //     'text' => 'KEBIJAKAN',
+            //     'icon'=>'fa-number-1',
+            //     'submenu'=>[
+            //         [
+            //             'text'=>'PUSAT',
+            //             'icon'=>'fa-sub',
+
+            //             'url'=>route('kebijakan.pusat.index')
+
+            //         ],
+            //         //  [
+            //         //     'text'=>'DAERAH',
+            //         //     'icon'=>'fa-sub',
+
+            //         //     'url'=>route('kebijakan.daerah.index')
+
+            //         // ]
+            //     ]
+
+            // ]);
             $event->menu->add([
-                'text' => 'KEBIJAKAN',
-                'icon'=>'fa-number-1',
-                'submenu'=>[
-                    [
-                        'text'=>'PUSAT',
-                        'icon'=>'fa-sub',
-
-                        'url'=>route('kebijakan.pusat.index')
-
-                    ],
-                     [
-                        'text'=>'DAERAH',
-                        'icon'=>'fa-sub',
-
-                        'url'=>route('kebijakan.daerah.index')
-
-                    ]
-                ]
+                'text' => 'INDENTIFIKASI KEBIJAKAN',
+                'url'=>route('kebijakan.pusat.index')
+                
 
             ]);
+
+
             $event->menu->add([
                 'text' => 'KEBIJAKAN PUSAT 5 TAHUNAN',
-                'icon'=>'fa-number-2',
 
-                'url'=>route('kebijakan.pusat.5.tahun.index')
+                'url'=>route('int.kb5tahun.index')
                 
 
             ]);
             $event->menu->add([
                 'text' => 'KEBIJAKAN PUSAT TAHUNAN',
-                'icon'=>'fa-number-3',
+                'url'=>route('int.kb1tahun.index')
+                 // 'submenu'=>[
+                 //    [
+                 //        'text'=>'RPJMN',
+                 //        'url'=>route('kebijakan.pusat.tahunan.index'),
+                 //        'icon'=>'fa-sub',
 
-                 'submenu'=>[
-                    [
-                        'text'=>'RPJMN',
-                        'url'=>route('kebijakan.pusat.tahunan.index'),
-                        'icon'=>'fa-sub',
-
-                        ]
-                    ]
+                 //        ]
+                 //    ]
                    
                 
                 
 
             ]);
+
+            $event->menu->add('DAERAH');
+
             $event->menu->add([
                 'text' => 'PERMASALAHAN',
-                'icon'=>'fa-number-4',
-
                 'url'=>route('permasalahan.index')
-                
-
             ]);
+
             $event->menu->add([
                 'text' => 'PROGRAM KEGIATAN',
-                'icon'=>'fa-number-5',
-
                 'url'=>route('program.kegiatan.index')
-
-                
-
             ]);
-             $event->menu->add([
+
+            $event->menu->add([
                 'text' => 'DATA PELAKSANAAN URUSAN',
-                'icon'=>'fa-number-6',
 
                 'url'=>route('pelaksanaan.urusan.index')
             ]);
+
+            $event->menu->add('INTEGRASI');
+
+              $event->menu->add([
+                'text' => 'PEMETAAN PROGRAM KEGIATAN',
+            ]);
+
+
             $event->menu->add([
-                'text' => 'INTEGRASI',
-                'icon'=>'fa-number-7',
-
-                'submenu'=>[
-                    [
-                        'text'=>'PROVINSI',
-                        'icon'=>'fa-sub',
-                        'submenu'=>[
-                            [
-                                'text'=>'MAP NOMENLATUR ',
-                                'url'=>route('integrasi.index'),
-                            ],
-                            [
-                                'text'=>'INTEGRASI NOMENKLATUR',
-                                'url'=>route('nomen.pro.index'),
-
-                            ],
-                             [
-                                'text'=>'INTEGRASI INDIKATOR',
-                                'url'=>route('integrasi.provinsi'),
-
-                            ],
-                            [
-                                'text'=>'REPORT REKAP INDIKATOR ',
-                                'url'=>route('res.pro'),
-                                // 'icon'=>'fa-sub'
-                            ]
-
-                        ]
+                'text' => 'REKOMENDASI'
+            ]);
 
 
-                    ],
-                    [
-                        'text'=>'KOTA / KABUPATEN',
-                        'icon'=>'fa-sub',
-                        'submenu'=>[
-                            [
-                                'text'=>'MAP NOMENLATUR',
-                                // 'url'=>route('integrasi.index'),
 
-                            ],
-                             [
-                                'text'=>'INTEGRASI NOMENLATUR ',
-                                'url'=>route('integrasi.kota'),
-
-                            ],
-                             [
-                                'text'=>'INTEGRASI INDIKATOR ',
-                                // 'url'=>route('integrasi.provinsi'),
-
-                            ],
-                            [
-                                'text'=>'REPORT REKAP INDIKATOR ',
-                                // 'url'=>route('res.pro'),
-                                // 'icon'=>'fa-sub'
-                            ]
-
-                        ]
-
-                    ],
-                    
-                ]
+            $event->menu->add('PENILAIAN INTEGRASI');
+            
+            $event->menu->add([
+                'text' => 'INDENTIFIKASI KEBIJAKAN',
+                'icon'=>'fa-number-1',
+                'url'=>route('kebijakan.pusat.index')
+                
 
             ]);
+
+
+         
+
+       
+
+            // $event->menu->add([
+            //     'text' => 'INTEGRASI',
+            //     'icon'=>'fa-number-7',
+
+            //     'submenu'=>[
+            //         [
+            //             'text'=>'PROVINSI',
+            //             'icon'=>'fa-sub',
+            //             'submenu'=>[
+            //                 [
+            //                     'text'=>'MAP NOMENLATUR ',
+            //                     'url'=>route('integrasi.index'),
+            //                 ],
+            //                 [
+            //                     'text'=>'INTEGRASI NOMENKLATUR',
+            //                     'url'=>route('nomen.pro.index'),
+
+            //                 ],
+            //                  [
+            //                     'text'=>'INTEGRASI INDIKATOR',
+            //                     'url'=>route('integrasi.provinsi'),
+
+            //                 ],
+            //                 [
+            //                     'text'=>'REPORT REKAP INDIKATOR ',
+            //                     'url'=>route('res.pro'),
+            //                     // 'icon'=>'fa-sub'
+            //                 ]
+
+            //             ]
+
+
+            //         ],
+            //         [
+            //             'text'=>'KOTA / KABUPATEN',
+            //             'icon'=>'fa-sub',
+            //             'submenu'=>[
+            //                 [
+            //                     'text'=>'MAP NOMENLATUR',
+            //                     // 'url'=>route('integrasi.index'),
+
+            //                 ],
+            //                  [
+            //                     'text'=>'INTEGRASI NOMENLATUR ',
+            //                     'url'=>route('integrasi.kota'),
+
+            //                 ],
+            //                  [
+            //                     'text'=>'INTEGRASI INDIKATOR ',
+            //                     // 'url'=>route('integrasi.provinsi'),
+
+            //                 ],
+            //                 [
+            //                     'text'=>'REPORT REKAP INDIKATOR ',
+            //                     // 'url'=>route('res.pro'),
+            //                     // 'icon'=>'fa-sub'
+            //                 ]
+
+            //             ]
+
+            //         ],
+                    
+            //     ]
+
+            // ]);
              $event->menu->add([
                 'text' => 'MONITORING DAN EVALUASI PELAKSANAAN RENCANA PEMBANGUNAN DAERAH LINGKUP SUPD 2',
                 'icon'=>'fa-number-8',

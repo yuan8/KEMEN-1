@@ -101,6 +101,7 @@
                 </div>
                 @endif
             </nav>
+
         </header>
 
         @if(config('adminlte.layout') != 'top-nav')
@@ -176,6 +177,7 @@
     </div>
     <!-- ./wrapper -->
 @stop
+
 
 @section('adminlte_js')
     <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>

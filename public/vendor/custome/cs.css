@@ -132,3 +132,10 @@ div.scrollmenu a:hover {
   color:#fff;
 }
 
+.bg-white{
+  background: #fff;
+}
+
+.full-w-tool{
+  width: 170px;
+}

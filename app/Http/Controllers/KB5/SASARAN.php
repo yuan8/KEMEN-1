@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\INT;
+namespace App\Http\Controllers\KB5;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class KEBIKAJANPUSAT5TAHUN extends Controller
+class SASARAN extends Controller
 {
     //
 }

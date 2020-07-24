@@ -62,18 +62,23 @@ class LoginController extends Controller
                 if($user->password==md5($request->password)){
                      Auth::loginUsingId($user->id, true);
 
-                    if(!in_array($user->role,[1,2])){
-                        $urusan=DB::table('user_urusan')
+                   if(!in_array($user->role,[1,2])){
+                        $id_s=DB::table('user_urusan')
                         ->select('id_urusan',DB::raw('(select nama from master_urusan where master_urusan.id =user_urusan.id_urusan ) as nama'))
-                        ->where('id_user',$user->id)->get();
+                        ->where('id_user',$user->id)->get()->pluck('id_urusan');
+
+                        $urusan=DB::table('master_urusan')->select('id as id_urusan','nama','nomenklatur','singkat','kode')
+                        ->whereIn('id',$id_s)
+                        ->get();
+
                         $first=(isset($urusan[0]))?$urusan[0]:[];
+                        
                     }else{
-                        $urusan=DB::table('master_urusan')->select('id as id_urusan','nama')
+                        $urusan=DB::table('master_urusan')->select('id as id_urusan','nama','nomenklatur','singkat','kode')
                         ->whereIn('id',[3,4,15,16,20,21,25])
                         ->get();
+
                         $first=(isset($urusan[0]))?$urusan[0]:[];
-
-
                     }
 
                     $list_urusan=[];

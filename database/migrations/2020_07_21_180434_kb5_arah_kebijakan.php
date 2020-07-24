@@ -21,8 +21,7 @@ class Kb5ArahKebijakan extends Migration
              Schema::connection('form')->create($schema.'kb5_arah_kebijakan',function(Blueprint $table) use ($schema){
                  $table->bigIncrements('id');
                  $table->string('kode')->nullable();
-                 $table->integer('tahun_mulai');
-                 $table->integer('tahun_selesai');
+                 $table->integer('tahun');
                  $table->text('uraian');
                  $table->bigInteger('id_isu')->unsigned();
                  $table->bigInteger('id_user')->unsigned();
@@ -30,7 +29,7 @@ class Kb5ArahKebijakan extends Migration
 
 
                 $table->foreign('id_isu')
-                    ->references('id')->on($schema.'kb5_isu_stategis')
+                    ->references('id')->on($schema.'kb5_isu_strategis')
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_user')
