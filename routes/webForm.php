@@ -61,26 +61,39 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 	Route::prefix('indetifikasi-kebijakan-tahunan')->group(function(){
 		Route::get('/','INT\KEBIJAKANPUSAT1TAHUN@index')->name('int.kb1tahun.index');
+		
 		Route::get('/show-form-pn','INT\KEBIJAKANPUSAT1TAHUN@pn_create')->name('int.kb1tahun.pn_create');	
+		
 		Route::post('/store-pn','INT\KEBIJAKANPUSAT1TAHUN@pn_store')->name('int.kb1tahun.pn_store');
+		
 		Route::get('/show-form-update/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_view')->name('int.kb1tahun.pn_view');
 
 		Route::get('/show-form-nested/{id}','INT\KEBIJAKANPUSAT1TAHUN@nested_create')->name('int.kb1tahun.nested_create');
+
 		Route::post('/show-form-nested/{id}/{jenis}','INT\KEBIJAKANPUSAT1TAHUN@nested_store')->name('int.kb1tahun.nested_store');
-
-
 
 		Route::get('/show-indikator-pn/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_indikator')->name('int.kb1tahun.pn_indikator');
 
+
+		Route::get('/delete-indikator/{id}','INT\KEBIJAKANPUSAT1TAHUN@indikator_form_delete')->name('int.kb1tahun.indikator_form_delete');
+
+		Route::delete('/delete-indikator/{id}','INT\KEBIJAKANPUSAT1TAHUN@indikator_delete')->name('int.kb1tahun.indikator_delete');
+
+
 		Route::post('/store-indikator/{id}','INT\KEBIJAKANPUSAT1TAHUN@store_indikator')->name('int.kb1tahun.store_indikator');
 
-
 		Route::get('/show-from-delete-pn/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_form_delete')->name('int.kb1tahun.pn_form_delete');
+
 		Route::put('/show-form-update/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_update')->name('int.kb1tahun.pn_update');	
+		
 		Route::delete('/pn/delete/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_delete')->name('int.kb1tahun.pn_delete');		
 
 
 
+	});
+
+	Route::prefix('permasalahan')->group(function(){
+		Route::get('/daerah/{kodepemda}','INT\DAERAH\PELAKSANAANURUSAN@detail')->name('int.permasalahan.detail');
 	});
 
 
