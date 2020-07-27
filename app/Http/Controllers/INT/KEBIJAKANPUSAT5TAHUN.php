@@ -29,13 +29,9 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
         $rpjmn=Hp::get_tahun_rpjmn(Hp::fokus_tahun());
      
-
-
     	return view('integrasi.kb5tahun.index')->with([
             'data'=>$data,
             'rpjmn'=>$rpjmn
-
-
         ]);
 
     }
@@ -69,7 +65,6 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
     	if($valid->fails()){
     		Alert::error('Error','');
-    		dd($valid);
     		return back();
 
     	}else{
@@ -356,8 +351,8 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 	    	$isu=DB::connection('form')->table('kb5_arah_kebijakan  as ak')
 		    	->leftjoin('kb5_isu_strategis as isu','isu.id','=','ak.id_isu')
 		    	->select(DB::RAW("ak.*, isu.uraian as uraian_isu"))
-		    	->where('isu.id',$id)->first();
-			    	if($isu){
+		    	->where('ak.id',$id)->first();
+			    if($isu){
 	    		return view('integrasi.kb5tahun.arah_kebijakan.delete')->with('ak',(array)$isu);
 
 	    	}else{

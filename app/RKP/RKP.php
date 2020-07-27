@@ -54,7 +54,6 @@ class RKP extends Model
         return $this->hasMany(RKPINDIKATOR::class,'id_rkp');
     }
 
-
     public function _indikator(){
         return $this->belongsToMany(INDIKATOR::class,RKPINDIKATOR::class,'id_rkp','id_indikator');
     }
