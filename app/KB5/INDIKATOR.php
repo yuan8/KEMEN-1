@@ -17,7 +17,7 @@ class INDIKATOR extends Model
 
        //
 	protected $connection = 'form';
-    protected $table='form.kb5_indikator';
+    protected $table='form.form.kb5_indikator';
 
 
 
