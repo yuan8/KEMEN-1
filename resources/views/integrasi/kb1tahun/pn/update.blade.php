@@ -4,7 +4,7 @@
 
 	
 	<div class="form-group">
-		<label>URAIAN PN {{Hp::fokus_tahun()}}</label>
+		<label>URAIAN {{$jenis}} {{Hp::fokus_tahun()}}</label>
 		<textarea class="form-control" name="uraian" style="min-height: 70px;" required="">{!!$data->uraian!!}</textarea>
 	</div>
 		<hr>

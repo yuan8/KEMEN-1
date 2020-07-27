@@ -49,10 +49,11 @@
 			<tr>
 				<td>
 					<div class=" pull-right">
-						<button   collapse-btn-nested="false" data-target=".s-{{$pn['id']}}"  class="btn btn-info btn-xs ">
+						<button   collapse-btn-nested="false" data-target=".pn-{{$pn['id']}}"  class="btn btn-info btn-xs ">
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
 							 ({{count($pn['_child_pp'])}})</button>
-						<button class="btn btn-success  btn-xs" onclick="showFormViewPn({{$pn['id']}})" >
+						<button class="btn btn-success  btn-xs" onclick="showFormNested({{$pn['id']}},{{$pn['jenis']}})" >
+							
 						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PP" class="fa fa-plus"></i></button>
 						<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-pen"></i></button>
 						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-trash"></i></button>
@@ -67,7 +68,7 @@
 					@php
 						$pni=$tagpni['_indikator'];
 					@endphp
-				<tr>
+					<tr class="pn-{{$pn['id']}}">
 
 					<td colspan="5"></td>
 					<td>
@@ -110,12 +111,14 @@
 
 			@endforeach
 			@foreach($pn['_child_pp'] as $pp)
-				<tr>
+				<tr class="pn-{{$pn['id']}}">
 					<td colspan="2">
 							<div class=" pull-right">
-							<button   collapse-btn-nested="false" data-target=".s-{{$pp['id']}}"  class="btn btn-info btn-xs ">
-									<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
+							<button   collapse-btn-nested="false" data-target=".pp-{{$pp['id']}}"  class="btn btn-info btn-xs ">
+									<i data-toggle="tooltip" data-placement="top" title="DETAIL PP" class="fa fa-eye"></i>
 								 ({{count($pp['_child_kp'])}})</button>
+								 <button class="btn btn-success  btn-xs" onclick="showFormNested({{$pp['id']}},{{$pp['jenis']}})" >
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH KP" class="fa fa-plus"></i></button>
 						  <button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pp['id']}},{{$pp['jenis']}})"><i class="fa fa-pen"></i></button>
 						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pp['id']}},{{$pp['jenis']}})"><i class="fa fa-trash"></i></button>
 						<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$pp['id']}},{{$pp['jenis']}})" >
@@ -126,7 +129,7 @@
 
 				</tr>
 				@foreach($pp['_tag_indikator'] as $tagppi)
-					<tr>	
+					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}} ">	
 						@php
 							$ppi=$tagppi['_indikator'];
 						@endphp
@@ -172,12 +175,14 @@
 				@endforeach
 
 				@foreach($pp['_child_kp'] as $kp)
-					<tr>
+					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}}">
 						<td colspan="3">
 								<div class=" pull-right">
-								<button   collapse-btn-nested="false" data-target=".s-{{$kp['id']}}"  class="btn btn-info btn-xs ">
-										<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
+								<button   collapse-btn-nested="false" data-target=".kp-{{$kp['id']}}"  class="btn btn-info btn-xs ">
+										<i data-toggle="tooltip" data-placement="top" title="DETAIL KP" class="fa fa-eye"></i>
 									 ({{count($kp['_child_propn'])}})</button>
+									  <button class="btn btn-success  btn-xs" onclick="showFormNested({{$kp['id']}},{{$kp['jenis']}})" >
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH KP" class="fa fa-plus"></i></button>
 								  <button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$kp['id']}},{{$kp['jenis']}})"><i class="fa fa-pen"></i></button>
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$kp['id']}},{{$kp['jenis']}})"><i class="fa fa-trash"></i></button>
 								<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$kp['id']}},{{$kp['jenis']}})" >
@@ -188,7 +193,7 @@
 
 					</tr>
 					@foreach($kp['_tag_indikator'] as $tagkpi)
-					<tr>
+					<tr class=" kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}}">
 						@php
 							$kpi=$tagkpi['_indikator'];
 						@endphp
@@ -233,12 +238,14 @@
 
 					@endforeach
 					@foreach($kp['_child_propn'] as $propn)
-						<tr>
+						<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}}">
 							<td colspan="4">
 												<div class=" pull-right">
-										<button   collapse-btn-nested="false" data-target=".s-{{$propn['id']}}"  class="btn btn-info btn-xs ">
-												<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
+										<button   collapse-btn-nested="false" data-target=".propn-{{$propn['id']}}"  class="btn btn-info btn-xs ">
+												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROPN" class="fa fa-eye"></i>  ({{count($propn['_child_proyek'])}})
 											 </button>
+											   <button class="btn btn-success  btn-xs" onclick="showFormNested({{$propn['id']}},{{$propn['jenis']}})" >
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH KP" class="fa fa-plus"></i></button>
 									  	<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$propn['id']}},{{$propn['jenis']}})"><i class="fa fa-pen"></i></button>
 										<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$propn['id']}},{{$propn['jenis']}})"><i class="fa fa-trash"></i></button>
 										<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$propn['id']}},{{$propn['jenis']}})" >
@@ -250,7 +257,7 @@
 						</tr>
 
 						@foreach($propn['_tag_indikator'] as $tagpropni)
-							<tr>
+							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}}">
 								@php
 									$propni=$tagpropni['_indikator'];
 								@endphp
@@ -298,12 +305,12 @@
 
 						@endforeach
 						@foreach($propn['_child_proyek'] as $proyek)
-							<tr>
+							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}}">
 								<td colspan="5">
-												<div class=" pull-right">
-										<button   collapse-btn-nested="false" data-target=".s-{{$proyek['id']}}"  class="btn btn-info btn-xs ">
-												<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
-											 </button>
+									<div class=" pull-right">
+										<button   collapse-btn-nested="false" data-target=".proyek-{{$proyek['id']}}"  class="btn btn-info btn-xs ">
+												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROYEK" class="fa fa-eye"></i> ({{count($propn['_child_proyek'])}})
+											</button>
 											<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$proyek['id']}},{{$proyek['jenis']}})"><i class="fa fa-pen"></i></button>
 										<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$proyek['id']}},{{$proyek['jenis']}})"><i class="fa fa-trash"></i></button>
 										<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$proyek['id']}},{{$proyek['jenis']}})" >
@@ -315,7 +322,7 @@
 
 							</tr>
 							@foreach($proyek['_tag_indikator'] as $tagproyeki)
-								<tr>
+								<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}} proyek-{{$proyek['id']}}">
 									@php
 										$proyeki=$tagproyeki['_indikator'];
 									@endphp
@@ -434,9 +441,18 @@
 			$('#modal-global-lg').modal();
 		});
 	}
+	
 	function showFormCreatePnIndikator(id,jenis=null){
 		API_CON.get("{{route('int.kb1tahun.pn_indikator',['id'=>''])}}/"+id).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH INDIKATOR '+nameRKP(jenis)+' {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+
+	function showFormNested(id,jenis){
+		API_CON.get("{{route('int.kb1tahun.nested_create',['id'=>''])}}/"+id).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH  '+nameRKP(jenis+1)+' {{Hp::fokus_tahun()}}');
 			$('#modal-global-lg .modal-body').html(res.data);
 			$('#modal-global-lg').modal();
 		});

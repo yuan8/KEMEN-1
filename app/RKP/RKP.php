@@ -11,9 +11,12 @@ class RKP extends Model
 {
     //
 
-    protected $fillable=['tahun','uraian','created_at','updated_at','id_user'];
+
     protected $connection = 'rkp';
     protected $table='master_rkp';
+
+    protected $fillable=['tahun','uraian','created_at','updated_at','id_user','id_pn','id_pp','id_kp','id_propn'];
+    
 
     public function _child_pp(){
     	return $this->hasMany($this,'id_pn')->where('jenis',2)->with('_tag_indikator._indikator');
