@@ -9,7 +9,7 @@ class SASARAN extends Model
 {
     //
     protected $connection = 'form';
-    protected $table='form.kb5_sasaran';
+    protected $table='kb5_sasaran';
 
 
     public function _children(){

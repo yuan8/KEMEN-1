@@ -9,7 +9,7 @@ class ISU extends Model
 {
     //
 	protected $connection = 'form';
-    protected $table='form.kb5_isu_strategis';
+    protected $table='kb5_isu_strategis';
 
 
     public function _children(){

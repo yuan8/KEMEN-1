@@ -12,7 +12,7 @@ class ARAHKEBIJAKAN extends Model
 {
     //
     protected $connection = 'form';
-    protected $table='form.kb5_arah_kebijakan';
+    protected $table='kb5_arah_kebijakan';
 
 
     public function _children(){
