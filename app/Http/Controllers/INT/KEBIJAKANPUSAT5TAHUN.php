@@ -12,7 +12,7 @@ use Validator;
 use Alert;
 use Auth;
 use Carbon\Carbon;
-use App\Master\SUBURUSAN;
+use App\MASTER\SUBURUSAN;
 class KEBIJAKANPUSAT5TAHUN extends Controller
 {
     //
