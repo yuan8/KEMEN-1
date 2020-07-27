@@ -12,7 +12,7 @@ class KONDISI extends Model
     //
 
     protected $connection = 'form';
-    protected $table='kb5_kondisi_saat_ini';
+    protected $table='form.kb5_kondisi_saat_ini';
 
 
     public function _children(){

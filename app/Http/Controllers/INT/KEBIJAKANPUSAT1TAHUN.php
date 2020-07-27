@@ -17,41 +17,32 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
 {
     //
 
-
     static function namaRKP($kode){
         $jenis='';
         switch ((int)$kode) {
             case 1:
                 # code...
              $jenis='PN';
-
                 break;
              case 2:
                 # code...
              $jenis='PP';
-
                 break;
              case 3:
                 # code...
              $jenis='KP';
-
                 break;
              case 4:
                 # code...
              $jenis='PROPN';
-
                 break;
               case 5:
                 # code...
              $jenis='PROYEK';
-
                 break;
-            
             default:
                 # code...
                 break;
-
-
         }
 
         return $jenis;
@@ -60,14 +51,11 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     public function index(){
     	$tahun=Hp::fokus_tahun();
     	$data=RKP::where(['jenis'=>1,'tahun'=>$tahun])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])->get();
-
     	return view('integrasi.kb1tahun.index')->with('data',$data);
     }
 
 
      public function pn_create(){
-    	
-
     	return view('integrasi.kb1tahun.pn.create');
     }
 
@@ -102,10 +90,9 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     public function pn_view($id){
     	$tahun=Hp::fokus_tahun();
     	$data=RKP::where(['tahun'=>$tahun,'id'=>$id])->first();
-         $jenis=static::namaRKP($data['jenis']);
-
-
-    	if($data){
+        $jenis=static::namaRKP($data['jenis']);
+    	
+        if($data){
     		return view('integrasi.kb1tahun.pn.update')->with(['data'=>$data,'jenis'=>$jenis]);
     	}
 
@@ -227,7 +214,6 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
         $data_create['id_'.strtolower(static::namaRKP($jenis_kode))]=$data['id'];
 
         DB::connection('rkp')->table('rkp.master_rkp')->insert([$data_create]);
-
         $nama=static::namaRKP($jenis);
         Alert::success('Success','Success Menambahkan '.$nama);
         return back();

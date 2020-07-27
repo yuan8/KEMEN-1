@@ -53,7 +53,7 @@
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
 							 ({{count($pn['_child_pp'])}})</button>
 						<button class="btn btn-success  btn-xs" onclick="showFormNested({{$pn['id']}},{{$pn['jenis']}})" >
-							
+
 						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PP" class="fa fa-plus"></i></button>
 						<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-pen"></i></button>
 						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-trash"></i></button>
@@ -106,8 +106,7 @@
 						@endforeach
 					</td>
 
-
-				</tr>
+			</tr>
 
 			@endforeach
 			@foreach($pn['_child_pp'] as $pp)
