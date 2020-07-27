@@ -44,9 +44,10 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
                 # code...
                 break;
         }
-
         return $jenis;
     }
+
+
 
     public function index(){
     	$tahun=Hp::fokus_tahun();
