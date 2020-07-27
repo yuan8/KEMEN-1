@@ -1,7 +1,7 @@
 @php
 	$domid='dom'.date('s');
 @endphp
-<h5><b>{{$rkp->uraian}}</b></h5>
+<h5><b>{{$jenis}}: {{$rkp->uraian}}</b></h5>
 <hr>
 <form action="{{route('int.kb1tahun.store_indikator',['id'=>$rkp->id])}}" method="post">
 	@csrf
