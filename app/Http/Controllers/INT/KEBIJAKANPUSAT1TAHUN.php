@@ -17,6 +17,27 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
 {
     //
 
+    static function indikator_form_delete($id){
+
+        $data=RKPINDIKATOR::with('_indikator')->find($id);
+
+        if($data){
+            return view('integrasi.kb1tahun.pn.form_delete_indikator')->with('data',$data);
+        }else{
+            return 'data not found';
+        }
+
+    }
+
+    public function indikator_delete($id){
+        $data=RKPINDIKATOR::where('id',$id)->delete();
+        if($data){
+            Alert::success('Success','Berhasil Menghapus Indikator');
+            return back();
+        }
+    }
+
+
     static function namaRKP($kode){
         $jenis='';
         switch ((int)$kode) {

@@ -72,7 +72,10 @@
 
 					<td colspan="5"></td>
 					<td>
-						<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$pni['id']}})"><i class="fa fa-eye"></i></button>
+						<div class="form-group pull-right">
+							<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$pni['id']}})"><i class="fa fa-eye"></i></button>
+							<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagpni['id']}},{{$pni['jenis']}})"><i class="fa fa-trash"></i></button>
+						</div>
 					</td>
 					<td><b>{{$pni['kode']}}</b></td>
 					<td>{{$pni['uraian']}}</td>
@@ -135,7 +138,11 @@
 
 						<td colspan="5"></td>
 						<td>
-							<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$ppi['id']}})"><i class="fa fa-eye"></i></button>
+							<div class="form-group pull-right">
+								<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$ppi['id']}})"><i class="fa fa-eye"></i></button>
+								<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagppi['id']}},{{$ppi['jenis']}})"><i class="fa fa-trash"></i></button>
+							</div>
+
 						</td>
 						<td><b>{{$ppi['kode']}}</b></td>
 						<td>{{$ppi['uraian']}}</td>
@@ -197,9 +204,13 @@
 							$kpi=$tagkpi['_indikator'];
 						@endphp
 						<td colspan="5"></td>
-									<td>
-										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$kpi['id']}})"><i class="fa fa-eye"></i></button>
-									</td>
+						<td>
+							<div class="form-group pull-right">
+								<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$kpi['id']}})"><i class="fa fa-eye"></i></button>
+								<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagkpi['id']}},{{$kpi['jenis']}})"><i class="fa fa-trash"></i></button>
+							</div>
+
+						</td>
 						<td><b>{{$kpi['kode']}}</b></td>
 						<td>{{$kpi['uraian']}}</td>
 						<td>
@@ -263,8 +274,13 @@
 
 								<td colspan="5"></td>
 									<td>
+									<div class="form-group pull-right">
 										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$propni['id']}})"><i class="fa fa-eye"></i></button>
-									</td> 
+										<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagpropni['id']}},{{$propni['jenis']}})"><i class="fa fa-trash"></i></button>
+
+									</div>
+
+								</td>
 								<td><b>{{$propni['kode']}}</b></td>
 								<td>{{$propni['uraian']}}</td>
 								<td>
@@ -328,7 +344,11 @@
 
 									<td colspan="5"></td>
 									<td>
-										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$proyeki['id']}})"><i class="fa fa-eye"></i></button>
+										<div class="form-group pull-right">
+											<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$proyeki['id']}})"><i class="fa fa-eye"></i></button>
+											<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagproyeki['id']}},{{$proyeki['jenis']}})"><i class="fa fa-trash"></i></button>
+											
+										</div>
 									</td> 
 									<td><b>{{$proyeki['kode']}}</b></td>
 									<td>{{$proyeki['uraian']}}</td>
@@ -452,6 +472,15 @@
 	function showFormNested(id,jenis){
 		API_CON.get("{{route('int.kb1tahun.nested_create',['id'=>''])}}/"+id).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH  '+nameRKP(jenis+1)+' {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+
+
+	function showFormDetailDeleteIndikator(id,jenis){
+		API_CON.get("{{route('int.kb1tahun.indikator_form_delete',['id'=>''])}}/"+id).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('HAPUS INDIKATOR  '+nameRKP(jenis+1)+' {{Hp::fokus_tahun()}}');
 			$('#modal-global-lg .modal-body').html(res.data);
 			$('#modal-global-lg').modal();
 		});

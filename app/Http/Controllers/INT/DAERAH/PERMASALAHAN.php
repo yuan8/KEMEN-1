@@ -14,7 +14,7 @@ class PERMASALAHAN extends Controller
 	}
 
     public function index(){
-
+    	
     }
 
     public function namePermasalahan($kode){

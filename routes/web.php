@@ -91,7 +91,9 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 
 		Route::prefix('kebijakan-daerah/')->group(function(){
 			Route::get('/', 'FORM\KebijakanCtrl@index_daerah')->name('kebijakan.daerah.index');
+
 			Route::get('/tambah', 'FORM\KebijakanCtrl@create_daerah')->name('kebijakan.daerah.create');
+			
 			Route::get('/fokus/{id}', 'FORM\KebijakanCtrl@view_daerah')->name('kebijakan.daerah.view.daerah');
 
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/perda', 'FORM\KebijakanCtrl@store_perda')->name('kebijakan.daerah.store.mandat.perda');
