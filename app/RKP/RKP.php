@@ -10,23 +10,25 @@ use App\KB5\INDIKATOR;
 class RKP extends Model
 {
     //
+
+    protected $fillable=['tahun','uraian','created_at','updated_at','id_user'];
     protected $connection = 'rkp';
     protected $table='master_rkp';
 
     public function _child_pp(){
-    	return $this->hasMany($this,'id_pn')->where('jenis',2)->with('_indikator');
+    	return $this->hasMany($this,'id_pn')->where('jenis',2)->with('_tag_indikator._indikator');
     }
 
     public function _child_kp(){
-    	return $this->hasMany($this,'id_pp')->where('jenis',3)->with('_indikator');;
+    	return $this->hasMany($this,'id_pp')->where('jenis',3)->with('_tag_indikator._indikator');;
     }
 
     public function _child_propn(){
-    	return $this->hasMany($this,'id_kp')->where('jenis',4)->with('_indikator');;
+    	return $this->hasMany($this,'id_kp')->where('jenis',4)->with('_tag_indikator._indikator');;
     }
 
     public function _child_proyek(){
-    	return $this->hasMany($this,'id_propn')->where('jenis',5)->with('_indikator');;
+    	return $this->hasMany($this,'id_propn')->where('jenis',5)->with('_tag_indikator._indikator');;
     }
 
      public function _parent_pp(){
@@ -45,8 +47,12 @@ class RKP extends Model
     	return $this->belongsTo($this,'id_propn')->where('jenis',4);
     }
 
-    public function _indikator(){
+     public function _tag_indikator(){
+        return $this->hasMany(RKPINDIKATOR::class,'id_rkp');
+    }
 
+
+    public function _indikator(){
         return $this->belongsToMany(INDIKATOR::class,RKPINDIKATOR::class,'id_rkp','id_indikator');
     }
 

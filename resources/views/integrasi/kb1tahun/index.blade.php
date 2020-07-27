@@ -13,6 +13,15 @@
 
 
 @section('content')
+<div class="box box-solid 	">
+	<div class="box-body ">
+
+		<button onclick="showFormCreatePn()" class="btn btn-primary btn-xs text-uppercase">TAMBAH PN</button>
+		<a href="" class="btn btn-success btn-xs text-uppercase">DWONLOAD DATA</a>
+
+	</div>
+</div>
+<hr>
 
 <table class="table-bordered table bg-white">
 	<thead class="bg-navy">
@@ -43,23 +52,27 @@
 						<button   collapse-btn-nested="false" data-target=".s-{{$pn['id']}}"  class="btn btn-info btn-xs ">
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
 							 ({{count($pn['_child_pp'])}})</button>
-						<button class="btn btn-success  btn-xs" onclick="showFormCreateIndikator({{$pn['id']}})" >
-						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i></button>
-						<button class="btn btn-warning  btn-xs" onclick="showFormUpdateSasaran({{$pn['id']}})"><i class="fa fa-pen"></i></button>
-						<button class="btn btn-danger  btn-xs" onclick="showFormDeleteSasaran({{$pn['id']}})"><i class="fa fa-trash"></i></button>
+						<button class="btn btn-success  btn-xs" onclick="showFormViewPn({{$pn['id']}})" >
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PP" class="fa fa-plus"></i></button>
+						<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-pen"></i></button>
+						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-trash"></i></button>
+						<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$pn['id']}},{{$pn['jenis']}})" >
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 					</div>
 				</td>
 				<td>{{$pn['uraian']}}</td>
 
 			</tr>
-			@foreach($pn['_indikator'] as $pni)
+			@foreach($pn['_tag_indikator'] as $tagpni)
+					@php
+						$pni=$tagpni['_indikator'];
+					@endphp
 				<tr>
 
 					<td colspan="5"></td>
-					<td colspan="5"></td>
-									<td>
-										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$pni['id']}})"><i class="fa fa-eye"></i></button>
-									</td>
+					<td>
+						<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$pni['id']}})"><i class="fa fa-eye"></i></button>
+					</td>
 					<td><b>{{$pni['kode']}}</b></td>
 					<td>{{$pni['uraian']}}</td>
 					<td>
@@ -103,23 +116,25 @@
 							<button   collapse-btn-nested="false" data-target=".s-{{$pp['id']}}"  class="btn btn-info btn-xs ">
 									<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
 								 ({{count($pp['_child_kp'])}})</button>
-							<button class="btn btn-success  btn-xs" onclick="showFormCreateIndikator({{$pp['id']}})" >
-							<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i></button>
-							<button class="btn btn-warning  btn-xs" onclick="showFormUpdateSasaran({{$pp['id']}})"><i class="fa fa-pen"></i></button>
-							<button class="btn btn-danger  btn-xs" onclick="showFormDeleteSasaran({{$pp['id']}})"><i class="fa fa-trash"></i></button>
+						  <button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pp['id']}},{{$pp['jenis']}})"><i class="fa fa-pen"></i></button>
+						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pp['id']}},{{$pp['jenis']}})"><i class="fa fa-trash"></i></button>
+						<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$pp['id']}},{{$pp['jenis']}})" >
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 						</div>
 					</td>
 					<td>{{$pp['uraian']}}</td>
 
 				</tr>
-				@foreach($pp['_indikator'] as $ppi)
-					<tr>
+				@foreach($pp['_tag_indikator'] as $tagppi)
+					<tr>	
+						@php
+							$ppi=$tagppi['_indikator'];
+						@endphp
 
 						<td colspan="5"></td>
-						<td colspan="5"></td>
-									<td>
-										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$ppi['id']}})"><i class="fa fa-eye"></i></button>
-									</td>
+						<td>
+							<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$ppi['id']}})"><i class="fa fa-eye"></i></button>
+						</td>
 						<td><b>{{$ppi['kode']}}</b></td>
 						<td>{{$ppi['uraian']}}</td>
 						<td>
@@ -158,24 +173,25 @@
 
 				@foreach($pp['_child_kp'] as $kp)
 					<tr>
-						<td colspan="4">
+						<td colspan="3">
 								<div class=" pull-right">
 								<button   collapse-btn-nested="false" data-target=".s-{{$kp['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
 									 ({{count($kp['_child_propn'])}})</button>
-								<button class="btn btn-success  btn-xs" onclick="showFormCreateIndikator({{$kp['id']}})" >
-								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i></button>
-								<button class="btn btn-warning  btn-xs" onclick="showFormUpdateSasaran({{$kp['id']}})"><i class="fa fa-pen"></i></button>
-								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteSasaran({{$kp['id']}})"><i class="fa fa-trash"></i></button>
+								  <button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$kp['id']}},{{$kp['jenis']}})"><i class="fa fa-pen"></i></button>
+								<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$kp['id']}},{{$kp['jenis']}})"><i class="fa fa-trash"></i></button>
+								<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$kp['id']}},{{$kp['jenis']}})" >
+								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 							</div>
 						</td>
 						<td>{{$kp['uraian']}}</td>
 
 					</tr>
-					@foreach($kp['_indikator'] as $kpi)
+					@foreach($kp['_tag_indikator'] as $tagkpi)
 					<tr>
-
-						<td colspan="5"></td>
+						@php
+							$kpi=$tagkpi['_indikator'];
+						@endphp
 						<td colspan="5"></td>
 									<td>
 										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$kpi['id']}})"><i class="fa fa-eye"></i></button>
@@ -218,23 +234,26 @@
 					@endforeach
 					@foreach($kp['_child_propn'] as $propn)
 						<tr>
-							<td colspan="6">
+							<td colspan="4">
 												<div class=" pull-right">
 										<button   collapse-btn-nested="false" data-target=".s-{{$propn['id']}}"  class="btn btn-info btn-xs ">
 												<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
 											 </button>
-										<button class="btn btn-success  btn-xs" onclick="showFormCreateIndikator({{$propn['id']}})" >
-										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i></button>
-										<button class="btn btn-warning  btn-xs" onclick="showFormUpdateSasaran({{$propn['id']}})"><i class="fa fa-pen"></i></button>
-										<button class="btn btn-danger  btn-xs" onclick="showFormDeleteSasaran({{$propn['id']}})"><i class="fa fa-trash"></i></button>
+									  	<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$propn['id']}},{{$propn['jenis']}})"><i class="fa fa-pen"></i></button>
+										<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$propn['id']}},{{$propn['jenis']}})"><i class="fa fa-trash"></i></button>
+										<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$propn['id']}},{{$propn['jenis']}})" >
+										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 									</div>
 								</td>
 							<td>{{$propn['uraian']}}</td>
 
 						</tr>
 
-						@foreach($propn['_indikator'] as $propni)
+						@foreach($propn['_tag_indikator'] as $tagpropni)
 							<tr>
+								@php
+									$propni=$tagpropni['_indikator'];
+								@endphp
 
 								<td colspan="5"></td>
 									<td>
@@ -280,23 +299,26 @@
 						@endforeach
 						@foreach($propn['_child_proyek'] as $proyek)
 							<tr>
-								<td colspan="8">
+								<td colspan="5">
 												<div class=" pull-right">
 										<button   collapse-btn-nested="false" data-target=".s-{{$proyek['id']}}"  class="btn btn-info btn-xs ">
 												<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
 											 </button>
-										<button class="btn btn-success  btn-xs" onclick="showFormCreateIndikator({{$proyek['id']}})" >
-										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i></button>
-										<button class="btn btn-warning  btn-xs" onclick="showFormUpdateSasaran({{$proyek['id']}})"><i class="fa fa-pen"></i></button>
-										<button class="btn btn-danger  btn-xs" onclick="showFormDeleteSasaran({{$proyek['id']}})"><i class="fa fa-trash"></i></button>
+											<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$proyek['id']}},{{$proyek['jenis']}})"><i class="fa fa-pen"></i></button>
+										<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$proyek['id']}},{{$proyek['jenis']}})"><i class="fa fa-trash"></i></button>
+										<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$proyek['id']}},{{$proyek['jenis']}})" >
+										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 									</div>
 								</td>
 
 								<td>{{$proyek['uraian']}}</td>
 
 							</tr>
-							@foreach($proyek['_indikator'] as $proyeki)
+							@foreach($proyek['_tag_indikator'] as $tagproyeki)
 								<tr>
+									@php
+										$proyeki=$tagproyeki['_indikator'];
+									@endphp
 
 									<td colspan="5"></td>
 									<td>
@@ -357,10 +379,64 @@
 @section('js')
 
 <script type="text/javascript">
+
+	function nameRKP(jenis){
+		switch(jenis){
+			case 1:
+				jenis='PN';
+			break;
+			case 2:
+				jenis='PP';
+			break;
+			case 3:
+				jenis='KP';
+			break;
+			case 4:
+				jenis='PROPN';
+			break;
+			case 5:
+				jenis='PTOYEK';
+			break;
+		}
+
+		return jenis;
+	}
 	
 	function showFormDetailIndikator(id){
+
 		API_CON.get("{{route('int.kb5tahun.indikator.detail',['id'=>null])}}/"+id,).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('DETAIL INDIKATOR {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+
+	function showFormCreatePn(){
+		API_CON.get("{{route('int.kb1tahun.pn_create')}}").then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH PN {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+
+	function showFormViewPn(id,jenis=null){
+		API_CON.get("{{route('int.kb1tahun.pn_view',['id'=>''])}}/"+id).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('UBAH '+nameRKP(jenis)+' {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+
+	function showFormDeletePn(id,jenis=null){
+		API_CON.get("{{route('int.kb1tahun.pn_form_delete',['id'=>''])}}/"+id).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('DELETE '+nameRKP(jenis)+' {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+	function showFormCreatePnIndikator(id,jenis=null){
+		API_CON.get("{{route('int.kb1tahun.pn_indikator',['id'=>''])}}/"+id).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH INDIKATOR '+nameRKP(jenis)+' {{Hp::fokus_tahun()}}');
 			$('#modal-global-lg .modal-body').html(res.data);
 			$('#modal-global-lg').modal();
 		});
