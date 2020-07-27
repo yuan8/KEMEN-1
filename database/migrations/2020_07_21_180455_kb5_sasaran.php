@@ -46,6 +46,9 @@ class Kb5Sasaran extends Migration
     public function down()
     {
         //
+        
+                $schema='form.';
+
         Schema::connection('form')->dropIfExists($schema.'kb5_sasaran');
         
     }

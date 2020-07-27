@@ -4,7 +4,7 @@
 @section('content_header')
     <div class="row">
     	<div class="col-md-8">
-    		<h3>IDENTIFIKASI KEBIJAKAN PUSAT </h3>
+    		<h3>KEBIJAKAN PUSAT </h3>
     	</div>
     	<div class="col-md-4 modal-footer">
     	</div>

@@ -206,7 +206,7 @@ class HelperProvider extends ServiceProvider
 
 
     static function checkdb($tahun=null){
-
+        return true;
         if($tahun==null){
             $tahun=date('Y');
         }
@@ -227,7 +227,7 @@ class HelperProvider extends ServiceProvider
                 CONSTRAINT map_nomen_pro_".$tahun."_pkey PRIMARY KEY (id),
                 CONSTRAINT map_nomen_pro_".$tahun."_kode_daerah_foreign FOREIGN KEY (kode_daerah) REFERENCES master_daerah(id) ON UPDATE CASCADE,
                 CONSTRAINT map_nomen_pro_".$tahun."_id_nomen_foreign FOREIGN KEY (id_nomen) REFERENCES master_nomenklatur_provinsi(id) ON UPDATE CASCADE ON DELETE CASCADE,
-                CONSTRAINT map_nomen_pro_".$tahun."_tahun_kode_daerah_id_nomen_unique UNIQUE (tahun, kode_daerah, id_nomen,'kode_skpd')
+                CONSTRAINT map_nomen_pro_".$tahun."_tahun_kode_daerah_id_nomen_unique UNIQUE (tahun, kode_daerah, id_nomen)
 
                 );
                
@@ -267,6 +267,7 @@ class HelperProvider extends ServiceProvider
 
 
     public static function checkDBProKeg($tahun=null){
+        return true;
         if($tahun==null){
             $tahun==date('Y');
         }

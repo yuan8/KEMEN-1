@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
             $event->menu->add('PUSAT');
         
             $event->menu->add([
-                'text' => 'INDENTIFIKASI KEBIJAKAN',
+                'text' => 'KEBIJAKAN PUSAT',
                 'url'=>route('kebijakan.pusat.index')
             ]);
 
