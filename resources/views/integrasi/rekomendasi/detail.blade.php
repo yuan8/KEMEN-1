@@ -89,13 +89,15 @@
 						@endif
 
 						@if($pii['tipe_value']==2)
-							<-> {{number_format($pii['target_1'],2)}}
+							<br><-> 
+							{{number_format($pii['target_1'],2)}}
 
 						@endif
 							
 					</td>
 					<td style="min-width: 170px;">
 						<div class="input-group">
+							<label>TARGET</label>
 							@if(($pii['tipe_value']==1)OR($pii['tipe_value']==2))
 							<input type="number"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target"  value="{{$pi['target']}}">
 							@else
@@ -103,7 +105,8 @@
 
 							@endif
 							@if($pii['tipe_value']==2)
-								<-> 
+								<br><-> 
+								<br><label>TARGET MAXIMUM</label> 
 							<input type="number"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target-1" value="{{$pi['targe_1']}}">
 
 
@@ -165,13 +168,15 @@
 							@endif
 
 							@if($kii['tipe_value']==2)
-								<-> {{number_format($kii['target_1'],2)}}
+								<-> 
+								{{number_format($kii['target_1'],2)}}
 
 							@endif
 								
 						</td>
 						<td style="min-width: 170px;">
 							<div class="input-group">
+								<label>TARGET</label>
 								@if(($kii['tipe_value']==1)OR($kii['tipe_value']==2))
 								<input type="number"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target" value="{{$ki['taregt']}}">
 								@else
@@ -179,7 +184,8 @@
 
 								@endif
 								@if($kii['tipe_value']==2)
-									<-> 
+									<br><-> 
+									<br><label>TARGET MAXIMUM</label> 
 								<input type="number"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target-1" value="{{$ki['target_1']}}">
 
 								@endif
@@ -239,13 +245,15 @@
 							@endif
 
 							@if($sii['tipe_value']==2)
-								<-> {{number_format($sii['target_1'],2)}}
+								<-> 
+								{{number_format($sii['target_1'],2)}}
 
 							@endif
 								
 						</td>
 						<td style="min-width: 170px;">
 							<div class="input-group">
+								<label>TARGET</label>
 								@if(($sii['tipe_value']==1)OR($sii['tipe_value']==2))
 								<input type="number"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target" value="{{$si['taregt']}}">
 								@else
@@ -253,7 +261,8 @@
 
 								@endif
 								@if($sii['tipe_value']==2)
-									<-> 
+									<br><-> 
+									<br><label>TARGET MAXIMUM</label> 
 								<input type="number"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target-1" value="{{$si['target_1']}}">
 
 								@endif
@@ -328,6 +337,15 @@
 		var id="{{$daerah->id}}";
 		API_CON.get("{{route('int.rekomendasi.delete_form_nest',['id'=>null])}}/"+id+'/'+nomen+'/'+jenis).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('DELETE NOMENKLATUR {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+
+	function showFormDeleteindikator(nomen,jenis){
+		var id="{{$daerah->id}}";
+		API_CON.get("{{route('int.rekomendasi.delete_form_indikator',['id'=>null])}}/"+id+'/'+nomen).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('DELETE INDIKATOR {{Hp::fokus_tahun()}}');
 			$('#modal-global-lg .modal-body').html(res.data);
 			$('#modal-global-lg').modal();
 		});

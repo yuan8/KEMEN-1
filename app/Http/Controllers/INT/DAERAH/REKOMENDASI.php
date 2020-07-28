@@ -10,6 +10,11 @@ use Auth;
 use App\MASTER\NOMEN;
 use App\MASTER\NOMENKAB;
 use App\INTEGRASI\REKOMENDASI as REKO;
+use App\INTEGRASI\REKOMENDASIKAB;
+use App\INTEGRASI\REKOMENDASI_IND;
+use App\INTEGRASI\REKOMENDASIJAB_IND;
+
+
 use App\KB5\INDIKATOR;
 Use Carbon\Carbon;
 use Alert;
@@ -60,6 +65,11 @@ class REKOMENDASI extends Controller
     }
 
     public function store_program($id,Request $request){
+    	if(!$request->id_nomen){
+    		Alert::error('');
+    		return back();
+    	}
+
 	    	$uid=Auth::id();
 	    	$tahun=Hp::fokus_tahun();
 
@@ -242,6 +252,11 @@ class REKOMENDASI extends Controller
     }
 
     public function store_indikator($id,$id_parent,Request $request){
+    	if(!$request->id_indikator){
+    		Alert::error('');
+    		return back();
+    	}
+
     		$uid=Auth::id();
     		$tahun=Hp::fokus_tahun();
 	    	if(strlen(($id.""))<3){
@@ -367,5 +382,66 @@ class REKOMENDASI extends Controller
 
 
     }
+
+       public function delete_form_indikator($id,$id_indikator){
+    	
+    	$meta_urusan=Hp::fokus_urusan();
+		$uid=Auth::id();
+		$tahun=Hp::fokus_tahun();
+    	if(strlen(($id.""))<3){
+    		$model='meta_rkpd.rekomendasi';
+    		$parent=REKO::class;
+    		$indikator_model=REKOMENDASI_IND::class;
+
+    	}else{
+    		$model='meta_rkpd.rekomendasi_kab';
+    		$parent=REKOMENDASIKAB::class;
+    		$indikator_model=REKOMENDASIKAB_IND::class;
+
+    	}
+
+
+    	$model=$indikator_model::where('id',$id_indikator)->with('_indikator')->first();
+    	$jenis=static::jenis($model['jenis']);
+    	
+    	if($model){
+    		return view('integrasi.rekomendasi.delete_indikator')->with(['jenis'=>$jenis,'id_parent'=>$id_indikator,'parent'=>$model['_indikator'],'kodepemda'=>$id]);
+
+    	}
+
+
+    	return  'data tidak tersedia';
+
+
+    }
+
+
+      public function delete_indikator($id,$id_indikator){
+    	
+    	$meta_urusan=Hp::fokus_urusan();
+		$uid=Auth::id();
+		$tahun=Hp::fokus_tahun();
+    	if(strlen(($id.""))<3){
+    		$model='meta_rkpd.rekomendasi';
+    		$parent=REKO::class;
+    		$indikator_model=REKOMENDASI_IND::class;
+
+    	}else{
+    		$model='meta_rkpd.rekomendasi_kab';
+    		$parent=REKOMENDASIKAB::class;
+    		$indikator_model=REKOMENDASIKAB_IND::class;
+
+    	}
+
+
+    	$model=$indikator_model::where('id',$id_indikator)->delete();
+
+    	if($model){
+    		Alert::success('Success','Berhasil Menghapus indikator');
+    		return back();
+    	}
+    	
+    }
+
 
 }

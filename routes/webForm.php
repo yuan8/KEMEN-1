@@ -114,6 +114,11 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 		Route::get('/nomen/delete-nested/{kodepemda}/{id?}/{jenis?}','INT\DAERAH\REKOMENDASI@delete_form_nested')->name('int.rekomendasi.delete_form_nest');
 		Route::delete('/nomen/delete-nested/{kodepemda}/{id?}','INT\DAERAH\REKOMENDASI@delete_nested')->name('int.rekomendasi.delete_nested');
 
+		Route::get('/nomen/delete-indikator/{kodepemda}/{id?}','INT\DAERAH\REKOMENDASI@delete_form_indikator')->name('int.rekomendasi.delete_form_indikator');
+		Route::delete('/nomen/delete-indikator/{kodepemda}/{id?}','INT\DAERAH\REKOMENDASI@delete_indikator')->name('int.rekomendasi.delete_indikator');
+
+
+
 
 
 

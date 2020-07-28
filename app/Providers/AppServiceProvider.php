@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
             $event->menu->add('DAERAH');
              $event->menu->add([
                 'text' => 'INDENTIFIKASI KEBIJAKAN',
-                'icon'=>'fa-number-1',
+                // 'icon'=>'fa-number-1',
                 'url'=>route('kebijakan.daerah.index')
                 
 
