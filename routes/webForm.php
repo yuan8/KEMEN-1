@@ -94,6 +94,18 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 	Route::prefix('permasalahan')->group(function(){
 		Route::get('/daerah/{kodepemda}','INT\DAERAH\PELAKSANAANURUSAN@detail')->name('int.permasalahan.detail');
+		Route::post('/daerah/update/masalah-pokok/{kodepemda}/{id}','Form\PermasalahanCtrl@update_masalah_pokok')->name('int.permasalahan.update_masalah_pokok');
+		Route::post('/daerah/update/masalah/{kodepemda}/{id}','Form\PermasalahanCtrl@update_masalah')->name('int.permasalahan.update_masalah');
+		Route::post('/daerah/update/akar-masalah/{kodepemda}/{id}','Form\PermasalahanCtrl@update_akar_masalah')->name('int.permasalahan.update_akar_masalah');
+		Route::post('/daerah/update/data-dukung/{kodepemda}/{id}','Form\PermasalahanCtrl@update_data_dukung')->name('int.permasalahan.update_data_dukung');
+
+		Route::post('/daerah/delete/masalah-pokok/{kodepemda}/{id}','Form\PermasalahanCtrl@delete_masalah_pokok')->name('int.permasalahan.delete_masalah_pokok');
+		Route::post('/daerah/delete/masalah/{kodepemda}/{id}','Form\PermasalahanCtrl@delete_masalah')->name('int.permasalahan.delete_masalah');
+		Route::post('/daerah/delete/akar-masalah/{kodepemda}/{id}','Form\PermasalahanCtrl@delete_akar_masalah')->name('int.permasalahan.delete_akar_masalah');
+		Route::post('/daerah/delete/data-dukung/{kodepemda}/{id}','Form\PermasalahanCtrl@delete_data_dukung')->name('int.permasalahan.delete_data_dukung');
+
+
+
 	});
 
 	Route::prefix('daerah/program-kegiatan')->group(function(){
@@ -116,15 +128,6 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 		Route::get('/nomen/delete-indikator/{kodepemda}/{id?}','INT\DAERAH\REKOMENDASI@delete_form_indikator')->name('int.rekomendasi.delete_form_indikator');
 		Route::delete('/nomen/delete-indikator/{kodepemda}/{id?}','INT\DAERAH\REKOMENDASI@delete_indikator')->name('int.rekomendasi.delete_indikator');
-
-
-
-
-
-
-
-
-
 
 
 	});
