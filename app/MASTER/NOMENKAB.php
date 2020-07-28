@@ -11,10 +11,10 @@ class NOMENKAB extends Model
     protected $table='public.master_nomenklatur_kabkota';
 
     public function _child_kegiatan(){
-    	return $this->hasMany($this::class,'program','program')->where('jenis','kegiatan');
+    	return $this->hasMany($this,'program','program')->where('jenis','kegiatan');
     }
 
      public function _child_sub_kegiatan(){
-    	return $this->hasMany($this::class,'kegiatan','kegiatan')->where('jenis','sub_kegiatan');
+    	return $this->hasMany($this,'kegiatan','kegiatan')->where('jenis','sub_kegiatan');
     }
 }

@@ -37,6 +37,7 @@
                                
                             </tr>
 
+
                           @endforeach
                       </tbody>
                   </table>
@@ -49,7 +50,8 @@
 @section('js')
     <script type="text/javascript">
         $('#table-daerah').DataTable({
-             pageLength: 15
+             pageLength: 15,
+             sort:false
         });
 
     </script>

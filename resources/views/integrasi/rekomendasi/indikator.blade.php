@@ -35,7 +35,7 @@
 </form>
 
 <hr>
-<H5><b>LIST INDIKATOR TERSEDIA</b></H5>
+<H5><b>LIST INDIKATOR TERSEDIA KEWENANGAN {{$kewenangan}}</b></H5>
 <table class="table table-bordered" id="table-indikator-{{$domid}}" style="width:100%">
 	<thead>
 		<tr>

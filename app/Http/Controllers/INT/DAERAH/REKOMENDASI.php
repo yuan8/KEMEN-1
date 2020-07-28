@@ -26,6 +26,7 @@ class REKOMENDASI extends Controller
     	$meta_urusan=Hp::fokus_urusan();
     	$data=DB::connection('rkpd')->table('public.master_daerah as d')
     	->select(DB::RAW("*"))
+    	->orderBy('id','asc')
     	->get();
     
     	return view('integrasi.rekomendasi.index')->with('data',$data);
@@ -33,7 +34,6 @@ class REKOMENDASI extends Controller
 
     public function detail($id){
     	$tahun=Hp::fokus_tahun();
-
     	if(strlen(($id.""))<3){
     		$model=REKO::class;
     	}else{
@@ -223,18 +223,25 @@ class REKOMENDASI extends Controller
     public function add_indikator($id,$id_parent,$jenis){
 		$uid=Auth::id();
     	$tahun=Hp::fokus_tahun();
+    	$where=[];
 
     	if(strlen(($id.""))<3){
     		$model=REKO::class;
     		$nom=NOMEN::class;
+    		$where['kw_p']=true;
+    		$kewenangan='PROVINSI';
 
     	}else{
     		$model=REKOMENDASIKAB::class;
     		$nom=NOMENKAB::class;
+    		$where['kw_k']=true;
+    		$kewenangan='KOTA / KAB';
+
+
 
     	}
 
-    	$data=INDIKATOR::where('tahun',$tahun)->get();
+    	$data=INDIKATOR::where('tahun',$tahun)->where($where)->get();
     	$parent=$model::with('_nomen')->find($id_parent)->toArray();
     	
     	if($parent){
@@ -245,7 +252,8 @@ class REKOMENDASI extends Controller
 	    		'jenis'=>$jenis,
 	    		'reko'=>$parent,
     			'parent'=>$parent['_nomen'],
-    			'kodepemda'=>$id
+    			'kodepemda'=>$id,
+    			'kewenangan'=>$kewenangan
 	    	]);
     	}
 
@@ -267,7 +275,7 @@ class REKOMENDASI extends Controller
 	    	}else{
 	    		$model='meta_rkpd.rekomendasi_kab';
 	    		$parent=REKOMENDASIKAB::class;
-	    		$indikator_model='meta_rkpd.rekomendasi_kab_indikator';
+	    		$indikator_model='meta_rkpd.rekomendasi_indikator_kab';
 
 	    	}
 

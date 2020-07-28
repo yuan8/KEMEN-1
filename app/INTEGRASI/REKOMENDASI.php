@@ -18,11 +18,11 @@ class REKOMENDASI extends Model
     }
 
     public function _child_kegiatan(){
-    	return $this->hasMany($this,'id_p')->with('_nomen','_tag_indikator._indikator');
+    	return $this->hasMany($this,'id_p')->where('jenis',2)->with('_nomen','_tag_indikator._indikator');
     }
      
     public function _child_sub_kegiatan(){
-    	return $this->hasMany($this,'id_k')->with('_nomen','_tag_indikator._indikator');
+    	return $this->hasMany($this,'id_k')->where('jenis',3)->with('_nomen','_tag_indikator._indikator');
     }
 
     public function _tag_indikator(){
