@@ -55,6 +55,9 @@ class AppServiceProvider extends ServiceProvider
                 'url'=>route('int.pelurusan.index')
             ]);
 
+
+
+
             $event->menu->add('DAERAH');
 
             $event->menu->add([
@@ -64,19 +67,17 @@ class AppServiceProvider extends ServiceProvider
 
             $event->menu->add([
                 'text' => 'PROGRAM KEGIATAN',
-                'url'=>route('program.kegiatan.index')
+                'url'=>route('int.prokeg.index')
             ]);
 
 
             $event->menu->add('INTEGRASI');
 
-              $event->menu->add([
-                'text' => 'PEMETAAN PROGRAM KEGIATAN',
-            ]);
-
+        
 
             $event->menu->add([
-                'text' => 'REKOMENDASI'
+                'text' => 'INTEGRASI PROGRAM KEGIATAN',
+                'url'=>route('int.rekomendasi.index')
             ]);
 
 
@@ -89,6 +90,8 @@ class AppServiceProvider extends ServiceProvider
                 
 
             ]);
+
+            
 
 
          

@@ -20,8 +20,8 @@ class RkpdTargetAhir extends Migration
               Schema::connection('meta_rkpd')->create($schema.'indikator_program_'.$tahun,function(Blueprint $table) use ($schema,$tahun){
                  $table->bigIncrements('id');
                  $table->bigInteger('id_indikator')->unique();
-                 $table->text('target')->unsigned();
-                 $table->bigInteger('satuan')->unsigned();
+                 $table->text('target')->nullable();
+                 $table->string('satuan')->nullable();
                  $table->bigInteger('id_user')->unsigned();
                  $table->timestamps();
 
@@ -40,8 +40,8 @@ class RkpdTargetAhir extends Migration
               Schema::connection('meta_rkpd')->create($schema.'indikator_kegiatan_'.$tahun,function(Blueprint $table) use ($schema,$tahun){
                  $table->bigIncrements('id');
                  $table->bigInteger('id_indikator')->unique();
-                 $table->text('target')->unsigned();
-                 $table->bigInteger('satuan')->unsigned();
+                 $table->text('target')->nullable();
+                 $table->string('satuan')->nullable();
                  $table->bigInteger('id_user')->unsigned();
                  $table->timestamps();
 
