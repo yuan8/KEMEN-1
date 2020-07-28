@@ -103,6 +103,9 @@ Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 			Route::get('/get-nomen-pro', 'FORM\IntegrasiCtrl@api_get_nomen_pro')
 			->name('api.int.get.nomen.pro');
 
+			Route::post('/update-data-target-ahir', 'INT\PROGRAMKEGIATAN@update_target')
+			->name('api.int.prokeg.update_target');
+
 		});
 
 		Route::prefix('glob')->group(function(){

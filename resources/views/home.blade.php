@@ -2,7 +2,7 @@
 
 
 @section('content_header')
-    <h1 class="text-center"><b>APLIKASI SINGKRONISASI</b></h1>
+    <h1 class="text-center"><b>APLIKASI SINKRONISASI</b></h1>
 @stop
 
 @section('content')
