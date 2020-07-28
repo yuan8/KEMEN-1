@@ -59,6 +59,13 @@ class AppServiceProvider extends ServiceProvider
 
 
             $event->menu->add('DAERAH');
+             $event->menu->add([
+                'text' => 'INDENTIFIKASI KEBIJAKAN',
+                'icon'=>'fa-number-1',
+                'url'=>route('kebijakan.daerah.index')
+                
+
+            ]);
 
             $event->menu->add([
                 'text' => 'PERMASALAHAN',
@@ -81,15 +88,9 @@ class AppServiceProvider extends ServiceProvider
             ]);
 
 
-            $event->menu->add('PENILAIAN INTEGRASI');
+            // $event->menu->add('PENILAIAN INTEGRASI');
             
-            $event->menu->add([
-                'text' => 'INDENTIFIKASI KEBIJAKAN',
-                'icon'=>'fa-number-1',
-                'url'=>route('kebijakan.daerah.index')
-                
-
-            ]);
+           
 
             
 
@@ -163,32 +164,32 @@ class AppServiceProvider extends ServiceProvider
             //     ]
 
             // ]);
-             $event->menu->add([
-                'text' => 'MONITORING DAN EVALUASI PELAKSANAAN RENCANA PEMBANGUNAN DAERAH LINGKUP SUPD 2',
-                'icon'=>'fa-number-8',
+            //  $event->menu->add([
+            //     'text' => 'MONITORING DAN EVALUASI PELAKSANAAN RENCANA PEMBANGUNAN DAERAH LINGKUP SUPD 2',
+            //     'icon'=>'fa-number-8',
 
-                'url'=>null
-            ]);
-            $event->menu->add([
-                'text' => 'EVALUASI CAPAIAN PELAKSANAAN URUSAN PEMERINTAHAN DI INTERNAL DAERAH',
-                'icon'=>'fa-number-9',
+            //     'url'=>null
+            // ]);
+            // $event->menu->add([
+            //     'text' => 'EVALUASI CAPAIAN PELAKSANAAN URUSAN PEMERINTAHAN DI INTERNAL DAERAH',
+            //     'icon'=>'fa-number-9',
 
-                'url'=>null
-            ]);
-            $event->menu->add([
-                'text' => 'EVALUASI CAPAIAN PELAKSANAAN URUSAN PEMERINTAHAN ',
-                'icon'=>'fa-number-10',
+            //     'url'=>null
+            // ]);
+            // $event->menu->add([
+            //     'text' => 'EVALUASI CAPAIAN PELAKSANAAN URUSAN PEMERINTAHAN ',
+            //     'icon'=>'fa-number-10',
 
-                'url'=>null
-            ]);
+            //     'url'=>null
+            // ]);
 
-            $event->menu->add('MATER PROGRAM KEGIATAN DAERAH');
+            // $event->menu->add('MATER PROGRAM KEGIATAN DAERAH');
 
-            $event->menu->add([
-                'text' => 'INTEGRASI APLIKASI DAERAH',
+            // $event->menu->add([
+            //     'text' => 'INTEGRASI APLIKASI DAERAH',
 
-                'url'=>null
-            ]);
+            //     'url'=>null
+            // ]);
         });
     }
 }
