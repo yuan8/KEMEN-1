@@ -109,7 +109,7 @@
 							<div class="input-group">
 								<label>TARGET</label>
 								@if(($pii['tipe_value']==1)OR($pii['tipe_value']==2))
-								<input type="number"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target"  value="{{$pi['target']}}">
+								<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target"  value="{{$pi['target']}}">
 								@else
 								<input type="text"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target" value="{{$pi['target']}}">
 
@@ -117,7 +117,7 @@
 								@if($pii['tipe_value']==2)
 									<br><[' 
 									<br><label>TARGET MAXIMUM</label> 
-									<input type="number"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target-1" value="{{$pi['targe_1']}}">
+									<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target-1" value="{{$pi['targe_1']}}">
 
 
 								@endif
@@ -188,7 +188,7 @@
 								<div class="input-group">
 									<label>TARGET</label>
 									@if(($kii['tipe_value']==1)OR($kii['tipe_value']==2))
-									<input type="number"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target" value="{{$ki['taregt']}}">
+									<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target" value="{{$ki['taregt']}}">
 									@else
 									<input type="text"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target" value="{{$ki['target']}}">
 
@@ -196,7 +196,7 @@
 									@if($kii['tipe_value']==2)
 										<br><[' 
 										<br><label>TARGET MAXIMUM</label> 
-									<input type="number"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target-1" value="{{$ki['target_1']}}">
+									<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target-1" value="{{$ki['target_1']}}">
 
 									@endif
 								</div>
@@ -265,7 +265,7 @@
 								<div class="input-group">
 									<label>TARGET</label>
 									@if(($sii['tipe_value']==1)OR($sii['tipe_value']==2))
-									<input type="number"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target" value="{{$si['taregt']}}">
+									<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target" value="{{$si['taregt']}}">
 									@else
 									<input type="text"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target" value="{{$si['target']}}">
 
@@ -273,7 +273,7 @@
 									@if($sii['tipe_value']==2)
 										<br><[' 
 										<br><label>TARGET MAXIMUM</label> 
-									<input type="number"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target-1" value="{{$si['target_1']}}">
+									<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target-1" value="{{$si['target_1']}}">
 
 									@endif
 								</div>
