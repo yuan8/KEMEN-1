@@ -45,17 +45,19 @@ class REKOMENDASI extends Controller
 
             // $model=RKP::with('_nomen_pro')->get();
 
-
-           
-
     	}else{
-    		$model=REKOMENDASIKAB::class;
+    		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun)])->with(['_nomen_kab'=>function($q) use ($tahun,$id){
+
+                return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
+
+            },'_nomen_kab._nomen','_nomen_kab._tag_indikator._indikator','_nomen_kab._child_kegiatan._child_sub_kegiatan']);
     	}
 
 
-    	$daerah=DB::table('master_daerah')->find($id);
 
-    	$data=$model->get();
+    	$daerah=(array)DB::table('master_daerah')->find($id);
+
+    	$data=$model->get()->toArray();
 
 
     	return view('integrasi.rekomendasi.detail')->with(['daerah'=>$daerah,'data'=>$data]);

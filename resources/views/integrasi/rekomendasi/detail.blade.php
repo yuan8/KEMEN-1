@@ -4,7 +4,7 @@
 @section('content_header')
    <div class="row">
       <div class="col-md-8">
-        <h3>INTEGRASI {{$daerah->nama}} {{Hp::fokus_tahun()+1}} </h3>
+        <h3>INTEGRASI {{$daerah['nama']}} {{Hp::fokus_tahun()+1}} </h3>
       </div>
       
     </div>
@@ -14,7 +14,6 @@
 <div class="box box-solid 	">
 	<div class="box-body ">
 
-		<button onclick="showFormTambahProgram({{$daerah->id}})" class="btn btn-primary btn-xs text-uppercase">TAMBAH PROGRAM</button>
 		<a href="" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
 
 	</div>
@@ -47,7 +46,7 @@
 	<tbody>
 		@foreach($data as $d)
 			<tr class="bg-yellow text-dark">
-				<td><button class="btn btn-primary btn-xs"  onclick="showFormTambahProgram({{$daerah->id}},{{$d->id}})">TAMBAH PROGRAM</button></td>
+				<td><button class="btn btn-primary btn-xs"  onclick="showFormTambahProgram({{$daerah['id']}},{{$d['id']}})">TAMBAH PROGRAM</button></td>
 				<td colspan="13"><b>PROPN : {{$d['uraian']}}</b></td>
 			</tr>
 			@php
@@ -70,8 +69,8 @@
 							<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 						</div>
 					</td>
-					<td>{{$pn->kode}}</td>
-					<td colspan="11">{{$pn->nomenklatur}}</td>
+					<td>{{$pn['kode']}}</td>
+					<td colspan="11">{{$pn['nomenklatur']}}</td>
 
 				</tr>
 
@@ -89,8 +88,8 @@
 								
 							</div>
 						</td>
-						<td>{{$pii->kode}}</td>
-						<td>{{$pii->uraian}}</td>
+						<td>{{$pii['kode']}}</td>
+						<td>{{$pii['uraian']}}</td>
 						<td>
 							@if(($pii['tipe_value']==1)OR($pii['tipe_value']==2))
 							{{number_format($pii['target'],2)}}
@@ -100,7 +99,7 @@
 							@endif
 
 							@if($pii['tipe_value']==2)
-								<br><-> 
+								<br><[' 
 								{{number_format($pii['target_1'],2)}}
 
 							@endif
@@ -116,7 +115,7 @@
 
 								@endif
 								@if($pii['tipe_value']==2)
-									<br><-> 
+									<br><[' 
 									<br><label>TARGET MAXIMUM</label> 
 								<input type="number"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target-1" value="{{$pi['targe_1']}}">
 
@@ -150,8 +149,8 @@
 								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 							</div>
 						</td>
-						<td>{{$kn->kode}}</td>
-						<td colspan="8">{{$kn->nomenklatur}}</td>
+						<td>{{$kn['kode']}}</td>
+						<td colspan="8">{{$kn['nomenklatur']}}</td>
 
 					</tr>
 					@foreach($k['_tag_indikator'] as $ki)
@@ -168,8 +167,8 @@
 									
 								</div>
 							</td>
-							<td>{{$kii->kode}}</td>
-							<td>{{$kii->uraian}}</td>
+							<td>{{$kii['kode']}}</td>
+							<td>{{$kii['uraian']}}</td>
 							<td>
 								@if(($kii['tipe_value']==1)OR($kii['tipe_value']==2))
 								{{number_format($kii['target'],2)}}
@@ -179,7 +178,7 @@
 								@endif
 
 								@if($kii['tipe_value']==2)
-									<-> 
+									<[' 
 									{{number_format($kii['target_1'],2)}}
 
 								@endif
@@ -195,7 +194,7 @@
 
 									@endif
 									@if($kii['tipe_value']==2)
-										<br><-> 
+										<br><[' 
 										<br><label>TARGET MAXIMUM</label> 
 									<input type="number"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target-1" value="{{$ki['target_1']}}">
 
@@ -226,8 +225,8 @@
 									<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 								</div>
 							</td>
-							<td>{{$sn->kode}}</td>
-							<td colspan="6">{{$sn->nomenklatur}}</td>
+							<td>{{$sn['kode']}}</td>
+							<td colspan="6">{{$sn['nomenklatur']}}</td>
 
 						</tr>
 
@@ -245,8 +244,8 @@
 									
 								</div>
 							</td>
-							<td>{{$sii->kode}}</td>
-							<td>{{$sii->uraian}}</td>
+							<td>{{$sii['kode']}}</td>
+							<td>{{$sii['uraian']}}</td>
 							<td>
 								@if(($sii['tipe_value']==1)OR($sii['tipe_value']==2))
 								{{number_format($sii['target'],2)}}
@@ -256,7 +255,7 @@
 								@endif
 
 								@if($sii['tipe_value']==2)
-									<-> 
+									<[' 
 									{{number_format($sii['target_1'],2)}}
 
 								@endif
@@ -272,7 +271,7 @@
 
 									@endif
 									@if($sii['tipe_value']==2)
-										<br><-> 
+										<br><[' 
 										<br><label>TARGET MAXIMUM</label> 
 									<input type="number"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target-1" value="{{$si['target_1']}}">
 
@@ -316,7 +315,7 @@
 	}
 
 	function showFormNested(nomen,jenis){
-		var id="{{$daerah->id}}";
+		var id="{{$daerah['id']}}";
 		API_CON.get("{{route('int.rekomendasi.nestedCreate',['id'=>null])}}/"+id+'/'+nomen+'/'+jenis).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH KEGIATAN {{Hp::fokus_tahun()+1}}');
 			$('#modal-global-lg .modal-body').html(res.data);
@@ -326,7 +325,7 @@
 	}
 
 	function showFormCreateIndikator(nomen,jenis){
-		var id="{{$daerah->id}}";
+		var id="{{$daerah['id']}}";
 		API_CON.get("{{route('int.rekomendasi.add_indikator',['id'=>null])}}/"+id+'/'+nomen+'/'+jenis).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH INDIKATOR {{Hp::fokus_tahun()+1}}');
 			$('#modal-global-lg .modal-body').html(res.data);
@@ -347,7 +346,7 @@
 	}
 
 	function showFormDelete(nomen,jenis){
-		var id="{{$daerah->id}}";
+		var id="{{$daerah['id']}}";
 		API_CON.get("{{route('int.rekomendasi.delete_form_nest',['id'=>null])}}/"+id+'/'+nomen+'/'+jenis).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('DELETE NOMENKLATUR {{Hp::fokus_tahun()}}');
 			$('#modal-global-lg .modal-body').html(res.data);
@@ -356,7 +355,7 @@
 	}
 
 	function showFormDeleteindikator(nomen,jenis){
-		var id="{{$daerah->id}}";
+		var id="{{$daerah['id']}}";
 		API_CON.get("{{route('int.rekomendasi.delete_form_indikator',['id'=>null])}}/"+id+'/'+nomen).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('DELETE INDIKATOR {{Hp::fokus_tahun()}}');
 			$('#modal-global-lg .modal-body').html(res.data);
