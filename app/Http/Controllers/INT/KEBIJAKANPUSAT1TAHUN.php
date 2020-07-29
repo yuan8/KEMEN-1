@@ -72,7 +72,9 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
 
     public function index(){
     	$tahun=Hp::fokus_tahun();
-    	$data=RKP::where(['jenis'=>1,'tahun'=>$tahun])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])->get();
+        $meta_urusan=Hp::fokus_urusan();
+
+    	$data=RKP::where(['jenis'=>1,'tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])->get();
     	return view('integrasi.kb1tahun.index')->with('data',$data);
     }
 
@@ -83,6 +85,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
 
     public function pn_store(Request $request){
     	$tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
 
     	$valid=Validator::make($request->all(),[
     		'uraian'=>'required|string'
@@ -98,6 +101,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     		'uraian'=>$request->uraian,
     		'jenis'=>1,
     		'tahun'=>$tahun,
+            'id_urusan'=>$meta_urusan['id_urusan'],
     		'id_user'=>Auth::User()->id
     	]);
 
@@ -227,6 +231,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
             'id_pn'=>$data['id_pn'],
             'id_pp'=>$data['id_pp'],
             'id_kp'=>$data['id_kp'],
+            'id_urusan'=>$data['id_urusan'],
             'tahun'=>(int)$tahun,
             'id_propn'=>$data['id_propn'],
             'created_at'=>Carbon::now(),

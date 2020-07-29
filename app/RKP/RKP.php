@@ -17,7 +17,7 @@ class RKP extends Model
     protected $connection = 'rkp';
     protected $table='rkp.master_rkp';
 
-    protected $fillable=['tahun','uraian','created_at','updated_at','id_user','id_pn','id_pp','id_kp','id_propn'];
+    protected $fillable=['tahun','uraian','created_at','updated_at','id_user','id_pn','id_pp','id_kp','id_propn','id_urusan'];
     
 
     public function _child_pp(){

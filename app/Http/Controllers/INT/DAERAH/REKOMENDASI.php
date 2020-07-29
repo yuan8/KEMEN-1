@@ -62,7 +62,6 @@ class REKOMENDASI extends Controller
 
 
     public function index(){
-    	$meta_urusan=Hp::fokus_urusan();
     	$data=DB::connection('rkpd')->table('public.master_daerah as d')
     	->select(DB::RAW("*"))
     	->orderBy('id','asc')
@@ -73,9 +72,11 @@ class REKOMENDASI extends Controller
 
     public function detail($id){
     	$tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+
     	if(strlen(($id.""))<3){
 
-    		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun)])->with(['_nomen_pro'=>function($q) use ($tahun,$id){
+    		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun),'id_urusan'=>$meta_urusan['id_urusan']])->with(['_nomen_pro'=>function($q) use ($tahun,$id){
 
                 return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
 
@@ -112,7 +113,13 @@ class REKOMENDASI extends Controller
     		$model=NOMENKAB::class;
     	}
 
+        
+
+
     	$data=$model::where('jenis','program')->where('urus',$meta_urusan['id_urusan'])->get();
+        
+// Your Eloquent query executed by using get()
+
 
     	return view('integrasi.rekomendasi.nomen')->with(['data'=>$data,'kodepemda'=>$id,'id_rkp'=>$id_rkp]);
 
