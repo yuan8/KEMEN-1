@@ -13,6 +13,18 @@
 
 
 @section('content')
+<button class="btn btn-info btn-xs" style="margin-bottom: 10px;" data-toggle="collapse" data-target="#info-page"><i class="fa fa-info-circle"></i> INFORMASI TERKAIT CARA PENGISIAN</button>
+	<div class="box box box-solid bg-green-gradient collapse in"  id="info-page" >
+		<div class="box-body text-dark">
+			  <p style="text-align: center;"><strong>Kolom Masalah Pokok</strong></p>
+			<p style="text-align: center;">Diisi dengan rumusan masalah pokok. Perumusan Masalah pokok merupakan masalah yang bersifat makro bagi daerah, masalah pokok dipecahkan melalui rumusan misi, tujuan dan sasaran</p>
+			<p style="text-align: center;"><strong>Kolom Masalah</strong></p>
+			<p style="text-align: center;">Diisi dengan rumusan masalah. Perumusan masalah dengan cara mencari beberapa penyebab dari masalah pokok yang lebih spesifik.Pemecahan masalah melalui strategi</p>
+			<p style="text-align: center;"><strong>Kolom&nbsp; Akar Masalah</strong></p>
+			<p style="text-align: center;">Diisi dengan rumusan akah masalah. Perumusan akar masalah dengan cara mencari beberapa penyebab dari masalah yang lebih rinci. Pemecahan akar masalah melalui arah kebijakan atau kebijakan</p>
+		</div>
+	</div>
+ 
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box box-success">

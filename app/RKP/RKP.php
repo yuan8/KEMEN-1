@@ -5,7 +5,9 @@ namespace App\RKP;
 use Illuminate\Database\Eloquent\Model;
 use App\RKP\RKPINDIKATOR;
 use App\KB5\INDIKATOR;
-
+use App\INTEGRASI\REKOMENDASI;
+use App\INTEGRASI\REKOMENDASIKAB;
+use Hp;
 
 class RKP extends Model
 {
@@ -56,6 +58,14 @@ class RKP extends Model
 
     public function _indikator(){
         return $this->belongsToMany(INDIKATOR::class,RKPINDIKATOR::class,'id_rkp','id_indikator');
+    }
+
+    public function _nomen_pro(){
+        return $this->hasMany(REKOMENDASI::class,'id_rkp')->where('jenis',1);
+    }
+
+    public function _nomen_kab(){
+        return $this->hasMany(REKOMENDASIKAB::class,'id_rkp')->where('jenis',1);
     }
 
 

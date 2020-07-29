@@ -2,12 +2,14 @@
 	$domid='dom'.date('s');
 @endphp
 <hr>
-<form action="{{route('int.rekomendasi.store_program',['kodepemda'=>$kodepemda])}}" method="post">
+
+<form action="{{route('int.rekomendasi.store_program',['kodepemda'=>$kodepemda,'id_rkp'=>isset($id_rkp)?$id_rkp:null])}}" method="post">
 	@isset($id_parent)
 		<input type="hidden" name="id_parent" value="{{$id_parent}}">
 	@endisset	
 	@csrf
-	<table class="table table-bordered" id="list_indikator_to_add_{{$domid}}">
+
+	<table class="table table-bordered bg-green-gradient" id="list_indikator_to_add_{{$domid}}">
 		<thead>
 			<tr>
 				<th>ACTION</th>

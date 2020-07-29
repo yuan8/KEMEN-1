@@ -13,14 +13,53 @@ use App\INTEGRASI\REKOMENDASI as REKO;
 use App\INTEGRASI\REKOMENDASIKAB;
 use App\INTEGRASI\REKOMENDASI_IND;
 use App\INTEGRASI\REKOMENDASIJAB_IND;
-
-
 use App\KB5\INDIKATOR;
 Use Carbon\Carbon;
+use App\RKP\RKP;
 use Alert;
+
+
 class REKOMENDASI extends Controller
 {
     //
+
+    public function setTargetDarah($id,$id_indikator,Request $request){
+            if(!$request->target){
+                Alert::error('');
+                return back();
+            }
+
+            $uid=Auth::id();
+            $tahun=Hp::fokus_tahun();
+            if(strlen(($id.""))<3){
+                $model='meta_rkpd.rekomendasi';
+                $parent=REKO::class;
+                $indikator_model='meta_rkpd.rekomendasi_indikator';
+
+            }else{
+                $model='meta_rkpd.rekomendasi_kab';
+                $parent=REKOMENDASIKAB::class;
+                $indikator_model='meta_rkpd.rekomendasi_indikator_kab';
+
+            }
+
+            $data=DB::connection('meta_rkpd')->table($indikator_model)->where('id',$id_indikator)->first();
+
+            if($data){
+                $data=DB::connection('meta_rkpd')->table($indikator_model)->where('id',$id_indikator)->update([
+                    'target'=>$request->target,
+                    'target_1'=>$request->target_1,
+                    'updated_at'=>Carbon::now()
+                ]);
+
+                return array('code'=>200);
+            }else{
+                return array('code'=>200);
+
+            }
+
+    }
+
 
     public function index(){
     	$meta_urusan=Hp::fokus_urusan();
@@ -35,20 +74,35 @@ class REKOMENDASI extends Controller
     public function detail($id){
     	$tahun=Hp::fokus_tahun();
     	if(strlen(($id.""))<3){
-    		$model=REKO::class;
+
+    		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun)])->with(['_nomen_pro'=>function($q) use ($tahun,$id){
+
+                return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
+
+            },'_nomen_pro._nomen','_nomen_pro._tag_indikator._indikator','_nomen_pro._child_kegiatan._child_sub_kegiatan']);
+
+            // $model=RKP::with('_nomen_pro')->get();
+
     	}else{
-    		$model=REKOMENDASIKAB::class;
+    		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun)])->with(['_nomen_kab'=>function($q) use ($tahun,$id){
+
+                return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
+
+            },'_nomen_kab._nomen','_nomen_kab._tag_indikator._indikator','_nomen_kab._child_kegiatan._child_sub_kegiatan']);
     	}
 
-    	$daerah=DB::table('master_daerah')->find($id);
 
-    	$data=$model::where(['jenis'=>1,'tahun'=>($tahun+1),'kodepemda'=>$id])->with('_nomen','_tag_indikator._indikator','_child_kegiatan._child_sub_kegiatan')->get();
+
+    	$daerah=(array)DB::table('master_daerah')->find($id);
+
+    	$data=$model->get()->toArray();
+
 
 
     	return view('integrasi.rekomendasi.detail')->with(['daerah'=>$daerah,'data'=>$data]);
     }
 
-    public function add_program($id){
+    public function add_program($id,$id_rkp=null){
     	$model=null;
     	$meta_urusan=Hp::fokus_urusan();
 
@@ -60,11 +114,11 @@ class REKOMENDASI extends Controller
 
     	$data=$model::where('jenis','program')->where('urus',$meta_urusan['id_urusan'])->get();
 
-    	return view('integrasi.rekomendasi.nomen')->with(['data'=>$data,'kodepemda'=>$id]);
+    	return view('integrasi.rekomendasi.nomen')->with(['data'=>$data,'kodepemda'=>$id,'id_rkp'=>$id_rkp]);
 
     }
 
-    public function store_program($id,Request $request){
+    public function store_program($id,$id_rkp=null,Request $request){
     	if(!$request->id_nomen){
     		Alert::error('');
     		return back();
@@ -84,11 +138,13 @@ class REKOMENDASI extends Controller
 	    	}
 
 	    if(!isset($request->id_parent)){
+
 	    		foreach ($request->id_nomen as $key => $d) {
 	    		$data=DB::connection('meta_rkpd')->table($model)->updateOrInsert([
 		    		'kodepemda'=>$id,
 		    		'id_nomen'=>$d,
-		    		'tahun'=>$tahun+1,
+		    		'tahun'=>$tahun,
+                    'id_rkp'=>$id_rkp
 
 	    		],
 	    		[
@@ -96,7 +152,8 @@ class REKOMENDASI extends Controller
 		    		'id_nomen'=>$d,
 		    		'id_user'=>$uid,
 		    		'jenis'=>1,
-		    		'tahun'=>$tahun+1,
+		    		'tahun'=>$tahun,
+                    'id_rkp'=>$id_rkp,
 		    		'updated_at'=>Carbon::now()
 	    		]);
 	    		# code...
@@ -109,7 +166,9 @@ class REKOMENDASI extends Controller
 	    	if($parent){
 	    		$data=[
 	    			'id_p'=>$parent['id_p'],
-	    			'id_k'=>$parent['id_k']
+	    			'id_k'=>$parent['id_k'],
+                    'id_rkp'=>$parent['id_rkp'],
+
 	    		];
 
 	    		if($parent['jenis']==1){
@@ -126,7 +185,7 @@ class REKOMENDASI extends Controller
 		    		$nomen=DB::connection('meta_rkpd')->table($model)->updateOrInsert([
 			    		'kodepemda'=>$id,
 			    		'id_nomen'=>$d,
-			    		'tahun'=>$tahun+1,
+			    		'tahun'=>$tahun,
 
 		    		],
 		    		[
@@ -136,7 +195,8 @@ class REKOMENDASI extends Controller
 			    		'jenis'=>$jenis,
 			    		'id_p'=>$data['id_p'],
 			    		'id_k'=>$data['id_k'],
-			    		'tahun'=>$tahun+1,
+                        'id_rkp'=>$data['id_rkp'],
+			    		'tahun'=>$tahun,
 			    		'updated_at'=>Carbon::now()
 		    		]);
 	    		# code...
@@ -229,6 +289,7 @@ class REKOMENDASI extends Controller
     		$model=REKO::class;
     		$nom=NOMEN::class;
     		$where['kw_p']=true;
+
     		$kewenangan='PROVINSI';
 
     	}else{
@@ -241,8 +302,15 @@ class REKOMENDASI extends Controller
 
     	}
 
-    	$data=INDIKATOR::where('tahun',$tahun)->where($where)->get();
-    	$parent=$model::with('_nomen')->find($id_parent)->toArray();
+        $parent=$model::with('_nomen')->find($id_parent)->toArray();
+
+
+    	$data=INDIKATOR::where('tahun',$tahun)->where($where)->whereHas('_insert_rkp',function($q) use ($tahun,$parent){
+            return $q->where(['tahun'=>$tahun,'id_rkp'=>$parent['id_rkp']]);
+        })->get();
+
+
+
     	
     	if($parent){
     		$jenis=static::jenis($parent['jenis']);
@@ -292,7 +360,7 @@ class REKOMENDASI extends Controller
 			    		'kodepemda'=>$id,
 			    		'id_indikator'=>$d,
 			    		'id_rekom'=>$id_parent,
-			    		'tahun'=>$tahun+1,
+			    		'tahun'=>$tahun,
 
 		    		],
 		    		[
@@ -301,7 +369,7 @@ class REKOMENDASI extends Controller
 			    		'id_indikator'=>$d,
 			    		'id_user'=>$uid,
 			    		'jenis'=>$jenis,
-			    		'tahun'=>$tahun+1,
+			    		'tahun'=>$tahun,
 			    		'updated_at'=>Carbon::now()
 		    		]);
 	    		# code...

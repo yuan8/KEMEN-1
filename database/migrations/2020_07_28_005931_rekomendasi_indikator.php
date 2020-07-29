@@ -70,7 +70,7 @@ class RekomendasiIndikator extends Migration
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_rekom')
-                    ->references('id')->on($schema.'rekomendasi')
+                    ->references('id')->on($schema.'rekomendasi_kab')
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_indikator')

@@ -100,6 +100,9 @@ Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 			Route::get('/get-ind', 'FORM\IntegrasiCtrl@api_get_data_ind')
 			->name('api.int.get.ind');
 
+			Route::post('/set-target-rekomendasi/{kodepemda}/{kode_indikator}', 'INT\DAERAH\REKOMENDASI@setTargetDarah')
+			->name('api.int.daerah.set.target');
+
 			Route::get('/get-nomen-pro', 'FORM\IntegrasiCtrl@api_get_nomen_pro')
 			->name('api.int.get.nomen.pro');
 

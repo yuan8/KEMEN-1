@@ -117,8 +117,8 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 	Route::prefix('daerah/rekomendasi')->group(function(){
 		Route::get('/','INT\DAERAH\REKOMENDASI@index')->name('int.rekomendasi.index');
 		Route::get('/detail/{kodepemda}','INT\DAERAH\REKOMENDASI@detail')->name('int.rekomendasi.detail');
-		Route::get('/nomen/show-form-program/{kodepemda}','INT\DAERAH\REKOMENDASI@add_program')->name('int.rekomendasi.add_program');
-		Route::post('/nomen/show-form-program/{kodepemda}','INT\DAERAH\REKOMENDASI@store_program')->name('int.rekomendasi.store_program');
+		Route::get('/nomen/show-form-program/{kodepemda}/{id_rkpd?}','INT\DAERAH\REKOMENDASI@add_program')->name('int.rekomendasi.add_program');
+		Route::post('/nomen/show-form-program/{kodepemda}/{id_rkpd?}','INT\DAERAH\REKOMENDASI@store_program')->name('int.rekomendasi.store_program');
 		Route::get('/nomen/add-nested/{kodepemda}/{id?}/{jenis?}','INT\DAERAH\REKOMENDASI@nestedCreate')->name('int.rekomendasi.nestedCreate');
 		Route::get('/nomen/add-indikator/{kodepemda}/{id?}/{jenis?}','INT\DAERAH\REKOMENDASI@add_indikator')->name('int.rekomendasi.add_indikator');
 		Route::post('/nomen/add-indikator/{kodepemda}/{id?}','INT\DAERAH\REKOMENDASI@store_indikator')->name('int.rekomendasi.store_indikator');
