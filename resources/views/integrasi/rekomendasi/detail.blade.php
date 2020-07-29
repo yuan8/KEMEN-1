@@ -20,7 +20,8 @@
 </div>
 <hr>
 
-<table class="table-bordered table bg-white">
+<div class="table-responsive">
+	<table class="table-bordered table bg-white">
 	<thead class="bg-navy">
 		<tr>
 			<th rowspan="2" >RKP</th>
@@ -299,6 +300,7 @@
 
 	</tbody>
 </table>
+</div>
 @stop
 
 @section('js')
