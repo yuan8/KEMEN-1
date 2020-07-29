@@ -15,7 +15,10 @@ class NOMEN extends Model
     	return $this->hasMany($this,'program','program')->where('jenis','kegiatan');
     }
 
-     public function _child_sub_kegiatan(){
+    public function _child_sub_kegiatan(){
     	return $this->hasMany($this,'kegiatan','kegiatan')->where('jenis','sub_kegiatan');
     }
+
+   
+
 }

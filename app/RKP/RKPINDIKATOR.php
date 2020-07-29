@@ -10,7 +10,7 @@ class RKPINDIKATOR extends Model
     //
         //
     protected $connection = 'rkp';
-    protected $table='rkp_indikator';
+    protected $table='rkp.rkp_indikator';
 
     protected $fillable=['id','id_rkp','id_indikator','jenis','id_user'];
 

@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\KB5\ARAHKEBIJAKAN;
 use App\KB5\KONDISI;
 use App\KB5\SASARAN;
-
+use App\RKP\RKP;
 use App\MASTER\SUBURUSAN;
+use App\RKP\RKPINDIKATOR;
 
 
 
@@ -38,6 +39,10 @@ class INDIKATOR extends Model
 
     public function _sasaran(){
       return $this->belongsTo(SASARAN::class,'id_sasaran');
+    }
+
+    public function _insert_rkp(){
+      return $this->hasMany(RKPINDIKATOR::class,'id_indikator');
     }
 
 

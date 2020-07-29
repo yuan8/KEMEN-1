@@ -16,7 +16,7 @@
 @section('body')
     <style type="text/css">
         table th,table td{
-            font-size: 10px;
+            font-size: 13px;
         }
     </style>
 

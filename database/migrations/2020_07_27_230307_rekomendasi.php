@@ -25,6 +25,7 @@ class Rekomendasi extends Migration
                  $table->integer('tahun');
                  $table->integer('jenis')->default(1);
                  $table->bigInteger('id_nomen')->unsigned();
+                 $table->bigInteger('id_rkp')->nullable();
                  $table->bigInteger('id_p')->nullable();
                  $table->bigInteger('id_k')->nullable();
                  $table->bigInteger('id_user')->unsigned();
@@ -40,6 +41,11 @@ class Rekomendasi extends Migration
 
                  $table->foreign('id_k')
                     ->references('id')->on($schema.'rekomendasi')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+
+                 $table->foreign('id_rkp')
+                    ->references('id')->on('rkp.master_rkp')
                     ->onDelete('cascade')->onUpdate('cascade');
 
              });
@@ -53,6 +59,7 @@ class Rekomendasi extends Migration
                  $table->integer('tahun');
                  $table->integer('jenis')->default(1);
                  $table->bigInteger('id_nomen')->unsigned();
+                 $table->bigInteger('id_rkp')->nullable();
                  $table->bigInteger('id_p')->nullable();
                  $table->bigInteger('id_k')->nullable();
                  $table->bigInteger('id_user')->unsigned();
@@ -63,11 +70,15 @@ class Rekomendasi extends Migration
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_p')
-                    ->references('id')->on($schema.'rekomendasi')
+                    ->references('id')->on($schema.'rekomendasi_kab')
                     ->onDelete('cascade')->onUpdate('cascade');
 
                  $table->foreign('id_k')
-                    ->references('id')->on($schema.'rekomendasi')
+                    ->references('id')->on($schema.'rekomendasi_kab')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+                  $table->foreign('id_rkp')
+                    ->references('id')->on('rkp.master_rkp')
                     ->onDelete('cascade')->onUpdate('cascade');
 
              });
@@ -85,8 +96,9 @@ class Rekomendasi extends Migration
         //
         $schema='meta_rkpd.';
 
-        Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi');
         Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi_kab');
+        Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi');
+
         
     }
 }
