@@ -23,6 +23,44 @@ class REKOMENDASI extends Controller
 {
     //
 
+    public function setTargetDarah($id,$id_indikator,Request $request){
+            if(!$request->target){
+                Alert::error('');
+                return back();
+            }
+
+            $uid=Auth::id();
+            $tahun=Hp::fokus_tahun();
+            if(strlen(($id.""))<3){
+                $model='meta_rkpd.rekomendasi';
+                $parent=REKO::class;
+                $indikator_model='meta_rkpd.rekomendasi_indikator';
+
+            }else{
+                $model='meta_rkpd.rekomendasi_kab';
+                $parent=REKOMENDASIKAB::class;
+                $indikator_model='meta_rkpd.rekomendasi_indikator_kab';
+
+            }
+
+            $data=DB::connection('meta_rkpd')->table($indikator_model)->where('id',$id_indikator)->first();
+
+            if($data){
+                $data=DB::connection('meta_rkpd')->table($indikator_model)->where('id',$id_indikator)->update([
+                    'target'=>$request->target,
+                    'target_1'=>$request->target_1,
+                    'updated_at'=>Carbon::now()
+                ]);
+
+                return array('code'=>200);
+            }else{
+                return array('code'=>200);
+
+            }
+
+    }
+
+
     public function index(){
     	$meta_urusan=Hp::fokus_urusan();
     	$data=DB::connection('rkpd')->table('public.master_daerah as d')
@@ -58,6 +96,7 @@ class REKOMENDASI extends Controller
     	$daerah=(array)DB::table('master_daerah')->find($id);
 
     	$data=$model->get()->toArray();
+
 
 
     	return view('integrasi.rekomendasi.detail')->with(['daerah'=>$daerah,'data'=>$data]);

@@ -117,7 +117,7 @@
 								@if($pii['tipe_value']==2)
 									<br><[' 
 									<br><label>TARGET MAXIMUM</label> 
-								<input type="number"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target-1" value="{{$pi['targe_1']}}">
+									<input type="number"  name="" class="form-control" id="indikator-{{$pii['id']}}-{{$pi['id']}}-target-1" value="{{$pi['targe_1']}}">
 
 
 								@endif
@@ -125,7 +125,7 @@
 						</td>
 						<td>{{$pii['satuan']}}</td>
 						<td>
-							<button class="btn btn-xs btn-warning btn-xs">UPDATE</button>
+							<button class="btn btn-xs btn-warning btn-xs" onclick="setTarget('indikator-{{$pii['id']}}-{{$pi['id']}}',{{$pi['id']}})">UPDATE</button>
 						</td>
 
 					</tr>
@@ -203,7 +203,7 @@
 							</td>
 							<td>{{$kii['satuan']}}</td>
 							<td>
-								<button class="btn btn-xs btn-warning btn-xs">UPDATE</button>
+								<button class="btn btn-xs btn-warning btn-xs" onclick="setTarget('indikator-{{$kii['id']}}-{{$ki['id']}}',{{$ki['id']}})">UPDATE</button>
 							</td>
 
 						</tr>
@@ -280,7 +280,7 @@
 							</td>
 							<td>{{$sii['satuan']}}</td>
 							<td>
-								<button class="btn btn-xs btn-warning btn-xs">UPDATE</button>
+								<button class="btn btn-xs btn-warning btn-xs" onclick="setTarget('indikator-{{$sii['id']}}-{{$si['id']}}',{{$si['id']}})">UPDATE</button>
 							</td>
 
 						</tr>
@@ -363,6 +363,29 @@
 		});
 	}
 
+
+  function setTarget(id_dom,id_indikator){
+    var data={
+      'target_1':$('#'+id_dom+'-target-1').val(),
+      'target':$('#'+id_dom+'-target').val(),
+    };
+
+    API_CON.post("{{route('api.int.daerah.set.target',['kodepemda'=>$daerah['id'],'id_indikator'=>''])}}/"+id_indikator,data).then(function(res){
+      if(res.data.code==200){
+        Swal.fire(
+          'Success',
+          'Berhasil Menambahkan Target',
+          'success'
+        );
+                
+      }
+
+    }); 
+  }
+
+
+
+// api.int.daerah.set.target
 </script>
 
 @stop
