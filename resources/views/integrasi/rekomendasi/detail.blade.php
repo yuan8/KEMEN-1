@@ -4,7 +4,7 @@
 @section('content_header')
    <div class="row">
       <div class="col-md-8">
-        <h3>INTEGRASI {{$daerah['nama']}} {{Hp::fokus_tahun()+1}} </h3>
+        <h3>INTEGRASI {{$daerah['nama']}} {{Hp::fokus_tahun()}} </h3>
       </div>
       
     </div>

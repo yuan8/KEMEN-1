@@ -107,7 +107,7 @@
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteisu({{$isu['id']}})"><i class="fa fa-trash"></i></button>
 								</div>
 						</td>
-						<td>{{$isu['uraian']}}</td>
+						<td colspan="12">{{$isu['uraian']}}</td>
 
 					</tr>
 					@foreach($isu['_children'] as $ak)
@@ -125,7 +125,7 @@
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteAk({{$ak['id']}})"><i class="fa fa-trash"></i></button>
 								</div>
 							</td>
-							<td>{{$ak['uraian']}}</td>
+							<td colspan="11">{{$ak['uraian']}}</td>
 						</tr>
 
 						@foreach($ak['_children'] as $s)
@@ -143,7 +143,7 @@
 									<button class="btn btn-danger  btn-xs" onclick="showFormDeleteSasaran({{$s['id']}})"><i class="fa fa-trash"></i></button>
 									</div>
 								</td>
-								<td>{{$s['uraian']}}</td>
+								<td colspan="10">{{$s['uraian']}}</td>
 							</tr>
 
 

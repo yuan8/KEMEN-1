@@ -32,7 +32,7 @@
                                 <td></td>
                                 <td>{{$d->nama}}</td>
                                 <td>
-                                  <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn btn-info btn-xs ">BUAT REKOMENDASI {{HP::fokus_tahun()+1}}</a>
+                                  <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn btn-info btn-xs ">BUAT REKOMENDASI {{HP::fokus_tahun()}}</a>
                                 </td>
                                
                             </tr>

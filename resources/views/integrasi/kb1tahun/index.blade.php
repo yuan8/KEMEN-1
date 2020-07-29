@@ -26,7 +26,8 @@
 <table class="table-bordered table bg-white">
 	<thead class="bg-navy">
 		<tr>
-			<th rowspan="2" colspan="2">PN</th>
+			<th rowspan="2"></th>
+			<th rowspan="2" >PN</th>
 			<th rowspan="2">PP</th>
 			<th rowspan="2">KP</th>
 			<th rowspan="2">PROPN</th>
@@ -47,7 +48,7 @@
 	<tbody>
 		@foreach($data as $pn)
 			<tr>
-				<td>
+				<td >
 					<div class=" pull-right">
 						<button   collapse-btn-nested="false" data-target=".pn-{{$pn['id']}}"  class="btn btn-info btn-xs ">
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
@@ -61,7 +62,7 @@
 						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 					</div>
 				</td>
-				<td>{{$pn['uraian']}}</td>
+				<td colspan="11">{{$pn['uraian']}}</td>
 
 			</tr>
 			@foreach($pn['_tag_indikator'] as $tagpni)
@@ -127,7 +128,7 @@
 						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 						</div>
 					</td>
-					<td>{{$pp['uraian']}}</td>
+					<td colspan="10">{{$pp['uraian']}}</td>
 
 				</tr>
 				@foreach($pp['_tag_indikator'] as $tagppi)
@@ -195,7 +196,7 @@
 								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 							</div>
 						</td>
-						<td>{{$kp['uraian']}}</td>
+						<td colspan="9">{{$kp['uraian']}}</td>
 
 					</tr>
 					@foreach($kp['_tag_indikator'] as $tagkpi)
@@ -262,7 +263,7 @@
 										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 									</div>
 								</td>
-							<td>{{$propn['uraian']}}</td>
+							<td colspan="8">{{$propn['uraian']}}</td>
 
 						</tr>
 
