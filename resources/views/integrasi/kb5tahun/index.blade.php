@@ -17,7 +17,7 @@
 	<div class="box-body ">
 
 		<button onclick="showFormCreateKondisi()" class="btn btn-success btn-xs text-uppercase">Tambah Kondisi saat ini</button>
-		<a href="" class="btn btn-success btn-xs text-uppercase">DWONLOAD DATA</a>
+		<a href="" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
 
 	</div>
 </div>
