@@ -17,7 +17,7 @@
 	<div class="box-body ">
 
 		<button onclick="showFormCreatePn()" class="btn btn-primary btn-xs text-uppercase">TAMBAH PN</button>
-		<a href="" class="btn btn-success btn-xs text-uppercase">DWONLOAD DATA</a>
+		<a href="" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
 
 	</div>
 </div>
