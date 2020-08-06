@@ -54,8 +54,24 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 	});
 
+	Route::prefix('global')->group(function(){
+		Route::get('/listing-satuan','INT\GLOBALCTRL@show_list_select_satuan')->name('api.global.listing-satuan');		
+
+	});
+
 	Route::prefix('pelaksanaan-urusan')->group(function(){
 		Route::get('/','INT\PELAKSANAANURUSAN@index')->name('int.pelurusan.index');		
+		Route::get('/create','INT\PELAKSANAANURUSAN@create')->name('int.pelurusan.create');		
+		Route::post('/store','INT\PELAKSANAANURUSAN@store_indikator')->name('int.pelurusan.store_indikator');
+		Route::get('/view/{id}','INT\PELAKSANAANURUSAN@view')->name('int.pelurusan.view');
+		Route::post('/update/{id}','INT\PELAKSANAANURUSAN@update')->name('int.pelurusan.update');
+		Route::delete('/delete/{id}','INT\PELAKSANAANURUSAN@delete')->name('int.pelurusan.delete');	
+		Route::get('/delete/{id}','INT\PELAKSANAANURUSAN@show_form_delete')->name('int.pelurusan.show_form_delete');		
+
+
+
+
+
 
 	});
 

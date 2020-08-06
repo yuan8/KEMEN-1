@@ -13,7 +13,7 @@ use App\INTEGRASI\REKOMENDASI as REKO;
 use App\INTEGRASI\REKOMENDASIKAB;
 use App\INTEGRASI\REKOMENDASI_IND;
 use App\INTEGRASI\REKOMENDASIJAB_IND;
-use App\KB5\INDIKATOR;
+use App\MASTER\INDIKATOR;
 Use Carbon\Carbon;
 use App\RKP\RKP;
 use Alert;
@@ -296,25 +296,18 @@ class REKOMENDASI extends Controller
     		$model=REKO::class;
     		$nom=NOMEN::class;
     		$where['kw_p']=true;
-
     		$kewenangan='PROVINSI';
-
     	}else{
     		$model=REKOMENDASIKAB::class;
     		$nom=NOMENKAB::class;
     		$where['kw_k']=true;
     		$kewenangan='KOTA / KAB';
-
-
-
     	}
 
         $parent=$model::with('_nomen')->find($id_parent)->toArray();
 
 
-    	$data=INDIKATOR::where('tahun',$tahun)->where($where)->whereHas('_insert_rkp',function($q) use ($tahun,$parent){
-            return $q->where(['tahun'=>$tahun,'id_rkp'=>$parent['id_rkp']]);
-        })->get();
+    	$data=INDIKATOR::where('tahun',$tahun)->where($where)->get();
 
 
 
