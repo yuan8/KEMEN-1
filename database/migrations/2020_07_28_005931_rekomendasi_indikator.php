@@ -42,7 +42,7 @@ class RekomendasiIndikator extends Migration
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_indikator')
-                    ->references('id')->on('form.'.'kb5_indikator')
+                    ->references('id')->on('form.'.'master_indikator')
                     ->onDelete('cascade')->onUpdate('cascade');
 
 
@@ -74,7 +74,7 @@ class RekomendasiIndikator extends Migration
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_indikator')
-                    ->references('id')->on('form.'.'kb5_indikator')
+                    ->references('id')->on('form.'.'master_indikator')
                     ->onDelete('cascade')->onUpdate('cascade');
 
                

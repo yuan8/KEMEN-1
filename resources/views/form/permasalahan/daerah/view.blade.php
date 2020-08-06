@@ -14,7 +14,7 @@
 
 @section('content')
 <button class="btn btn-info btn-xs" style="margin-bottom: 10px;" data-toggle="collapse" data-target="#info-page"><i class="fa fa-info-circle"></i> INFORMASI TERKAIT CARA PENGISIAN</button>
-	<div class="box box box-solid bg-green-gradient collapse in"  id="info-page" >
+	<div class="box box box-solid bg-green-gradient collapse "  id="info-page" >
 		<div class="box-body text-dark">
 			  <p style="text-align: center;"><strong>Kolom Masalah Pokok</strong></p>
 			<p style="text-align: center;">Diisi dengan rumusan masalah pokok. Perumusan Masalah pokok merupakan masalah yang bersifat makro bagi daerah, masalah pokok dipecahkan melalui rumusan misi, tujuan dan sasaran</p>

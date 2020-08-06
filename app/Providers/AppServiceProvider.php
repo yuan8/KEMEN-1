@@ -46,7 +46,17 @@ class AppServiceProvider extends ServiceProvider
 
             $event->menu->add([
                 'text' => 'KEBIJAKAN PUSAT TAHUNAN',
-                'url'=>route('int.kb1tahun.index')
+            
+                'submenu'=>[
+                    // [
+                    //     'text'=>'INDIKATOR KEBIJAKAN TAHUNAN',
+                    // 'url'=>route('int.kb1tahun.index')
+                    // ],
+                    [
+                        'text'=>'KEBIJAKAN TAHUNAN',
+                    'url'=>route('int.kb1tahun.index')
+                    ]
+                ]
             ]);
 
             $event->menu->add([

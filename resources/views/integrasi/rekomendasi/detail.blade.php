@@ -189,7 +189,7 @@
 								<div class="input-group">
 									<label>TARGET</label>
 									@if(($kii['tipe_value']==1)OR($kii['tipe_value']==2))
-									<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target" value="{{$ki['taregt']}}">
+									<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target" value="{{$ki['target']}}">
 									@else
 									<input type="text"  name="" class="form-control" id="indikator-{{$kii['id']}}-{{$ki['id']}}-target" value="{{$ki['target']}}">
 
@@ -266,7 +266,7 @@
 								<div class="input-group">
 									<label>TARGET</label>
 									@if(($sii['tipe_value']==1)OR($sii['tipe_value']==2))
-									<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target" value="{{$si['taregt']}}">
+									<input type="number" step="0.001"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target" value="{{$si['target']}}">
 									@else
 									<input type="text"  name="" class="form-control" id="indikator-{{$sii['id']}}-{{$si['id']}}-target" value="{{$si['target']}}">
 

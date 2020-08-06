@@ -3,7 +3,7 @@
 namespace App\INTEGRASI;
 
 use Illuminate\Database\Eloquent\Model;
-use App\KB5\INDIKATOR;
+use App\MASTER\INDIKATOR;
 class REKOMENDASI_IND extends Model
 {
     //
