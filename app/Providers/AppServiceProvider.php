@@ -39,6 +39,12 @@ class AppServiceProvider extends ServiceProvider
                 'url'=>route('kebijakan.pusat.index')
             ]);
 
+             $event->menu->add([
+                'text' => 'MASTER INDIKATOR',
+                'url'=>route('int.m.indikator'),
+                'icon'=>'fa fa-file'
+            ]);
+
             $event->menu->add([
                 'text' => 'KEBIJAKAN PUSAT 5 TAHUNAN',
                 'url'=>route('int.kb5tahun.index')
@@ -46,17 +52,8 @@ class AppServiceProvider extends ServiceProvider
 
             $event->menu->add([
                 'text' => 'KEBIJAKAN PUSAT TAHUNAN',
-            
-                'submenu'=>[
-                    // [
-                    //     'text'=>'INDIKATOR KEBIJAKAN TAHUNAN',
-                    // 'url'=>route('int.kb1tahun.index')
-                    // ],
-                    [
-                        'text'=>'KEBIJAKAN TAHUNAN',
-                    'url'=>route('int.kb1tahun.index')
-                    ]
-                ]
+                'url'=>route('int.kb1tahun.index')
+
             ]);
 
             $event->menu->add([
@@ -64,9 +61,6 @@ class AppServiceProvider extends ServiceProvider
 
                 'url'=>route('int.pelurusan.index')
             ]);
-
-
-
 
             $event->menu->add('DAERAH');
              $event->menu->add([

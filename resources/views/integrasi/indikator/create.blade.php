@@ -1,33 +1,68 @@
-<form action="{{route('int.pelurusan.store_indikator')}}" method="post">
+@php
+	if($tag==1){
+
+		$route=route('int.kb5tahun.indikator.store',['id'=>$ak_kondisi['id']]);
+		$pre_ind=$meta_urusan['singkat'].'.'.'RKP'.'.'.'IND.';
+	}
+	else if($tag==2){
+		$route=route('int.m.indikator.store');;
+		$pre_ind=Hp::pre_ind($tag);
+		
+
+	}
+	else if($tag==3){
+		$route=route('int.m.indikator.store');;
+		$pre_ind=Hp::pre_ind($tag);
+
+	}
+	else if($tag==0)
+	{
+
+		$route=route('int.m.indikator.store');
+		$pre_ind='';
+
+	}
+
+	
+	
+@endphp
+
+<div class="row">
+	<form action="{{$route}}" method="post">
 	<style type="text/css">
-		span.select2-container {
-		    z-index:10050;
-		}
+		
 	</style>
+	@if($tag==2)
+	<input type="hidden" name="id_rkp" value="{{$rkp['id']}}" >
+	@endif
 	<div class="col-md-12" style="max-height: calc(70vh); overflow-y: scroll; overflow-x: hidden;">
 		@csrf
 
 		@php
 		$domid=rand(0,1000).date('i');
 		@endphp
-			<small>
-				<b>* KODE INDIKATOR : </b>
-				<br>
-				kode digunakan sebagai id unique pada sebuah indikator.
-				<br>
-				id indikator dapat merepresentasikan kondisi yang ada 
-				<br>
-				contoh penulisan kode indikator <b>({{$meta_urusan['singkat']}}.IND.0001)</b>
-			</small>
-			<hr>
-			<div class="form-group">
-				<label>KODE * <span id="kode-check-unique-{{$domid}}-text"></span></label>
-				<div class="input-group">
-				  <span class="input-group-addon" id="basic-addon1">{{$meta_urusan['singkat']}}.IND.</span>
-				  <input type="text" class="form-control" placeholder="000" name="kode" required="" id="kode-check-unique-{{$domid}}" aria-describedby="basic-addon1">
-				</div>
-				
+			@if($tag==0)
+			<div class="row">
+				<div class="col-md-6 form-group">
+				<label>SUMBER INDIKATOR</label>
+				<select class="form-control init-use-select2" name="tag">
+					<option value="1">RPJMN</option>
+					<option value="2">RKP</option>
+					<option value="3">KL</option>
+				</select>
 			</div>
+			</div>
+			@else
+				<input type="hidden" name="tag" value="{{$tag}}">
+				@if(in_array($tag, [3,2]))
+					<input type="hidden" name="for_api" value="ya">
+				@endif
+				@if($tag==3)
+					<input type="hidden" name="id_sub_urusan" value="{{$only_sub_urusan}}">
+				@endif
+
+			@endif
+			@if(in_array($tag,[0,1,2]))
 			<div class="form-group">
 					<label>SUB URUSAN *</label>
 					<select class="form-control init-use-select2" name="id_sub_urusan" required="" >
@@ -40,6 +75,8 @@
 					</select>
 				</div>
 
+			@endif
+
 		<div class="form-group">
 			<label>URAIAN INDIKATOR {{Hp::fokus_tahun()}} *</label>
 			<textarea class="form-control" name="uraian" style="min-height: 70px;" required=""></textarea>
@@ -48,7 +85,7 @@
 		<div class="box box-solid ">
 			<div class="box-header with-border">
 				<label>TIPE DATA *</label>
-				<select class="form-control" name="tipe_value" required="" id="check-tipe-data-{{$domid}}" target='#input-nilai-{{$domid}}'>
+				<select class="form-control init-use-select2" name="tipe_value" required="" id="check-tipe-data-{{$domid}}" target='#input-nilai-{{$domid}}'>
 					<option value="1">NUMERIC</option>
 					<option value="0">TEXT / STRING</option>
 					<option value="2">NUMERIC - RENTANG NILAI</option>
@@ -179,13 +216,17 @@
 					<p class="text-center text-upppercase"><b>INFORMASI TAMBHAAN </b></p>
 					
 				<hr>
+				<div class="form-group">
+					<label>Lokus</label>
+					<textarea class="form-control" name="lokus"></textarea>
+				</div>
 				<small>
 						* Informasi ini bersifat tidak wajib pada form ini
 						<br>
 				</small>
 				
 				<small>
-					* keterangan indikator dapet berisi cara perhitungan dan catatan catatan lain-lain
+					* keterangan indikator dapet berisi cara perhitungan dan catatan-catatan lain-lain
 				</small>
 				<div class="form-group">
 					<label>KETERANGAN</label>
@@ -199,8 +240,14 @@
 	</div>
 	<hr>
 	<hr>
+	<div class="col-md-12">
+	<button  class="btn btn-success btn-xs" style="margin-top: 15px;">TAMBAH</button>
+		
+	</div>
 
-	<button class="btn btn-success btn-xs" style="margin-top: 15px;">TAMBAH</button>
+	
+
+
 
 	<script type="text/javascript">
 		$('.bt-toggle-init').bootstrapToggle();
@@ -315,5 +362,5 @@
 
 	</script>
 
-
 </form>
+</div>

@@ -24,7 +24,7 @@
 <hr>
 
 <div class="table-responsive">
-	<table class="table-bordered table bg-white">
+	<table class="table-bordered table bg-white table-hover">
 	<thead class="bg-navy">
 		<tr>
 			<th rowspan="2"></th>
@@ -59,11 +59,10 @@
 						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PP" class="fa fa-plus"></i></button>
 						<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-pen"></i></button>
 						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-trash"></i></button>
-						<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$pn['id']}},{{$pn['jenis']}})" >
-						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
+					
 					</div>
 				</td>
-				<td colspan="11">{{$pn['uraian']}}</td>
+				<td colspan="11"><b>PN: </b>{{$pn['uraian']}}</td>
 
 			</tr>
 			@foreach($pn['_tag_indikator'] as $tagpni)
@@ -100,23 +99,39 @@
 						{!!$pni['lokus']!!}
 					</td>
 					<td>
-						@php
-							$pelaksana=[];
-							preg_match_all("/@\w+/",$pni['pelaksana'],$pelaksana);
+							@php
+								$i=$pni;
+								$i['pelaksana_nas']=json_decode($pni['pelaksana_nas']);
+								$i['pelaksana_p']=json_decode($pni['pelaksana_p']);
+								$i['pelaksana_k']=json_decode($pni['pelaksana_k']);
+							@endphp
+							<b>PUSAT</b>
+							<ul>
+							@foreach($i['pelaksana_nas'] as $p)
+								<li>{{$p}}</li>
+							@endforeach
+							</ul>
+							<b>PROVINSI</b>
+							<ul>
+							@foreach($i['pelaksana_p'] as $p)
+								<li>{{$p}}</li>
+							@endforeach
+							</ul>
+							<b>KOTA/KAB</b>
+							<ul>
+							@foreach($i['pelaksana_k'] as $p)
+								<li>{{$p}}</li>
+							@endforeach
+							</ul>
 						
-						@endphp
-						@foreach($pelaksana[0] as $idexmacth=> $p)
-							<p><b>{{$idexmacth+1}}.</b>{{str_replace(['_','@'],' ',$p)}}</p>
-
-						@endforeach
-					</td>
+						</td>
 
 			</tr>
 
 			@endforeach
 			@foreach($pn['_child_pp'] as $pp)
 				<tr class="pn-{{$pn['id']}}">
-					<td colspan="2">
+					<td >
 							<div class=" pull-right">
 							<button   collapse-btn-nested="false" data-target=".pp-{{$pp['id']}}"  class="btn btn-info btn-xs ">
 									<i data-toggle="tooltip" data-placement="top" title="DETAIL PP" class="fa fa-eye"></i>
@@ -129,7 +144,8 @@
 						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 						</div>
 					</td>
-					<td colspan="10">{{$pp['uraian']}}</td>
+					<td></td>
+					<td colspan="10"><b>PP: </b>{{$pp['uraian']}}</td>
 
 				</tr>
 				@foreach($pp['_tag_indikator'] as $tagppi)
@@ -168,14 +184,37 @@
 						</td>
 						<td>
 							@php
-								$pelaksana=[];
-								preg_match_all("/@\w+/",$ppi['pelaksana'],$pelaksana);
-							
+								$i=$ppi;
+								$i['pelaksana_nas']=json_decode($ppi['pelaksana_nas']);
+								$i['pelaksana_p']=json_decode($ppi['pelaksana_p']);
+								$i['pelaksana_k']=json_decode($ppi['pelaksana_k']);
 							@endphp
-							@foreach($pelaksana[0] as $idexmacth=> $p)
-								<p><b>{{$idexmacth+1}}.</b>{{str_replace(['_','@'],' ',$p)}}</p>
+							@if($i['kw_nas'])
+									<b>PUSAT</b>
+									<ul>
+									@foreach($i['pelaksana_nas'] as $p)
+										<li>{{$p}}</li>
+									@endforeach
+									</ul>
+									@endif
+									@if($i['kw_p'])
 
-							@endforeach
+									<b>PROVINSI</b>
+									<ul>
+									@foreach($i['pelaksana_p'] as $p)
+										<li>{{$p}}</li>
+									@endforeach
+									</ul>
+									@endif
+									@if($i['kw_k'])
+
+									<b>KOTA/KAB</b>
+									<ul>
+									@foreach($i['pelaksana_k'] as $p)
+										<li>{{$p}}</li>
+									@endforeach
+									</ul>
+									@endif
 						</td>
 
 					</tr>
@@ -184,7 +223,7 @@
 
 				@foreach($pp['_child_kp'] as $kp)
 					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}}">
-						<td colspan="3">
+						<td colspan="">
 								<div class=" pull-right">
 								<button   collapse-btn-nested="false" data-target=".kp-{{$kp['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL KP" class="fa fa-eye"></i>
@@ -197,7 +236,9 @@
 								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 							</div>
 						</td>
-						<td colspan="9">{{$kp['uraian']}}</td>
+						<td colspan="2"></td>
+						
+						<td colspan="9"><b>KP: </b>{{$kp['uraian']}}</td>
 
 					</tr>
 					@foreach($kp['_tag_indikator'] as $tagkpi)
@@ -235,14 +276,39 @@
 						</td>
 						<td>
 							@php
-								$pelaksana=[];
-								preg_match_all("/@\w+/",$kpi['pelaksana'],$pelaksana);
-							
+								$i=$kpi;
+								$i['pelaksana_nas']=json_decode($kpi['pelaksana_nas']);
+								$i['pelaksana_p']=json_decode($kpi['pelaksana_p']);
+								$i['pelaksana_k']=json_decode($kpi['pelaksana_k']);
 							@endphp
-							@foreach($pelaksana[0] as $idexmacth=> $p)
-								<p><b>{{$idexmacth+1}}.</b>{{str_replace(['_','@'],' ',$p)}}</p>
+							@if($i['kw_nas'])
+								<b>PUSAT</b>
+								<ul>
+								@foreach($i['pelaksana_nas'] as $p)
+									<li>{{$p}}</li>
+								@endforeach
+								</ul>
+							@endif
+							@if($i['kw_p'])
 
+							<b>PROVINSI</b>
+							<ul>
+							@foreach($i['pelaksana_p'] as $p)
+								<li>{{$p}}</li>
 							@endforeach
+							</ul>
+							@endif
+							@if($i['kw_k'])
+
+							<b>KOTA/KAB</b>
+							<ul>
+							@foreach($i['pelaksana_k'] as $p)
+								<li>{{$p}}</li>
+							@endforeach
+							</ul>
+							@endif
+									
+						
 						</td>
 
 
@@ -251,7 +317,7 @@
 					@endforeach
 					@foreach($kp['_child_propn'] as $propn)
 						<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}}">
-							<td colspan="4">
+							<td colspan="">
 												<div class=" pull-right">
 										<button   collapse-btn-nested="false" data-target=".propn-{{$propn['id']}}"  class="btn btn-info btn-xs ">
 												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROPN" class="fa fa-eye"></i>  ({{count($propn['_child_proyek'])}})
@@ -264,7 +330,10 @@
 										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 									</div>
 								</td>
-							<td colspan="8">{{$propn['uraian']}}</td>
+								<td colspan="3"></td>
+								
+
+							<td colspan="8"><b>PROPN: </b>{{$propn['uraian']}}</td>
 
 						</tr>
 
@@ -305,14 +374,30 @@
 								</td>
 								<td>
 									@php
-										$pelaksana=[];
-										preg_match_all("/@\w+/",$propni['pelaksana'],$pelaksana);
-									
+									$i=$propni;
+									$i['pelaksana_nas']=json_decode($propni['pelaksana_nas']);
+									$i['pelaksana_p']=json_decode($propni['pelaksana_p']);
+									$i['pelaksana_k']=json_decode($propni['pelaksana_k']);
 									@endphp
-									@foreach($pelaksana[0] as $idexmacth=> $p)
-										<p><b>{{$idexmacth+1}}.</b>{{str_replace(['_','@'],' ',$p)}}</p>
-
+									<b>PUSAT</b>
+									<ul>
+									@foreach($i['pelaksana_nas'] as $p)
+										<li>{{$p}}</li>
 									@endforeach
+									</ul>
+									<b>PROVINSI</b>
+									<ul>
+									@foreach($i['pelaksana_p'] as $p)
+										<li>{{$p}}</li>
+									@endforeach
+									</ul>
+									<b>KOTA/KAB</b>
+									<ul>
+									@foreach($i['pelaksana_k'] as $p)
+										<li>{{$p}}</li>
+									@endforeach
+									</ul>
+								
 								</td>
 
 
@@ -323,7 +408,7 @@
 						@endforeach
 						@foreach($propn['_child_proyek'] as $proyek)
 							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}}">
-								<td colspan="5">
+								<td colspan="">
 									<div class=" pull-right">
 										<button   collapse-btn-nested="false" data-target=".proyek-{{$proyek['id']}}"  class="btn btn-info btn-xs ">
 												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROYEK" class="fa fa-eye"></i> ({{count($propn['_child_proyek'])}})
@@ -334,8 +419,10 @@
 										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 									</div>
 								</td>
+								<td colspan="4"></td>
 
-								<td>{{$proyek['uraian']}}</td>
+
+								<td><b>PROYEK: </b>{{$proyek['uraian']}}</td>
 
 							</tr>
 							@foreach($proyek['_tag_indikator'] as $tagproyeki)
@@ -374,14 +461,40 @@
 									</td>
 									<td>
 										@php
-											$pelaksana=[];
-											preg_match_all("/@\w+/",$proyeki['pelaksana'],$pelaksana);
-										
+											$i=$proyeki;
+											$i['pelaksana_nas']=json_decode($proyeki['pelaksana_nas']);
+											$i['pelaksana_p']=json_decode($proyeki['pelaksana_p']);
+											$i['pelaksana_k']=json_decode($proyeki['pelaksana_k']);
 										@endphp
-										@foreach($pelaksana[0] as $idexmacth=> $p)
-											<p><b>{{$idexmacth+1}}.</b>{{str_replace(['_','@'],' ',$p)}}</p>
-
+									
+										@if($i['kw_nas'])
+										<b>PUSAT</b>
+										<ul>
+										@foreach($i['pelaksana_nas'] as $p)
+											<li>{{$p}}</li>
 										@endforeach
+										</ul>
+										@endif
+										@if($i['kw_p'])
+
+										<b>PROVINSI</b>
+										<ul>
+										@foreach($i['pelaksana_p'] as $p)
+											<li>{{$p}}</li>
+										@endforeach
+										</ul>
+										@endif
+										@if($i['kw_k'])
+
+										<b>KOTA/KAB</b>
+										<ul>
+										@foreach($i['pelaksana_k'] as $p)
+											<li>{{$p}}</li>
+										@endforeach
+										</ul>
+										@endif
+									
+									
 									</td>
 
 
@@ -424,13 +537,15 @@
 				jenis='PROPN';
 			break;
 			case 5:
-				jenis='PTOYEK';
+				jenis='PROYEK';
 			break;
 		}
 
 		return jenis;
 	}
 	
+
+
 	function showFormDetailIndikator(id){
 
 		API_CON.get("{{route('int.kb5tahun.indikator.detail',['id'=>null])}}/"+id,).then(function(res){

@@ -13,7 +13,6 @@
 				<div class="btn-group">
 					<button class="btn btn-success" type="submit">SETUJU</button>
 					<button class="btn btn-danger" type="button" data-dismiss="modal">BATAL</button>
-
 				</div>
 			</div>
 

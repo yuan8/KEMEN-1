@@ -1,10 +1,11 @@
 <H5 class="text-center">KONFIRMASI PENGHAPUSAN</H5>
 <hr>
-<b>INDIKATOR {{$jenis}} :</b>
-<br>
-<p> {{$parent['uraian']}} </p>
-
-<form action="{{route('int.rekomendasi.delete_indikator',['kodepemda'=>$kodepemda,'id'=>$id_parent])}}" method="post">
+<p><b></b></p>
+<p>{!!$data['uraian']!!}</p>
+<hr>
+<small class="text-yellow"><i class="fa fa-info-circle"></i> Penghapusan akan dilakukan pada taging indikator kepada kewenangan </small>
+<hr>
+<form action="{{route('int.pelurusan.delete_indikator',['id'=>$data['id']])}}" method="post">
 	@csrf
 	@method('DELETE')
 	<div class="full-w text-center">

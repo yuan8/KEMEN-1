@@ -8,8 +8,8 @@ use App\KB5\KONDISI;
 use App\KB5\SASARAN;
 use App\RKP\RKP;
 use App\MASTER\SUBURUSAN;
+use App\MASTER\KEWENANGAN;
 use App\RKP\RKPINDIKATOR;
-
 
 
 class INDIKATOR extends Model
@@ -18,12 +18,49 @@ class INDIKATOR extends Model
 
        //
 	protected $connection = 'form';
-    protected $table='form.kb5_indikator';
+  protected $table='form.master_indikator';
 
 
 
-    protected $fillable=['kode','id','uraian','keterangan','data_dukung','kode_realistic','kw_nas','kw_p','kw_k','tipe_value','target','target_1','satuan','id_user','id_kebijakan','id_kondisi','id_sasaran','pelaksana','id_sub_urusan','data_dukung_nas','data_dukung_p','data_dukung_k'];
+  protected $fillable=[
+    'id',
+    'kode_realistic',
+    'kode',
+    'kewenangan_nas',
+    'kewenangan_p',
+    'kewenangan_k',
+    'tahun',
+    'uraian',
+    'target',
+    'target_1',
+    'tipe_value',
+    'tipe_cal',
+    'satuan',
+    'lokus',
+    'satuan_lokus',
+    'pelaksana_nas',
+    'pelaksana_p',
+    'pelaksana_k',
+    'pelaksana_k',
+    'kw_nas',
+    'kw_p',
+    'kw_k',
+    'id_sub_urusan',
+    'id_user',
+    'data_dukung_nas',
+    'data_dukung_p',
+    'data_dukung_k',
+    'keterangan',
+    'id_kebijakan',
+    'id_kondisi',
+    'id_sasaran',
+    'id_kewenangan',
+    'tag'
+  ];
 
+      public function _kewenangan(){
+        return $this->belongsTo(KEWENANGAN::class,'id_kewenangan');
+    }
 
      public function _sub_urusan(){
     	return $this->belongsTo(SUBURUSAN::class,'id_sub_urusan');
@@ -43,6 +80,30 @@ class INDIKATOR extends Model
 
     public function _insert_rkp(){
       return $this->hasMany(RKPINDIKATOR::class,'id_indikator');
+    }
+
+
+    public function _sumber(){
+        switch ($this->tag) {
+            case 1:
+            $s= 'RPJMN';
+                # code...
+                break;
+             case 2:
+             $s= 'RKP';
+                # code...
+                break;
+             case 3:
+             $s= 'KL';
+                # code...
+                break;
+            default:
+                # code...
+                break;
+
+        }
+
+        return  $s;
     }
 
 

@@ -1,12 +1,30 @@
-<form action="{{route('int.pelurusan.update',['id'=>$data['id']])}}" method="post">
+
+@php
+	if($tag==1){
+		$route=route('int.kb5tahun.indikator.update',['id'=>$data['id']]);
+	}
+	else if($tag==2){
+		$route=route('int.kb5tahun.indikator.store',['id'=>$ak_kondisi['id']]);
+	}
+	else
+	{
+
+	}
+
+	
+	
+@endphp
+
+<form action="{{$route}}" method="post">
 	<style type="text/css">
 		span.select2-container {
 		    z-index:10050;
 		}
 	</style>
+
 	<div class="col-md-12" style="max-height: calc(70vh); overflow-y: scroll; overflow-x: hidden;">
 		@csrf
-
+		@method('PUT')
 		@php
 		$domid=rand(0,1000).date('i');
 		@endphp
@@ -191,6 +209,10 @@
 					<p class="text-center text-upppercase"><b>INFORMASI TAMBHAAN </b></p>
 					
 				<hr>
+				<div class="form-group">
+					<label>Lokus</label>
+					<textarea class="form-control" name="lokus"></textarea>
+				</div>
 				<small>
 						* Informasi ini bersifat tidak wajib pada form ini
 						<br>

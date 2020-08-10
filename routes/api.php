@@ -27,6 +27,10 @@ Route::post('check_login_barcode','LoginBarcodeCtrl@login');
 
 Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 
+		Route::prefix('perurusan')->group(function(){
+			Route::post('master-indikator','INT\INDIKATOR@list_indikator')->name('api.get.master_indikator');
+		});
+
 		Route::prefix('kebijakan-pusat/')->group(function(){
 			Route::get('/get-uu', 'FORM\KebijakanCtrl@api_get_uu')->name('api.kebijakan.pusat.get.uu');
 			Route::post('/store-uu/{id}', 'FORM\KebijakanCtrl@api_store_uu')->name('api.kebijakan.pusat.store.uu');
