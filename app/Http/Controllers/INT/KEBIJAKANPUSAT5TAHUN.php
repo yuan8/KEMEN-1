@@ -620,14 +620,13 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
     public function indikator_detail($id){
 		$indikator=INDIKATOR::where('id',$id)->orWhere('kode_realistic',$id)->orWhere('kode',$id)
-		->with(
+		->with([
 			'_sub_urusan._urusan',
 			'_sasaran',
 			'_kebijakan._isu',
 			'_kondisi._urusan',
             '_kewenangan',
-
-		)->first();
+		])->first();
         $indikator['_sumber']=$indikator->_sumber();
 
 		if($indikator){
