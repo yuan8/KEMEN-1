@@ -64,6 +64,7 @@ class KebijakanCtrl extends Controller
             $id=DB::table('ikb_mandat')->insertGetId($re);
             if($id){
                 Alert::success('','Mandat Ditambahkan');
+
                 return back();
 
             }else{
@@ -175,7 +176,6 @@ class KebijakanCtrl extends Controller
             ->whereNotIn('uraian',$uu)
             ->where('tahun',session('fokus_tahun'))
             ->delete();
-
             $a=DB::table('ikb_pp')->insertOrIgnore($data);
         }
 
