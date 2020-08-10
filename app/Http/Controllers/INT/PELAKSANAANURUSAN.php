@@ -10,76 +10,182 @@ use Hp;
 use DB;
 use Carbon\Carbon;
 use Alert;
+use App\MASTER\KEWENANGAN;
+use App\MASTER\INDIKATOR;
 class PELAKSANAANURUSAN extends Controller
 {
     //
 
+
+    public function form_update($id){
+        $meta_urusan=Hp::fokus_urusan();
+        $tahun=Hp::fokus_tahun();
+        $data=KEWENANGAN::with('_sub_urusan')->where('id',$id)->first();
+
+        if($data){
+
+            $sub_urusan=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get();
+        
+            return view('integrasi.pelaksanaan.update')->with(
+                [
+                    'data'=>$data,
+                    'sub_urusan'=>$sub_urusan
+                ]
+            );
+
+        }
+
+
+
+    }
+
+     public function form_delete_indikator($id){
+        $meta_urusan=Hp::fokus_urusan();
+        $tahun=Hp::fokus_tahun();
+        $data=INDIKATOR::where('id',$id)->first();
+        if($data){
+            return view('integrasi.pelaksanaan.delete_indikator')->with(
+                [
+                    'data'=>$data,
+                ]
+            );
+
+        }
+
+    }
+
+
+     public function delete_indikator($id){
+        $meta_urusan=Hp::fokus_urusan();
+        $tahun=Hp::fokus_tahun();
+        $data=INDIKATOR::where('id',$id)->first();
+        if($data){
+            $data->id_kewenangan=null;
+            $data->update();
+
+            Alert::success('Success','Berhasil Mengapus Indikator dari Kewenangan');
+            return back();
+
+        }
+
+    }
+
+
+    public function form_delete($id){
+        $meta_urusan=Hp::fokus_urusan();
+        $tahun=Hp::fokus_tahun();
+        $data=KEWENANGAN::with('_sub_urusan')->where('id',$id)->first();
+
+        if($data){
+            $data['uraian']='';
+            return view('integrasi.pelaksanaan.delete')->with(
+                [
+                    'data'=>$data,
+                ]
+            );
+
+        }
+
+
+
+    }
+
+    public function create_kewenangan(){
+        $meta_urusan=Hp::fokus_urusan();
+        $tahun=Hp::fokus_tahun();
+        $sub_urusan=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get();
+    
+        return view('integrasi.pelaksanaan.create')->with([
+            'sub_urusan'=>$sub_urusan
+        ]);
+    }
+
+
+    public function store_kewenangan(Request $request){
+         $meta_urusan=Hp::fokus_urusan();
+        $tahun=Hp::fokus_tahun();
+        $data=[];
+
+        $data['id_sub_urusan']=$request->id_sub_urusan;
+        $data['kewenangan_nas']=$request->kw_nas;
+        $data['kewenangan_p']=$request->kw_p;
+        $data['kewenangan_k']=$request->kw_k;
+        $data['tahun']=$tahun;
+        $data['id_user']=Auth::id();
+        $data['created_at']=Carbon::now();
+        $data['updated_at']=Carbon::now();
+
+        $data=KEWENANGAN::create($data);
+
+        if($data){
+            Alert::success('Success','Berhasil Menambahkan kewenangan');
+            return back();
+        }
+    }
+
     public function index(){
     	$meta_urusan=Hp::fokus_urusan();
     	$tahun=Hp::fokus_tahun();
-    	$id_sub_urusan=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get()->pluck('id');
+        $sub_urusan=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get()->pluck('id');
 
-    	$data=DB::connection('form')->table('form.master_indikator as i')
-    	->leftJoin('public.master_sub_urusan as su','su.id','=','i.id_sub_urusan')
-    	->whereIn('i.id_sub_urusan',$id_sub_urusan)
-    	->where('tahun',$tahun)
-    	->select(DB::raw("i.*,su.nama as nama_sub_urusan"))
-    	->orderBy('i.id_sub_urusan','asc')
-    	->get()->toArray();
-
-
+        $data=KEWENANGAN::whereIn('id_sub_urusan',$sub_urusan)->with('_sub_urusan','_indikator')->orderBy('id_sub_urusan','ASC')->get();
     	return view('integrasi.pelaksanaan.index')->with('data',$data);
     }
 
 
-    public function create(){
+    public function create($id){
         $meta_urusan=Hp::fokus_urusan();
         $tahun=Hp::fokus_tahun();
         $satuan=DB::table('master_satuan')->get()->pluck('kode');
         $sub_urusan=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get();
 
-        return view('integrasi.indikator.create')->with(['sub_urusan'=>($sub_urusan),'meta_urusan'=>$meta_urusan,'satuan'=>$satuan])->render();
+        $data=KEWENANGAN::find($id);
+        if($data){
+            return view('integrasi.kb1tahun.pn.indikator')
+            ->with([
+                'sub_urusan'=>($sub_urusan),
+                'meta_urusan'=>$meta_urusan,
+                'satuan'=>$satuan,
+                'tag'=>3,
+                'jenis'=>'KEWENANGAN',
+                'rkp'=>['uraian'=>'PADA SUB URUSAN <span class="text-success">'.$data->_sub_urusan->nama.'</span>'],
+                'route_add'=>route('int.pelurusan.store_indikator',['id'=>$data->id]),
+                'data'=>[],
+                'only_sub_urusan'=>$data->id_sub_urusan,
+                'for_kewenangan'=>true
+            ])->render();
+        }
+        
     }
 
-    public function store_indikator(Request $request){
+    public function store_indikator($id,Request $request){
             $meta_urusan=Hp::fokus_urusan();
             $tahun=Hp::fokus_tahun();
             $data=[];
-            $data['uraian']=$request->uraian;
-            $data['kode_realistic']=$request->kode;
-            $data['kode']=$meta_urusan['singkat'].'.IND.'.$request->kode;
-            $data['tahun']=$tahun;
-            $data['tipe_value']=$request->tipe_value;
-            $data['target']=$request->target;
-            $data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
-            $data['satuan']=$request->satuan;
-            $data['lokus']=$request->lokus;
-            $data['kw_nas']=$request->kw_nas=='on'?true:false;
-            $data['kw_p']=$request->kw_p=='on'?true:false;
-            $data['kw_k']=$request->kw_k=='on'?true:false;
-            $data['id_sub_urusan']=$request->id_sub_urusan;
-            $data['data_dukung_nas']=$data['kw_nas']?($request->data_dukung_nas):null;
-            $data['data_dukung_p']=$data['kw_p']?($request->data_dukung_p):null;
-            $data['data_dukung_k']=$data['kw_k']?($request->data_dukung_k):null;
-            $data['keterangan']=$request->keterangan;
+            $k=KEWENANGAN::find($id);
 
-            $data['pelaksana_nas']=$data['kw_nas']?json_encode($request->pelaksana_nas?$request->pelaksana_nas:[]):'[]';
-            $data['pelaksana_p']=$data['kw_p']?json_encode($request->pelaksana_p?$request->pelaksana_p:[]):'[]';
-            $data['pelaksana_k']=$data['kw_k']?json_encode($request->pelaksana_k?$request->pelaksana_p:[]):'[]';
+            if($k){
+                $indikator=$request->id_indikator?$request->id_indikator:[];
+                foreach ($indikator as $key => $i) {
+                    $ind=INDIKATOR::where('id',$i)->first();
+                    if($ind){
+                        if($ind->id_kewenangan==null){
+                            $ind->id_kewenangan=$k->id;
+                            $ind->update();
+                        }else{
 
-            $data['kewenangan_nas']=$data['kw_nas']?($request->kewenangan_nas):null;
-            $data['kewenangan_p']=$data['kw_p']?($request->kewenangan_p):null;
-            $data['kewenangan_k']=$data['kw_k']?($request->kewenangan_k):null;
-            $data['id_user']=Auth::id();
-            $data['created_at']=Carbon::now();
-            $data['updated_at']=Carbon::now();
+                        }
+                    }
 
+                }
 
-            $data=DB::connection('form')->table('form.master_indikator')->insert($data);
-            if($data){
                 Alert::success('Success','Berhasil Menambahkan indikator');
+                return back();
+
             }
-            return back();
+
+
+           
 
 
     }
@@ -116,60 +222,17 @@ class PELAKSANAANURUSAN extends Controller
     }
 
     public function update($id,Request $request){
+            $k=KEWENANGAN::find($id);
 
-            $meta_urusan=Hp::fokus_urusan();
-            $tahun=Hp::fokus_tahun();
-
-
-
-            $id_sub_urusan=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get()->pluck('id');
-
-            $in=(array)DB::connection('form')->table('form.master_indikator as i')
-            ->leftJoin('public.master_sub_urusan as su','su.id','=','i.id_sub_urusan')
-            ->whereIn('i.id_sub_urusan',$id_sub_urusan)
-            ->where('tahun',$tahun)
-            ->select(DB::raw("i.*,su.nama as nama_sub_urusan"))
-            ->orderBy('i.id_sub_urusan','asc')
-            ->where('i.id',$id)
-            ->whereIn('id_sub_urusan',$id_sub_urusan)
-            ->first();
-            
-           
-
-            if($in){
-
-            $data=[];
-            $data['uraian']=$request->uraian;
-            $data['kode_realistic']=$request->kode;
-            $data['kode']=$meta_urusan['singkat'].'.IND.'.$request->kode;
-            $data['tahun']=$tahun;
-            $data['tipe_value']=$request->tipe_value;
-            $data['target']=$request->target;
-            $data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
-            $data['satuan']=$request->satuan;
-            $data['lokus']=$request->lokus;
-            $data['kw_nas']=$request->kw_nas=='on'?true:false;
-            $data['kw_p']=$request->kw_p=='on'?true:false;
-            $data['kw_k']=$request->kw_k=='on'?true:false;
-            $data['id_sub_urusan']=$request->id_sub_urusan;
-            $data['data_dukung_nas']=$data['kw_nas']?($request->data_dukung_nas):null;
-            $data['data_dukung_p']=$data['kw_p']?($request->data_dukung_p):null;
-            $data['data_dukung_k']=$data['kw_k']?($request->data_dukung_k):null;
-            $data['keterangan']=$request->keterangan;
-            $data['pelaksana_nas']=$data['kw_nas']?json_encode($request->pelaksana_nas?$request->pelaksana_nas:[]):'[]';
-            $data['pelaksana_p']=$data['kw_p']?json_encode($request->pelaksana_p?$request->pelaksana_p:[]):'[]';
-            $data['pelaksana_k']=$data['kw_k']?json_encode($request->pelaksana_k?$request->pelaksana_p:[]):'[]';
-            $data['kewenangan_nas']=$data['kw_nas']?($request->kewenangan_nas):null;
-            $data['kewenangan_p']=$data['kw_p']?($request->kewenangan_p):null;
-            $data['kewenangan_k']=$data['kw_k']?($request->kewenangan_k):null;
-                $data=DB::connection('form')->table('form.master_indikator')
-                ->where('id',$id)->update($data);
-
-                Alert::success('Success','Berhasil Mengupdate indikator');
-
+            if($k){
+                $k->kewenangan_nas=$request->kewenangan_nas;
+                $k->kewenangan_p=$request->kewenangan_p;
+                $k->kewenangan_k=$request->kewenangan_k;
+                $k->update();
+                Alert::success('Success','Berhasil Mengupdate kewenangan');
+                return back();
             }
 
-            return back();
 
 
 
@@ -203,35 +266,18 @@ class PELAKSANAANURUSAN extends Controller
 
 
     public function delete($id){
-
-         $meta_urusan=Hp::fokus_urusan();
+            $meta_urusan=Hp::fokus_urusan();
             $tahun=Hp::fokus_tahun();
 
+            $data=KEWENANGAN::where('id',$id)->delete();
 
-
-            $id_sub_urusan=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get()->pluck('id');
-
-            $in=(array)DB::connection('form')->table('form.master_indikator as i')
-            ->leftJoin('public.master_sub_urusan as su','su.id','=','i.id_sub_urusan')
-            ->whereIn('i.id_sub_urusan',$id_sub_urusan)
-            ->where('tahun',$tahun)
-            ->select(DB::raw("i.*,su.nama as nama_sub_urusan"))
-            ->orderBy('i.id_sub_urusan','asc')
-            ->where('i.id',$id)
-            ->whereIn('id_sub_urusan',$id_sub_urusan)
-            ->first();
-
-
-            if($in){
-                $in=DB::connection('form')->table('form.master_indikator as i')->where('id',$id)->delete();
-
-                if($in){
-                    Alert::success('Success','Berhasil Melakukan Pengahapusan Indikator');
-                }
+            if($data){
+                Alert::success('Success','Berhasil Menghapus Kewenangan');
+                return back();
             }
 
 
-            return back();
+         
 
     }
 

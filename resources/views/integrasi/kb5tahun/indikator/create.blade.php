@@ -130,8 +130,8 @@
 						</div>
 					</div>
 
-						<hr>
-					<p class="text-center text-upppercase"><b>INFORMASI TAMBHAAN </b></p>
+					<hr>
+				<p class="text-center text-upppercase"><b>INFORMASI TAMBHAAN </b></p>
 					
 				<hr>
 				<small>

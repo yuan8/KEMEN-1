@@ -21,11 +21,6 @@ class IntegrasiKabKotaCtrl extends Controller
 		->whereIn('jenis',['bidang_urusan','program','kegiatan','sub_kegiatan'])
 		->get();
 
-		
-
-		dd($data);
-
-	
 	}
 
     public function kota(){

@@ -8,14 +8,82 @@ use Hp;
 use DB;
 use Alert;
 use Auth;
-use App\RKP\RKP;
 use Validator;
 use App\KB5\INDIKATOR;
 use App\RKP\RKPINDIKATOR;
 use Carbon\Carbon;
+use App\MASTER\SUBURUSAN;
+use App\RKP\RKP;
 class KEBIJAKANPUSAT1TAHUN extends Controller
 {
     //
+
+    public function store_indikator_rkp(Request $request){
+        $rkp=RKP::find($request->id_rkp);
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+
+        if($rkp){
+            $data=[];
+            $data['tag']=2;
+            $data['uraian']=$request->uraian;
+            $data['kode_realistic']=$request->kode;
+            $data['kode']=$request->pre_ind.$request->kode;
+            $data['tahun']=$tahun;
+            $data['tipe_value']=$request->tipe_value;
+            $data['target']=$request->target;
+            $data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
+            $data['satuan']=$request->satuan;
+            $data['lokus']=$request->lokus;
+            $data['kw_nas']=$request->kw_nas=='on'?true:false;
+
+            $data['kw_p']=$request->kw_p=='on'?true:false;
+
+            $data['kw_k']=$request->kw_k=='on'?true:false;
+            $data['id_sub_urusan']=$request->id_sub_urusan;
+            $data['data_dukung_nas']=$data['kw_nas']?($request->data_dukung_nas):null;
+            $data['data_dukung_p']=$data['kw_p']?($request->data_dukung_p):null;
+            $data['data_dukung_k']=$data['kw_k']?($request->data_dukung_k):null;
+            $data['keterangan']=$request->keterangan;
+            $data['pelaksana_nas']=$data['kw_nas']?json_encode($request->pelaksana_nas?$request->pelaksana_nas:[]):'[]';
+            $data['pelaksana_p']=$data['kw_p']?json_encode($request->pelaksana_p?$request->pelaksana_p:[]):'[]';
+            $data['pelaksana_k']=$data['kw_k']?json_encode($request->pelaksana_k?$request->pelaksana_p:[]):'[]';
+            $data['kewenangan_nas']=$data['kw_nas']?($request->kewenangan_nas):null;
+            $data['kewenangan_p']=$data['kw_p']?($request->kewenangan_p):null;
+            $data['kewenangan_k']=$data['kw_k']?($request->kewenangan_k):null;
+            $data['id_user']=Auth::id();
+            $data['created_at']=Carbon::now();
+            $data['updated_at']=Carbon::now();
+
+            $ind=INDIKATOR::create($data);
+            $ind->kode_realistic=$ind->id;
+            $ind->kode=Hp::pre_ind($ind->tag).$ind->id;
+            $ind->update();
+
+
+            if($ind){
+
+                $ind=INDIKATOR::where('id',$ind->id)->with('_sub_urusan')->first();
+                $ind['_sumber']=$ind->_sumber();
+                 Hp::satuanCreateOrignore($data['satuan']);
+
+                return array(
+                    'kode'=>200,
+                    'data'=>$ind,
+                    'message'=>'Indikator Berhasil di Tambahkan'
+                );
+            }
+
+        }else{
+            return array(
+                'kode'=>500,
+                'message'=>'data tidak ditemukan'
+            );
+        }
+
+    }
+
+ 
 
     static function indikator_form_delete($id){
 
@@ -73,7 +141,6 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     public function index(){
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
-
     	$data=RKP::where(['jenis'=>1,'tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])->get();
     	return view('integrasi.kb1tahun.index')->with('data',$data);
     }
@@ -179,8 +246,26 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
         $jenis=static::namaRKP($data['jenis']);
 
     	if($data){
-    		$indikator=INDIKATOR::where('tahun',$tahun)->whereIn('id_sub_urusan',$id_sub)->get();
-    		return view('integrasi.kb1tahun.pn.indikator')->with(['data'=>$indikator,'rkp'=>$data,'jenis'=>$jenis])->render();
+    		$indikator=INDIKATOR::where('tahun',$tahun)->whereIn('id_sub_urusan',$id_sub)->with('_sub_urusan')->get();
+
+            foreach ($indikator as $key => $i) {
+                $indikator[$key]['_sumber']=$i->_sumber();
+            }
+
+            $satuan=DB::table('master_satuan')->get()->pluck('kode');
+            $sub_urusan=SUBURUSAN::where('id_urusan',$meta_urusan['id_urusan'])->get()->toArray();
+    		return view('integrasi.kb1tahun.pn.indikator')
+            ->with([
+                'data'=>$indikator,
+                'rkp'=>$data,
+                'jenis'=>$jenis,
+                'satuan'=>$satuan,
+                'sub_urusan'=>$sub_urusan,
+                'meta_urusan'=>$meta_urusan,
+                'tag'=>2,
+                'for_sasaran'=>true
+            ])->render();
+
 	   }else{
 	   		return 'data tidak tersedia';
 	   }

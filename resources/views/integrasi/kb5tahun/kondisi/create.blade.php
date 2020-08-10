@@ -4,7 +4,7 @@
 	@php
 	$domid=rand(0,1000).date('i');
 	@endphp
-			<small>
+	{{-- 		<small>
 				<b>* KODE DATA : </b>
 				<br>
 				kode digunakan untuk merefrensikan kondisi pada tahun sebelumnya dan tahun sesudahnya.
@@ -21,7 +21,7 @@
 		  <input type="text" class="form-control" placeholder="000" name="kode" required="" id="kode-check-unique-{{$domid}}" aria-describedby="basic-addon1">
 		</div>
 		</div>
-	</div>
+	</div> --}}
 	<div class="form-group">
 		<label>URAIAN KONDISI {{Hp::fokus_tahun()}}</label>
 		<textarea class="form-control" name="uraian" style="min-height: 70px;" required=""></textarea>

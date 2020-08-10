@@ -10,7 +10,8 @@
     	<div class="col-md-4">
     		<br>
     		<div class="btn-group pull-right">
-    			<button class="full-w btn btn-success btn-xs" onclick="showFromCreateIndikator()">TAMBAH INDIKATOR</button>
+    			<button class="full-w btn btn-xs btn-success" onclick="showFromCreateKewenangan()">TAMBAH KEWENANGAN</button>
+    			{{-- <button class="full-w btn btn-success btn-xs" onclick="showFromCreateIndikator()">TAMBAH INDIKATOR</button> --}}
     		</div>
     	</div>
     	
@@ -20,59 +21,89 @@
 
 @section('content')
 	
-	<table class="table bg-white table-bordered" id="data_pelaksanaan_table">
+	<table class="table bg-white table-bordered table-hover" id="data_pelaksanaan_table">
 		<thead class="bg-navy">
 			<tr>
-				<th rowspan="2">SUB URUSAN</th>
-				<th rowspan="2" colspan="2">KODE</th>
-				<th rowspan="2" >INDIKATOR</th>
-				<th colspan="3"></th>
+				<th rowspan="2" >ACTION</th>
+				<th rowspan="2" >SUB URUSAN</th>
+				<th rowspan="2">KEWENANGAN PUSAT</th>
+				<th rowspan="2">KEWENANGAN PROVINSI</th>
+				<th rowspan="2">KEWENANGAN KOTA / KAB</th>
+				<th colspan="5">INDIKATOR</th>
+			</tr>
+			<tr>
+				<th >JENIS</th>
+				<th >KODE</th>
+				<th >INDIKATOR</th>
+				<th >TARGET</th>
+				<th >SATUAN</th>
+
 			</tr>
 			
 		</thead>
 		<tbody>
-			@foreach($data as $i)
-			@php $i=(array)$i; @endphp
-				
-				<tr>
+			@foreach($data as $k)
+			<tr>
+				<td>
+					<div class=" pull-right">
+						<button   collapse-btn-nested="false" data-target=".k-{{$k['id']}}"  class="btn btn-info btn-xs ">
+								<i data-toggle="tooltip" data-placement="top" title="DETAIL INDIKATOR KEWENANGAN" class="fa fa-eye"></i>
+							 ({{count($k['_indikator'])}})</button>
+
 					
-					<td rowspan="5">{{$i['nama_sub_urusan']}}</td>
-					<td rowspan="5">
-						<div class="btn-group pull-right">
-							<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$i['id']}})"><i class="fa fa-eye"></i></button>
-							<button class="btn btn-warning btn-xs" onclick="showFormUpdateIndikator({{$i['id']}})"><i class="fa fa-pen"></i></button>
-							<button class="btn btn-danger btn-xs" onclick="showFormDeleteIndikator({{$i['id']}})"><i class="fa fa-trash"></i></button>
+						<button class="btn btn-warning  btn-xs" onclick="showFormUpdateKw({{$k['id']}})" ><i class="fa fa-pen"></i></button>
+
+						<button class="btn btn-danger  btn-xs" onclick="showFormDeleteKw({{$k['id']}})"><i class="fa fa-trash"></i></button>
+
+						<button class="btn btn-success  btn-xs" onclick="showFormCreateKewenanganIndikator({{$k['id']}})" >
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
+
+
+					</div>
+				</td>
+				<td>{{$k['_sub_urusan']['nama']}}</td>
+				<td>{!!nl2br($k['kewenangan_nas'])!!}</td>
+				<td>{!!nl2br($k['kewenangan_p'])!!}</td>
+				<td colspan="6">{!!nl2br($k['kewenangan_k'])!!}</td>
+
+
+
+
+			</tr>
+
+			@foreach($k['_indikator'] as $i)
+				<tr class="k-{{$k['id']}}">
+					<td colspan="5">
+						<div class="pull-right">
+							<button class="btn btn-danger  btn-xs" onclick="showFormDeleteIndikatorKW({{$i['id']}})"><i class="fa fa-trash"></i></button>
 						</div>
 					</td>
-					<td rowspan="5"><b>{{$i['kode']}}</b></td>
-					<td rowspan="5">{{$i['uraian']}}</td>
-
-				</tr>
-				<tr class="bg-navy"> 
-					<th>KEWENANGAN PUSAT</th>
-					<th>KEWENANGAN PROVINSI</th>
-					<th>KEWENANGAN KOTA/KAB</th>
-				</tr>
-				<tr>
+					<td>{{$i->_sumber()}}</td>
 					
+					<td>{{$i->kode}}</td>
+					<td>{{$i->uraian}}</td>
+					<td>
+						@if(($i['tipe_value']==1)OR($i['tipe_value']==2))
+							{{number_format($i['target'],2)}}
+						@else
+							{{$i['target']}}
 
-					
-					<td class="{{$i['kw_nas']?'':'bg-danger'}}" >{!!$i['kewenangan_nas']!!}</td>
-					<td class="{{$i['kw_p']?'':'bg-danger'}}" >{!!$i['kewenangan_p']!!}</td>
-					<td class="{{$i['kw_k']?'':'bg-danger'}}" >{!!$i['kewenangan_k']!!}</td>
+						@endif
+
+						@if($i['tipe_value']==2)
+							<-> {{number_format($i['target_1'],2)}}
+
+						@endif
+						
+
+					</td>
+					<td>{{$i->satuan}}</td>
+
+
 
 				</tr>
-				
-				<tr class="bg-navy"> 
-					<th>DATA DUKUNG PUSAT</th>
-					<th>DATA DUKUNG PROVINSI</th>
-					<th>DATA DUKUNG KOTA/KAB</th>
-				</tr>
-				<tr>
-					<td class="{{$i['kw_nas']?'':'bg-danger'}}" >{!!$i['data_dukung_nas']!!}</td>
-					<td class="{{$i['kw_p']?'':'bg-danger'}}" >{!!$i['data_dukung_p']!!}</td>
-					<td class="{{$i['kw_k']?'':'bg-danger'}}" >{!!$i['data_dukung_k']!!}</td>
-				</tr>
+			@endforeach
+
 
 
 			@endforeach
@@ -90,43 +121,50 @@
 
 
 
-	function showFromCreateIndikator(){
-		API_CON.get("{{route('int.pelurusan.create',['id'=>null])}}").then(function(res){
+	function showFromCreateKewenangan(){
+		API_CON.get("{{route('int.pelurusan.create_kewenangan')}}").then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH KEWENANGAN {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+
+
+	function showFormCreateKewenanganIndikator(id){
+		API_CON.get("{{route('int.pelurusan.create',['id'=>''])}}/"+id).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH INDIKATOR {{Hp::fokus_tahun()}}');
 			$('#modal-global-lg .modal-body').html(res.data);
 			$('#modal-global-lg').modal();
 		});
 	}
 
-	function showFormDeleteIndikator(id){
-		API_CON.get("{{route('int.pelurusan.show_form_delete',['id'=>null])}}/"+id,).then(function(res){
-			$('#modal-global-lg .modal-header .modal-title').html('DELETE INDIKATOR {{Hp::fokus_tahun()}}');
+	function showFormDeleteKw(id){
+		API_CON.get("{{route('int.pelurusan.form_delete',['id'=>''])}}/"+id).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('HAPUS KEWENANGAN');
 			$('#modal-global-lg .modal-body').html(res.data);
-			$.fn.modal.Constructor.prototype.enforceFocus = function() {};
 			$('#modal-global-lg').modal();
 		});
 	}
 
-	function showFormDetailIndikator(id){
-		API_CON.get("{{route('int.kb5tahun.indikator.detail',['id'=>null])}}/"+id,).then(function(res){
-			$('#modal-global-lg .modal-header .modal-title').html('DETAIL INDIKATOR {{Hp::fokus_tahun()}}');
+	function showFormUpdateKw(id){
+		API_CON.get("{{route('int.pelurusan.form_update',['id'=>''])}}/"+id).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('HAPUS KEWENANGAN');
 			$('#modal-global-lg .modal-body').html(res.data);
-			$.fn.modal.Constructor.prototype.enforceFocus = function() {};
-
 			$('#modal-global-lg').modal();
 		});
 	}
 
-	function showFormUpdateIndikator(id){
-		API_CON.get("{{route('int.pelurusan.view',['id'=>null])}}/"+id,).then(function(res){
-			$('#modal-global-lg .modal-header .modal-title').html('UPDATE INDIKATOR {{Hp::fokus_tahun()}}');
-			$('#modal-global-lg .modal-body').html(res.data);
-			$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+	function showFormDeleteIndikatorKW(id){
 
+		API_CON.get("{{route('int.pelurusan.form_delete_indikator',['id'=>''])}}/"+id).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('HAPUS INDIKATOR');
+			$('#modal-global-lg .modal-body').html(res.data);
 			$('#modal-global-lg').modal();
 		});
 
 	}
+
+	
 
 </script>
 @stop

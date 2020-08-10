@@ -47,6 +47,29 @@ class Indikator extends Migration
                  $table->text('data_dukung_p')->nullable();
                  $table->text('data_dukung_k')->nullable();
                  $table->text('keterangan')->nullable();
+                 $table->bigInteger('id_kebijakan')->nullable();
+                 $table->bigInteger('id_kondisi')->nullable();
+                 $table->bigInteger('id_sasaran')->nullable();
+                 $table->bigInteger('id_kewenangan')->nullable();
+                 $table->integer('tag')->nullable();
+
+                $table->foreign('id_kebijakan')
+                    ->references('id')->on($schema.'kb5_arah_kebijakan')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+                $table->foreign('id_kondisi')
+                    ->references('id')->on($schema.'kb5_kondisi_saat_ini')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+                $table->foreign('id_sasaran')
+                    ->references('id')->on($schema.'kb5_sasaran')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+                 $table->foreign('id_kewenangan')
+                    ->references('id')->on($schema.'master_kewenangan')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+
                  $table->timestamps();
 
                 $table->foreign('id_sub_urusan')

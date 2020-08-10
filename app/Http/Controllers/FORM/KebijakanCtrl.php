@@ -35,6 +35,19 @@ class KebijakanCtrl extends Controller
     	return view('form.kebijakan.pusat.index')->with('kebijakan',$kebijakan);
     }
 
+
+    public function update_mandat($id_sub,$id,Request $request){
+
+        $t=DB::table('ikb_mandat')->where('id',$id)->update([
+            'uraian'=>$request->uraian,
+            'tipe'=>$request->tipe?true:false
+        ]);
+
+        Alert::success('Berhasil','Berhasil Melakukan update');
+        return back();
+
+    }
+
     public  function store_mandat($id_sub,Request $request)
     {
             $re=$request->all();
@@ -90,7 +103,7 @@ class KebijakanCtrl extends Controller
 
     public function store_uu($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'uu'=>'required|array'
+            'uu'=>'array'
         ]);
 
         if($valid->fails()){
@@ -101,7 +114,7 @@ class KebijakanCtrl extends Controller
        
         $data=[];
       
-        $uu=$request->uu;
+        $uu=$request->uu??[];
 
         foreach ($uu as $key => $value) {
             # code...
@@ -124,8 +137,17 @@ class KebijakanCtrl extends Controller
                 ->whereNotIn('uraian',$uu)
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
-            $a=DB::table('ikb_uu')->insertOrIgnore($data);
+        }else{
+            $a=DB::table('ikb_uu')
+                ->where('id_sub_urusan',$id_sub_urusan)
+                ->where('id_mandat',$id_mandat)
+                ->where('tahun',session('fokus_tahun'))
+                ->delete();
         }
+        $a=DB::table('ikb_uu')->insertOrIgnore($data);
+
+       
+
 
         Alert::success('','UU Berhasil di Tambahkan');
         return back();
@@ -136,7 +158,7 @@ class KebijakanCtrl extends Controller
 
     public function store_pp($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'pp'=>'required|array'
+            'pp'=>'array'
         ]);
 
 
@@ -175,9 +197,20 @@ class KebijakanCtrl extends Controller
             ->whereNotIn('uraian',$uu)
             ->where('tahun',session('fokus_tahun'))
             ->delete();
+        }else{
+            $a=DB::table('ikb_pp')
+                ->where('id_sub_urusan',$id_sub_urusan)
+                ->where('id_mandat',$id_mandat)
+                ->where('tahun',session('fokus_tahun'))
+                ->delete();
+        
+
+        }
 
             $a=DB::table('ikb_pp')->insertOrIgnore($data);
-        }
+        
+
+        
 
         Alert::success('','PP Berhasil di Tambahkan');
         return back();
@@ -188,7 +221,7 @@ class KebijakanCtrl extends Controller
 
     public function store_perpres($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'perpres'=>'required|array'
+            'perpres'=>'array'
         ]);
 
         if($valid->fails()){
@@ -222,8 +255,18 @@ class KebijakanCtrl extends Controller
                 ->whereNotIn('uraian',$uu)
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
-            $a=DB::table('ikb_perpres')->insertOrIgnore($data);
+         }else{
+            $a=DB::table('ikb_perpres')
+                ->where('id_sub_urusan',$id_sub_urusan)
+                ->where('id_mandat',$id_mandat)
+                ->where('tahun',session('fokus_tahun'))
+                ->delete();
+        
+
         }
+
+            $a=DB::table('ikb_perpres')->insertOrIgnore($data);
+        
 
 
         Alert::success('','Perpres Berhasil di Tambahkan');
@@ -235,7 +278,7 @@ class KebijakanCtrl extends Controller
 
     public function store_permen($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'permen'=>'required|array'
+            'permen'=>'array'
         ]);
 
         if($valid->fails()){
@@ -263,14 +306,25 @@ class KebijakanCtrl extends Controller
         }
 
        if(count($uu)>0){
+
              $a=DB::table('ikb_permen')
                 ->where('id_sub_urusan',$id_sub_urusan)
                 ->where('id_mandat',$id_mandat)
                 ->whereNotIn('uraian',$uu)
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
-            $a=DB::table('ikb_permen')->insertOrIgnore($data);
+            }else{
+                $a=DB::table('ikb_permen')
+                ->where('id_sub_urusan',$id_sub_urusan)
+                ->where('id_mandat',$id_mandat)
+                ->where('tahun',session('fokus_tahun'))
+                ->delete();
+        
+
         }
+
+            $a=DB::table('ikb_permen')->insertOrIgnore($data);
+        
 
         Alert::success('','Permen Berhasil di Tambahkan');
         return back();
@@ -532,7 +586,7 @@ class KebijakanCtrl extends Controller
 
      public function store_perda($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'perda'=>'required|array'
+            'perda'=>'array'
         ]);
 
         $uid=Auth::id();
@@ -808,7 +862,7 @@ class KebijakanCtrl extends Controller
 
     public function store_perkada($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'perkada'=>'required|array'
+            'perkada'=>'array'
         ]);
 
         $uid=Auth::id();

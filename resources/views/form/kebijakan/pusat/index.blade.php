@@ -40,8 +40,9 @@
                   <tr class="">
                    
                     <td>{{$kb->nama}}</td>
-                    <td colspan="6" class="text-center bg bg-warning">
-                      <button class="btn btn-warning btn-sm" onclick="tambah_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.store.mandat',['id'=>$kb->id])}}')"> <i class="fa fa-plus"></i> Mandat/Kegiatan </button>
+                    <td colspan="6" class="text-center bg bg-success">
+                      <button class="btn btn-success btn-sm" onclick="tambah_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.store.mandat',['id'=>$kb->id])}}')"> <i class="fa fa-plus"></i> Mandat/Kegiatan </button>
+                       
                     </td>
                   </tr> 
                   <?php 
@@ -49,25 +50,44 @@
                   ?>               
                 @endif
                  @if(($id_mandat!=$kb->id_mandat)&&(!empty($kb->id_mandat)))
+                 <script type="text/javascript">
+
+                        var kbm_{{$kb->id_mandat}}=<?php echo json_encode((array)$kb,true);?>;
+                        var m_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}};
+
+                        var kbuu_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.uu||'';
+                        var kbpermen_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.permen||'';
+                        var kbperpres_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.perpres||'';
+                        var kbpp_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.pp||'';
+                        var kbm_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.mandat||'';
+
+                        console.log(m_{{$kb->id_mandat}}.tipe);
+                      </script>
+
                   <tr class="">
                     <td colspan="1"></td>
                     <td>
-                      <button class="btn btn-danger btn-xs" onclick="delete_mandat.build('{{route('kebijakan.pusat.delete',['id'=>$kb->id_mandat])}}','{{$kb->mandat}}','{{$kb->nama}}')">
+                      
+                        <button class="btn btn-danger btn-xs" onclick="delete_mandat.build('{{route('kebijakan.pusat.delete',['id'=>$kb->id_mandat])}}',kbm_{{$kb->id_mandat}},'{{$kb->nama}}')">
+                         
                         <i class="fa fa-trash"></i> {{$kb->tipe?'Mandat':'Kegiatan'}}
                       </button>
+                      <button class="btn btn-warning btn-xs" onclick="update_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.update',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}',m_{{$kb->id_mandat}})">
+                        <i class="fa fa-pen"></i> {{$kb->tipe?'Mandat':'Kegiatan'}}
+                      </button>
                     </td>
-                    <td>{!!$kb->tipe?'<i class="fa fa-circle text-warning"></i>':'<i class="fa fa-circle text-info"></i>'!!} {{$kb->mandat}}</td>
+                    <td>{!!$kb->tipe?'<i class="fa fa-circle text-warning"></i>':'<i class="fa fa-circle text-info"></i>'!!}  {{$kb->tipe?'Mandat':'Kegiatan'}} <br> {!!nl2br($kb->mandat)!!}</td>
                     <td class="text-center">
-                      <button onclick="plus_uu.build('#plus-uu','{{$kb->mandat}}','{{route('kebijakan.pusat.store.mandat.uu',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.uu',['id_mandat'=>$kb->id_mandat])}}','{{$kb->uu}}')" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> UU</button>
+                      <button onclick="plus_uu.build('#plus-uu',kbm_{{$kb->id_mandat}},'{{route('kebijakan.pusat.store.mandat.uu',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.uu',['id_mandat'=>$kb->id_mandat])}}',kbuu_{{$kb->id_mandat}})" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> UU</button>
                     </td>
                     <td class="text-center">
-                      <button onclick="plus_pp.build('#plus-pp','{{$kb->mandat}}','{{route('kebijakan.pusat.store.mandat.pp',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.pp',['id_mandat'=>$kb->id_mandat])}}','{{$kb->pp}}')" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> PP</button>
+                      <button onclick="plus_pp.build('#plus-pp',kbm_{{$kb->id_mandat}},'{{route('kebijakan.pusat.store.mandat.pp',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.pp',['id_mandat'=>$kb->id_mandat])}}',kbpp_{{$kb->id_mandat}})" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> PP</button>
                     </td>
                      <td class="text-center">
-                      <button onclick="plus_perpres.build('#plus-perpres','{{$kb->mandat}}','{{route('kebijakan.pusat.store.mandat.perpres',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.perpres',['id_mandat'=>$kb->id_mandat])}}','{{$kb->perpres}}')" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> perpres</button>
+                      <button onclick="plus_perpres.build('#plus-perpres',kbm_{{$kb->id_mandat}},'{{route('kebijakan.pusat.store.mandat.perpres',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.perpres',['id_mandat'=>$kb->id_mandat])}}',kbperpres_{{$kb->id_mandat}})" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> PERPRES</button>
                     </td>
                      <td class="text-center">
-                      <button onclick="plus_permen.build('#plus-permen','{{$kb->mandat}}','{{route('kebijakan.pusat.store.mandat.permen',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.permen',['id_mandat'=>$kb->id_mandat])}}','{{$kb->permen}}')" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> permen</button>
+                      <button onclick="plus_permen.build('#plus-permen',kbm_{{$kb->id_mandat}},'{{route('kebijakan.pusat.store.mandat.permen',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.permen',['id_mandat'=>$kb->id_mandat])}}',kbpemen_{{$kb->id_mandat}})" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> PERMEN</button>
                     </td>
                     
                   <?php 
@@ -203,6 +223,7 @@
                     tipe:0,
                     action:'',
                     sub_urusan:'',
+                    update:null,
                     mandat:''
                   },
                   methods:{
@@ -211,11 +232,78 @@
                       this.sub_urusan=sub_urusan;
                         
                         setTimeout(function(){
-                          $('#tm[type="checkbox"]').change(function(){
+                          $('#plus-mandat #tm[type="checkbox"]').change(function(){
                             tambah_mandat.tipe=!$(this).prop('checked');
                           });
                           $('#plus-mandat').modal();
                         },300);
+
+
+                    }
+                  }
+
+          }); 
+
+            
+
+
+    </script>
+
+    <div class="modal fade" id="update-mandat">
+          <div class="modal-dialog">
+                <form  v-bind:action="action" method="post">
+                  @method('PUT')
+              <div class="modal-content">
+                      <div class="modal-header text-center">
+                        <h4 class="text-uppercase">Update <span v-if='tipe==0' >Mandat</span><span v-if='tipe==1'>Kegiatan</span> | <span>@{{sub_urusan}}</span></h4>
+                      </div>
+                      <div class="modal-body" >
+                        <div class="form-group">
+                          <label class="text-center">Uraian <span v-if='tipe==0' >Mandat</span><span v-if='tipe==1'>Kegiatan</span> </label>
+                          <textarea class="form-control" v-model="mandat" required="" name="uraian" style="min-height: 150px;"></textarea>
+                        </div>
+                        <div class="form-group">
+                          <label class="checkbox-inline" style="min-width: 100px;">
+                           <input id="tm" type="checkbox" checked data-toggle="toggle" name="tipe" data-onstyle="warning" data-on="Mandat" data-off="Kegiatan" data-offstyle="info" data-size="small" data-width="100%"> 
+                          </label>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times-circle"></i> Tutup</button>
+                        <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-pen"></i> Update</button>
+                      </div>
+                   @csrf
+
+                </div>
+               </form>
+          </div>
+        </div>
+
+
+        <script type="text/javascript">
+                
+          var update_mandat=new Vue({
+                  el:'#update-mandat',
+                  data:{
+                    tipe:0,
+                    action:'',
+                    sub_urusan:'',
+                    update:true,
+                    mandat:''
+                  },
+                  methods:{
+                    build:function(sub_urusan,link,x){
+                      this.action=link;
+                      this.sub_urusan=sub_urusan;
+                      this.tipe=x.tipe?0:1;
+                      this.mandat=x.mandat;
+
+                        setTimeout(function(){
+                          $('#update-mandat #tm[type="checkbox"]').change(function(){
+                            update_mandat.tipe=!$(this).prop('checked');
+                          });
+                          $('#update-mandat').modal();
+                        },500);
 
 
                     }
@@ -236,6 +324,7 @@
 @include('form.kebijakan.pusat.partials.vue_modal_kebijakan',['tag'=>'permen']);
 @include('form.kebijakan.pusat.partials.vue_modal_kebijakan',['tag'=>'perpres']);
 @include('form.kebijakan.pusat.partials.vue_modal_delete_mandat');
+
 
 
 
