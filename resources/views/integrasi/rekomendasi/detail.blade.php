@@ -11,13 +11,36 @@
 @stop
 
 @section('content')
-<div class="box box-solid 	">
+<div class="box box-solid {{$daerah['_rekomendasi_final']?'bg-light-blue-gradient':''}}">
 	<div class="box-body ">
+			@if($daerah['_rekomendasi_final'])
 
-		<a href="" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
+		<div class="text-white">
+			<h5><b>REKOMENDASI {{Hp::fokus_urusan()['nama']}} - STATUS FINAL</b> - <span class="text-white">{{\Carbon\Carbon::parse($daerah['_rekomendasi_final']['created_at'])->format('d F Y')}}</span></h5>
+		</div>
+		@endif
+		
+
+
+		
 
 	</div>
 </div>
+
+<div class="row">
+	<div class="col-md-12">
+	<div class="btn-group pull-right">
+			@if($daerah['_rekomendasi_final'])
+			<a href="" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
+			@endif
+			
+			@if(empty($daerah['_rekomendasi_final']))
+				<a href="javascript:void(0)" class="btn btn-primary btn-xs text-uppercase" onclick="showFormFinalisasi()">FINALISASI REKOMENDASI</a>
+			@endif
+		</div>
+</div>
+</div>
+
 <hr>
 
 <div class="table-responsive">
@@ -136,7 +159,7 @@
 				@foreach($p['_child_kegiatan'] as $k)
 					@php $kn=$k['_nomen']; @endphp
 					<tr class="pn-{{$p['id']}}">
-						<td colspan="4"></td>
+						<td colspan="3"></td>
 						<td style="min-width:180px;">
 							<div class=" pull-right btn-group" >
 								<button   collapse-btn-nested="false" data-target=".kn-{{$k['id']}}"  class="btn btn-info btn-xs ">
@@ -214,7 +237,7 @@
 					@foreach($k['_child_sub_kegiatan'] as $s)
 						@php $sn=$s['_nomen']; @endphp
 						<tr class="pn-{{$p['id']}} kn-{{$k['id']}}">
-							<td colspan="6"></td>
+							<td colspan="5"></td>
 							<td style="min-width:180px;">
 								<div class=" pull-right btn-group" >
 									<button   collapse-btn-nested="false" data-target=".sn-{{$s['id']}}"  class="btn btn-info btn-xs ">
@@ -364,6 +387,18 @@
 			$('#modal-global-lg').modal();
 		});
 	}
+
+
+	function showFormFinalisasi(){
+		var id="{{$daerah['id']}}";
+		API_CON.get("{{route('int.rekomendasi.form_final',['id'=>null])}}/"+id).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('FINALISASI REKOMENDASI {{Hp::fokus_tahun()}}');
+			$('#modal-global-lg .modal-body').html(res.data);
+			$('#modal-global-lg').modal();
+		});
+	}
+
+
 
 
   function setTarget(id_dom,id_indikator){

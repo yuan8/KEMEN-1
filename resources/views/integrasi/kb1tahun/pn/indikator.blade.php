@@ -61,7 +61,7 @@
 </form>
 
 <hr>
-<H5><b>LIST INDIKATOR RPJMN</b></H5>
+<H5><b>LIST INDIKATOR {{isset($for_pp)?'RPJMN':''}} {{isset($for_pp_child)?'RKP DAN KINERJA URUSAN':''}}</b></H5>
 <table class="table table-bordered" id="table-indikator-{{$domid}}" style="width:100%">
 	<thead>
 		<tr>
@@ -95,7 +95,13 @@
 				}
 			},
 			{
-				data:"_sub_urusan.nama"
+				render:function(data,type,datarow){
+					if(datarow._sub_urusan){
+						return datarow._sub_urusan.nama;
+					}else{
+						return '-';
+					}
+				}
 			},
 			{
 				data:"_sumber"
@@ -163,7 +169,7 @@
 				}
 
 
-				var dom ='<tr id="key_ind_'+id+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+data._sub_urusan.nama+'</td><td>'+data._sumber+'</td><td>'+data.kode+'</td><td>'+data.uraian+'</td><td>'+target+'</td><td>'+data.satuan+'<input type="hidden" name="id_indikator[]" value="'+id+'"></td></tr>';
+				var dom ='<tr id="key_ind_'+id+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+(data._sub_urusan?data._sub_urusan.nama:'-')+'</td><td>'+data._sumber+'</td><td>'+data.kode+'</td><td>'+data.uraian+'</td><td>'+target+'</td><td>'+data.satuan+'<input type="hidden" name="id_indikator[]" value="'+id+'"></td></tr>';
 				$('#list_indikator_to_add_{{$domid}} tbody').prepend(dom);
 			}
 
@@ -179,13 +185,7 @@
 
 <script type="text/javascript">
 	
-	function showFormCreateIndikator(){
-		API_CON.get("{{route('int.kb5tahun.indikator.create',['id'=>null])}}/"+id,).then(function(res){
-			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH INDIKATOR {{Hp::fokus_tahun()}}');
-			$('#modal-glo bal-lg .modal-body').html(res.data);
-			$('#modal-global-lg').modal();
-		});
-	}
+	
 	var form_value_def={};
 	$('#add-indikator form input[name],#add-indikator form textarea[name]').each(function(i,d){
 		form_value_def[$(d).attr('name')]=$(d).val();
@@ -252,8 +252,17 @@
 	if(isset($for_kewenangan)){
 		$meta['id_kewenangan']=null;
 	}
-	if(isset($for_sasaran)){
-		$meta['id_sasaran']=null;
+	if(isset($for_kebijakan)){
+		$meta['id_kebijakan']=null;
+	}
+
+	
+	if(isset($for_pp)){
+		$meta['tag']=[1];
+		$meta['id_kebijakan']=['id_kebijakan','!=',null];
+	}
+	if(isset($for_pp_child)){
+		$meta['tag']=[2,3];
 	}
 
 	if(isset($only_sub_urusan)){
@@ -261,9 +270,13 @@
 	}
 	if(isset($have_tag)){
 		$meta['tag']=$have_tag;
-	}else{
-		$meta['tag']=[1,2,3,4,0];
 	}
+
+	if(isset($ak_not_null)){
+		$meta['id_kebijakan']=['id_kebijakan','!=',null];
+	}
+
+
 	
 @endphp
 	function updateSourceRKPINDIKATOR(){

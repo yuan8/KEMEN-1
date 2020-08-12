@@ -12,8 +12,11 @@ use App\MASTER\NOMENKAB;
 use App\INTEGRASI\REKOMENDASI as REKO;
 use App\INTEGRASI\REKOMENDASIKAB;
 use App\INTEGRASI\REKOMENDASI_IND;
+use App\INTEGRASI\REKOMENDASIFINAL;
+
 use App\INTEGRASI\REKOMENDASIJAB_IND;
 use App\MASTER\INDIKATOR;
+use App\MASTER\DAERAH;
 Use Carbon\Carbon;
 use App\RKP\RKP;
 use Alert;
@@ -62,27 +65,35 @@ class REKOMENDASI extends Controller
 
 
     public function index(){
-    	$data=DB::connection('rkpd')->table('public.master_daerah as d')
-    	->select(DB::RAW("*"))
-    	->orderBy('id','asc')
-    	->get();
-    
+    	$tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+        $id_urusan=$meta_urusan['id_urusan'];
+        $data=DAERAH::with(['_rekomendasi_final'=>function($q) use ($tahun,$id_urusan){
+            return $q->where('tahun',$tahun)->where('id_urusan',$id_urusan);
+        }])->orderBy('id','asc')->get();
     	return view('integrasi.rekomendasi.index')->with('data',$data);
     }
 
     public function detail($id){
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
+        $id_urusan=$meta_urusan['id_urusan'];
+
+        $daerah=DAERAH::where('id',$id)->with(['_rekomendasi_final'=>function($q) use ($tahun,$id_urusan){
+            return $q->where('tahun',$tahun)->where('id_urusan',$id_urusan);
+        }])->first();
+        if($daerah['_rekomendasi_final']){
+            return redirect()->route('int.rekomendasi.export',['id'=>$id]);
+
+        }
+
 
     	if(strlen(($id.""))<3){
 
     		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun),'id_urusan'=>$meta_urusan['id_urusan']])->with(['_nomen_pro'=>function($q) use ($tahun,$id){
-
                 return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
-
             },'_nomen_pro._nomen','_nomen_pro._tag_indikator._indikator','_nomen_pro._child_kegiatan._child_sub_kegiatan']);
 
-            // $model=RKP::with('_nomen_pro')->get();
 
     	}else{
     		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun)])->with(['_nomen_kab'=>function($q) use ($tahun,$id){
@@ -94,7 +105,7 @@ class REKOMENDASI extends Controller
 
 
 
-    	$daerah=(array)DB::table('master_daerah')->find($id);
+    	
 
     	$data=$model->get()->toArray();
 
@@ -309,20 +320,37 @@ class REKOMENDASI extends Controller
 
     	$data=INDIKATOR::where('tahun',$tahun)->where($where)->get();
 
+        $data=[
+
+            'jenis'=>$jenis,
+            'reko'=>$parent,
+            'parent'=>$parent['_nomen'],
+            'kodepemda'=>$id,
+            'kewenangan'=>$kewenangan,
+
+        ];
 
 
-    	
+        if($jenis==1){
+            $data['for_integrasi_program']=true;
+            $data['indikator_from_rkp_id']=$parent['id_rkp'];
+        }
+        else{
+            $data['for_integrasi_program_child']=true;
+            $data['indikator_from_rkp_id']=$parent['id_rkp'];
+        }
+
+       
+
+      
+
     	if($parent){
-    		$jenis=static::jenis($parent['jenis']);
+            $jenis=static::jenis($parent['jenis']);
 
-	    	return view('integrasi.rekomendasi.indikator')->with([
-	    		'data'=>$data,
-	    		'jenis'=>$jenis,
-	    		'reko'=>$parent,
-    			'parent'=>$parent['_nomen'],
-    			'kodepemda'=>$id,
-    			'kewenangan'=>$kewenangan
-	    	]);
+            $data['jenis']=$jenis;
+	    	return view('integrasi.rekomendasi.indikator')->with(
+	    		$data
+	    	);
     	}
 
     }
@@ -517,6 +545,98 @@ class REKOMENDASI extends Controller
     		return back();
     	}
     	
+    }
+
+
+    public function form_final($id){
+        $data=DAERAH::find($id);
+
+        if($data){
+            return view('integrasi.rekomendasi.form_final')->with('data',$data);
+        }
+    }
+
+
+    public function finalisasi($id){
+        $data=DAERAH::find($id);
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+
+
+        if($data){
+            $ok=REKOMENDASIFINAL::updateOrCreate(
+                [
+                'kodepemda'=>$id,
+                'tahun'=>$tahun,
+                'id_urusan'=>$meta_urusan['id_urusan'],
+
+                ]
+                ,
+                [
+                    'kodepemda'=>$id,
+                    'tahun'=>$tahun,
+                    'id_user'=>Auth::id(),
+                     'id_urusan'=>$meta_urusan['id_urusan'],
+
+                ]
+            );
+
+            if($ok){
+            Alert::success('REKOMENDASI FINAL','Berhasil Mengubah Rekomendasi Pada Satatus Final');
+
+            }
+
+            return back();
+
+
+        }
+    }
+
+
+    public function view_format_export($id,Request $request){
+
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+        $id_urusan=$meta_urusan['id_urusan'];
+        $daerah=DAERAH::with(['_rekomendasi_final'=>function($q) use ($tahun,$id_urusan){
+            return $q->where('tahun',$tahun)->where('id_urusan',$id_urusan);
+        },'_rekomendasi_final._urusan'])->where('id',$id)->first();
+        
+            if($daerah['_rekomendasi_final']){
+
+                if(strlen(($id.""))<3){
+
+                $model=RKP::where(['jenis'=>4,'tahun'=>($tahun),'id_urusan'=>$meta_urusan['id_urusan']])->with(['_nomen_pro'=>function($q) use ($tahun,$id){
+                    return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
+                },'_nomen_pro._nomen','_nomen_pro._tag_indikator._indikator','_nomen_pro._child_kegiatan._child_sub_kegiatan']);
+
+
+            }else{
+                $model=RKP::where(['jenis'=>4,'tahun'=>($tahun)])->with(['_nomen_kab'=>function($q) use ($tahun,$id){
+
+                    return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
+
+                },'_nomen_kab._nomen','_nomen_kab._tag_indikator._indikator','_nomen_kab._child_kegiatan._child_sub_kegiatan']);
+            }
+
+            $data=$model->get()->toArray();
+
+            if($request->pdf){
+                $pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'defaultFont' => 'sans-serif','isRemoteEnabled' => true]);
+                $pdf->loadHTML(view('integrasi.rekomendasi.final')->with(['meta'=>$daerah['_rekomendasi_final'],'data'=>$data,'daerah'=>$daerah])->render());
+                return $pdf->stream();
+
+            }else if($request->excel){
+
+            }else{
+                return view('integrasi.rekomendasi.final')->with(['meta'=>$daerah['_rekomendasi_final'],'data'=>$data,'daerah'=>$daerah]);
+            }
+            
+
+
+
+        }
+
     }
 
 

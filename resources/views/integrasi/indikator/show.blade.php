@@ -1,54 +1,40 @@
 
 @php
-	if($tag==1){
-		$route=route('int.kb5tahun.indikator.update',['id'=>$data['id']]);
-	}
-	else if($tag==2){
-		$route=route('int.kb5tahun.indikator.store',['id'=>$ak_kondisi['id']]);
-	}
-	else
-	{
+	// if($tag==1){
+	// 	$route=route('int.kb5tahun.indikator.update',['id'=>$data['id']]);
+	// }
+	// else if($tag==2){
+	// 	$route=route('int.kb5tahun.indikator.store',['id'=>$ak_kondisi['id']]);
+	// }
+	// else
+	// {
 
-	}
+	// }
+
+	$route=route('int.m.indikator.update',['id'=>$data['id']]);
 
 	
 	
 @endphp
-
+<div class="col-md-12 bg bg-navy text-center" style="margin-bottom: 15px;">
+		<h5>INDIKATOR <b>{{Hp::tag_ind($data->tag)}}</b></h5>
+	</div>
 <form action="{{$route}}" method="post">
-	<style type="text/css">
-		span.select2-container {
-		    z-index:10050;
-		}
-	</style>
-
+	
 	<div class="col-md-12" style="max-height: calc(70vh); overflow-y: scroll; overflow-x: hidden;">
 		@csrf
 		@method('PUT')
 		@php
 		$domid=rand(0,1000).date('i');
 		@endphp
-			<small>
-				<b>* KODE INDIKATOR : </b>
-				<br>
-				kode digunakan sebagai id unique pada sebuah indikator.
-				<br>
-				id indikator dapat merepresentasikan kondisi yang ada 
-				<br>
-				contoh penulisan kode indikator <b>({{$meta_urusan['singkat']}}.IND.0001)</b>
-			</small>
-			<hr>
+			
 			<div class="form-group">
-				<label>KODE * <span id="kode-check-unique-{{$domid}}-text"></span></label>
-				<div class="input-group">
-				  <span class="input-group-addon" id="basic-addon1">{{$meta_urusan['singkat']}}.IND.</span>
-				  <input type="text" class="form-control" placeholder="000" name="kode" required="" id="kode-check-unique-{{$domid}}" aria-describedby="basic-addon1" value="{{$data['kode_realistic']}}">
-				</div>
-				
-			</div>
-			<div class="form-group">
-					<label>SUB URUSAN *</label>
-					<select class="form-control init-use-select2" name="id_sub_urusan" required="" >
+					<label>SUB URUSAN {{in_array($tag,[3,4])?'*':''}}</label>
+					<select class="form-control init-use-select2" name="id_sub_urusan" {{in_array($tag,[3,4])?'required="':''}} >
+						@if(in_array($tag,[3,4]))
+							<option value="">-</option>
+						@endif
+
 						@foreach($sub_urusan as $sub)
 						@php 
 							$sub=(array)$sub;
@@ -211,7 +197,7 @@
 				<hr>
 				<div class="form-group">
 					<label>Lokus</label>
-					<textarea class="form-control" name="lokus"></textarea>
+					<textarea class="form-control" name="lokus">{!!$data['lokus']!!}</textarea>
 				</div>
 				<small>
 						* Informasi ini bersifat tidak wajib pada form ini

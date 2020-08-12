@@ -8,7 +8,7 @@ use DB;
 use Hp;
 use App\KB5\KONDISI;
 
-use App\KB5\INDIKATOR;
+use App\MASTER\INDIKATOR;
 use Validator;
 use Alert;
 use Auth;
@@ -26,9 +26,8 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 		$data=KONDISI::
 		where('id_urusan',$meta_urusan['id_urusan'])->
 		where('tahun',$tahun)->
-		with('_urusan','_children._children._children._children._sub_urusan')->get()->toArray();
-
-        $rpjmn=Hp::get_tahun_rpjmn(Hp::fokus_tahun());
+		with('_urusan','_children._children._indikator._sub_urusan')->get()->toArray();
+     $rpjmn=Hp::get_tahun_rpjmn(Hp::fokus_tahun());
      
     	return view('integrasi.kb5tahun.index')->with([
             'data'=>$data,
@@ -396,24 +395,23 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
     	$ak_kondisi=(array)DB::connection('form')->table('kb5_arah_kebijakan as ak')
     	->leftjoin('kb5_isu_strategis as isu','isu.id','=','ak.id_isu')
-    	->leftjoin('kb5_sasaran as s','s.id_kebijakan','=','ak.id')
     	->leftjoin('kb5_kondisi_saat_ini as kondisi','kondisi.id','=','isu.id_kondisi')
-    	->select(DB::RAW("s.*,kondisi.kode,kondisi.uraian as uraian_kondisi,kondisi.id as id_kondisi"))
-    	->where('s.id',$id)->first();
+    	->select(DB::RAW("ak.*,kondisi.kode,kondisi.uraian as uraian_kondisi,kondisi.id as id_kondisi"))
+    	->where('ak.id',$id)->first();
+
     	$satuan=DB::table('master_satuan')->get()->pluck('kode');
     	$meta_urusan=Hp::fokus_urusan();
     	$sub_urusan=SUBURUSAN::where('id_urusan',$meta_urusan['id_urusan'])->get()->toArray();
-
     	if($ak_kondisi){
     		return view('integrasi.indikator.create')
             ->with(
-            [
-                'ak_kondisi'=>(array)$ak_kondisi,
-                'satuan'=>$satuan,
-                'sub_urusan'=>$sub_urusan,
-                'tag'=>1,
-                'meta_urusan'=>$meta_urusan
-            ]
+                [
+                    'ak_kondisi'=>(array)$ak_kondisi,
+                    'satuan'=>$satuan,
+                    'sub_urusan'=>$sub_urusan,
+                    'tag'=>1,
+                    'meta_urusan'=>$meta_urusan
+                ]
             );
 
     	}else{
@@ -457,27 +455,28 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
 
      public function indikator_store($id,Request $request){
+        
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
     	$ak_kondisi=(array)DB::connection('form')->table('kb5_arah_kebijakan as ak')
-    	->leftjoin('kb5_isu_strategis as isu','isu.id','=','ak.id_isu')
-    	->leftjoin('kb5_kondisi_saat_ini as kondisi','kondisi.id','=','isu.id_kondisi')
-    	->leftjoin('kb5_sasaran as s','s.id_kebijakan','=','ak.id')
-    	->select(DB::RAW("ak.*, kondisi.kode, kondisi.uraian as uraian_kondisi,kondisi.id as id_kondisi,s.id as id_sasaran"))
-    	->where('s.id',$id)
-    	->first();
+        ->leftjoin('kb5_isu_strategis as isu','isu.id','=','ak.id_isu')
+        ->leftjoin('kb5_kondisi_saat_ini as kondisi','kondisi.id','=','isu.id_kondisi')
+        ->select(DB::RAW("ak.*,kondisi.kode,kondisi.uraian as uraian_kondisi,kondisi.id as id_kondisi"))
+        ->where('ak.id',$id)->first();
 
     	if($ak_kondisi){
             $data=[];
             $data['tag']=1;
             $data['id_kondisi']=$ak_kondisi['id_kondisi'];
             $data['id_kebijakan']=$ak_kondisi['id'];
-            $data['id_sasaran']=$ak_kondisi['id_sasaran'];
+            // $data['id_sasaran']=$ak_kondisi['id_sasaran'];
             $data['uraian']=$request->uraian;
             $data['kode_realistic']=$request->kode;
             $data['tahun']=$tahun;
             $data['tipe_value']=$request->tipe_value;
             $data['target']=$request->target;
+            $data['id_urusan']=$meta_urusan['id_urusan'];
+
     
             $data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
 
@@ -602,6 +601,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
        public function indikator_delete($id){
 
     		$indikator=INDIKATOR::where('id',$id)->first();
+            
     		if($indikator){
     			$indikator->delete();
     			Alert::success('Success','Berhasil menghapus data indikator');

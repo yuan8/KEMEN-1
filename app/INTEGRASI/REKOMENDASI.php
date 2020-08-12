@@ -5,6 +5,7 @@ namespace App\INTEGRASI;
 use Illuminate\Database\Eloquent\Model;
 use App\MASTER\NOMEN;
 use App\INTEGRASI\REKOMENDASI_IND;
+
 class REKOMENDASI extends Model
 {
     //
@@ -26,7 +27,7 @@ class REKOMENDASI extends Model
     }
 
     public function _tag_indikator(){
-        return $this->hasMany(REKOMENDASI_IND::class,'id_rekom');
+        return $this->hasMany(REKOMENDASI_IND::class,'id_rekom')->whereHas('_indikator');
     }
 
 }

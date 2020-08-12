@@ -8,10 +8,12 @@ use App\KB5\KONDISI;
 use App\KB5\SASARAN;
 use App\RKP\RKP;
 use App\MASTER\SUBURUSAN;
+use App\MASTER\URUSAN;
+
 use App\MASTER\KEWENANGAN;
 
 use App\RKP\RKPINDIKATOR;
-
+use Hp;
 
 class INDIKATOR extends Model
 {
@@ -19,7 +21,7 @@ class INDIKATOR extends Model
 
        //
     protected $connection = 'form';
-  protected $table='form.master_indikator';
+    protected $table='form.master_indikator';
 
 
 
@@ -56,15 +58,28 @@ class INDIKATOR extends Model
     'id_kondisi',
     'id_sasaran',
     'id_kewenangan',
-    'tag'
+    'tag',
+    'id_urusan'
   ];
 
 
-     public function _sub_urusan(){
+    public function _sub_urusan(){
     	return $this->belongsTo(SUBURUSAN::class,'id_sub_urusan');
     }
 
+    public function _urusan(){
+        return $this->belongsTo(URUSAN::class,'id_urusan');
+    }
+
     public function _kewenangan(){
+        return $this->belongsTo(KEWENANGAN::class,'id_kewenangan');
+    }
+
+     public function tag_on_rkp_propn(){
+        return $this->hasMany(RKPINDIKATOR::class,'id_indikator');
+    }
+
+    public function tag_on_kewenangan(){
         return $this->belongsTo(KEWENANGAN::class,'id_kewenangan');
     }
 
@@ -86,26 +101,7 @@ class INDIKATOR extends Model
 
 
     public function _sumber(){
-        switch ($this->tag) {
-            case 1:
-            $s= 'RPJMN';
-                # code...
-                break;
-             case 2:
-             $s= 'RKP';
-                # code...
-                break;
-             case 3:
-             $s= 'KL';
-                # code...
-                break;
-            default:
-                # code...
-                break;
-
-        }
-
-        return  $s;
+        return Hp::tag_ind($this->tag);
     }
 
 

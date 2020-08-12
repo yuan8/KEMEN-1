@@ -32,7 +32,7 @@ class HelperProvider extends ServiceProvider
                 break;
 
              case 3:
-                $r='KL';
+                $r='PEMDA';
                 break;
 
              case 4:
@@ -67,7 +67,7 @@ class HelperProvider extends ServiceProvider
                 # code...
                 break;
             case 3:
-            $p=static::fokus_urusan()['singkat'].'.KL.IND.'.static::fokus_tahun().'.';
+            $p=static::fokus_urusan()['singkat'].'.PD.IND.'.static::fokus_tahun().'.';
                 # code...
                 break;
                 case 4:

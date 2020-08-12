@@ -1,13 +1,17 @@
 <div class="row text-dark">
 	
-	<h4 class="bg-navy text-center" style="margin: 0px; padding: 10px;"><b>{{$i['_sub_urusan']['_urusan']['nama'].' -> '.$i['_sub_urusan']['nama']}}</b></h4>
+	<h4 class="bg-navy text-center" style="margin: 0px; padding: 10px;"><b>{{$i['_urusan']['nama'].($i['_sub_urusan']?' -> '.$i['_sub_urusan']['nama']:'')}}</b></h4>
 	<P class="bg bg-yellow-gradient text-center text-dark"><b>{{$i['kode']}}</b></P>
-	<div class="col-md-12">
-		<p class="text-blue text-capitalize"><b>{{$i['uraian']}}</b></p>
-	 </div>
+	
 	 <div class="col-md-12">
-	 	<table class="table table-bordered bg-with">
+	 	<table class="table table-bordered bg-white">
 	 		<thead class="bg-navy">
+		
+	 			<tr class="bg-white">
+	 				<th colspan="7" class="bg-white">
+	 					<p class="text-blue text-capitalize"><b>{{$i['uraian']}}</b></p>
+	 				</th>
+	 			</tr>
 	 			<tr>
 	 				<th rowspan="2">TARGET PUSAT {{Hp::fokus_tahun()}}</th>
 	 				<th rowspan="2">SATUAN</th>
@@ -149,7 +153,6 @@
 					<th colspan="2">KONDISI</th>
 					<th rowspan="2">ISU STARTEGIS</th>
 					<th rowspan="2">ARAH KEBIJAKAN</th>
-					<th rowspan="2">SASARAN</th>
 				</tr>
 				<tr>
 					<th>KODE</th>
@@ -159,11 +162,12 @@
 			</thead>
 			<tbody>
 				<tr>
+					
 					<td><b>{!!$i['_kondisi']['kode']!!}</b></td>
-					<td>{!!$i['_kondisi']['uraian']!!}</td>
+					<td>{!!$i['_kondisi']['uraian']!!} - Tahun {{$i['_kondisi']['tahun_data']}} <br> 
+					<b class="text-success">{{$i['_kondisi']['nilai']}} {{$i['_kondisi']['satuan']}}</b> </td>
 					<td>{!!$i['_kebijakan']['_isu']['uraian']!!}</td>
 					<td>{!!$i['_kebijakan']['uraian']!!}</td>
-					<td>{!!$i['_sasaran']['uraian']!!}</td>
 				</tr>
 
 			</tbody>

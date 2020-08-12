@@ -26,6 +26,6 @@ class REKOMENDASIKAB extends Model
     }
 
     public function _tag_indikator(){
-        return $this->hasMany(REKOMENDASIKAB_IND::class,'id_rekom');
+        return $this->hasMany(REKOMENDASIKAB_IND::class,'id_rekom')->whereHas('_indikator');;
     }
 }

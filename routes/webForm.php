@@ -3,11 +3,19 @@
 			use App\MASTER\INDIKATOR;
 
 Route::prefix('integrasi')->middleware('auth:web')->group(function(){
-
+	
 	Route::prefix('master-indikator')->group(function(){
 		Route::get('/','INT\INDIKATOR@index')->name('int.m.indikator');
 		Route::get('/create','INT\INDIKATOR@create')->name('int.m.indikator.create');
 		Route::post('/store','INT\INDIKATOR@store')->name('int.m.indikator.store');
+		Route::get('/edit/{id}','INT\INDIKATOR@form_edit')->name('int.m.indikator.form_edit');
+		Route::put('/update/{id}','INT\INDIKATOR@update')->name('int.m.indikator.update');
+		Route::get('/delete/{id}','INT\INDIKATOR@form_delete')->name('int.m.indikator.form_delete');
+		Route::delete('/delete/{id}','INT\INDIKATOR@delete')->name('int.m.indikator.delete');
+
+
+
+
 		Route::get('/print',function(){
 			$pdf = App::make('dompdf.wrapper');
 			$pdf->loadHTML('<h1>Test</h1>');
@@ -183,6 +191,12 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 		Route::get('/nomen/delete-indikator/{kodepemda}/{id?}','INT\DAERAH\REKOMENDASI@delete_form_indikator')->name('int.rekomendasi.delete_form_indikator');
 		Route::delete('/nomen/delete-indikator/{kodepemda}/{id?}','INT\DAERAH\REKOMENDASI@delete_indikator')->name('int.rekomendasi.delete_indikator');
+
+
+		Route::get('finalisasi/{kodepemda}','INT\DAERAH\REKOMENDASI@form_final')->name('int.rekomendasi.form_final');
+		Route::get('export-integrasi/{kodepemda}','INT\DAERAH\REKOMENDASI@view_format_export')->name('int.rekomendasi.export');
+
+		Route::post('finalisasi/{kodepemda}','INT\DAERAH\REKOMENDASI@finalisasi')->name('int.rekomendasi.finalisasi');
 	});
 
 

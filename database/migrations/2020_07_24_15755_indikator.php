@@ -41,7 +41,8 @@ class Indikator extends Migration
                  $table->boolean('kw_nas')->default(0);
                  $table->boolean('kw_p')->default(0);
                  $table->boolean('kw_k')->default(0);
-                 $table->bigInteger('id_sub_urusan')->unsigned();
+                 $table->bigInteger('id_sub_urusan')->nullable();
+                 $table->bigInteger('id_urusan')->unsigned();
                  $table->bigInteger('id_user')->unsigned();
                  $table->text('data_dukung_nas')->nullable();
                  $table->text('data_dukung_p')->nullable();
@@ -74,6 +75,10 @@ class Indikator extends Migration
 
                 $table->foreign('id_sub_urusan')
                     ->references('id')->on('public.master_sub_urusan')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+                 $table->foreign('id_urusan')
+                    ->references('id')->on('public.master_urusan')
                     ->onDelete('cascade')->onUpdate('cascade');
                 
                     
