@@ -102,6 +102,8 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/perda', 'FORM\KebijakanCtrl@store_perda')->name('kebijakan.daerah.store.mandat.perda');
 
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/perkada', 'FORM\KebijakanCtrl@store_perkada')->name('kebijakan.daerah.store.mandat.perkada');
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/lainnya', 'FORM\KebijakanCtrl@store_lainnya')->name('kebijakan.daerah.store.mandat.lainnya');
+
 
 			Route::put('/tambah/sub/kesesuian/{id}', 'FORM\KebijakanCtrl@update_kesesuaian')->name('kebijakan.daerah.store.mandat.update.kesesuian');
 
@@ -218,6 +220,12 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 
 			
 		});
+		Route::prefix('pemetaan_kebijakan/')->group(function(){
+			Route::get('/','FORM\pemetaanKebijakanRpjmn@index')->name('pemetaan.kebijakan.index');
+			Route::delete('/delete/mandat/{id}', 'FORM\pemetaanKebijakanRpjmn@delete_pemetaan')->name('pemetaan.kebijakan.delete');
+
+		});
+
 
 });
 

@@ -87,7 +87,7 @@
                       <button onclick="plus_perpres.build('#plus-perpres',kbm_{{$kb->id_mandat}},'{{route('kebijakan.pusat.store.mandat.perpres',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.perpres',['id_mandat'=>$kb->id_mandat])}}',kbperpres_{{$kb->id_mandat}})" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> PERPRES</button>
                     </td>
                      <td class="text-center">
-                      <button onclick="plus_permen.build('#plus-permen',kbm_{{$kb->id_mandat}},'{{route('kebijakan.pusat.store.mandat.permen',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.permen',['id_mandat'=>$kb->id_mandat])}}',kbpemen_{{$kb->id_mandat}})" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> PERMEN</button>
+                      <button onclick="plus_permen.build('#plus-permen',kbm_{{$kb->id_mandat}},'{{route('kebijakan.pusat.store.mandat.permen',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.permen',['id_mandat'=>$kb->id_mandat])}}',kbpermen_{{$kb->id_mandat}})" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> PERMEN</button>
                     </td>
                     
                   <?php 

@@ -56,6 +56,11 @@ Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 			Route::get('/get-perkada', 'FORM\KebijakanCtrl@api_get_perkada')->name('api.kebijakan.daerah.get.perkada');
 			Route::post('/store-perkada/{id}', 'FORM\KebijakanCtrl@api_store_perkada')->name('api.kebijakan.daerah.store.perkada');
 
+			Route::get('/get-lainnya', 'FORM\KebijakanCtrl@api_get_lainnya')->name('api.kebijakan.daerah.get.lainnya');
+			Route::post('/store-lainnya/{id}', 'FORM\KebijakanCtrl@api_store_lainnya')->name('api.kebijakan.daerah.store.lainnya');
+
+
+
 
 
 		});

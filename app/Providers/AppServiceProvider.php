@@ -90,6 +90,12 @@ class AppServiceProvider extends ServiceProvider
                 'text' => 'INTEGRASI PROGRAM KEGIATAN',
                 'url'=>route('int.rekomendasi.index')
             ]);
+		 $event->menu->add('ANALISIS');
+
+			$event->menu->add([
+                'text' => 'PEMETAAN KEBIJAKAN DAN RPJMN',
+                'url'=>route('pemetaan.kebijakan.index')
+            ]);
 
 
             // $event->menu->add('PENILAIAN INTEGRASI');
