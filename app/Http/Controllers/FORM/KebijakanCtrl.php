@@ -626,7 +626,8 @@ class KebijakanCtrl extends Controller
 
         $data=[];
        
-        $uu=$request->perda;
+        $uu=$request->perda?$request->perda:[];
+
 
         foreach ($uu as $key => $value) {
             # code...
@@ -654,6 +655,19 @@ class KebijakanCtrl extends Controller
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
             $a=DB::table('ikb_perda')->insertOrIgnore($data);
+        }else{
+
+            $a=DB::table('ikb_perda')
+            ->where([
+                'id_sub_urusan'=>$id_sub_urusan,
+                'id_mandat'=>$id_mandat,
+                'tahun'=>Hp::fokus_tahun(),
+
+                'kode_daerah'=>$request->kode_daerah,
+            ])
+            ->delete();
+
+
         }
 
         Alert::success('','Perda Berhasil di Tambahkan');
@@ -902,7 +916,7 @@ class KebijakanCtrl extends Controller
 
         $data=[];
        
-        $uu=$request->perkada;
+        $uu=$request->perkada?$request->perkada:[];
 
         foreach ($uu as $key => $value) {
             # code...
@@ -930,6 +944,15 @@ class KebijakanCtrl extends Controller
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
             $a=DB::table('ikb_perkada')->insertOrIgnore($data);
+        }else{
+             $a=DB::table('ikb_perkada')
+            ->where([
+                'id_sub_urusan'=>$id_sub_urusan,
+                'id_mandat'=>$id_mandat,
+                'tahun'=>Hp::fokus_tahun(),
+                'kode_daerah'=>$request->kode_daerah,
+            ])
+            ->delete();
         }
 
         Alert::success('','Perkada Berhasil di Tambahkan');

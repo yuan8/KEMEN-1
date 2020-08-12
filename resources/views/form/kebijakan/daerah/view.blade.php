@@ -73,8 +73,9 @@
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="bg {{$kb->kesesuaian==0?'bg-danger':(($kb->kesesuaian==1)?'bg-success':'bg-warning') }}" colspan="3">
-                                        <button onclick="update_kesesuian.build('{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.update.kesesuian',['id'=>$kb->id_integrasi])}}',{{$kb->id_integrasi}},{{$kb->kesesuaian}},'{{$kb->note}}')" class="btn btn-xs {{$kb->kesesuaian==0?'btn-danger':(($kb->kesesuaian==1)?'btn-success':'btn-warning') }}">
-                                            {{$kb->kesesuaian==0?'Belum Dinilai':(($kb->kesesuaian==1)?'Sesuai':'Tidak Sesuai') }}
+                                        <button onclick="update_kesesuian.build('{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.update.kesesuian',['id'=>$kb->id_integrasi])}}',{{$kb->id_integrasi}},{{$kb->kesesuaian}},data_{{$kb->id_mandat}}.note)" class="btn btn-xs {{$kb->kesesuaian==0?'btn-danger':(($kb->kesesuaian==1)?'btn-success':'btn-warning') }}">
+                                          <i class="fa fa-pen"></i>
+                                            {!!$kb->kesesuaian==0?'Belum Dinilai':(($kb->kesesuaian==1)?'  Sesuai':'Tidak Sesuai') !!}
 
                                         </button>
                                     </td>
