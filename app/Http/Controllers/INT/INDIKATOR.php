@@ -92,7 +92,7 @@ class INDIKATOR extends Controller
 
         $data['pelaksana_p']=$data['kw_p']?json_encode($request->pelaksana_p?$request->pelaksana_p:[]):'[]';
 
-        $data['pelaksana_k']=$data['kw_k']?json_encode($request->pelaksana_k?$request->pelaksana_p:[]):'[]';
+        $data['pelaksana_k']=$data['kw_k']?json_encode($request->pelaksana_k?$request->pelaksana_k:[]):'[]';
 
         $data['kewenangan_nas']=$data['kw_nas']?($request->kewenangan_nas):null;
         $data['kewenangan_p']=$data['kw_p']?($request->kewenangan_p):null;
@@ -255,7 +255,7 @@ class INDIKATOR extends Controller
 
             $data['pelaksana_p']=$data['kw_p']?json_encode($request->pelaksana_p?$request->pelaksana_p:[]):'[]';
 
-            $data['pelaksana_k']=$data['kw_k']?json_encode($request->pelaksana_k?$request->pelaksana_p:[]):'[]';
+            $data['pelaksana_k']=$data['kw_k']?json_encode($request->pelaksana_k?$request->pelaksana_k:[]):'[]';
 
             $data['kewenangan_nas']=$data['kw_nas']?($request->kewenangan_nas):null;
             $data['kewenangan_p']=$data['kw_p']?($request->kewenangan_p):null;

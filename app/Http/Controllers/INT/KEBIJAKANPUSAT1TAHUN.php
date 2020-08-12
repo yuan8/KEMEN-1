@@ -147,6 +147,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
     	$data=RKP::where(['jenis'=>1,'tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])->get();
+        
     	return view('integrasi.kb1tahun.index')->with('data',$data);
     }
 

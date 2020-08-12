@@ -59,6 +59,9 @@
 		</thead>
 		<tbody class="bg-white">
 		@foreach($data as $kn)
+
+
+
 			<tr class=" ">
 					<td class="">
 						<div class=" pull-right  ">
@@ -92,7 +95,7 @@
 				</tr>
 
 				@foreach($kn['_children'] as $isu)
-					<tr class="collapse  kn-{{$kn['id']}}">
+				<tr class="collapse  kn-{{$kn['id']}}">
 						<td class="" colspan="">
 								<div class=" pull-right">
 									<button  collapse-btn-nested="false" data-target=".isu-{{$isu['id']}}"  class="btn btn-info btn-xs ">
@@ -130,6 +133,7 @@
 						</tr>
 
 						@foreach($ak['_indikator'] as $i)
+
 							<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}} ak-{{$ak['id']}} }}">
 								
 								<td colspan="8">
@@ -196,27 +200,34 @@
 								<td style="min-width: 200px;">
 									@php
 										$i['pelaksana_nas']=json_decode($i['pelaksana_nas']);
+
 										$i['pelaksana_p']=json_decode($i['pelaksana_p']);
 										$i['pelaksana_k']=json_decode($i['pelaksana_k']);
+
 									@endphp
 									@if($i['kw_nas'])
+
 										<b>PUSAT</b>
 										<ul>
 										@foreach($i['pelaksana_nas'] as $p)
+
 											<li>{{$p}}</li>
 										@endforeach
 										</ul>
 									@endif
 									@if($i['kw_p'])
 
+
 									<b>PROVINSI</b>
 									<ul>
 									@foreach($i['pelaksana_p'] as $p)
+
 										<li>{{$p}}</li>
 									@endforeach
 									</ul>
 									@endif
 									@if($i['kw_k'])
+									
 
 									<b>KOTA/KAB</b>
 									<ul>
