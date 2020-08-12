@@ -9,7 +9,7 @@
     	<div class="col-md-4 modal-footer">
     		<a href="" class="btn btn-success">Tambah</a>
     	</div>
-    	
+
     </div>
 @stop
 
@@ -35,11 +35,12 @@
 
                          ?>
                         @foreach($datas as $kb)
+
                             @if(($id_sub_urusan!=$kb->id)&&(!empty($kb->id)))
                                 <tr>
                                     <td>{{$kb->nama}}</td>
                                     <td colspan="4" class="bg bg-warning"></td>
-            
+
                                 </tr>
                                 <?php $id_sub_urusan=$kb->id; ?>
                             @endif
@@ -50,20 +51,21 @@
                                     <td colspan=""></td>
                                     <td>
                                           <script type="text/javascript">
-                                            var data_{{$kb->id_mandat}}=<?php echo $kb ?>;
+                                            var data_{{$kb->id_mandat}}=<?php echo json_encode($kb); ?>;
                                         </script>
-                                        <button class="btn btn-info btn-xs" onclick="plus_perda.build('#plus-perda','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perda',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perda',['id'=>$kb->id_mandat])}}',data_{{$kb->id_mandat}}.perda,'{{$kode_daerah}}')">
+                                        <button class="btn btn-info btn-xs" onclick="plus_perda.build('#plus-perda','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perda',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perda',['id'=>$kb->id_mandat])}}',(data_{{$kb->id_mandat}}.perda?data_{{$kb->id_mandat}}.perda:''),'{{$kode_daerah}}')">
+
                                             <i class="fa fa-edit"></i> PERDA
                                         </button>
                                     </td>
                                     <td>
 
-                                          <button class="btn btn-info btn-xs" onclick="plus_perkada.build('#plus-perkada','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perkada',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perkada',['id'=>$kb->id_mandat])}}',data_{{$kb->id_mandat}}.perkada,'{{$kode_daerah}}')">
+                                          <button class="btn btn-info btn-xs" onclick="plus_perkada.build('#plus-perkada','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perkada',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perkada',['id'=>$kb->id_mandat])}}',(data_{{$kb->id_mandat}}.perkada?data_{{$kb->id_mandat}}.perkada:''),'{{$kode_daerah}}')">
                                             <i class="fa fa-edit"></i> PERKADA
                                         </button>
                                     </td>
 
-        
+
                                 </tr>
                                 <?php $id_sub_urusan=$kb->id; ?>
                             @endif
@@ -76,7 +78,7 @@
 
                                         </button>
                                     </td>
-                                   
+
                                 </tr>
                                 <tr>
                                     <td colspan="3"></td>
@@ -129,7 +131,7 @@
                         @endforeach
                     </tbody>
                 </table>
-				
+
 			</div>
 		</div>
 	</div>
