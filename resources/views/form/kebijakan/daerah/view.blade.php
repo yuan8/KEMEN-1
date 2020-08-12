@@ -49,12 +49,16 @@
                                     <td>{!!$kb->tipe?'<i class="fa fa-circle text-warning"></i>':'<i class="fa fa-circle text-info"></i>'!!} {{$kb->mandat}}</td>
                                     <td colspan=""></td>
                                     <td>
-                                        <button class="btn btn-info btn-xs" onclick="plus_perda.build('#plus-perda','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perda',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perda',['id'=>$kb->id_mandat])}}','{{$kb->perda}}','{{$kode_daerah}}')">
+                                          <script type="text/javascript">
+                                            var data_{{$kb->id_mandat}}=<?php echo $kb ?>;
+                                        </script>
+                                        <button class="btn btn-info btn-xs" onclick="plus_perda.build('#plus-perda','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perda',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perda',['id'=>$kb->id_mandat])}}',data_{{$kb->id_mandat}}.perda,'{{$kode_daerah}}')">
                                             <i class="fa fa-edit"></i> PERDA
                                         </button>
                                     </td>
                                     <td>
-                                          <button class="btn btn-info btn-xs" onclick="plus_perkada.build('#plus-perkada','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perkada',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perkada',['id'=>$kb->id_mandat])}}','{{$kb->perkada}}','{{$kode_daerah}}')">
+
+                                          <button class="btn btn-info btn-xs" onclick="plus_perkada.build('#plus-perkada','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perkada',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perkada',['id'=>$kb->id_mandat])}}',data_{{$kb->id_mandat}}.perkada,'{{$kode_daerah}}')">
                                             <i class="fa fa-edit"></i> PERKADA
                                         </button>
                                     </td>
