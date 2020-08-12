@@ -268,9 +268,7 @@ class PELAKSANAANURUSAN extends Controller
     public function delete($id){
             $meta_urusan=Hp::fokus_urusan();
             $tahun=Hp::fokus_tahun();
-
             $data=KEWENANGAN::where('id',$id)->delete();
-
             if($data){
                 Alert::success('Success','Berhasil Menghapus Kewenangan');
                 return back();

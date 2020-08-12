@@ -75,6 +75,7 @@
 				<tr class="k-{{$k['id']}}">
 					<td colspan="5">
 						<div class="pull-right">
+							 <button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$i['id']}})"><i class="fa fa-eye"></i></button>
 							<button class="btn btn-danger  btn-xs" onclick="showFormDeleteIndikatorKW({{$i['id']}})"><i class="fa fa-trash"></i></button>
 						</div>
 					</td>
@@ -120,6 +121,15 @@
 	});
 
 
+
+	function showFormDetailIndikator(id){
+
+        API_CON.get("{{route('int.kb5tahun.indikator.detail',['id'=>null])}}/"+id,).then(function(res){
+            $('#modal-global-lg .modal-header .modal-title').html('DETAIL INDIKATOR {{Hp::fokus_tahun()}}');
+            $('#modal-global-lg .modal-body').html(res.data);
+            $('#modal-global-lg').modal();
+        });
+    }
 
 	function showFromCreateKewenangan(){
 		API_CON.get("{{route('int.pelurusan.create_kewenangan')}}").then(function(res){

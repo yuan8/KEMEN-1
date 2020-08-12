@@ -98,8 +98,13 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     }
 
     public function indikator_delete($id){
+        $data=RKPINDIKATOR::where('id',$id)->first()->toArray();
+        $id_indikator=$data['id_indikator'];
         $data=RKPINDIKATOR::where('id',$id)->delete();
         if($data){
+            // \App\INTEGRASI\REKOMENDASI_IND::where('id_indikator',$id_indikator)->delete();
+            // \App\INTEGRASI\REKOMENDASIKAB_IND::where('id_indikator',$id_indikator)->delete();
+
             Alert::success('Success','Berhasil Menghapus Indikator');
             return back();
         }
@@ -142,6 +147,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
     	$data=RKP::where(['jenis'=>1,'tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])->get();
+        
     	return view('integrasi.kb1tahun.index')->with('data',$data);
     }
 
@@ -246,25 +252,36 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
         $jenis=static::namaRKP($data['jenis']);
 
     	if($data){
-    		$indikator=INDIKATOR::where('tahun',$tahun)->whereIn('id_sub_urusan',$id_sub)->with('_sub_urusan')->get();
+            $for_pp=false;
+            $for_pp_child=false;
 
-            foreach ($indikator as $key => $i) {
-                $indikator[$key]['_sumber']=$i->_sumber();
+
+            if($jenis=='PP'){
+                $for_pp=true;
+            }else{
+                $for_pp_child=true;
             }
-
             $satuan=DB::table('master_satuan')->get()->pluck('kode');
             $sub_urusan=SUBURUSAN::where('id_urusan',$meta_urusan['id_urusan'])->get()->toArray();
-    		return view('integrasi.kb1tahun.pn.indikator')
-            ->with([
-                'data'=>$indikator,
+            $ret=[
+                'data'=>[],
                 'rkp'=>$data,
                 'jenis'=>$jenis,
                 'satuan'=>$satuan,
                 'sub_urusan'=>$sub_urusan,
                 'meta_urusan'=>$meta_urusan,
-                'tag'=>2,
-                'for_sasaran'=>true
-            ])->render();
+                'tag'=>2];
+
+            if($for_pp){
+                $ret['for_pp']=true;
+            }
+
+            if($for_pp_child){
+                $ret['for_pp_child']=true;
+            }
+
+    		return view('integrasi.kb1tahun.pn.indikator')
+            ->with($ret)->render();
 
 	   }else{
 	   		return 'data tidak tersedia';

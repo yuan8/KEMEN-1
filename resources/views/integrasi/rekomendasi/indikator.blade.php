@@ -36,64 +36,87 @@
 
 <hr>
 <H5><b>LIST INDIKATOR TERSEDIA KEWENANGAN {{$kewenangan}}</b></H5>
+
 <table class="table table-bordered" id="table-indikator-{{$domid}}" style="width:100%">
 	<thead>
 		<tr>
 			<th>ACTION</th>
+			<th>SUB URUSAN</th>
+			<th>JENIS</th>
 			<th>KODE</th>
 			<th>INDIKATOR</th>
-			<th>TARGET PUSAT</th>
+			<th>TARGET</th>
 			<th>SATUAN</th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach($data as $key_ind =>$d)
-
-		<tr>
-			<td>
-				<div class="btn-group pull-right">
-					<button class="btn btn-success  btn-xs" onclick="tambahIndikator_{{$domid}}({{$key_ind}})" >
-						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i></button>
-				</div>
-			</td>
-			<td>{{$d->kode}}</td>
-			<td>{{$d->uraian}}</td>
-			<td>
-				@if(($d['tipe_value']==1)OR($d['tipe_value']==2))
-				{{number_format($d['target'],2)}}
-				@else
-					{{$d['target']}}
-				@endif
-
-				@if($d['tipe_value']==2)
-					<-> {{number_format($d['target_1'],2)}}
-				@endif
-
-			</td>
-			<td>{{$d->satuan}}</td>
-
-		</tr>
-
-
-		@endforeach
+		
 	</tbody>
 
 </table>
 
 <script type="text/javascript">
-	
+	var data_{{$domid}}=[];
 	var table_{{$domid}}=$('#table-indikator-{{$domid}}').DataTable({
-		sort:false
+		sort:false,
+		data:data_{{$domid}},
+		columns:[
+			{	
+				render:function(data,type,datarow){
+					return '<div class="btn-group pull-right">'+
+					'<button class="btn btn-success  btn-xs" onclick="tambahIndikator_{{$domid}}(this,'+datarow.id+')" >'+
+						'<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i></button>'+
+				'</div>';
+				}
+			},
+			{
+				render:function(data,type,datarow){
+					if(datarow._sub_urusan){
+						return datarow._sub_urusan.nama;
+					}else{
+						return '-';
+					}
+				}
+			},
+			{
+				data:"_sumber"
+			},
+			{
+				data:'kode'
+			},
+			{
+				data:"uraian"
+			},
+			{
+				render:function(data,type,datarow){
+				if((parseInt(datarow.tipe_value)==1)||(parseInt(datarow.tipe_value)==2)){
+
+
+						target=datarow.target;
+				}else{
+					target=datarow.target;
+				}
+				
+				if(parseInt(datarow.tipe_value)==2){
+					target+=' <-> '+datarow.target_1;
+				}
+
+				return target;
+				}
+			},
+			{
+				data:"satuan"
+			}
+		]
 	});
 
-	var data_{{$domid}}=<?php echo json_encode($data) ?>;
 
 
 	function checkIndikatorList_{{$domid}}(dom){
 		$(dom).parent().parent().parent().remove();
-		var kosong='<tr id="kosong"><td colspan="5" class="text-center" >Tidak Terdapat Data Indikator Yang Akan ditambahkan</td></tr>';
+
+		var kosong='<tr id="kosong"><td colspan="7" class="text-center" >Tidak Terdapat Data Indikator Yang Akan ditambahkan</td></tr>';
 		setTimeout(function(){
-			console.log($('#list_indikator_to_add_{{$domid}} tbody tr').html());
 			if($('#list_indikator_to_add_{{$domid}} tbody tr').html()==undefined){
 				$('#list_indikator_to_add_{{$domid}} tbody').prepend(kosong);
 			}
@@ -101,13 +124,13 @@
 	}
 
 
-
-	function tambahIndikator_{{$domid}}(key){
-		var data=data_{{$domid}}[key];
-		var kosong='<tr><td colspan="5" id="kosong">Tidak Terdapat Data Indikator Yang Akan ditambahkan</td></tr>';
+	function tambahIndikator_{{$domid}}(dom,id){
+		var tr=($(dom).parent().parent().parent());
+		var data=(table_{{$domid}}.row(tr).data());
+		var kosong='<tr><td colspan="7" id="kosong">Tidak Terdapat Data Indikator Yang Akan ditambahkan</td></tr>';
 
 		if(data){
-			if($('#list_indikator_to_add_{{$domid}} #key_ind_'+key).html()==undefined){
+			if($('#list_indikator_to_add_{{$domid}} #key_ind_'+data.id).html()==undefined){
 				var target=null;
 
 				if((data.tipe_value==2)){
@@ -120,13 +143,78 @@
 					$('#list_indikator_to_add_{{$domid}} #kosong').remove();
 				}
 
-				var dom ='<tr id="key_ind_'+key+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+data.kode+'</td><td>'+data.uraian+'</td><td>'+target+'</td><td>'+data.satuan+'<input type="hidden" name="id_indikator[]" value="'+data.id+'"></td></tr>';
+
+				var dom ='<tr id="key_ind_'+id+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+(data._sub_urusan?data._sub_urusan.nama:'-')+'</td><td>'+data._sumber+'</td><td>'+data.kode+'</td><td>'+data.uraian+'</td><td>'+target+'</td><td>'+data.satuan+'<input type="hidden" name="id_indikator[]" value="'+id+'"></td></tr>';
 				$('#list_indikator_to_add_{{$domid}} tbody').prepend(dom);
 			}
+
 
 		}
 	}
 
+	@php
+	$meta=[];
+
+	if(isset($for_kewenangan)){
+		$meta['id_kewenangan']=null;
+	}
+
+	if(isset($for_integrasi_program)){
+		$meta['id_kewenangan']=['id_kewenangan','!=',null];
+	}
+
+	if(isset($for_integrasi_program_child)){
+		$meta['id_kewenangan']=['id_kewenangan','!=',null];
+		$meta['tag']=[3];
+	}
+
+	if(isset($for_kebijakan)){
+		$meta['id_kebijakan']=null;
+	}
+
+	if(isset($for_pp)){
+		$meta['tag']=[1];
+		$meta['id_kebijakan']=['id_kebijakan','!=',null];
+	}
+	if(isset($for_pp_child)){
+		$meta['tag']=[2,3];
+	}
+
+	if(isset($only_sub_urusan)){
+		$meta['id_sub_urusan']=$only_sub_urusan;
+	}
+	if(isset($have_tag)){
+		$meta['tag']=$have_tag;
+	}
+
+	if(isset($ak_not_null)){
+		$meta['id_kebijakan']=['id_kebijakan','!=',null];
+	}
+
+	if(isset($indikator_from_rkp_id)){
+		$ids=\App\RKP\RKPINDIKATOR::where('id_rkp',$indikator_from_rkp_id)->get()->pluck('id_indikator');
+		$meta['id']=$ids;
+	}
 
 
+
+	
+@endphp
+	function updateSourceRKPINDIKATOR(){
+		API_CON.post('{{route('api.get.master_indikator')}}',<?php echo json_encode($meta,true) ?>).then(function(res){
+			if(parseInt(res.data.kode)==200){
+				res=res.data.data;
+				data_{{$domid}}=res;
+				table_{{$domid}}.clear();
+				table_{{$domid}}.rows.add(res).draw();
+
+			}
+		});
+	}
+
+	updateSourceRKPINDIKATOR();
+
+	
 </script>
+</script>
+

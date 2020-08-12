@@ -21,19 +21,32 @@
                       <th>KODEPEMDA</th>
                       <th></th>
                       <th>NAMA PEMDA</th>
+                      <th>NAMA PROVINSI</th>
+
                       <th>ACTION</th>
 
                   </tr>
                       </thead>
                       <tbody>
                           @foreach($data as $d)
-                            <tr>
+                            @php
+                              $d['_has_rekom']=$d['_has_rekomendasi'];
+                            @endphp
+                            <tr class="{{$d['_rekomendasi_final']?'bg-primary':($d['_has_rekom']?'bg-warning':'')}}">
                                 <td>{{$d->id}}</td>
                                 <td></td>
                                 <td>{{$d->nama}}</td>
+                                <td>{{isset($d['_provinsi'])?$d['_provinsi']['nama']:''}}</td>
+
                                 <td>
-                                  <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn btn-info btn-xs ">BUAT REKOMENDASI {{HP::fokus_tahun()}}</a>
-                                </td>
+                                  @if($d['_rekomendasi_final'])
+                                    <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn btn-primary btn-xs "> VIEW REKOMENDASI {{HP::fokus_tahun()}}</a>
+                                    </td>
+                                  @else
+                                  <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn {{$d['_has_rekom']?'btn-warning':'btn-info'}} btn-xs ">{{$d['_has_rekomendasi']?'EDIT':'BUAT'}} REKOMENDASI {{HP::fokus_tahun()}}</a>
+                                  </td>
+
+                                  @endif
                                
                             </tr>
 

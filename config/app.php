@@ -181,7 +181,8 @@ return [
         JeroenNoten\LaravelAdminLte\ServiceProvider::class,
 
         LaravelFCM\FCMServiceProvider::class,
-        // Barryvdh\DomPDF\ServiceProvider::class,
+        
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -240,7 +241,7 @@ return [
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class,
 
-        // 'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

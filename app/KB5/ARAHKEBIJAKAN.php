@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\KB5\SASARAN;
 use App\KB5\ISU;
-
+use App\MASTER\INDIKATOR;
 
 class ARAHKEBIJAKAN extends Model
 {
@@ -17,7 +17,10 @@ class ARAHKEBIJAKAN extends Model
 
     public function _children(){
     	return $this->hasMany(SASARAN::class,'id_kebijakan');
+    }
 
+    public function _indikator(){
+    	return $this->hasMany(INDIKATOR::class,'id_kebijakan');
     }
 
      public function _isu(){

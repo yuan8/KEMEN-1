@@ -26,6 +26,8 @@
                 <label>Sub Urusan</label>
             <select class="form-control init-use-select2 " style="max-width: 40%!important"  name="s">
                 <option value="">-</option>
+                <option value="null" {{(isset($_GET['t'])?($_GET['s']=='null'?'selected':''):'')}} class="text-uppercase">TIDAK MEMILIKI SUB URUSAN</option>
+
 
                 @foreach($sub_urusan as $s)
                     <option value="{{$s->id}}" {{(isset($_GET['t'])?($_GET['s']==$s->id?'selected':''):'')}}>{{$s->nama}}</option>
@@ -96,7 +98,7 @@
                                 <button class="btn btn-danger btn-xs" onclick="showFormDeleteIndikator({{$d['id']}})"><i class="fa fa-trash"></i></button>
                             </div>
                     </td>
-                    <td>{{$d->_sub_urusan->nama}}</td>
+                    <td>{{$d['_sub_urusan']?$d['_sub_urusan']['nama']:'-'}}</td>
 
                     <td>{{$d->_sumber()}}</td>
                     <td>{{$d->kode}}</td>
@@ -145,7 +147,7 @@
                             @endforeach
                             </ul>
                         @endif
-                         @if($i['kw_np'])
+                         @if($i['kw_p'])
                              <b>PROVINSI</b>
                             <ul>
                             @foreach($i['pelaksana_p'] as $p)
@@ -185,11 +187,28 @@
         });
     }
 
+      function showFormDeleteIndikator(id){
+
+        API_CON.get("{{route('int.m.indikator.form_delete',['id'=>null])}}/"+id,).then(function(res){
+            $('#modal-global-lg .modal-header .modal-title').html('HAPUS INDIKATOR {{Hp::fokus_tahun()}}');
+            $('#modal-global-lg .modal-body').html(res.data);
+            $('#modal-global-lg').modal();
+        });
+    }
+
 
     function showFormDetailIndikator(id){
 
         API_CON.get("{{route('int.kb5tahun.indikator.detail',['id'=>null])}}/"+id,).then(function(res){
             $('#modal-global-lg .modal-header .modal-title').html('DETAIL INDIKATOR {{Hp::fokus_tahun()}}');
+            $('#modal-global-lg .modal-body').html(res.data);
+            $('#modal-global-lg').modal();
+        });
+    }
+
+     function showFormUpdateIndikator(id){
+        API_CON.get("{{route('int.m.indikator.form_edit',['id'=>null])}}/"+id,).then(function(res){
+            $('#modal-global-lg .modal-header .modal-title').html('UPDATE INDIKATOR {{Hp::fokus_tahun()}}');
             $('#modal-global-lg .modal-body').html(res.data);
             $('#modal-global-lg').modal();
         });

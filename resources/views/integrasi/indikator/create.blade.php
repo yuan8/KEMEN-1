@@ -45,13 +45,34 @@
 			<div class="row">
 				<div class="col-md-6 form-group">
 				<label>SUMBER INDIKATOR</label>
-				<select class="form-control init-use-select2" name="tag">
-					<option value="1">RPJMN</option>
+				<select class="form-control init-use-select2" name="tag" id="jenis_indikator">
+					{{-- <option value="1">RPJMN</option> --}}
 					<option value="2">RKP</option>
-					<option value="3">KL</option>
+					<option value="3">KINERJA URUSAN</option>
 				</select>
 			</div>
 			</div>
+			<script type="text/javascript">
+				$('#jenis_indikator').on('change',function(){
+					if($(this).val()!=3){
+						if($('#select_ind_sub_urusan #sub_option_null').html()!=undefined){
+								$('#sub_option_null').remove();
+
+						}
+						$('#select_ind_sub_urusan').attr('required');
+
+					}else{
+						$('#select_ind_sub_urusan').prepend('<option value="" id="sub_option_null">-</option>');
+						$('#select_ind_sub_urusan').removeAttr('required');
+						$('#select_ind_sub_urusan').val(null);
+
+					}
+
+					$('#select_ind_sub_urusan').select2();
+				});
+				$('#jenis_indikator').trigger('change');
+
+			</script>
 			@else
 				<input type="hidden" name="tag" value="{{$tag}}">
 				@if(in_array($tag, [3,2]))
@@ -64,8 +85,12 @@
 			@endif
 			@if(in_array($tag,[0,1,2]))
 			<div class="form-group">
-					<label>SUB URUSAN *</label>
-					<select class="form-control init-use-select2" name="id_sub_urusan" required="" >
+					<label>SUB URUSAN {{in_array($tag,[3,4])?'*':''}} </label>
+					<select class="form-control init-use-select2" name="id_sub_urusan" id="select_ind_sub_urusan" {{in_array($tag,[3,4])?'required="':''}} >
+						@if(in_array($tag,[3,4,0]))
+							<option value="" id="sub_option_null">-</option>
+						@endif
+
 						@foreach($sub_urusan as $sub)
 						@php 
 							$sub=(array)$sub;
