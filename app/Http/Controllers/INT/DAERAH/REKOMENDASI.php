@@ -83,7 +83,7 @@ class REKOMENDASI extends Controller
             return $q->where('tahun',$tahun)->where('id_urusan',$id_urusan);
         }])->first();
         if($daerah['_rekomendasi_final']){
-            return redirect()->route('int.rekomendasi.export',['id'=>$id,['pdf'=>'export']]);
+            return redirect()->route('int.rekomendasi.export',['id'=>$id,'pdf'=>'export']);
 
         }
 
