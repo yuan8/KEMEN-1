@@ -15,7 +15,7 @@ body{
 </style>
 <body style="min-height: 100vh; padding: 0px; width: 100%;">
 	<div style="width: calc(100%-0.2px); padding: 0.1px; background: #222; color:#fff; text-align: center">
-		<h5>DICISION SUPPORT SYSTEM</h5>
+		<h5>DATA SUPPORT SYSTEM</h5>
 	</div>
    
 <!-- partial:index.partial.html -->

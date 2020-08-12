@@ -25,6 +25,7 @@ class Kb1Rkp extends Migration
                  $table->integer('tahun');
                  $table->text('uraian');
                  $table->integer('jenis')->default(1);
+                 $table->bigInteger('id_urusan')->unsigned();
                  $table->bigInteger('id_pn')->nullable();
                  $table->bigInteger('id_pp')->nullable();
                  $table->bigInteger('id_kp')->nullable();
@@ -38,6 +39,10 @@ class Kb1Rkp extends Migration
 
                 $table->foreign('id_pn')
                     ->references('id')->on($schema.'master_rkp')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+                $table->foreign('id_urusan')
+                    ->references('id')->on('public.master_urusan')
                     ->onDelete('cascade')->onUpdate('cascade');
 
                  $table->foreign('id_pp')
@@ -66,6 +71,6 @@ class Kb1Rkp extends Migration
         //
         $schema='rkp.';
 
-        Schema::connection('rkp')->dropIfExists($schema.'pn');
+        Schema::connection('rkp')->dropIfExists($schema.'master_rkp');
     }
 }

@@ -14,6 +14,8 @@ class KONDISI extends Model
     protected $connection = 'form';
     protected $table='kb5_kondisi_saat_ini';
 
+    protected $fillable=['id','satuan','tahun_data','uraian','id_urusan','tahun','nilai','id_user'];
+
 
     public function _children(){
     	return $this->hasMany(ISU::class,'id_kondisi');

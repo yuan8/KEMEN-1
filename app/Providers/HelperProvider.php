@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use DB;
 use Auth;
+use App\MASTER\SATUAN;
 class HelperProvider extends ServiceProvider
 {
     /**
@@ -17,6 +18,68 @@ class HelperProvider extends ServiceProvider
     public function register()
     {
         //
+    }
+
+
+    public static function tag_ind($tag){
+        switch ($tag) {
+            case 1:
+                $r='RPJMN';
+                break;
+
+            case 2:
+                $r='RKP';
+                break;
+
+             case 3:
+                $r='KL';
+                break;
+
+             case 4:
+                $r='LAIN-LAIN';
+                # code...
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+
+        return $r;
+    }
+
+    public static function satuanCreateOrignore($satuan){
+            $data=SATUAN::where('kode','ilike',$satuan)->first();
+
+            if(!$data){
+                $data=SATUAN::create(['kode'=>$satuan]);
+            }
+    }
+
+    public static function pre_ind($tag){
+        switch ($tag) {
+            case 1:
+            $p=static::fokus_urusan()['singkat'].'.RPJMN.IND.';
+                # code...
+                break;
+            case 2:
+            $p=static::fokus_urusan()['singkat'].'.RKP.IND.'.static::fokus_tahun().'.';
+                # code...
+                break;
+            case 3:
+            $p=static::fokus_urusan()['singkat'].'.KL.IND.'.static::fokus_tahun().'.';
+                # code...
+                break;
+                case 4:
+            $p=static::fokus_urusan()['singkat'].'.IND.'.static::fokus_tahun().'.';
+                # code...
+                break;
+            default:
+                # code...
+                break;
+        }
+        return $p;
+    
     }
 
 

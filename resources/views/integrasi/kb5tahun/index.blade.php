@@ -17,17 +17,17 @@
 	<div class="box-body ">
 
 		<button onclick="showFormCreateKondisi()" class="btn btn-success btn-xs text-uppercase">Tambah Kondisi saat ini</button>
-		<a href="" class="btn btn-success btn-xs text-uppercase">DWONLOAD DATA</a>
+		<a href="" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
 
 	</div>
 </div>
 <hr>
 
 <div class="table-responsive">
-	<table class="table bg-white table-bordered">
+	<table class="table bg-white table-bordered table-hover">
 		<thead class="bg-navy">
 			<tr>
-				<th rowspan="2" style="width: 170px;">ACTION</th>
+				<th rowspan="2" style="min-width: 200px;">ACTION</th>
 				<th colspan="5">KONDISI</th>
 				<th rowspan="2">URAIAN ISU STRATEGIS</th>
 				<th rowspan="2">URAIAN ARAH KEBIJAKAN</th>
@@ -64,7 +64,7 @@
 		<tbody class="bg-white">
 		@foreach($data as $kn)
 			<tr class=" ">
-					<td class="bg-white">
+					<td class="">
 						<div class=" pull-right  ">
 							<button collapse-btn-nested="false" data-target=".kn-{{$kn['id']}}"  class="btn btn-info btn-xs kn">
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL KONDISI SAAT INI" class="fa fa-eye"></i> ({{count($kn['_children'])}})</button>
@@ -90,13 +90,14 @@
 					<td>
 						{{$kn['satuan']}}
 					</td>
+					<td colspan="12"></td>
 
 
 				</tr>
 
 				@foreach($kn['_children'] as $isu)
 					<tr class="collapse  kn-{{$kn['id']}}">
-						<td class="bg-white" colspan="6">
+						<td class="" colspan="">
 								<div class=" pull-right">
 									<button  collapse-btn-nested="false" data-target=".isu-{{$isu['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ISU STRATEGIS" class="fa fa-eye"></i>
@@ -107,14 +108,17 @@
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteisu({{$isu['id']}})"><i class="fa fa-trash"></i></button>
 								</div>
 						</td>
-						<td>{{$isu['uraian']}}</td>
+						<td colspan="5"></td>
+						
+
+						<td colspan="12"><b>ISU: </b>{{$isu['uraian']}}</td>
 
 					</tr>
 					@foreach($isu['_children'] as $ak)
 						<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}}">
 						
 						
-							<td class="bg-white" colspan="7">
+							<td class="" colspan="">
 								<div class=" pull-right">
 									<button   collapse-btn-nested="false" data-target=".ak-{{$ak['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ARAH KEBIJAKAN" class="fa fa-eye"></i>
@@ -125,25 +129,27 @@
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteAk({{$ak['id']}})"><i class="fa fa-trash"></i></button>
 								</div>
 							</td>
-							<td>{{$ak['uraian']}}</td>
+							<td colspan="6"></td>
+							<td colspan="11"><b>AK: </b>{{$ak['uraian']}}</td>
 						</tr>
 
 						@foreach($ak['_children'] as $s)
 								<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}} ak-{{$ak['id']}}">
 						
 						
-								<td class="bg-white" colspan="8">
+								<td class="" colspan="">
 									<div class=" pull-right">
 										<button   collapse-btn-nested="false" data-target=".s-{{$s['id']}}"  class="btn btn-info btn-xs ">
 											<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
 										 ({{count($s['_children'])}})</button>
 									<button class="btn btn-success  btn-xs" onclick="showFormCreateIndikator({{$s['id']}})" >
-									<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i></button>
+									<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 									<button class="btn btn-warning  btn-xs" onclick="showFormUpdateSasaran({{$s['id']}})"><i class="fa fa-pen"></i></button>
 									<button class="btn btn-danger  btn-xs" onclick="showFormDeleteSasaran({{$s['id']}})"><i class="fa fa-trash"></i></button>
 									</div>
 								</td>
-								<td>{{$s['uraian']}}</td>
+								<td colspan="7"></td>
+								<td colspan="10"><b>SASARAN: </b>{{$s['uraian']}}</td>
 							</tr>
 
 
@@ -213,14 +219,37 @@
 								</td>
 								<td style="min-width: 200px;">
 									@php
-										$pelaksana=[];
-										preg_match_all("/@\w+/",$i['pelaksana'],$pelaksana);
-									
+										$i['pelaksana_nas']=json_decode($i['pelaksana_nas']);
+										$i['pelaksana_p']=json_decode($i['pelaksana_p']);
+										$i['pelaksana_k']=json_decode($i['pelaksana_k']);
 									@endphp
-									@foreach($pelaksana[0] as $kp=> $p)
-										<p><b>{{$kp+1}}.</b>{{str_replace(['_','@'],' ',$p)}}</p>
+									@if($i['kw_nas'])
+										<b>PUSAT</b>
+										<ul>
+										@foreach($i['pelaksana_nas'] as $p)
+											<li>{{$p}}</li>
+										@endforeach
+										</ul>
+									@endif
+									@if($i['kw_p'])
 
+									<b>PROVINSI</b>
+									<ul>
+									@foreach($i['pelaksana_p'] as $p)
+										<li>{{$p}}</li>
 									@endforeach
+									</ul>
+									@endif
+									@if($i['kw_k'])
+
+									<b>KOTA/KAB</b>
+									<ul>
+									@foreach($i['pelaksana_k'] as $p)
+										<li>{{$p}}</li>
+									@endforeach
+									</ul>
+									@endif
+									
 								</td>
 
 

@@ -116,6 +116,94 @@ class PermasalahanCtrl extends Controller
 
     }
 
+    public function update_masalah_pokok($kodepemda,$id,Request $request){
+        $data=DB::table('ms_pokok')->where('id',$id)->update([
+            'uraian'=>$request->uraian
+        ]);
+        if($data){
+                Alert::success('Success','Berhasl Update Masalah Pokok');
+
+        }
+
+        return back();
+    }
+
+     public function update_masalah($kodepemda,$id,Request $request){
+        $data=DB::table('ms')->where('id',$id)->update([
+            'uraian'=>$request->uraian
+        ]);
+        if($data){
+                Alert::success('Success','Berhasl Update Masalah');
+
+        }
+
+        return back();
+    }
+
+      public function update_akar_masalah($kodepemda,$id,Request $request){
+        $data=DB::table('ms_akar')->where('id',$id)->update([
+            'uraian'=>$request->uraian
+        ]);
+        if($data){
+                Alert::success('Success','Berhasl Update Akar Masalah');
+
+        }
+
+        return back();
+    }
+
+     public function update_data_dukung($kodepemda,$id,Request $request){
+        $data=DB::table('ms_data_dukung')->where('id',$id)->update([
+            'uraian'=>$request->uraian
+        ]);
+        if($data){
+                Alert::success('Success','Berhasl Update Data Dukung');
+
+        }
+
+        return back();
+    }
+
+    public function delete_masalah_pokok($kodepemda,$id,Request $request){
+        $data=DB::table('ms_pokok')->where('id',$id)->delete();
+        if($data){
+                Alert::success('Success','Berhasl Hapus Masalah Pokok');
+
+        }
+
+        return back();
+    }
+
+    public function delete_masalah($kodepemda,$id,Request $request){
+        $data=DB::table('ms')->where('id',$id)->delete();
+        if($data){
+                Alert::success('Success','Berhasl Hapus Masalah');
+
+        }
+
+        return back();
+    }
+
+      public function delete_akar_masalah($kodepemda,$id,Request $request){
+        $data=DB::table('ms_akar')->where('id',$id)->delete();
+        if($data){
+                Alert::success('Success','Berhasl Hapus Akar Masalah');
+
+        }
+
+        return back();
+    }
+
+     public function delete_data_dukung($kodepemda,$id,Request $request){
+        $data=DB::table('ms_data_dukung')->where('id',$id)->delete();
+        if($data){
+                Alert::success('Success','Berhasl Hapus Data Dukung');
+
+        }
+
+        return back();
+    }
+
 
      public function store_masalah($id,$id_pokok,Request $request){
         $uid=Auth::id();

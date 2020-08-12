@@ -7,12 +7,13 @@ use App\Http\Controllers\Controller;
 use DB;
 use Hp;
 use App\KB5\KONDISI;
+
 use App\KB5\INDIKATOR;
 use Validator;
 use Alert;
 use Auth;
 use Carbon\Carbon;
-use App\Master\SUBURUSAN;
+use App\MASTER\SUBURUSAN;
 class KEBIJAKANPUSAT5TAHUN extends Controller
 {
     //
@@ -29,13 +30,9 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
         $rpjmn=Hp::get_tahun_rpjmn(Hp::fokus_tahun());
      
-
-
     	return view('integrasi.kb5tahun.index')->with([
             'data'=>$data,
             'rpjmn'=>$rpjmn
-
-
         ]);
 
     }
@@ -49,7 +46,6 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     	if($request->tipe_value){
     		$valid=Validator::make($request->all(),[
     			'nilai'=>'numeric|required',
-    			'kode'=>'string|required',
     			'satuan'=>'string|required',
     			'tipe_value'=>'numeric',
     			'uraian'=>'string|required',
@@ -58,7 +54,6 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     	}else{
     		$valid=Validator::make($request->all(),[
     			'nilai'=>'string|required',
-    			'kode'=>'string|required',
     			'tipe_value'=>'numeric',
     			'satuan'=>'string|required',
     			'uraian'=>'string|required',
@@ -69,7 +64,6 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
     	if($valid->fails()){
     		Alert::error('Error','');
-    		dd($valid);
     		return back();
 
     	}else{
@@ -78,15 +72,16 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     		$data['nilai']=$request->nilai;
     		$data['tahun_data']=$request->tahun_data;
     		$data['uraian']=$request->uraian;
-    		$data['kode']=$meta_urusan['singkat'].'.KN.'.$request->kode;
     		$data['id_user']=Auth::id();
     		$data['tahun']=$tahun;
     		$data['id_urusan']=$meta_urusan['id_urusan'];
     		$data['created_at']=Carbon::now();
     		$data['updated_at']=Carbon::now();
 
+    		$data=KONDISI::create($data);
+            $data->kode=$meta_urusan['singkat'].'.KN.'.$data->id;
+            $data->update();
 
-    		DB::connection('form')->table('kb5_kondisi_saat_ini')->insert($data);
     		Alert::success('Success','Berhasil menambah data kondisi');
     		return back();
 
@@ -107,7 +102,6 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     	$meta_urusan=Hp::fokus_urusan();
     	$kondisi=KONDISI::where([['id','=',$id],['id_urusan','=',$meta_urusan['id_urusan']]])->first();
     	$satuan=DB::table('master_satuan')->get()->pluck('kode');
-
     	return view('integrasi.kb5tahun.kondisi.update')->with(['kondisi'=>$kondisi,'satuan'=>$satuan]);
 
     }
@@ -116,9 +110,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     	$tahun=Hp::fokus_tahun();
     	$meta_urusan=Hp::fokus_urusan();
     	$kondisi=KONDISI::where([['id','=',$id],['id_urusan','=',$meta_urusan['id_urusan']]])->first();
-
     	return view('integrasi.kb5tahun.kondisi.delete')->with(['kondisi'=>$kondisi]);
-
     }
 
     public function kondisi_delete($id){
@@ -170,7 +162,6 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
     	if($valid->fails()){
     		Alert::error('Error','');
-    		dd($valid);
     		return back();
 
     	}else{
@@ -190,14 +181,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     		$dbv=DB::connection('form')->table('kb5_kondisi_saat_ini')->where('id',$id)->update($data);
     		
     		if($dbv){
-    			if($dbv){
-    			if($data['kode']!=$old['kode']){
-					DB::connection('form')->table('kb5_indikator')->where('id_kondisi',$id)
-					->update([
-						'kode'=>DB::raw("concat('".$data['kode']."','.IND.',kode_realistic)")
-					]);
-    			}
-    		}
+    			
 
     			Alert::success('Success','Berhasil update data kondisi');
     			return back();
@@ -356,8 +340,8 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 	    	$isu=DB::connection('form')->table('kb5_arah_kebijakan  as ak')
 		    	->leftjoin('kb5_isu_strategis as isu','isu.id','=','ak.id_isu')
 		    	->select(DB::RAW("ak.*, isu.uraian as uraian_isu"))
-		    	->where('isu.id',$id)->first();
-			    	if($isu){
+		    	->where('ak.id',$id)->first();
+			    if($isu){
 	    		return view('integrasi.kb5tahun.arah_kebijakan.delete')->with('ak',(array)$isu);
 
 	    	}else{
@@ -382,8 +366,6 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     }
 
     
-
-
 
      public function ak_store($id,Request $request){
     	$tahun=Hp::fokus_tahun();
@@ -412,7 +394,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
      public function indikator_create($id){
 
-    	$ak_kondisi=DB::connection('form')->table('kb5_arah_kebijakan as ak')
+    	$ak_kondisi=(array)DB::connection('form')->table('kb5_arah_kebijakan as ak')
     	->leftjoin('kb5_isu_strategis as isu','isu.id','=','ak.id_isu')
     	->leftjoin('kb5_sasaran as s','s.id_kebijakan','=','ak.id')
     	->leftjoin('kb5_kondisi_saat_ini as kondisi','kondisi.id','=','isu.id_kondisi')
@@ -420,12 +402,19 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     	->where('s.id',$id)->first();
     	$satuan=DB::table('master_satuan')->get()->pluck('kode');
     	$meta_urusan=Hp::fokus_urusan();
-
-
     	$sub_urusan=SUBURUSAN::where('id_urusan',$meta_urusan['id_urusan'])->get()->toArray();
 
     	if($ak_kondisi){
-    		return view('integrasi.kb5tahun.indikator.create')->with(['ak_kondisi'=>(array)$ak_kondisi,'satuan'=>$satuan,'sub_urusan'=>$sub_urusan]);
+    		return view('integrasi.indikator.create')
+            ->with(
+            [
+                'ak_kondisi'=>(array)$ak_kondisi,
+                'satuan'=>$satuan,
+                'sub_urusan'=>$sub_urusan,
+                'tag'=>1,
+                'meta_urusan'=>$meta_urusan
+            ]
+            );
 
     	}else{
     		return 'data tidak tersedia';
@@ -434,20 +423,31 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     }
 
     public function indikator_view($id){
-    	$ak_kondisi=DB::connection('form')->table('kb5_arah_kebijakan as ak')
-    	->leftjoin('kb5_isu_strategis as isu','isu.id','=','ak.id_isu')
-    	->leftjoin('kb5_kondisi_saat_ini as kondisi','kondisi.id','=','isu.id_kondisi')
-    	->leftjoin('kb5_indikator as i','i.id_kebijakan','=','ak.id')
-    	->select(DB::RAW("ak.*,kondisi.kode,kondisi.uraian as uraian_kondisi,kondisi.id as id_kondisi"))
-    	->where('i.id',$id)->first();
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
 
-    	$satuan=DB::table('master_satuan')->get()->pluck('kode');
-    	$meta_urusan=Hp::fokus_urusan();
-    	$indikator=INDIKATOR::where('id',$id)->with('_sub_urusan')->first();
-    	$sub_urusan=SUBURUSAN::where('id_urusan',$meta_urusan['id_urusan'])->get()->toArray();
+    	$ak_kondisi = DB::connection('form')
+            ->table('form.master_indikator as i')
+            ->leftjoin('kb5_sasaran as s','s.id','=','i.id_sasaran')
+        	->leftjoin('kb5_arah_kebijakan as ak','ak.id','=','s.id_kebijakan')
+        	->leftjoin('kb5_isu_strategis as is','is.id','=','ak.id_isu')
+        	->leftjoin('kb5_kondisi_saat_ini as kondisi','kondisi.id','=','is.id_kondisi')
+            ->select(DB::RAW("ak.*, kondisi.kode, kondisi.uraian as uraian_kondisi,kondisi.id as id_kondisi,s.id as id_sasaran"))
+        	->where('i.id',$id)
+            ->where('i.tag',1)
+            ->where('i.tahun',$tahun)
+            ->first();
+
+        if($ak_kondisi){
+            $satuan=DB::table('master_satuan')->get()->pluck('kode');
+            $indikator=INDIKATOR::where('id',$id)->with('_sub_urusan')->first();
+            $sub_urusan=SUBURUSAN::where('id_urusan',$meta_urusan['id_urusan'])->get()->toArray();
+        }
+
+    	
     	
     	if($ak_kondisi){
-    		return view('integrasi.kb5tahun.indikator.update')->with(['ak_kondisi'=>(array)$ak_kondisi,'satuan'=>$satuan,'sub_urusan'=>$sub_urusan,'indikator'=>$indikator]);
+    		return view('integrasi.indikator.show')->with(['ak_kondisi'=>(array)$ak_kondisi,'satuan'=>$satuan,'sub_urusan'=>$sub_urusan,'meta_urusan'=>$meta_urusan,'data'=>$indikator,'tag'=>1]);
     	}else{
     		return 'data tidak tersedia';
     	}
@@ -456,51 +456,72 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
 
 
-     public function indikator_store($id,$id_kondisi=null,Request $request){
+     public function indikator_store($id,Request $request){
     	$tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
     	$ak_kondisi=(array)DB::connection('form')->table('kb5_arah_kebijakan as ak')
     	->leftjoin('kb5_isu_strategis as isu','isu.id','=','ak.id_isu')
     	->leftjoin('kb5_kondisi_saat_ini as kondisi','kondisi.id','=','isu.id_kondisi')
     	->leftjoin('kb5_sasaran as s','s.id_kebijakan','=','ak.id')
-    	->select(DB::RAW("ak.*,kondisi.kode,kondisi.uraian as uraian_kondisi,kondisi.id as id_kondisi"))
+    	->select(DB::RAW("ak.*, kondisi.kode, kondisi.uraian as uraian_kondisi,kondisi.id as id_kondisi,s.id as id_sasaran"))
     	->where('s.id',$id)
-    	->where('kondisi.id',$id_kondisi)
     	->first();
 
     	if($ak_kondisi){
-    		$data=[];
-    		$data['uraian']=$request->uraian;
-    		$data['kode_realistic']=$request->kode;
-    		$data['kode']=$ak_kondisi['kode'].'.IND.'.$request->kode;
-    		$data['tahun']=$tahun;
-    		$data['id_kebijakan']=$ak_kondisi['id'];
-    		$data['id_sasaran']=$id;
-    		$data['id_kondisi']=$id_kondisi;
-    		$data['tipe_value']=$request->tipe_value;
-    		$data['target']=$request->target;
-    		$data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
-    		$data['satuan']=$request->satuan;
-    		$data['lokus']=$request->lokus;
-    		$data['kw_nas']=$request->kw_nas=='on'?true:false;
-    		$data['kw_p']=$request->kw_p=='on'?true:false;
-    		$data['kw_k']=$request->kw_k=='on'?true:false;
-    		$data['id_sub_urusan']=$request->id_sub_urusan;
-    		$data['data_dukung_nas']=$data['kw_nas']?($request->data_dukung_nas):null;
-    		$data['data_dukung_p']=$data['kw_p']?($request->data_dukung_p):null;
-    		$data['data_dukung_k']=$data['kw_k']?($request->data_dukung_k):null;
-    		$data['keterangan']=$request->keterangan;
-    		$data['pelaksana']=strtoupper($request->pelaksana);
+            $data=[];
+            $data['tag']=1;
+            $data['id_kondisi']=$ak_kondisi['id_kondisi'];
+            $data['id_kebijakan']=$ak_kondisi['id'];
+            $data['id_sasaran']=$ak_kondisi['id_sasaran'];
+            $data['uraian']=$request->uraian;
+            $data['kode_realistic']=$request->kode;
+            $data['tahun']=$tahun;
+            $data['tipe_value']=$request->tipe_value;
+            $data['target']=$request->target;
+    
+            $data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
 
-    		$data['id_user']=Auth::id();
-    		$data['created_at']=Carbon::now();
-    		$data['updated_at']=Carbon::now();
+            $data['satuan']=$request->satuan;
+            $data['lokus']=$request->lokus;
+            $data['kw_nas']=$request->kw_nas=='on'?true:false;
+
+            $data['kw_p']=$request->kw_p=='on'?true:false;
+
+            $data['kw_k']=$request->kw_k=='on'?true:false;
+
+            $data['id_sub_urusan']=$request->id_sub_urusan;
+            $data['data_dukung_nas']=$data['kw_nas']?($request->data_dukung_nas):null;
+            $data['data_dukung_p']=$data['kw_p']?($request->data_dukung_p):null;
+            $data['data_dukung_k']=$data['kw_k']?($request->data_dukung_k):null;
+            $data['keterangan']=$request->keterangan;
+            $data['pelaksana_nas']=$data['kw_nas']?json_encode($request->pelaksana_nas?$request->pelaksana_nas:[]):'[]';
+
+            $data['pelaksana_p']=$data['kw_p']?json_encode($request->pelaksana_p?$request->pelaksana_p:[]):'[]';
+
+            $data['pelaksana_k']=$data['kw_k']?json_encode($request->pelaksana_k?$request->pelaksana_p:[]):'[]';
+
+            $data['kewenangan_nas']=$data['kw_nas']?($request->kewenangan_nas):null;
+            $data['kewenangan_p']=$data['kw_p']?($request->kewenangan_p):null;
+            $data['kewenangan_k']=$data['kw_k']?($request->kewenangan_k):null;
+            $data['id_user']=Auth::id();
+            $data['created_at']=Carbon::now();
+            $data['updated_at']=Carbon::now();
+
+            $data=INDIKATOR::create($data);
 
 
-    		DB::connection('form')->table('kb5_indikator')->insert($data);
-    		Alert::success('Success','Berhasil menambah data indikator');
-    		return back();
+            if($data){
+                $data->update([
+                    'kode'=> Hp::pre_ind(1).$data->id,
+                    'kode_realistic'=>$data->id
+                ]);
+
+                Hp::satuanCreateOrignore($data['satuan']);
 
 
+                Alert::success('Success','Berhasil Menambahkan indikator');
+            }
+            return back();
     	}else{
     		return abort('404');
     	}
@@ -510,30 +531,52 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     public function indikator_update($id,Request $request){
     		$indikator=INDIKATOR::where('id',$id)->with('_kondisi')->first();
     		if($indikator){
+	    	$data=[];
+            $data['tag']=1;
+            $tahun=Hp::fokus_tahun();
+            $meta_urusan=Hp::fokus_urusan();
+           
+            $data['uraian']=$request->uraian;
+            $data['kode_realistic']=$request->kode;
+            $data['kode']=$meta_urusan['singkat'].'.IND.'.$request->kode;
+            $data['tahun']=$tahun;
+            $data['tipe_value']=$request->tipe_value;
+            $data['target']=$request->target;
+    
+            $data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
 
-	    		$data['uraian']=$request->uraian;
-	    		$data['kode_realistic']=$request->kode;
-	    		$data['kode']=$indikator['_kondisi']['kode'].'.IND.'.$request->kode;
-	    		$data['tipe_value']=$request->tipe_value;
-	    		$data['target']=$request->target;
-	    		$data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
-	    		$data['satuan']=$request->satuan;
-	    		$data['kw_nas']=$request->kw_nas=='on'?true:false;
-	    		$data['kw_p']=$request->kw_p=='on'?true:false;
-	    		$data['kw_k']=$request->kw_k=='on'?true:false;
-	    		$data['id_sub_urusan']=$request->id_sub_urusan;
-    			$data['lokus']=$request->lokus;
-	    		$data['data_dukung_nas']=$data['kw_nas']?($request->data_dukung_nas):null;
-	    		$data['data_dukung_p']=$data['kw_p']?($request->data_dukung_p):null;
-	    		$data['data_dukung_k']=$data['kw_k']?($request->data_dukung_k):null;
-	    		$data['keterangan']=$request->keterangan;
-	    		$data['pelaksana']=strtoupper($request->pelaksana);
-	    		$data['updated_at']=Carbon::now();
+            $data['satuan']=$request->satuan;
+            $data['lokus']=$request->lokus;
+            $data['kw_nas']=$request->kw_nas=='on'?true:false;
 
-    			$indikator->update($data);
-    			Alert::success('Success','Berhasil merubah data indikator');
+            $data['kw_p']=$request->kw_p=='on'?true:false;
 
-    			return back();
+            $data['kw_k']=$request->kw_k=='on'?true:false;
+
+            $data['id_sub_urusan']=$request->id_sub_urusan;
+            $data['data_dukung_nas']=$data['kw_nas']?($request->data_dukung_nas):null;
+            $data['data_dukung_p']=$data['kw_p']?($request->data_dukung_p):null;
+            $data['data_dukung_k']=$data['kw_k']?($request->data_dukung_k):null;
+            $data['keterangan']=$request->keterangan;
+            $data['pelaksana_nas']=$data['kw_nas']?json_encode($request->pelaksana_nas?$request->pelaksana_nas:[]):'[]';
+
+            $data['pelaksana_p']=$data['kw_p']?json_encode($request->pelaksana_p?$request->pelaksana_p:[]):'[]';
+
+            $data['pelaksana_k']=$data['kw_k']?json_encode($request->pelaksana_k?$request->pelaksana_p:[]):'[]';
+
+            $data['kewenangan_nas']=$data['kw_nas']?($request->kewenangan_nas):null;
+            $data['kewenangan_p']=$data['kw_p']?($request->kewenangan_p):null;
+            $data['kewenangan_k']=$data['kw_k']?($request->kewenangan_k):null;
+            $data['id_user']=Auth::id();
+            $data['created_at']=Carbon::now();
+            $data['updated_at']=Carbon::now();
+
+            $data=INDIKATOR::where('id',$id)->update($data);
+
+            if($data){
+                Alert::success('Success','Berhasil Update Indikator');
+            }
+            return back();
 
     		}else{
 
@@ -576,14 +619,15 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     }
 
     public function indikator_detail($id){
-		$indikator=INDIKATOR::where('id',$id)->orWhere('kode_realistic',$id)->orWhere('kode')
-		->with(
-			'_sub_urusan',
+		$indikator=INDIKATOR::where('id',$id)->orWhere('kode_realistic',$id)->orWhere('kode',$id)
+		->with([
+			'_sub_urusan._urusan',
 			'_sasaran',
 			'_kebijakan._isu',
-			'_kondisi._urusan'
-		)->first();
-
+			'_kondisi._urusan',
+            '_kewenangan',
+		])->first();
+        $indikator['_sumber']=$indikator->_sumber();
 
 		if($indikator){
 			return view('integrasi.kb5tahun.indikator.detail')->with('i',$indikator);
@@ -667,7 +711,6 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
      public function sasaran_store($id,Request $request){
     	$tahun=Hp::fokus_tahun();
-
     	$kondisi=DB::connection('form')->table('kb5_arah_kebijakan')->find($id);
 
     	if($kondisi){

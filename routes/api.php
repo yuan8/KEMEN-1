@@ -27,6 +27,10 @@ Route::post('check_login_barcode','LoginBarcodeCtrl@login');
 
 Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 
+		Route::prefix('perurusan')->group(function(){
+			Route::post('master-indikator','INT\INDIKATOR@list_indikator')->name('api.get.master_indikator');
+		});
+
 		Route::prefix('kebijakan-pusat/')->group(function(){
 			Route::get('/get-uu', 'FORM\KebijakanCtrl@api_get_uu')->name('api.kebijakan.pusat.get.uu');
 			Route::post('/store-uu/{id}', 'FORM\KebijakanCtrl@api_store_uu')->name('api.kebijakan.pusat.store.uu');
@@ -100,8 +104,14 @@ Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 			Route::get('/get-ind', 'FORM\IntegrasiCtrl@api_get_data_ind')
 			->name('api.int.get.ind');
 
+			Route::post('/set-target-rekomendasi/{kodepemda}/{kode_indikator}', 'INT\DAERAH\REKOMENDASI@setTargetDarah')
+			->name('api.int.daerah.set.target');
+
 			Route::get('/get-nomen-pro', 'FORM\IntegrasiCtrl@api_get_nomen_pro')
 			->name('api.int.get.nomen.pro');
+
+			Route::post('/update-data-target-ahir', 'INT\PROGRAMKEGIATAN@update_target')
+			->name('api.int.prokeg.update_target');
 
 		});
 

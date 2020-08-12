@@ -5,15 +5,20 @@ namespace App\RKP;
 use Illuminate\Database\Eloquent\Model;
 use App\RKP\RKPINDIKATOR;
 use App\KB5\INDIKATOR;
-
+use App\INTEGRASI\REKOMENDASI;
+use App\INTEGRASI\REKOMENDASIKAB;
+use Hp;
 
 class RKP extends Model
 {
     //
 
-    protected $fillable=['tahun','uraian','created_at','updated_at','id_user'];
+
     protected $connection = 'rkp';
-    protected $table='master_rkp';
+    protected $table='rkp.master_rkp';
+
+    protected $fillable=['tahun','uraian','created_at','updated_at','id_user','id_pn','id_pp','id_kp','id_propn','id_urusan'];
+    
 
     public function _child_pp(){
     	return $this->hasMany($this,'id_pn')->where('jenis',2)->with('_tag_indikator._indikator');
@@ -51,9 +56,16 @@ class RKP extends Model
         return $this->hasMany(RKPINDIKATOR::class,'id_rkp');
     }
 
-
     public function _indikator(){
         return $this->belongsToMany(INDIKATOR::class,RKPINDIKATOR::class,'id_rkp','id_indikator');
+    }
+
+    public function _nomen_pro(){
+        return $this->hasMany(REKOMENDASI::class,'id_rkp')->where('jenis',1);
+    }
+
+    public function _nomen_kab(){
+        return $this->hasMany(REKOMENDASIKAB::class,'id_rkp')->where('jenis',1);
     }
 
 

@@ -16,7 +16,7 @@
 @section('body')
     <style type="text/css">
         table th,table td{
-            font-size: 10px;
+            font-size: 13px;
         }
     </style>
 
@@ -214,7 +214,7 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div class="modal fade" tabindex="-1" role="dialog" id="modal-global-lg">
+    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="modal-global-lg">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content ">
           <div class="modal-header">
@@ -261,7 +261,12 @@
 
         $('.kn[collapse-btn-nested]').trigger('click');
 
+        $('.init-use-select2').select2();
+
 
       </script>
+      <style type="text/css">
+        
+      </style>
 
     @stop

@@ -74,10 +74,13 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 
 		Route::prefix('kebijakan-pusat/')->group(function(){
 			Route::get('/', 'FORM\KebijakanCtrl@index')->name('kebijakan.pusat.index');
+
 			Route::delete('/delete/mandat/{id}', 'FORM\KebijakanCtrl@delete_mandat')->name('kebijakan.pusat.delete');
 
-
 			Route::post('/tambah/sub/{id}/mandat/', 'FORM\KebijakanCtrl@store_mandat')->name('kebijakan.pusat.store.mandat');
+
+			Route::put('/update/sub/{id}/mandat/{id_mandat}', 'FORM\KebijakanCtrl@update_mandat')->name('kebijakan.pusat.update');
+
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/uu', 'FORM\KebijakanCtrl@store_uu')->name('kebijakan.pusat.store.mandat.uu');
 
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/pp', 'FORM\KebijakanCtrl@store_pp')->name('kebijakan.pusat.store.mandat.pp');
@@ -91,7 +94,9 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 
 		Route::prefix('kebijakan-daerah/')->group(function(){
 			Route::get('/', 'FORM\KebijakanCtrl@index_daerah')->name('kebijakan.daerah.index');
+
 			Route::get('/tambah', 'FORM\KebijakanCtrl@create_daerah')->name('kebijakan.daerah.create');
+			
 			Route::get('/fokus/{id}', 'FORM\KebijakanCtrl@view_daerah')->name('kebijakan.daerah.view.daerah');
 
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/perda', 'FORM\KebijakanCtrl@store_perda')->name('kebijakan.daerah.store.mandat.perda');
@@ -107,11 +112,15 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 
 		Route::prefix('permasalahan/')->group(function(){
 			Route::get('/', 'FORM\PermasalahanCtrl@index')->name('permasalahan.index');
+
 			Route::get('/daerah/fokus/{id}', 'FORM\PermasalahanCtrl@view_daerah')->name('permasalahan.daerah.view.daerah');
 
 			Route::post('/daerah/fokus/{id}/tambah-masalah-pokok', 'FORM\PermasalahanCtrl@store_masalah_pokok')->name('permasalahan.daerah.store.masalah_pokok');
+
 			Route::post('/daerah/fokus/{id}/masalah-pokok/{id_ms_pokok}/tambah-masalah', 'FORM\PermasalahanCtrl@store_masalah')->name('permasalahan.daerah.store.masalah');
+
 			Route::post('/daerah/fokus/{id}/masalah-pokok/{id_ms_pokok}/masalah/{id_masalah}/tambah-akar-masalah', 'FORM\PermasalahanCtrl@store_akar_masalah')->name('permasalahan.daerah.store.akar_masalah');
+
 			Route::post('/daerah/fokus/{id}/masalah-pokok/{id_ms_pokok}/masalah/{id_masalah}/akar-masalah/{id_akar}/tambah-data-masalah', 'FORM\PermasalahanCtrl@store_data_sukung')->name('permasalahan.daerah.store.data_dukung');
 
 			Route::get('/tambah', 'FORM\PermasalahanCtrl@create')->name('permasalahan.create');

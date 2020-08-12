@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\KB5;
+namespace App\Http\Controllers\DAERAH;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class SASARAN extends Controller
+class PERMASALAHAN extends Controller
 {
     //
 }

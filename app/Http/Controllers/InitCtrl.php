@@ -56,8 +56,12 @@ class InitCtrl extends Controller
 
     	if(in_array($id, $array)){
     		Alert::success('Sukses','View Urusan Telah Berubah');
+           
+            $urusan=(array)DB::table('public.master_urusan')->select('id as id_urusan','nama','nomenklatur','singkat','kode')
+            ->where('id',$id)
+            ->first();
 
-    		session(['fokus_urusan'=>array('id_urusan'=>$id,'nama'=>session('route_access')[$id])]);
+    		session(['fokus_urusan'=>$urusan]);
     		return redirect()->route('init.refresing')->with('url',url()->previous());
 
     	}else{

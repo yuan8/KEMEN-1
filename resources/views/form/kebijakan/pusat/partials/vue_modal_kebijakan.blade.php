@@ -5,6 +5,11 @@
             <div class="modal-content">
                   <div class="modal-header text-center">
                     <h4 class="text-uppercase">Tambah {{$tag}} <span ></span>
+                      <div class="pull-right">
+                          <button type="button" class="btn btn-info btn-xs" v-on:click='toggleNew'>
+                              <i class="fa fa-plus"></i> Tambah Manual DB
+                      </button>
+                      </div>
                   </div>
                   <div class="modal-body" >
                     <span>@{{mandat}}</span>
@@ -27,9 +32,7 @@
                    
                   </div>
                   <div class="modal-footer">
-                     <button type="button" class="btn btn-info btn-sm" v-on:click='toggleNew'>
-                              <i class="fa fa-plus"></i> Tambah Manual DB
-                      </button>
+                   
                      <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times-circle"></i> Tutup</button>
                     <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-plus"></i> Tambah</button>
                   </div>
