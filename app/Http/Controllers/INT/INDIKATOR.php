@@ -223,9 +223,9 @@ class INDIKATOR extends Controller
     public function delete($id){
         $tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
-        $indikator=IND::with('_rekomendasi_final'=>function($q) use ($tahun){
+        $indikator=IND::with(['_rekomendasi_final'=>function($q) use ($tahun){
             return $q->where('tahun',$tahun);
-        })->where('tahun',$tahun)->where('id',$id)->delete();
+        }])->where('tahun',$tahun)->where('id',$id)->delete();
 
         if($indikator){
             Alert::success('PENGHAPUSAN PERMANEN','Berhasil Menghapus Permanen Indikator');
