@@ -26,7 +26,6 @@
                             <th>KESESUAIAN</th>
                             <th>PERDA</th>
                             <th>PERKADA</th>
-							<th>LAINNYA</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,13 +39,8 @@
                             @if(($id_sub_urusan!=$kb->id)&&(!empty($kb->id)))
                                 <tr>
                                     <td>{{$kb->nama}}</td>
-<<<<<<< HEAD
-                                    <td colspan="5" class="bg bg-warning"></td>
-            
-=======
                                     <td colspan="4" class="bg bg-warning"></td>
 
->>>>>>> 191bc1402d336508523feba3b2951a632927a1bc
                                 </tr>
                                 <?php $id_sub_urusan=$kb->id; ?>
                             @endif
@@ -70,11 +64,6 @@
                                             <i class="fa fa-edit"></i> PERKADA
                                         </button>
                                     </td>
-									<td>
-                                          <button class="btn btn-info btn-xs" onclick="plus_lainnya.build('#plus-lainnya','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.lainnya',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.lainnya',['id'=>$kb->id_mandat])}}','{{$kb->lainnya}}','{{$kode_daerah}}')">
-                                            <i class="fa fa-edit"></i> LAINNYA
-                                        </button>
-                                    </td>
 
 
                                 </tr>
@@ -83,9 +72,10 @@
                             @if((!empty($kb->id_integrasi)))
                                 <tr>
                                     <td colspan="2"></td>
-                                    <td class="bg {{$kb->kesesuaian==0?'bg-danger':(($kb->kesesuaian==1)?'bg-success':'bg-warning') }}" colspan="4">
-                                        <button onclick="update_kesesuian.build('{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.update.kesesuian',['id'=>$kb->id_integrasi])}}',{{$kb->id_integrasi}},{{$kb->kesesuaian}},'{{$kb->note}}')" class="btn btn-xs {{$kb->kesesuaian==0?'btn-danger':(($kb->kesesuaian==1)?'btn-success':'btn-warning') }}">
-                                            {{$kb->kesesuaian==0?'Belum Dinilai':(($kb->kesesuaian==1)?'Sesuai':'Tidak Sesuai') }}
+                                    <td class="bg {{$kb->kesesuaian==0?'bg-danger':(($kb->kesesuaian==1)?'bg-success':'bg-warning') }}" colspan="3">
+                                        <button onclick="update_kesesuian.build('{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.update.kesesuian',['id'=>$kb->id_integrasi])}}',{{$kb->id_integrasi}},{{$kb->kesesuaian}},data_{{$kb->id_mandat}}.note)" class="btn btn-xs {{$kb->kesesuaian==0?'btn-danger':(($kb->kesesuaian==1)?'btn-success':'btn-warning') }}">
+                                          <i class="fa fa-pen"></i>
+                                            {!!$kb->kesesuaian==0?'Belum Dinilai':(($kb->kesesuaian==1)?'  Sesuai':'Tidak Sesuai') !!}
 
                                         </button>
                                     </td>
@@ -113,22 +103,6 @@
                                         @if(!empty($kb->perkada))
                                          <ul>
                                           <?php $duu=explode('|@|',$kb->perkada); ?>
-                                          @foreach($duu as $uu)
-                                          <?php $uu=explode('(@)', $uu) ?>
-
-                                          <li>{{$uu[1]}}</li>
-                                          @endforeach
-
-
-                                         </ul>
-
-                                        @endif
-
-                                    </td>
-									<td>
-                                        @if(!empty($kb->lainnya))
-                                         <ul>
-                                          <?php $duu=explode('|@|',$kb->lainnya); ?>
                                           @foreach($duu as $uu)
                                           <?php $uu=explode('(@)', $uu) ?>
 
@@ -172,7 +146,6 @@
 
 @include('form.kebijakan.daerah.partials.vue_modal_tambah_kebijakan_daerah',['tag'=>'perda'])
 @include('form.kebijakan.daerah.partials.vue_modal_tambah_kebijakan_daerah',['tag'=>'perkada'])
-@include('form.kebijakan.daerah.partials.vue_modal_tambah_kebijakan_daerah',['tag'=>'lainnya'])
 @include('form.kebijakan.daerah.partials.vue_modal_update_kesesuaian')
 
 

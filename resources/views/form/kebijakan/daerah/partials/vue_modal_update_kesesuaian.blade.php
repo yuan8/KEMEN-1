@@ -40,7 +40,7 @@
                   <div class="modal-footer">
                     
                      <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times-circle"></i> Tutup</button>
-                    <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-plus"></i> Tambah</button>
+                    <button type="submit" class="btn btn-warning btn-sm"><i class="fa fa-plus"></i> Update</button>
                   </div>
                @csrf
             </div>
