@@ -567,9 +567,10 @@ class KebijakanCtrl extends Controller
             'int.id as id_integrasi','int.kesesuaian',
             DB::raw('(select nama from master_daerah where id=int.kode_daerah) as nama_daerah'),
              DB::raw("(select STRING_AGG(CONCAT(ux.id,'(@)',ux.uraian),'|@|' order by ux.id DESC) AS x from ikb_perda as ux where ux.id_integrasi=int.id ) as perda"),
-            DB::raw("(select STRING_AGG(CONCAT(ux.id,'(@)',ux.uraian),'|@|' order by ux.id DESC) AS x from ikb_perkada as ux where ux.id_integrasi=int.id ) as perkada")
-
+            DB::raw("(select STRING_AGG(CONCAT(ux.id,'(@)',ux.uraian),'|@|' order by ux.id DESC) AS x from ikb_perkada as ux where ux.id_integrasi=int.id ) as perkada"),
+            DB::raw("(select STRING_AGG(CONCAT(ux.id,'(@)',ux.uraian),'|@|' order by ux.id DESC) AS x from public.ikb_lainnya as ux where ux.id_integrasi=int.id ) as lainnya")
         )
+
         ->leftJoin('master_sub_urusan as su','man.id_sub_urusan','=','su.id')
         ->leftJoin('ikb_integrasi as int',[['man.id','=','int.id_mandat'],['int.kode_daerah','=',DB::raw("'".$id."'") ]])
 
