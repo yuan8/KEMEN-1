@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>INTEGRASI {{$daerah['nama']}} - {{Hp::fokus_tahun()}}</title>
+	<title>@if(isset($title)) {{$title}} @else INTEGRASI {{$daerah['nama']}} - {{Hp::fokus_tahun()}} @endif</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" href="{{asset('vendor/adminlte/vendor/bootstrap/dist/css/bootstrap.css')}}">
 

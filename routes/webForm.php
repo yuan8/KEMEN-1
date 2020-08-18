@@ -4,6 +4,11 @@
 
 Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 	
+
+	Route::prefix('kebijakan')->group(function(){
+		Route::get('resume','INT\KEBIJAKAN@resume')->name('int.kb.resume');
+
+	});
 	Route::prefix('master-indikator')->group(function(){
 		Route::get('/','INT\INDIKATOR@index')->name('int.m.indikator');
 		Route::get('/create','INT\INDIKATOR@create')->name('int.m.indikator.create');
@@ -12,9 +17,6 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 		Route::put('/update/{id}','INT\INDIKATOR@update')->name('int.m.indikator.update');
 		Route::get('/delete/{id}','INT\INDIKATOR@form_delete')->name('int.m.indikator.form_delete');
 		Route::delete('/delete/{id}','INT\INDIKATOR@delete')->name('int.m.indikator.delete');
-
-
-
 
 		Route::get('/print',function(){
 			$pdf = App::make('dompdf.wrapper');
@@ -157,6 +159,9 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 	Route::prefix('permasalahan')->group(function(){
 
 		Route::get('/daerah/{kodepemda}','INT\DAERAH\PELAKSANAANURUSAN@detail')->name('int.permasalahan.detail');
+
+		Route::get('/resume/{id}','INT\PERMASALAHAN@resume')->name('int.permasalahan.resume');
+
 		Route::post('/daerah/update/masalah-pokok/{kodepemda}/{id}','FORM\PermasalahanCtrl@update_masalah_pokok')->name('int.permasalahan.update_masalah_pokok');
 		Route::post('/daerah/update/masalah/{kodepemda}/{id}','FORM\PermasalahanCtrl@update_masalah')->name('int.permasalahan.update_masalah');
 		Route::post('/daerah/update/akar-masalah/{kodepemda}/{id}','FORM\PermasalahanCtrl@update_akar_masalah')->name('int.permasalahan.update_akar_masalah');

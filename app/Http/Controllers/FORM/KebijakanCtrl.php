@@ -58,7 +58,7 @@ class KebijakanCtrl extends Controller
             $re['created_at']=date('Y-m-d h:i');
             $re['updated_at']=date('Y-m-d h:i');
             $re['tahun']=session('fokus_tahun');
-            $re['tipe']=isset($request->tipe)?true:false;
+            $re['tipe']=($request->tipe=='on')?true:false;
             unset($re['_token']);
 
             $valid=Validator::make($re,[
