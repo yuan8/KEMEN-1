@@ -1,6 +1,5 @@
 @extends('adminlte::page')
 
-
 @section('content_header')
      <div class="row">
     	<div class="col-md-8">
@@ -20,6 +19,7 @@
 
 
 @section('content')
+
     <form action="{{url()->full()}}" method="get">
         <div class="row no-gutter">
             <div class="col-md-4">
@@ -32,6 +32,7 @@
                 @foreach($sub_urusan as $s)
                     <option value="{{$s->id}}" {{(isset($_GET['t'])?($_GET['s']==$s->id?'selected':''):'')}}>{{$s->nama}}</option>
                 @endforeach
+
             </select>
         </div>
             <div class="col-md-3">
@@ -47,6 +48,7 @@
                @endphp
 
             </select>
+
             </div>
             <div class="col-md-4">
                 <label>Indikator Search</label>
@@ -60,6 +62,7 @@
 
         </div>
     </form>
+
 <hr>
 <div class="row">
     <div class="col-md-12">
@@ -88,19 +91,24 @@
 
             </tr>
         </thead>
+
         <tbody>
             @foreach($data as $d)
                 <tr>
+
                     <td>
                            <div class="form-group pull-right">
                                 <button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$d['id']}})"><i class="fa fa-eye"></i></button>
                                  <button class="btn btn-warning btn-xs" onclick="showFormUpdateIndikator({{$d['id']}})"><i class="fa fa-pen"></i></button>
                                 <button class="btn btn-danger btn-xs" onclick="showFormDeleteIndikator({{$d['id']}})"><i class="fa fa-trash"></i></button>
                             </div>
+
                     </td>
                     <td>{{$d['_sub_urusan']?$d['_sub_urusan']['nama']:'-'}}</td>
 
+
                     <td>{{$d->_sumber()}}</td>
+
                     <td>{{$d->kode}}</td>
 
                     <td>{{$d->uraian}}</td>
@@ -168,6 +176,7 @@
 
                 </tr>
             @endforeach
+
         </tbody>
     </table>
 </div>

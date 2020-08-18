@@ -9,7 +9,7 @@
     	<div class="col-md-4 modal-footer">
     		<a href="" class="btn btn-success">Tambah</a>
     	</div>
-
+    	
     </div>
 @stop
 
@@ -26,6 +26,7 @@
                             <th>KESESUAIAN</th>
                             <th>PERDA</th>
                             <th>PERKADA</th>
+							<th>LAINNYA</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,12 +36,11 @@
 
                          ?>
                         @foreach($datas as $kb)
-
                             @if(($id_sub_urusan!=$kb->id)&&(!empty($kb->id)))
                                 <tr>
                                     <td>{{$kb->nama}}</td>
-                                    <td colspan="4" class="bg bg-warning"></td>
-
+                                    <td colspan="5" class="bg bg-warning"></td>
+            
                                 </tr>
                                 <?php $id_sub_urusan=$kb->id; ?>
                             @endif
@@ -50,36 +50,35 @@
                                     <td>{!!$kb->tipe?'<i class="fa fa-circle text-warning"></i>':'<i class="fa fa-circle text-info"></i>'!!} {{$kb->mandat}}</td>
                                     <td colspan=""></td>
                                     <td>
-                                          <script type="text/javascript">
-                                            var data_{{$kb->id_mandat}}=<?php echo json_encode($kb); ?>;
-                                        </script>
-                                        <button class="btn btn-info btn-xs" onclick="plus_perda.build('#plus-perda','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perda',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perda',['id'=>$kb->id_mandat])}}',(data_{{$kb->id_mandat}}.perda?data_{{$kb->id_mandat}}.perda:''),'{{$kode_daerah}}')">
-
+                                        <button class="btn btn-info btn-xs" onclick="plus_perda.build('#plus-perda','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perda',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perda',['id'=>$kb->id_mandat])}}','{{$kb->perda}}','{{$kode_daerah}}')">
                                             <i class="fa fa-edit"></i> PERDA
                                         </button>
                                     </td>
                                     <td>
-
-                                          <button class="btn btn-info btn-xs" onclick="plus_perkada.build('#plus-perkada','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perkada',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perkada',['id'=>$kb->id_mandat])}}',(data_{{$kb->id_mandat}}.perkada?data_{{$kb->id_mandat}}.perkada:''),'{{$kode_daerah}}')">
+                                          <button class="btn btn-info btn-xs" onclick="plus_perkada.build('#plus-perkada','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perkada',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perkada',['id'=>$kb->id_mandat])}}','{{$kb->perkada}}','{{$kode_daerah}}')">
                                             <i class="fa fa-edit"></i> PERKADA
                                         </button>
                                     </td>
+									<td>
+                                          <button class="btn btn-info btn-xs" onclick="plus_lainnya.build('#plus-lainnya','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.lainnya',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.lainnya',['id'=>$kb->id_mandat])}}','{{$kb->lainnya}}','{{$kode_daerah}}')">
+                                            <i class="fa fa-edit"></i> LAINNYA
+                                        </button>
+                                    </td>
 
-
+        
                                 </tr>
                                 <?php $id_sub_urusan=$kb->id; ?>
                             @endif
                             @if((!empty($kb->id_integrasi)))
                                 <tr>
                                     <td colspan="2"></td>
-                                    <td class="bg {{$kb->kesesuaian==0?'bg-danger':(($kb->kesesuaian==1)?'bg-success':'bg-warning') }}" colspan="3">
-                                        <button onclick="update_kesesuian.build('{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.update.kesesuian',['id'=>$kb->id_integrasi])}}',{{$kb->id_integrasi}},{{$kb->kesesuaian}},data_{{$kb->id_mandat}}.note)" class="btn btn-xs {{$kb->kesesuaian==0?'btn-danger':(($kb->kesesuaian==1)?'btn-success':'btn-warning') }}">
-                                          <i class="fa fa-pen"></i>
-                                            {!!$kb->kesesuaian==0?'Belum Dinilai':(($kb->kesesuaian==1)?'  Sesuai':'Tidak Sesuai') !!}
+                                    <td class="bg {{$kb->kesesuaian==0?'bg-danger':(($kb->kesesuaian==1)?'bg-success':'bg-warning') }}" colspan="4">
+                                        <button onclick="update_kesesuian.build('{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.update.kesesuian',['id'=>$kb->id_integrasi])}}',{{$kb->id_integrasi}},{{$kb->kesesuaian}},'{{$kb->note}}')" class="btn btn-xs {{$kb->kesesuaian==0?'btn-danger':(($kb->kesesuaian==1)?'btn-success':'btn-warning') }}">
+                                            {{$kb->kesesuaian==0?'Belum Dinilai':(($kb->kesesuaian==1)?'Sesuai':'Tidak Sesuai') }}
 
                                         </button>
                                     </td>
-
+                                   
                                 </tr>
                                 <tr>
                                     <td colspan="3"></td>
@@ -115,6 +114,22 @@
                                         @endif
 
                                     </td>
+									<td>
+                                        @if(!empty($kb->lainnya))
+                                         <ul>
+                                          <?php $duu=explode('|@|',$kb->lainnya); ?>
+                                          @foreach($duu as $uu)
+                                          <?php $uu=explode('(@)', $uu) ?>
+
+                                          <li>{{$uu[1]}}</li>
+                                          @endforeach
+
+
+                                         </ul>
+
+                                        @endif
+
+                                    </td>
                                 </tr>
 
                                @if(!empty($kb->note))
@@ -132,7 +147,7 @@
                         @endforeach
                     </tbody>
                 </table>
-
+				
 			</div>
 		</div>
 	</div>
@@ -146,6 +161,7 @@
 
 @include('form.kebijakan.daerah.partials.vue_modal_tambah_kebijakan_daerah',['tag'=>'perda'])
 @include('form.kebijakan.daerah.partials.vue_modal_tambah_kebijakan_daerah',['tag'=>'perkada'])
+@include('form.kebijakan.daerah.partials.vue_modal_tambah_kebijakan_daerah',['tag'=>'lainnya'])
 @include('form.kebijakan.daerah.partials.vue_modal_update_kesesuaian')
 
 

@@ -42,6 +42,7 @@ class HelperProvider extends ServiceProvider
             
             default:
                 # code...
+$r='LAIN-LAIN';
                 break;
         }
 

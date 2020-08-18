@@ -225,6 +225,39 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::delete('/delete/mandat/{id}', 'FORM\pemetaanKebijakanRpjmn@delete_pemetaan')->name('pemetaan.kebijakan.delete');
 
 		});
+Route::prefix('prokeg/')->group(function(){
+			Route::get('/', 'PROKEG\prokeg@index_prokeg')->name('prokeg.index');
+			Route::get('/detail/{id}/{namapemda}', 'PROKEG\prokeg@detail_prokeg')->name('prokeg.detail');
+			Route::get('/tambah/misimodal/{id}', 'PROKEG\prokeg@tambah_misi')->name('prokeg.tambah.misi.modal');
+			Route::get('/ubah/misimodal/{id}', 'PROKEG\prokeg@ubah_misi')->name('prokeg.ubah.misimodal');
+			Route::post('/ubah/misi/', 'PROKEG\prokeg@update_misi')->name('prokeg.ubah.misi');
+
+			Route::post('/tambah/misi/', 'PROKEG\prokeg@insert_misi')->name('prokeg.tambah.misi');
+			
+			Route::delete('/hapus/misi/{id}', 'PROKEG\prokeg@hapus_misi')->name('prokeg.hapus.misi');
+
+			Route::put('/ubah/misi/{id}', 'PROKEG\prokeg@ubah_misi')->name('prokeg.ubah.sasaran');
+
+			Route::get('/tambah/sasaranmodal/{id_misi}', 'PROKEG\prokeg@tambah_sasaran')->name('prokeg.tambah.sasaranmodal');
+			Route::post('/tambah/sasaran/', 'PROKEG\prokeg@insert_sasaran')->name('prokeg.tambah.sasaran');
+			Route::delete('/hapus/sasaran/{id}', 'PROKEG\prokeg@hapus_sasaran')->name('prokeg.hapus.sasaran');
+
+			Route::post('/ubah/sasaran/', 'PROKEG\prokeg@update_sasaran')->name('prokeg.ubah.sasaran');
+			Route::get('/ubah/sasaranmodal/{id}', 'PROKEG\prokeg@ubah_sasaran')->name('prokeg.ubah.sasaranmodal');
+
+			Route::post('/tambah/program/', 'PROKEG\prokeg@insert_program')->name('prokeg.tambah.program');
+			Route::get('/tambah/programmodal/{id}', 'PROKEG\prokeg@tambah_program')->name('prokeg.tambah.programmodal');
+			
+			Route::delete('/hapus/program/{id}', 'PROKEG\prokeg@hapus_program')->name('prokeg.hapus.program');
+			Route::delete('/hapus/programrkpd/{id}', 'PROKEG\prokeg@hapus_program_rkpd')->name('prokeg.hapus.program_rkpd');
+
+			Route::post('/ubah/program/', 'PROKEG\prokeg@update_program')->name('prokeg.ubah.program');
+			Route::get('/ubah/programmodal/{id}', 'PROKEG\prokeg@ubah_program')->name('prokeg.ubah.programmodal');
+
+			Route::get('/pemetaan/program/{id}/{kodepemda}','PROKEG\prokeg@pemetaan_program')->name('prokeg.pemetaan.pilihprogram');
+			Route::post('/pemetaan/program/insert','PROKEG\prokeg@insert_pemetaan_program')->name('prokeg.pemetaan.program.insert');
+		});
+
 
 
 });

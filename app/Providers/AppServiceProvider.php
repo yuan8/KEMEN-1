@@ -78,7 +78,8 @@ class AppServiceProvider extends ServiceProvider
 
             $event->menu->add([
                 'text' => 'PROGRAM KEGIATAN',
-                'url'=>route('int.prokeg.index')
+          //      'url'=>route('int.prokeg.index')
+'url'=>route('prokeg.index')
             ]);
 
 
