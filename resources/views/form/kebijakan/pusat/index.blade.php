@@ -6,11 +6,7 @@
     	<div class="col-md-8">
     		<h3>KEBIJAKAN PUSAT </h3>
     	</div>
-    	<div class="col-md-4">
-        <br>
-        <div class="btn-group pull-right">
-          <a href="{{route('int.kb.resume',['pdf'=>'export'])}}" class="btn btn-success btn-xs">DOWNLOAD RESUME</a>
-        </div>
+    	<div class="col-md-4 modal-footer">
     	</div>
     </div>
 @stop
@@ -58,14 +54,13 @@
 
                         var kbm_{{$kb->id_mandat}}=<?php echo json_encode((array)$kb,true);?>;
                         var m_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}};
-
                         var kbuu_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.uu||'';
                         var kbpermen_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.permen||'';
                         var kbperpres_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.perpres||'';
                         var kbpp_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.pp||'';
                         var kbm_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.mandat||'';
 
-                        console.log(m_{{$kb->id_mandat}}.tipe);
+                     //   console.log(m_{{$kb->id_mandat}}.tipe);
                       </script>
 
                   <tr class="">
@@ -76,7 +71,7 @@
                          
                         <i class="fa fa-trash"></i> {{$kb->tipe?'Mandat':'Kegiatan'}}
                       </button>
-                      <button class="btn {{$kb->tipe?'btn-warning':'btn-info'}} btn-xs" onclick="update_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.update',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}',m_{{$kb->id_mandat}})">
+                      <button class="btn btn-warning btn-xs" onclick="update_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.update',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}',m_{{$kb->id_mandat}},'{{$kb->id_mandat}}')">
                         <i class="fa fa-pen"></i> {{$kb->tipe?'Mandat':'Kegiatan'}}
                       </button>
                     </td>
@@ -264,11 +259,13 @@
                       <div class="modal-body" >
                         <div class="form-group">
                           <label class="text-center">Uraian <span v-if='tipe==0' >Mandat</span><span v-if='tipe==1'>Kegiatan</span> </label>
+						  <input v-model="id" name="id_mandat" hidden />
                           <textarea class="form-control" v-model="mandat" required="" name="uraian" style="min-height: 150px;"></textarea>
                         </div>
                         <div class="form-group">
-                          <label class="checkbox-inline" style="min-width: 100px;">
-                           <input id="tm" type="checkbox" checked data-toggle="toggle" name="tipe" data-onstyle="warning" data-on="Mandat" data-off="Kegiatan" data-offstyle="info" data-size="small" data-width="100%"> 
+                          <label  style="min-width: 100px;">
+						  
+                           <input class="tm" type="checkbox"  data-toggle="toggle" name="tipe" data-onstyle="warning" data-on="Mandat" data-off="Kegiatan" data-offstyle="info" data-size="small" data-width="100%"> 
                           </label>
                         </div>
                       </div>
@@ -293,22 +290,33 @@
                     action:'',
                     sub_urusan:'',
                     update:true,
-                    mandat:''
+                    mandat:'',
+					id:''
                   },
+				  
                   methods:{
-                    build:function(sub_urusan,link,x){
+                    build:function(sub_urusan,link,x,id){
                       this.action=link;
                       this.sub_urusan=sub_urusan;
                       this.tipe=x.tipe?0:1;
                       this.mandat=x.mandat;
-
+					  this.id=id;
                         setTimeout(function(){
-                          $('#update-mandat #tm[type="checkbox"]').change(function(){
+                          $('#update-mandat .tm[type="checkbox"]').change(function(){
                             update_mandat.tipe=!$(this).prop('checked');
                           });
                           $('#update-mandat').modal();
                         },500);
 
+					if(this.tipe==1){
+						
+						$('.tm').bootstrapToggle('off');
+						} else{
+			
+						$('.tm').bootstrapToggle('on');
+							};	
+					
+					
 
                     }
                   }
