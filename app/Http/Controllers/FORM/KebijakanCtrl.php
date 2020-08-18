@@ -15,7 +15,6 @@ class KebijakanCtrl extends Controller
 
     public function index(Request $request){
         $urusan=\Hp::fokus_urusan();
-		        DB::enableQueryLog();
 
         $kebijakan=DB::table(DB::raw('master_sub_urusan as su'))
         ->select('su.id as id','su.nama as nama','man.id as id_mandat','man.uraian as mandat','man.tipe',
@@ -31,10 +30,22 @@ class KebijakanCtrl extends Controller
 
 
         ->paginate(10);
-//dd(DB::getQueryLog());
 
 
-    	return view('form.kebijakan.pusat.index')->with('kebijakan',$kebijakan);
+        return view('form.kebijakan.pusat.index')->with('kebijakan',$kebijakan);
+    }
+
+
+    public function update_mandat($id_sub,$id,Request $request){
+
+        $t=DB::table('ikb_mandat')->where('id',$id)->update([
+            'uraian'=>$request->uraian,
+            'tipe'=>$request->tipe?true:false
+        ]);
+
+        Alert::success('Berhasil','Berhasil Melakukan update');
+        return back();
+
     }
 
     public  function store_mandat($id_sub,Request $request)
@@ -66,7 +77,6 @@ class KebijakanCtrl extends Controller
             $id=DB::table('ikb_mandat')->insertGetId($re);
             if($id){
                 Alert::success('','Mandat Ditambahkan');
-
                 return back();
 
             }else{
@@ -93,7 +103,7 @@ class KebijakanCtrl extends Controller
 
     public function store_uu($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'uu'=>'required|array'
+            'uu'=>'array'
         ]);
 
         if($valid->fails()){
@@ -101,10 +111,10 @@ class KebijakanCtrl extends Controller
             return back();
         }
 
-       
+
         $data=[];
-      
-        $uu=$request->uu;
+
+        $uu=$request->uu??[];
 
         foreach ($uu as $key => $value) {
             # code...
@@ -127,19 +137,28 @@ class KebijakanCtrl extends Controller
                 ->whereNotIn('uraian',$uu)
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
-            $a=DB::table('ikb_uu')->insertOrIgnore($data);
+        }else{
+            $a=DB::table('ikb_uu')
+                ->where('id_sub_urusan',$id_sub_urusan)
+                ->where('id_mandat',$id_mandat)
+                ->where('tahun',session('fokus_tahun'))
+                ->delete();
         }
+        $a=DB::table('ikb_uu')->insertOrIgnore($data);
+
+
+
 
         Alert::success('','UU Berhasil di Tambahkan');
         return back();
-        
 
-    	// return view('form.kebijakan.pusat.tambah');
+
+        // return view('form.kebijakan.pusat.tambah');
     }
 
     public function store_pp($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'pp'=>'required|array'
+            'pp'=>'array'
         ]);
 
 
@@ -150,9 +169,9 @@ class KebijakanCtrl extends Controller
         }
 
 
-        
+
         $data=[];
-   
+
         $uu=(array)$request->pp;
 
         foreach ($uu as $key => $value) {
@@ -178,19 +197,31 @@ class KebijakanCtrl extends Controller
             ->whereNotIn('uraian',$uu)
             ->where('tahun',session('fokus_tahun'))
             ->delete();
-            $a=DB::table('ikb_pp')->insertOrIgnore($data);
+        }else{
+            $a=DB::table('ikb_pp')
+                ->where('id_sub_urusan',$id_sub_urusan)
+                ->where('id_mandat',$id_mandat)
+                ->where('tahun',session('fokus_tahun'))
+                ->delete();
+
+
         }
+
+            $a=DB::table('ikb_pp')->insertOrIgnore($data);
+
+
+
 
         Alert::success('','PP Berhasil di Tambahkan');
         return back();
-        
+
 
         // return view('form.kebijakan.pusat.tambah');
     }
 
     public function store_perpres($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'perpres'=>'required|array'
+            'perpres'=>'array'
         ]);
 
         if($valid->fails()){
@@ -198,9 +229,9 @@ class KebijakanCtrl extends Controller
             return back();
         }
 
-       
+
         $data=[];
-     
+
         $uu=$request->perpres;
 
         foreach ($uu as $key => $value) {
@@ -224,20 +255,30 @@ class KebijakanCtrl extends Controller
                 ->whereNotIn('uraian',$uu)
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
-            $a=DB::table('ikb_perpres')->insertOrIgnore($data);
+         }else{
+            $a=DB::table('ikb_perpres')
+                ->where('id_sub_urusan',$id_sub_urusan)
+                ->where('id_mandat',$id_mandat)
+                ->where('tahun',session('fokus_tahun'))
+                ->delete();
+
+
         }
+
+            $a=DB::table('ikb_perpres')->insertOrIgnore($data);
+
 
 
         Alert::success('','Perpres Berhasil di Tambahkan');
         return back();
-        
+
 
         // return view('form.kebijakan.pusat.tambah');
     }
 
     public function store_permen($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'permen'=>'required|array'
+            'permen'=>'array'
         ]);
 
         if($valid->fails()){
@@ -245,9 +286,9 @@ class KebijakanCtrl extends Controller
             return back();
         }
 
-      
+
         $data=[];
-       
+
         $uu=$request->permen;
 
         foreach ($uu as $key => $value) {
@@ -265,18 +306,29 @@ class KebijakanCtrl extends Controller
         }
 
        if(count($uu)>0){
+
              $a=DB::table('ikb_permen')
                 ->where('id_sub_urusan',$id_sub_urusan)
                 ->where('id_mandat',$id_mandat)
                 ->whereNotIn('uraian',$uu)
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
-            $a=DB::table('ikb_permen')->insertOrIgnore($data);
+            }else{
+                $a=DB::table('ikb_permen')
+                ->where('id_sub_urusan',$id_sub_urusan)
+                ->where('id_mandat',$id_mandat)
+                ->where('tahun',session('fokus_tahun'))
+                ->delete();
+
+
         }
+
+            $a=DB::table('ikb_permen')->insertOrIgnore($data);
+
 
         Alert::success('','Permen Berhasil di Tambahkan');
         return back();
-        
+
 
         // return view('form.kebijakan.pusat.tambah');
     }
@@ -500,23 +552,23 @@ class KebijakanCtrl extends Controller
 
     public function index_daerah(Request $request){
 
-    	$provinsi=DB::table('master_daerah')->where(DB::raw('length(id)'),2)
-    	->orderBy('nama','ASC')->get();
+        $provinsi=DB::table('master_daerah')->where(DB::raw('length(id)'),2)
+        ->orderBy('nama','ASC')->get();
 
-    	return view('form.kebijakan.daerah.index',['provinsis'=>$provinsi]);
+        return view('form.kebijakan.daerah.index',['provinsis'=>$provinsi]);
 
     }
 
     public function view_daerah($id,Request $request){
-    	$daerah=DB::table('master_daerah')->find($id);
+        $daerah=DB::table('master_daerah')->find($id);
 
         $data=DB::table('ikb_mandat as man')
         ->select('man.id_sub_urusan as id','su.nama as nama','man.uraian as mandat','man.tipe','man.id as id_mandat','int.note',
             'int.id as id_integrasi','int.kesesuaian',
             DB::raw('(select nama from master_daerah where id=int.kode_daerah) as nama_daerah'),
              DB::raw("(select STRING_AGG(CONCAT(ux.id,'(@)',ux.uraian),'|@|' order by ux.id DESC) AS x from ikb_perda as ux where ux.id_integrasi=int.id ) as perda"),
-            DB::raw("(select STRING_AGG(CONCAT(ux.id,'(@)',ux.uraian),'|@|' order by ux.id DESC) AS x from ikb_perkada as ux where ux.id_integrasi=int.id ) as perkada"),
-            DB::raw("(select STRING_AGG(CONCAT(ux.id,'(@)',ux.uraian),'|@|' order by ux.id DESC) AS x from ikb_lainnya as ux where ux.id_integrasi=int.id ) as lainnya")
+            DB::raw("(select STRING_AGG(CONCAT(ux.id,'(@)',ux.uraian),'|@|' order by ux.id DESC) AS x from ikb_perkada as ux where ux.id_integrasi=int.id ) as perkada")
+
         )
         ->leftJoin('master_sub_urusan as su','man.id_sub_urusan','=','su.id')
         ->leftJoin('ikb_integrasi as int',[['man.id','=','int.id_mandat'],['int.kode_daerah','=',DB::raw("'".$id."'") ]])
@@ -527,14 +579,14 @@ class KebijakanCtrl extends Controller
         ->where('su.id_urusan',Hp::fokus_urusan()['id_urusan'])
         ->paginate(10);
 
-//dd($data);
 
-    	return view('form.kebijakan.daerah.view')->with('daerah',$daerah)->with('datas',$data)->with('kode_daerah',$id)->with('back_link',route('kebijakan.daerah.index'));
+
+        return view('form.kebijakan.daerah.view')->with('daerah',$daerah)->with('datas',$data)->with('kode_daerah',$id)->with('back_link',route('kebijakan.daerah.index'));
     }
 
      public function store_perda($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'perda'=>'required|array'
+            'perda'=>'array'
         ]);
 
         $uid=Auth::id();
@@ -567,13 +619,13 @@ class KebijakanCtrl extends Controller
 
             );
 
-            
+
         }else{
             $integrasi=$integrasi->id;
         }
 
         $data=[];
-       
+
         $uu=$request->perda?$request->perda:[];
 
 
@@ -620,7 +672,7 @@ class KebijakanCtrl extends Controller
 
         Alert::success('','Perda Berhasil di Tambahkan');
         return back();
-        
+
 
         // return view('form.kebijakan.pusat.tambah');
     }
@@ -628,14 +680,14 @@ class KebijakanCtrl extends Controller
 
 
     public function api_get_table_kota(Request $request){
-    	$return =[];
-    	if($request->id){
-			$return =DB::table('master_daerah')->where('id','ilike',DB::raw("'".$request->id."' "."||'%'"))
-			->orderBy('id','ASC')->orderBy('nama','ASC')
-			->get();    		
-    	}
+        $return =[];
+        if($request->id){
+            $return =DB::table('master_daerah')->where('id','ilike',DB::raw("'".$request->id."' "."||'%'"))
+            ->orderBy('id','ASC')->orderBy('nama','ASC')
+            ->get();
+        }
 
-    	return view('form.kebijakan.daerah.api.table_kota')->with('daerahs',$return)->render();
+        return view('form.kebijakan.daerah.api.table_kota')->with('daerahs',$return)->render();
 
     }
 
@@ -821,177 +873,10 @@ class KebijakanCtrl extends Controller
 
 
     }
-//------------------------------------------tambahan-----------------------------------------------------
-    public function api_get_lainnya(Request $request){
 
-         if($request->term){
-            $r=DB::table('ikb_lainnya')->select('uraian as text', 'uraian as id')->where('uraian','ilike',('%'.$request->term.'%'))->groupBy('uraian')->limit(4)->get();
-        }else{
-             $r=DB::table('ikb_lainnya')->select('uraian as text','uraian as id')->groupBy('uraian')->limit(4)->get();
-        }
-
-        return array('results'=>$r);
-
-    }
-
-
-    public function api_store_lainnya($id,Request $request){
-
-        $uid=Auth::id();
-        $m=DB::table('ikb_mandat')->find($id);
-
-
-
-        if($m){
-            $integrasi=DB::table('ikb_integrasi')->where([
-                'id_urusan'=>$m->id_urusan,
-                'id_sub_urusan'=>$m->id_sub_urusan,
-                'id_mandat'=>$id,
-                'kode_daerah'=>$request->kode_daerah,
-                'tahun'=>session('fokus_tahun')
-            ])->select('id')->first();
-
-            if(!$integrasi){
-                $integrasi=DB::table('ikb_integrasi')->insertGetId([
-                    'id_urusan'=>$m->id_urusan,
-                    'id_sub_urusan'=>$m->id_sub_urusan,
-                    'id_mandat'=>$id,
-                    'kode_daerah'=>$request->kode_daerah,
-                    'tahun'=>session('fokus_tahun'),
-                    'id_user'=>$uid,
-                    'created_at'=>date('Y-m-d h:i'),
-                    'updated_at'=>date('Y-m-d h:i')
-                ]);
-            }else{
-                $integrasi=$integrasi->id;
-            }
-
-
-            $check=DB::table('ikb_lainnya')->where([
-                'id_integrasi'=>$integrasi,
-                'kode_daerah'=>$request->kode_daerah,
-                'id_urusan'=>$m->id_urusan,
-                'id_sub_urusan'=>$m->id_sub_urusan,
-                'uraian'=>$request->uraian,
-                'id_mandat'=>$id,
-                'tahun'=>session('fokus_tahun')
-            ])->first();
-
-            if($check){
-                return array('code'=>500,'mesaage'=>'');
-            }else{
-                $uu=true;
-               // $uu= DB::table('ikb_uu')->insertGetId(
-               //  [
-               //      'id_urusan'=>$m->id_urusan,
-               //      'id_sub_urusan'=>$m->id_sub_urusan,
-               //      'uraian'=>$request->uraian,
-               //      'id_mandat'=>$id,
-               //      'tahun'=>session('fokus_tahun'),
-               //      'id_user'=>$uid,
-               //      'created_at'=>date('Y-m-d h:i'),
-               //      'updated_at'=>date('Y-m-d h:i')
-               //  ]
-               // );
-                if($uu){
-                    return array('code'=>200,'data'=>array('text'=>$request->uraian,'id'=>$request->uraian));
-               }else{
-                    return array('code'=>500,'mesaage'=>'');
-               }
-            }
-
-        }else{
-             return array('code'=>500,'mesaage'=>'Peraturan Tidak Tersedia');
-
-        }
-
-
-
-    }
-
-public function store_lainnya($id_sub_urusan,$id_mandat,Request $request){
-        $valid=Validator::make($request->all(),[
-            'lainnya'=>'required|array'
-        ]);
-
-        $uid=Auth::id();
-
-        if($valid->fails()){
-            Alert::error('Gagal','Peraturan kosong');
-            return back();
-        }
-
-        $m=DB::table('ikb_mandat')->find($id_mandat);
-
-        $integrasi=DB::table('ikb_integrasi')
-        ->where('id_sub_urusan',$id_sub_urusan)
-        ->where('id_mandat',$id_mandat)
-        ->where('kode_daerah',$request->kode_daerah)
-        ->where('tahun',session('fokus_tahun'))->first();
-
-        if(!$integrasi){
-            $integrasi=DB::table('ikb_integrasi')->insertGetId(
-                [
-                    'id_sub_urusan'=>$id_sub_urusan,
-                    'id_mandat'=>$id_mandat,
-                    'tahun'=>session('fokus_tahun'),
-                    'id_urusan'=>Hp::fokus_urusan()['id_urusan'],
-                    'kode_daerah'=>$request->kode_daerah,
-                    'id_user'=>$uid,
-                    'created_at'=>date('Y-m-d h:i'),
-                    'updated_at'=>date('Y-m-d h:i')
-                ]
-
-            );
-
-            
-        }else{
-            $integrasi=$integrasi->id;
-        }
-
-        $data=[];
-       
-        $uu=$request->lainnya;
-
-        foreach ($uu as $key => $value) {
-            # code...
-            $data[]=array(
-                'id_integrasi'=>$integrasi,
-                'kode_daerah'=>$request->kode_daerah,
-                'id_urusan'=>(int)Hp::fokus_urusan()['id_urusan'],
-                'id_sub_urusan'=>(int)$id_sub_urusan,
-                'id_mandat'=>(int)$id_mandat,
-                'uraian'=>$value,
-                'tahun'=>(int)session('fokus_tahun'),
-                'id_user'=>(int)Auth::id(),
-                'created_at'=>date('Y-m-d h:i'),
-                'updated_at'=>date('Y-m-d h:i')
-            );
-        }
-
-       if(count($uu)>0){
-             $a=DB::table('ikb_lainnya')
-                ->where('id_sub_urusan',$id_sub_urusan)
-                ->where('id_mandat',$id_mandat)
-                ->where('kode_daerah',$request->kode_daerah)
-                ->where('id_integrasi',$integrasi)
-                ->whereNotIn('uraian',$uu)
-                ->where('tahun',session('fokus_tahun'))
-                ->delete();
-            $a=DB::table('ikb_lainnya')->insertOrIgnore($data);
-        }
-
-        Alert::success('','Peraturan Berhasil di Tambahkan');
-        return back();
-        
-
-        // return view('form.kebijakan.pusat.tambah');
-    }
-
-//-------------------------------------------tambahab----------------------------------------------------
     public function store_perkada($id_sub_urusan,$id_mandat,Request $request){
         $valid=Validator::make($request->all(),[
-            'perkada'=>'required|array'
+            'perkada'=>'array'
         ]);
 
         $uid=Auth::id();
@@ -1024,13 +909,13 @@ public function store_lainnya($id_sub_urusan,$id_mandat,Request $request){
 
             );
 
-            
+
         }else{
             $integrasi=$integrasi->id;
         }
 
         $data=[];
-       
+
         $uu=$request->perkada?$request->perkada:[];
 
         foreach ($uu as $key => $value) {
@@ -1072,7 +957,7 @@ public function store_lainnya($id_sub_urusan,$id_mandat,Request $request){
 
         Alert::success('','Perkada Berhasil di Tambahkan');
         return back();
-        
+
 
         // return view('form.kebijakan.pusat.tambah');
     }
