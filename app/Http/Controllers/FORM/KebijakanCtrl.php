@@ -32,20 +32,7 @@ class KebijakanCtrl extends Controller
         ->paginate(10);
 
 
-        return view('form.kebijakan.pusat.index')->with('kebijakan',$kebijakan);
-    }
-
-
-    public function update_mandat($id_sub,$id,Request $request){
-
-        $t=DB::table('ikb_mandat')->where('id',$id)->update([
-            'uraian'=>$request->uraian,
-            'tipe'=>$request->tipe?true:false
-        ]);
-
-        Alert::success('Berhasil','Berhasil Melakukan update');
-        return back();
-
+    	return view('form.kebijakan.pusat.index')->with('kebijakan',$kebijakan);
     }
 
 
@@ -164,13 +151,9 @@ class KebijakanCtrl extends Controller
 
         Alert::success('','UU Berhasil di Tambahkan');
         return back();
-<<<<<<< HEAD
-
-=======
->>>>>>> 7b34f5d7ffa9dd50fcffb916063b411b07fb272d
 
 
-        // return view('form.kebijakan.pusat.tambah');
+    	// return view('form.kebijakan.pusat.tambah');
     }
 
     public function store_pp($id_sub_urusan,$id_mandat,Request $request){
@@ -569,15 +552,15 @@ class KebijakanCtrl extends Controller
 
     public function index_daerah(Request $request){
 
-        $provinsi=DB::table('master_daerah')->where(DB::raw('length(id)'),2)
-        ->orderBy('nama','ASC')->get();
+    	$provinsi=DB::table('master_daerah')->where(DB::raw('length(id)'),2)
+    	->orderBy('nama','ASC')->get();
 
-        return view('form.kebijakan.daerah.index',['provinsis'=>$provinsi]);
+    	return view('form.kebijakan.daerah.index',['provinsis'=>$provinsi]);
 
     }
 
     public function view_daerah($id,Request $request){
-        $daerah=DB::table('master_daerah')->find($id);
+    	$daerah=DB::table('master_daerah')->find($id);
 
         $data=DB::table('ikb_mandat as man')
         ->select('man.id_sub_urusan as id','su.nama as nama','man.uraian as mandat','man.tipe','man.id as id_mandat','int.note',
@@ -596,13 +579,9 @@ class KebijakanCtrl extends Controller
         ->where('su.id_urusan',Hp::fokus_urusan()['id_urusan'])
         ->paginate(10);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 7b34f5d7ffa9dd50fcffb916063b411b07fb272d
 
 
-        return view('form.kebijakan.daerah.view')->with('daerah',$daerah)->with('datas',$data)->with('kode_daerah',$id)->with('back_link',route('kebijakan.daerah.index'));
+    	return view('form.kebijakan.daerah.view')->with('daerah',$daerah)->with('datas',$data)->with('kode_daerah',$id)->with('back_link',route('kebijakan.daerah.index'));
     }
 
      public function store_perda($id_sub_urusan,$id_mandat,Request $request){
@@ -701,23 +680,14 @@ class KebijakanCtrl extends Controller
 
 
     public function api_get_table_kota(Request $request){
-<<<<<<< HEAD
     	$return =[];
     	if($request->id){
 			$return =DB::table('master_daerah')->where('id','ilike',DB::raw("'".$request->id."' "."||'%'"))
 			->orderBy('id','ASC')->orderBy('nama','ASC')
 			->get();
     	}
-=======
-        $return =[];
-        if($request->id){
-            $return =DB::table('master_daerah')->where('id','ilike',DB::raw("'".$request->id."' "."||'%'"))
-            ->orderBy('id','ASC')->orderBy('nama','ASC')
-            ->get();
-        }
->>>>>>> 7b34f5d7ffa9dd50fcffb916063b411b07fb272d
 
-        return view('form.kebijakan.daerah.api.table_kota')->with('daerahs',$return)->render();
+    	return view('form.kebijakan.daerah.api.table_kota')->with('daerahs',$return)->render();
 
     }
 
