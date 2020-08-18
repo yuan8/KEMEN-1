@@ -332,7 +332,9 @@ class REKOMENDASI extends Controller
 
 
         if($jenis==1){
-            $data['for_integrasi_program']=true;
+            // $data['for_integrasi_program']=true;
+            $data['for_integrasi_program_child']=true;
+            
             $data['indikator_from_rkp_id']=$parent['id_rkp'];
         }
         else{

@@ -6,7 +6,11 @@
     	<div class="col-md-8">
     		<h3>KEBIJAKAN PUSAT </h3>
     	</div>
-    	<div class="col-md-4 modal-footer">
+    	<div class="col-md-4">
+        <br>
+        <div class="btn-group pull-right">
+          <a href="{{route('int.kb.resume',['pdf'=>'export'])}}" class="btn btn-success btn-xs">DOWNLOAD RESUME</a>
+        </div>
     	</div>
     </div>
 @stop
@@ -72,7 +76,7 @@
                          
                         <i class="fa fa-trash"></i> {{$kb->tipe?'Mandat':'Kegiatan'}}
                       </button>
-                      <button class="btn btn-warning btn-xs" onclick="update_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.update',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}',m_{{$kb->id_mandat}})">
+                      <button class="btn {{$kb->tipe?'btn-warning':'btn-info'}} btn-xs" onclick="update_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.update',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}',m_{{$kb->id_mandat}})">
                         <i class="fa fa-pen"></i> {{$kb->tipe?'Mandat':'Kegiatan'}}
                       </button>
                     </td>

@@ -4,7 +4,8 @@ namespace App\Http\Controllers\INT\DAERAH;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Hp;
+use App\MASTER\MASALAHPOKOK;
 class PERMASALAHAN extends Controller
 {
     //
@@ -20,4 +21,7 @@ class PERMASALAHAN extends Controller
     public function namePermasalahan($kode){
     	
     }
+
+
+   
 }

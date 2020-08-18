@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\INTEGRASI\REKOMENDASI;
 use App\INTEGRASI\REKOMENDASIKAB;
 use App\INTEGRASI\REKOMENDASIFINAL;
-
+use App\MASALAH\MASALAH;
 use Hp;
 
 class DAERAH extends Model
@@ -49,6 +49,19 @@ class DAERAH extends Model
             }
         }
     	
+    }
+
+
+    public function _list_ms_pokok(){
+        return $this->hasMany(MASALAHPOKOK::class,'kode_daerah');
+    }
+     
+    public function _list_ms(){
+        return $this->hasMany(MASALAH::class,'kode_daerah');
+    }
+
+    public function _list_ms_akar(){
+        return $this->hasMany(AKARMASALAH::class,'kode_daerah');
     }
 
 
