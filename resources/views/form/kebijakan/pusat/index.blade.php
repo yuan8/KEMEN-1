@@ -6,8 +6,12 @@
     	<div class="col-md-8">
     		<h3>KEBIJAKAN PUSAT </h3>
     	</div>
-    	<div class="col-md-4 modal-footer">
-    	</div>
+    <div class="col-md-4">
+      <br>
+        <div class="form-group pull-right">
+          <a href="{{route('int.kb.resume',['pdf'=>'true'])}}" class="btn btn-success btn-xs">DOWNLOAD RESUM</a>
+        </div>
+      </div>
     </div>
 @stop
 
