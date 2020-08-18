@@ -19,20 +19,7 @@
 </table>
 <table class="table table-bordred table-striped">
 	<thead>
-		<tr>
-			<th>1</th>
-			<th>2</th>
-			<th>3</th>
-			<th>4</th>
-			<th>5</th>
-			<th>6</th>
-			<th>7</th>
-			<th>8</th>
-			<th>9</th>
-			<th>10</th>
-			<th>11</th>
 
-		</tr>
 		
 		<tr>
 			<th rowspan="2">NO</th>
@@ -51,6 +38,20 @@
 			<th>PERKADA</th>
 			<th>SESUAI</th>
 			<th>TIDAK SESUAI</th>
+
+		</tr>
+		<tr>
+			<th>1</th>
+			<th>2</th>
+			<th>3</th>
+			<th>4</th>
+			<th>5</th>
+			<th>6</th>
+			<th>7</th>
+			<th>8</th>
+			<th>9</th>
+			<th>10</th>
+			<th>11</th>
 
 		</tr>
 		
