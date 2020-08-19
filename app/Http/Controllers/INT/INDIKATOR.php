@@ -38,7 +38,7 @@ class INDIKATOR extends Controller
 
 
 
-        $data=$data->with('_sub_urusan')->orderBy('id_sub_urusan','DESC')->orderBy('id','DESC')->paginate(10);
+        $data=$data->with('_sub_urusan')->orderBy('id_sub_urusan','ASC')->orderBy('id','DESC')->paginate(10);
 
         $data->appends(['q'=>$request->q]);
         $data->appends(['t'=>$request->t]);
