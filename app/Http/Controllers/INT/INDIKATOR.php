@@ -31,13 +31,13 @@ class INDIKATOR extends Controller
             (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan in (".implode(',', $id_sub).",null) and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
             OR (tahun=".$tahun.(isset($request->t)?(" and tag::text ilike '".$request->t."'"):' ')." and id_sub_urusan in (".implode(',', $id_sub).",null) and kode ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
             ".(count($id_sub)>0 ?" OR (tahun=".$tahun." and id_sub_urusan is null and id_urusan=".$meta_urusan['id_urusan'].")":'')."
-          
+    
         ");
 
 
 
 
-        $data=$data->with('_sub_urusan')->orderBy('id','DESC')->paginate(10);
+        $data=$data->with('_sub_urusan')->orderBy('id_sub_urusan','DESC')->orderBy('id','DESC')->paginate(10);
 
         $data->appends(['q'=>$request->q]);
         $data->appends(['t'=>$request->t]);
