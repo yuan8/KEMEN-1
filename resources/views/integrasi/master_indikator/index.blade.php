@@ -4,16 +4,16 @@
      <div class="row">
     	<div class="col-md-8">
     		<h3 class="text-uppercase">INDIKATOR TAHUN {{Hp::fokus_tahun()}}</h3>
-    	
+
     	</div>
     	<div class="col-md-4">
     		<br>
     		<div class="btn-group pull-right">
     			<button class="full-w btn btn-xs btn-success" onclick="showFromCreateIndikator()">TAMBAH INDIKATOR</button>
-    			
+
     		</div>
     	</div>
-    	
+
     </div>
 @stop
 
@@ -26,11 +26,11 @@
                 <label>Sub Urusan</label>
             <select class="form-control init-use-select2 " style="max-width: 40%!important"  name="s">
                 <option value="">-</option>
-                <option value="null" {{(isset($_GET['t'])?($_GET['s']=='null'?'selected':''):'')}} class="text-uppercase">TIDAK MEMILIKI SUB URUSAN</option>
+                <option value="null" {{(isset($_GET['s'])?($_GET['s']=='null'?'selected':''):'')}} class="text-uppercase">TIDAK MEMILIKI SUB URUSAN</option>
 
 
                 @foreach($sub_urusan as $s)
-                    <option value="{{$s->id}}" {{(isset($_GET['t'])?($_GET['s']==$s->id?'selected':''):'')}}>{{$s->nama}}</option>
+                    <option value="{{$s->id}}" {{(isset($_GET['s'])?($_GET['s']==$s->id?'selected':''):'')}}>{{$s->nama}}</option>
                 @endforeach
 
             </select>
@@ -41,8 +41,8 @@
 
              <select class="form-control init-use-select2 col-md-4" name="t">
                 <option value="">-</option>
-               @php 
-               for($i=1; $i <5 ; $i++) { 
+               @php
+               for($i=1; $i <5 ; $i++) {
                     echo "<option value='".$i."' ".(isset($_GET['t'])?($_GET['t']==$i?'selected':''):'')." >".Hp::tag_ind($i)."</option>";
                }
                @endphp
@@ -72,7 +72,7 @@
             <tr>
                 <th rowspan="2">ACTION</th>
                 <th rowspan="2">SUB URUSAN</th>
-                
+
                 <th rowspan="2">JENIS</th>
                 <th rowspan="2">KODE</th>
                 <th rowspan="2">INDIKATOR</th>
@@ -171,7 +171,7 @@
                             @endforeach
                             </ul>
                         @endif
-                        
+
                     </td>
 
                 </tr>

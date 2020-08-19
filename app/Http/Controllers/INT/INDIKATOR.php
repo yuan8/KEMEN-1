@@ -19,26 +19,29 @@ class INDIKATOR extends Controller
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
 
-        if($request->s){
+        if(isset($request->s)?($request->s!='null'?$request->s:false):false){
             $id_sub=[$request->s];
         }else{
              $id_sub=(array)DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get()->pluck('id')->toArray();
-             $id_sub[]=null;
+             $id_sub[]='null';
         }
-       
 
 
         $data=IND::whereRaw("
-            (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan in (".implode(',', $id_sub).") and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
-            OR (tahun=".$tahun.(isset($request->t)?(" and tag::text ilike '".$request->t."'"):' ')." and id_sub_urusan in (".implode(',', $id_sub).") and kode ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
-            ".(count($id_sub)>0 ?" OR (tahun=".$tahun." and id_sub_urusan is null and id_urusan=".$meta_urusan['id_urusan'].")":'')."
-    
-        ");
+            (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan in (".implode(',', $id_sub).") and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].")".
+            // "
+            // OR (tahun=".$tahun.(isset($request->t)?(" and tag::text ilike '".$request->t."'"):' ')." and id_sub_urusan in (".implode(',', $id_sub).") and kode ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].")
+            // ".
+            (count($id_sub)>1?
+              " OR (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan is null and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].")":''
+            )
+
+        );
 
 
 
 
-        $data=$data->with('_sub_urusan')->orderBy('id_sub_urusan','ASC')->orderBy('id','DESC')->paginate(10);
+        $data=$data->with('_sub_urusan')->orderBy('id_sub_urusan','ASC')->paginate(10);
 
         $data->appends(['q'=>$request->q]);
         $data->appends(['t'=>$request->t]);
@@ -71,7 +74,7 @@ class INDIKATOR extends Controller
 
         $data['tag']=$request->tag;
         $data['uraian']=$request->uraian;
-       
+
         $data['tahun']=$tahun;
         $data['tipe_value']=$request->tipe_value;
         $data['target']=$request->target;
@@ -130,7 +133,7 @@ class INDIKATOR extends Controller
             if($request->for_api){
                 return array('kode'=>500,'data'=>[]);
             }
-            
+
         	Alert::error('Error','Gagal Menambah Indikator');
         	return back();
         }
@@ -147,7 +150,7 @@ class INDIKATOR extends Controller
         $data=IND::where('tahun',$tahun)->orderBy('id','DESC')->with('_sub_urusan');
         $where=[];
         foreach ($request->all() as $key => $v) {
-            
+
           if($key!='id_sub_urusan'){
               if(is_array($v)){
                     if(isset($v[1])){
@@ -173,7 +176,7 @@ class INDIKATOR extends Controller
                      $data=$data->where($value[0],$value[1],$value[2]);
 
                 }
-                
+
             }
 
         }
@@ -183,8 +186,8 @@ class INDIKATOR extends Controller
         }else{
             $data=$data->where('id_urusan',$meta_urusan['id_urusan']);
         }
-            
-        
+
+
 
 
         $data=$data->orderBy('id','DESC')->get();
@@ -209,7 +212,7 @@ class INDIKATOR extends Controller
 
         $satuan=DB::table('public.master_satuan')->get()->pluck('kode');
         $sub_urusan=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get();
-            
+
             return view('integrasi.indikator.show')->with([
                 'data'=>$data,
                 'tag'=>$data->tag,
@@ -231,7 +234,7 @@ class INDIKATOR extends Controller
 
             return view('integrasi.indikator.delete')->with([
                 'data'=>$data,
-                'permanen'=>'Permanen'                
+                'permanen'=>'Permanen'
             ]);
         }
 
@@ -296,8 +299,8 @@ class INDIKATOR extends Controller
             Alert::success('Success','Berhasil Update Indikator');
 
             return back();
-            
-       
+
+
         }
 
 
