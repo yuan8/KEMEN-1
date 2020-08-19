@@ -137,9 +137,9 @@
 	 		</thead>
 	 		<tbody>
 	 			<tr>
-	 				<td class="{{!!$i['kw_nas']?'':'bg bg-danger'!!}">{!!$i['kw_nas']?$i['kewenangan_nas']:''!!}</td>
-	 					<td class="{{!!$i['kw_p']?'':'bg bg-danger'!!}">{!!$i['kw_p']?$i['kewenangan_p']:''!!}</td>
-	 						<td class="{{!!$i['kw_k']?'':'bg bg-danger'!!}">{!!$i['kw_k']?$i['kewenangan_k']:''!!}</td>
+	 				<td class="{{!!$i['kw_nas']?'':'bg bg-danger'!!}">{!!$i['kw_nas']?nl2br($i['_kewenangan']['kewenangan_nas']):''!!}</td>
+	 					<td class="{{!!$i['kw_p']?'':'bg bg-danger'!!}">{!!$i['kw_p']?nl2br($i['_kewenangan']['kewenangan_p']):''!!}</td>
+	 						<td class="{{!!$i['kw_k']?'':'bg bg-danger'!!}">{!!$i['kw_k']?nl2br($i['_kewenangan']['kewenangan_k']):''!!}</td>
 	 			</tr>
 	 		</tbody>
 	 	</table>

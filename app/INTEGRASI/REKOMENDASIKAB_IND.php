@@ -18,6 +18,8 @@ class REKOMENDASIKAB_IND extends Model
         $tahun=Hp::fokus_tahun();
 
     	return $this->belongsTo(INDIKATOR::class,'id_indikator')->where('id_urusan',$meta_urusan['id_urusan'])
-    	->where('tahun',$tahun)->has('tag_on_rkp_propn')->has('tag_on_kewenangan');;
+    	->where('tahun',$tahun)->has('tag_on_kewenangan')
+        // ->has('tag_on_rkp_propn');
+        ;
     }
 }
