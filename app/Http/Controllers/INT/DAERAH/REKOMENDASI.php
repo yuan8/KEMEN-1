@@ -113,6 +113,8 @@ class REKOMENDASI extends Controller
 
 
 
+
+
     	return view('integrasi.rekomendasi.detail')->with(['daerah'=>$daerah,'data'=>$data]);
     }
 
@@ -382,9 +384,11 @@ class REKOMENDASI extends Controller
     		$parent=$parent::where('id',$id_parent)->first();
 
 
+
 	    	if($parent){
 	    		$parent=$parent->toArray();
 	    		$jenis=$parent['jenis'];
+
 
 	    		foreach ($request->id_indikator as $key => $d) {
 		    		$tahun=Hp::fokus_tahun();
@@ -393,7 +397,6 @@ class REKOMENDASI extends Controller
 			    		'id_indikator'=>$d,
 			    		'id_rekom'=>$id_parent,
 			    		'tahun'=>$tahun,
-
 		    		],
 		    		[
 		    			'kodepemda'=>$id,
@@ -404,6 +407,7 @@ class REKOMENDASI extends Controller
 			    		'tahun'=>$tahun,
 			    		'updated_at'=>Carbon::now()
 		    		]);
+
 	    		# code...
 	    		}
 
