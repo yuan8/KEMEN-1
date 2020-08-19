@@ -88,6 +88,8 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/perpres', 'FORM\KebijakanCtrl@store_perpres')->name('kebijakan.pusat.store.mandat.perpres');
 
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/permen', 'FORM\KebijakanCtrl@store_permen')->name('kebijakan.pusat.store.mandat.permen');
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/lainnya', 'FORM\KebijakanCtrl@store_lainnya')->name('kebijakan.daerah.store.mandat.lainnya');
+
 
 		});
 

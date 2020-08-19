@@ -987,6 +987,180 @@ class KebijakanCtrl extends Controller
         }
 
     }
+    public function api_get_lainnya(Request $request){
 
+         if($request->term){
+            $r=DB::table('ikb_lainnya')->select('uraian as text', 'uraian as id')->where('uraian','ilike',('%'.$request->term.'%'))->groupBy('uraian')->limit(4)->get();
+        }else{
+             $r=DB::table('ikb_lainnya')->select('uraian as text','uraian as id')->groupBy('uraian')->limit(4)->get();
+        }
+
+        return array('results'=>$r);
+
+    }
+
+
+    public function api_store_lainnya($id,Request $request){
+
+        $uid=Auth::id();
+        $m=DB::table('ikb_mandat')->find($id);
+
+
+
+        if($m){
+            $integrasi=DB::table('ikb_integrasi')->where([
+                'id_urusan'=>$m->id_urusan,
+                'id_sub_urusan'=>$m->id_sub_urusan,
+                'id_mandat'=>$id,
+                'kode_daerah'=>$request->kode_daerah,
+                'tahun'=>session('fokus_tahun')
+            ])->select('id')->first();
+
+            if(!$integrasi){
+                $integrasi=DB::table('ikb_integrasi')->insertGetId([
+                    'id_urusan'=>$m->id_urusan,
+                    'id_sub_urusan'=>$m->id_sub_urusan,
+                    'id_mandat'=>$id,
+                    'kode_daerah'=>$request->kode_daerah,
+                    'tahun'=>session('fokus_tahun'),
+                    'id_user'=>$uid,
+                    'created_at'=>date('Y-m-d h:i'),
+                    'updated_at'=>date('Y-m-d h:i')
+                ]);
+            }else{
+                $integrasi=$integrasi->id;
+            }
+
+
+            $check=DB::table('ikb_lainnya')->where([
+                'id_integrasi'=>$integrasi,
+                'kode_daerah'=>$request->kode_daerah,
+                'id_urusan'=>$m->id_urusan,
+                'id_sub_urusan'=>$m->id_sub_urusan,
+                'uraian'=>$request->uraian,
+                'id_mandat'=>$id,
+                'tahun'=>session('fokus_tahun')
+            ])->first();
+
+            if($check){
+                return array('code'=>500,'mesaage'=>'');
+            }else{
+                $uu=true;
+               // $uu= DB::table('ikb_uu')->insertGetId(
+               //  [
+               //      'id_urusan'=>$m->id_urusan,
+               //      'id_sub_urusan'=>$m->id_sub_urusan,
+               //      'uraian'=>$request->uraian,
+               //      'id_mandat'=>$id,
+               //      'tahun'=>session('fokus_tahun'),
+               //      'id_user'=>$uid,
+               //      'created_at'=>date('Y-m-d h:i'),
+               //      'updated_at'=>date('Y-m-d h:i')
+               //  ]
+               // );
+                if($uu){
+                    return array('code'=>200,'data'=>array('text'=>$request->uraian,'id'=>$request->uraian));
+               }else{
+                    return array('code'=>500,'mesaage'=>'');
+               }
+            }
+
+        }else{
+             return array('code'=>500,'mesaage'=>'Peraturan Tidak Tersedia');
+
+        }
+
+
+
+    }
+
+public function store_lainnya($id_sub_urusan,$id_mandat,Request $request){
+        $valid=Validator::make($request->all(),[
+            'lainnya'=>'nullable|array'
+        ]);
+
+        $uid=Auth::id();
+
+        if($valid->fails()){
+            Alert::error('Gagal','Peraturan kosong');
+            return back();
+        }
+
+        $m=DB::table('ikb_mandat')->find($id_mandat);
+        $tahun=Hp::fokus_tahun();
+
+        $integrasi=DB::table('ikb_integrasi')
+        ->where('id_sub_urusan',$id_sub_urusan)
+        ->where('id_mandat',$id_mandat)
+        ->where('kode_daerah',$request->kode_daerah)
+        ->where('tahun',session('fokus_tahun'))->first();
+
+        if(!$integrasi){
+            $integrasi=DB::table('ikb_integrasi')->insertGetId(
+                [
+                    'id_sub_urusan'=>$id_sub_urusan,
+                    'id_mandat'=>$id_mandat,
+                    'tahun'=>session('fokus_tahun'),
+                    'id_urusan'=>Hp::fokus_urusan()['id_urusan'],
+                    'kode_daerah'=>$request->kode_daerah,
+                    'id_user'=>$uid,
+                    'created_at'=>date('Y-m-d h:i'),
+                    'updated_at'=>date('Y-m-d h:i')
+                ]
+
+            );
+
+
+        }else{
+            $integrasi=$integrasi->id;
+        }
+
+        $data=[];
+
+        $uu=$request->lainnya?$request->lainnya:[];
+
+        foreach ($uu as $key => $value) {
+            # code...
+            $data[]=array(
+                'id_integrasi'=>$integrasi,
+                'kode_daerah'=>$request->kode_daerah,
+                'id_urusan'=>(int)Hp::fokus_urusan()['id_urusan'],
+                'id_sub_urusan'=>(int)$id_sub_urusan,
+                'id_mandat'=>(int)$id_mandat,
+                'uraian'=>$value,
+                'tahun'=>(int)session('fokus_tahun'),
+                'id_user'=>(int)Auth::id(),
+                'created_at'=>date('Y-m-d h:i'),
+                'updated_at'=>date('Y-m-d h:i')
+            );
+        }
+
+       if(count($uu)>0){
+             $a=DB::table('ikb_lainnya')
+                ->where('id_sub_urusan',$id_sub_urusan)
+                ->where('id_mandat',$id_mandat)
+                ->where('kode_daerah',$request->kode_daerah)
+                ->where('id_integrasi',$integrasi)
+                ->whereNotIn('uraian',$uu)
+                ->where('tahun',session('fokus_tahun'))
+                ->delete();
+            $a=DB::table('ikb_lainnya')->insertOrIgnore($data);
+        }else{
+          DB::table('ikb_lainnya')->where([
+            'id_mandat'=>$id_mandat,
+            'tahun'=>$tahun,
+            'id_urusan'=>(int)Hp::fokus_urusan()['id_urusan']
+            ])->delete();
+        }
+
+
+
+
+        Alert::success('','Peraturan Berhasil di Tambahkan');
+        return back();
+
+
+        // return view('form.kebijakan.pusat.tambah');
+    }
 
 }
