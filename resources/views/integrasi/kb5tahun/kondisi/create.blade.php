@@ -23,11 +23,11 @@
 		</div>
 	</div> --}}
 	<div class="form-group">
-		<label>URAIAN KONDISI {{Hp::fokus_tahun()}}</label>
+		<label>URAIAN KONDISI</label>
 		<textarea class="form-control" name="uraian" style="min-height: 70px;" required=""></textarea>
 	</div>
 	<hr>
-	<div class="box box-solid ">
+	{{-- <div class="box box-solid ">
 		<div class="box-header with-border">
 			<label>TIPE DATA</label>
 			<select class="form-control" name="tipe_value" required="" id="check-tipe-data-{{$domid}}" target='#input-nilai-{{$domid}}'>
@@ -70,12 +70,12 @@
 			
 			</div>
 		</div>
-	</div>
+	</div> --}}
 
-	<hr>
+	{{-- <hr> --}}
 	<button class="btn btn-success btn-xs">TAMBAH</button>
 
-	<script type="text/javascript">
+	{{-- <script type="text/javascript">
 		
 		$('#check-tipe-data-{{$domid}}').on('change',function(){
 			var target=$(this).attr('target');
@@ -104,6 +104,6 @@
 
 
 	</script>
-
+ --}}
 
 </form>

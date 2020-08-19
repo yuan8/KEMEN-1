@@ -31,13 +31,13 @@ class INDIKATOR extends Controller
             (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan in (".implode(',', $id_sub).",null) and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
             OR (tahun=".$tahun.(isset($request->t)?(" and tag::text ilike '".$request->t."'"):' ')." and id_sub_urusan in (".implode(',', $id_sub).",null) and kode ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
             ".(count($id_sub)>0 ?" OR (tahun=".$tahun." and id_sub_urusan is null and id_urusan=".$meta_urusan['id_urusan'].")":'')."
-          
+    
         ");
 
 
 
 
-        $data=$data->with('_sub_urusan')->orderBy('id','DESC')->paginate(10);
+        $data=$data->with('_sub_urusan')->orderBy('id_sub_urusan','DESC')->orderBy('id','DESC')->paginate(10);
 
         $data->appends(['q'=>$request->q]);
         $data->appends(['t'=>$request->t]);
@@ -142,21 +142,37 @@ class INDIKATOR extends Controller
         $tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
         $data=IND::where('tahun',$tahun)->orderBy('id','DESC')->with('_sub_urusan');
+        $where=[];
         foreach ($request->all() as $key => $v) {
-            # code...
-            if($key!='id_sub_urusan'){
-                if(!is_array($v)){
-                        $data=$data->where($key,$v);
-                }else{
-                    if(is_numeric($v[0])){
-                        $data=$data->whereIn($key,$v);
+            
+          if($key!='id_sub_urusan'){
+              if(is_array($v)){
+                    if(isset($v[1])){
+                        if(in_array($v[1],['=','!=','like','ilike','in','not in','<','>','<=','>=','<>'])){
+                            $where[]=$v;
+                        }
                     }else{
-                        $data=$data->where([$v]);
+                        $where[]=[$key,'in',$v];
                     }
+                }else{
+                    $where[]=[$key,'=',$v];
                 }
-            }else{
+              }
+
+        }
+        dd($where);
+
+        if(!empty($where)){
+            foreach ($where as $key => $value) {
+                if($value[1]=='in'){
+                     $data=$data->whereIn($value[0],$value[2]);
+                }else{
+                     $data=$data->where($value[0],$value[1],$value[2]);
+
+                }
                 
             }
+
         }
 
         if($request->id_sub_urusan){

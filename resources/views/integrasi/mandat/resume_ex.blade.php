@@ -2,56 +2,61 @@
 
 
 @section('content_header')
-
+<style type="text/css">
+	
+	th{
+		text-align: center!important;
+	}
+</style>
 
 @stop
 
 @section('content')
 <table class="table-bordred table">
-	<thead>
+	<thead  class="text-center" >
 		<tr>
-			<th colspan="11" class="text-center">KEBIJAKAN PUSAT</th>
+			<th class="text-center"  colspan="11" class="text-center">KEBIJAKAN PUSAT</th>
 		</tr>
 		<tr>
-			<th colspan="11">{{Hp::fokus_urusan()['nama'].' TAHUN '.Hp::fokus_tahun()}}</th>
+			<th class="text-center"  colspan="11" class="text-center">{{Hp::fokus_urusan()['nama'].' TAHUN '.Hp::fokus_tahun()}}</th>
 		</tr>
 	</thead>
 </table>
 <table class="table table-bordred table-striped">
-	<thead>
+	<thead class="text-center" >
 
 		
-		<tr>
-			<th rowspan="2">NO</th>
-			<th rowspan="2">SUB URUSAN</th>
-			<th colspan="4">NSPK</th>
-			<th rowspan="2">MANDAT KE DAERAH</th>
-			<th colspan="2">KEBIJAKAN DAERAH</th>
-			<th colspan="2">KESESUAIAN NSPK DAN KEBIJAKAN DAERAH</th>
+		<tr >
+			<th class="text-center"  rowspan="2" >NO</th>
+			<th class="text-center"  rowspan="2">SUB URUSAN</th>
+			<th class="text-center"  colspan="4">NSPK</th>
+			<th class="text-center"  rowspan="2">MANDAT KE DAERAH</th>
+			<th class="text-center"  colspan="2">KEBIJAKAN DAERAH</th>
+			<th class="text-center"  colspan="2">KESESUAIAN NSPK DAN KEBIJAKAN DAERAH</th>
 		</tr>
 		<tr>
-			<th>UU</th>
-			<th>PP</th>
-			<th>PERMEN</th>
-			<th>PERPRES</th>
-			<th>PERDA</th>
-			<th>PERKADA</th>
-			<th>SESUAI</th>
-			<th>TIDAK SESUAI</th>
+			<th class="text-center" >UU</th>
+			<th class="text-center" >PP</th>
+			<th class="text-center" >PERMEN</th>
+			<th class="text-center" >PERPRES</th>
+			<th class="text-center" >PERDA</th>
+			<th class="text-center" >PERKADA</th>
+			<th class="text-center" >SESUAI</th>
+			<th class="text-center" >TIDAK SESUAI</th>
 
 		</tr>
 		<tr>
-			<th>1</th>
-			<th>2</th>
-			<th>3</th>
-			<th>4</th>
-			<th>5</th>
-			<th>6</th>
-			<th>7</th>
-			<th>8</th>
-			<th>9</th>
-			<th>10</th>
-			<th>11</th>
+			<th class="text-center" >1</th>
+			<th class="text-center" >2</th>
+			<th class="text-center" >3</th>
+			<th class="text-center" >4</th>
+			<th class="text-center" >5</th>
+			<th class="text-center" >6</th>
+			<th class="text-center" >7</th>
+			<th class="text-center" >8</th>
+			<th class="text-center" >9</th>
+			<th class="text-center" >10</th>
+			<th class="text-center" >11</th>
 
 		</tr>
 		

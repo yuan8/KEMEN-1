@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
+// Route::prefix('sso')->group(function(){
+// 	Route::get('/', 'SISTEM_SSO\SSO@index');
+// 	Route::post('/', 'SISTEM_SSO\SSO@index');
+// });
+
+
 Route::middleware('auth:api')->post('/test', 'InitCtrl@test');
 
 Route::post('/int-log-tokenizer','LoginBarcodeCtrl@update_token')->name('br.login.update.token');

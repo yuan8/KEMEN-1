@@ -6,10 +6,15 @@
     	<div class="col-md-8">
     		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN <span class="text-success">{{$daerah->nama}}</span> </h3>
     	</div>
+<<<<<<< HEAD
     	<div class="col-md-4 modal-footer">
     		<a href="" class="btn btn-success">Tambah</a>
     	</div>
     	
+=======
+
+
+>>>>>>> bd8778ebaf59315ae62f3c518bf44f39fffb0958
     </div>
 @stop
 

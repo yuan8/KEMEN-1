@@ -18,6 +18,9 @@
 	color: #222!important;
 }
 
+.btn-circle{
+  border-radius: 50%;
+}
 .select2-container{
 	width: 100%!important;
 }

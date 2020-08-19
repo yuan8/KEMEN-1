@@ -19,6 +19,9 @@
 	      display: block;
 	    }
 	}
+	td,th{
+		vertical-align: middle!important;
+	}
 
 	td,th,tr{
 	    border: 1px solid  #ddd!important;

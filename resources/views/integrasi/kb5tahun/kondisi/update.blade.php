@@ -4,7 +4,7 @@
 	@php
 	$domid=rand(0,1000).date('i');
 	@endphp
-			<small>
+{{-- 			<small>
 				<b>* KODE DATA : </b>
 				<br>
 				kode digunakan untuk merefrensikan kondisi pada tahun sebelumnya dan tahun sesudahnya.
@@ -21,13 +21,13 @@
 		  <input type="text" class="form-control" placeholder="000" name="kode" required="" id="kode-check-unique-{{$domid}}" aria-describedby="basic-addon1" value="{{str_replace(Hp::fokus_urusan()['singkat'].'.KN.','',$kondisi['kode'])}}">
 		</div>
 		</div>
-	</div>
+	</div> --}}
 	<div class="form-group">
 		<label>URAIAN KONDISI {{Hp::fokus_tahun()}}</label>
 		<textarea class="form-control" name="uraian" style="min-height: 70px;" required="">{!!$kondisi['uraian']!!}</textarea>
 	</div>
-	<hr>
-	<div class="box box-solid ">
+	{{-- <hr> --}}
+{{-- 	<div class="box box-solid ">
 		<div class="box-header with-border">
 			<label>TIPE DATA</label>
 			<select class="form-control" name="tipe_value" required="" id="check-tipe-data-{{$domid}}" target='#input-nilai-{{$domid}}'>
@@ -74,12 +74,12 @@
 			
 			</div>
 		</div>
-	</div>
+	</div> --}}
 
 	<hr>
 	<button class="btn btn-warning btn-xs">UPDATE</button>
 
-	<script type="text/javascript">
+{{-- 	<script type="text/javascript">
 		
 		$('#check-tipe-data-{{$domid}}').on('change',function(){
 			var target=$(this).attr('target');
@@ -108,6 +108,6 @@
 
 
 	</script>
-
+ --}}
 
 </form>
