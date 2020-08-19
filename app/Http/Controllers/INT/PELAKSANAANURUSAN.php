@@ -225,10 +225,12 @@ class PELAKSANAANURUSAN extends Controller
             $k=KEWENANGAN::find($id);
 
             if($k){
-                $k->kewenangan_nas=$request->kewenangan_nas;
-                $k->kewenangan_p=$request->kewenangan_p;
-                $k->kewenangan_k=$request->kewenangan_k;
+                $k->kewenangan_nas=$request->kw_nas;
+                $k->kewenangan_p=$request->kw_p;
+                $k->kewenangan_k=$request->kw_k;
                 $k->update();
+                
+                
                 Alert::success('Success','Berhasil Mengupdate kewenangan');
                 return back();
             }

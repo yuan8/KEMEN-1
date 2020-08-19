@@ -67,6 +67,45 @@
 					<td colspan="8">{{$pn['nomenklatur']}}</td>
 
 				</tr>
+				@foreach($p['_tag_indikator'] as $pi)
+					@php $pii=$pi['_indikator'];  @endphp
+					<tr>
+						<td></td>
+						<td>{{$pii['kode']}}</td>
+						<td colspan="3"></td>
+						<td>{{$pii['_sumber']}}</td>
+						<td>{{$pii['uraian']}}</td>
+						<td>
+							
+							@if(($pii['tipe_value']==1)OR($pii['tipe_value']==2))
+								{{number_format($pii['target'],2)}}
+							@else
+								{{$pii['target']}}
+
+							@endif
+
+							@if($pii['tipe_value']==2)
+								 - 
+								{{number_format($pii['target_1'],2)}}
+
+							@endif
+
+						</td>
+						<td>
+							{{$pi['target']}}
+							@if($pii['tipe_value']==2)
+								{{' - '.number_format($pi['target_1'])}}
+
+							@endif
+						</td>
+						<td>
+							{{$pii['satuan']}}
+						</td>
+
+
+
+					</tr>
+				@endforeach
 				@foreach($p['_child_kegiatan'] as $k)
 					@php $kn=$k['_nomen']; @endphp
 					<tr>

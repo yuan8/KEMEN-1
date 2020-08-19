@@ -166,7 +166,6 @@ class INDIKATOR extends Controller
               }
 
         }
-        dd($where);
 
         if(!empty($where)){
             foreach ($where as $key => $value) {
