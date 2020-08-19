@@ -5,15 +5,15 @@
      <div class="row">
     	<div class="col-md-8">
     		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN 5 TAHUNAN ({{$rpjmn['start']}} -  {{$rpjmn['finish']}})</h3>
-    		
+
     	</div>
-    	
+
     </div>
 @stop
 
 
 @section('content')
-<div class="box box-dotted 	">
+<div class="box box-dotted  box-warning	">
 	<div class="box-body ">
 
 		<button onclick="showFormCreateKondisi()" class="btn btn-success btn-xs text-uppercase">Tambah Kondisi saat ini</button>
@@ -24,7 +24,7 @@
 <hr>
 
 <div class="table-responsive">
-	<table class="table bg-white table-bordered table-striped table-hover">
+	<table class="table table-fixed bg-white table-bordered table-striped table-hover">
 		<thead class="bg-navy">
 			<tr>
 				<th rowspan="2" colspan="2" style="min-width: 230px;">ACTION</th>
@@ -39,7 +39,7 @@
 				<th  >KODE</th>
 
 				<th>URAIAN KONDISI</th>
-			
+
 				<th>SUB URUSAN</th>
 
 				<th>KODE INDIKATOR</th>
@@ -58,7 +58,7 @@
 
 
 			<tr class=" ">
-							
+
 				<td class="bg-yellow ket-col" >
 					<h4><b>KN</b></h4>
 				</td>
@@ -74,9 +74,9 @@
 						</div>
 					</td>
 					<td class="bg-warning"><b>{{$kn['kode']}}</b></td>
-					<td colspan="12" style="border-left:2px solid #f39b12 !important;"><b>KN: </b>{{$kn['uraian']}}</td>
-				
-					
+					<td colspan="12" style="border-left:2px solid #f39b12 !important;"><b>KN: </b>{!!nl2br($kn['uraian'])!!}</td>
+
+
 
 
 				</tr>
@@ -99,17 +99,17 @@
 						</td>
 						<td class="bg-warning"></td>
 						<td colspan="1" >
-							<div class="pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px; 
+							<div class="pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px;
 							border-top:0px; border-right:0px;margin-top:-9px; margin-right: -9px; "></div>
 						</td>
-						
 
-						<td colspan="12"><b>ISU: </b>{{$isu['uraian']}}</td>
+
+						<td colspan="12"><b>ISU: </b>{!!nl2br($isu['uraian'])!!}</td>
 
 					</tr>
 					@foreach($isu['_children'] as $ak)
 						<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}}">
-						
+
 							<td class="bg-yellow ket-col" >
 					<h4><b>AK</b></h4>
 				</td>
@@ -122,17 +122,17 @@
 								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 								<button class="btn btn-warning  btn-xs" onclick="showFormUpdateAk({{$ak['id']}})"><i class="fa fa-pen"></i></button>
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteAk({{$ak['id']}})"><i class="fa fa-trash"></i></button>
-								
+
 
 								</div>
 							</td>
 							<td class="bg-warning"></td>
 							<td colspan="1" ></td>
 							<td colspan="">
-								<div class="pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px; 
+								<div class="pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px;
 							border-top:0px; border-right:0px;margin-top:-9px; margin-right: -9px; "></div>
 							</td>
-							<td colspan="11"><b>AK: </b>{{$ak['uraian']}}</td>
+							<td colspan="11"><b>AK: </b>{!!nl2br($ak['uraian'])!!}</td>
 						</tr>
 
 						@foreach($ak['_indikator'] as $i)
@@ -177,7 +177,7 @@
 										<i class="fa text-success fa-check"></i> BERWENANG
 									@else
 										<i class="fa text-danger fa-times"></i> TIDAK BERWENANG
-										
+
 
 									@endif
 
@@ -233,7 +233,7 @@
 									</ul>
 									@endif
 									@if($i['kw_k'])
-									
+
 
 									<b>KOTA/KAB</b>
 									<ul>
@@ -242,16 +242,16 @@
 									@endforeach
 									</ul>
 									@endif
-									
+
 								</td>
 
 
 							</tr>
-							
+
 						@endforeach
 
 
-					
+
 					@endforeach
 
 				@endforeach
@@ -303,7 +303,7 @@
 			$('#modal-global').modal();
 		});
 	}
-	
+
 
 	function showFormCreateisu(id){
 		API_CON.get("{{route('int.kb5tahun.isu.create',['id'=>null])}}/"+id,).then(function(res){
@@ -329,7 +329,7 @@
 			$('#modal-global').modal();
 		});
 	}
-	
+
 
 	function showFormCreateAk(id){
 		API_CON.get("{{route('int.kb5tahun.ak.create',['id'=>null])}}/"+id,).then(function(res){
@@ -412,7 +412,7 @@
 			$('#modal-global').modal();
 		});
 	}
-	
+
 
 
 </script>

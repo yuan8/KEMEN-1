@@ -57,3 +57,13 @@
 .table-hover>tbody>tr:hover td .action-col{
 	display: block;
 }
+
+/* .table-fixed thead{
+  display: block;
+}
+.table-fixed tbody {
+  height: 70vh!important;
+  overflow-y: auto;
+  width:100%;
+  display: block;
+} */

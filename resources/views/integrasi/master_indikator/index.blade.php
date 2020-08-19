@@ -57,7 +57,7 @@
         </div>
         <div class="col-md-1">
             <label>Action</label>
-            <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+            <button type="submit" class="btn btn-info col-md-12"><i class="fa fa-search"></i></button>
         </div>
 
         </div>
