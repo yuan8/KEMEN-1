@@ -9,10 +9,14 @@
     <div class="col-md-4">
       <br>
         <div class="form-group pull-right">
-          <a href="{{route('int.kb.resume',['pdf'=>'true'])}}" class="btn btn-success btn-xs">DOWNLOAD RESUM</a>
+          <a href="{{route('int.kb.resume',['pdf'=>'true'])}}" class="btn btn-success btn-xs">DOWNLOAD RESUME</a>
         </div>
       </div>
     </div>
+<style type="text/css">
+  
+
+</style>
 @stop
 
 @section('content')
@@ -22,7 +26,7 @@
   			<div class="box-body table-responsive">
   				<table class="table table-sriped table-bordered">
 		  			<thead>
-		  				<tr>
+		  				<tr class="">
 		  					<th>SUB URUSAN</th>
                 <th></th>
 		  					<th>MANDAT</th>

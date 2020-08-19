@@ -22,3 +22,38 @@
 .bg-white{
   background: #fff!important;
 }
+
+.btn-circle{
+  border-radius: 50%;
+}
+
+.btn-circle.round{
+	width: 30px;
+	height: 30px;
+	padding: 0px;
+}
+.btn-navy{
+	background: navy;
+	color: #fff;
+}
+.ket-col{
+	width: 30px;
+}
+
+.table-bordered td, .table-bordered th{
+	border-color:#ddd!important;
+}
+
+.table>tbody>tr>td,.table>tbody>tr>th{
+		vertical-align: middle!important;
+}
+.table-hover>tbody>tr:hover td{
+	background: #f1ce93;
+}
+.table-hover tbody .action-col{
+	display: none;
+}
+
+.table-hover>tbody>tr:hover td .action-col{
+	display: block;
+}

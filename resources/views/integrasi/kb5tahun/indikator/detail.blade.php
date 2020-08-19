@@ -164,8 +164,8 @@
 				<tr>
 					
 					<td><b>{!!$i['_kondisi']['kode']!!}</b></td>
-					<td>{!!$i['_kondisi']['uraian']!!} - Tahun {{$i['_kondisi']['tahun_data']}} <br> 
-					<b class="text-success">{{$i['_kondisi']['nilai']}} {{$i['_kondisi']['satuan']}}</b> </td>
+					<td>{!!$i['_kondisi']['uraian']!!} 
+				 </td>
 					<td>{!!$i['_kebijakan']['_isu']['uraian']!!}</td>
 					<td>{!!$i['_kebijakan']['uraian']!!}</td>
 				</tr>

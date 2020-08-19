@@ -42,23 +42,23 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     	$tahun=Hp::fokus_tahun();
     	$meta_urusan=Hp::fokus_urusan();
 
-    	if($request->tipe_value){
+    	// if($request->tipe_value){
     		$valid=Validator::make($request->all(),[
-    			'nilai'=>'numeric|required',
-    			'satuan'=>'string|required',
-    			'tipe_value'=>'numeric',
+    			// 'nilai'=>'numeric|required',
+    			// 'satuan'=>'string|required',
+    			// 'tipe_value'=>'numeric',
     			'uraian'=>'string|required',
-    			'tahun_data'=>'numeric|min:'.(Hp::fokus_tahun()-5),
+    			// 'tahun_data'=>'numeric|min:'.(Hp::fokus_tahun()-5),
     		]);
-    	}else{
-    		$valid=Validator::make($request->all(),[
-    			'nilai'=>'string|required',
-    			'tipe_value'=>'numeric',
-    			'satuan'=>'string|required',
-    			'uraian'=>'string|required',
-    			'tahun_data'=>'numeric|min:'.(Hp::fokus_tahun()-5),
-    		]);
-    	}
+    	// }else{
+    		// $valid=Validator::make($request->all(),[
+    		// 	'nilai'=>'string|required',
+    		// 	'tipe_value'=>'numeric',
+    		// 	'satuan'=>'string|required',
+    		// 	'uraian'=>'string|required',
+    		// 	'tahun_data'=>'numeric|min:'.(Hp::fokus_tahun()-5),
+    		// ]);
+    	// }
 
 
     	if($valid->fails()){
@@ -66,10 +66,10 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     		return back();
 
     	}else{
-    		$data['satuan']=$request->satuan;
-    		$data['tipe_value']=$request->tipe_value;
-    		$data['nilai']=$request->nilai;
-    		$data['tahun_data']=$request->tahun_data;
+    		$data['satuan']='-';
+    		$data['tipe_value']=0;
+    		$data['nilai']=0;
+    		$data['tahun_data']=$tahun;
     		$data['uraian']=$request->uraian;
     		$data['id_user']=Auth::id();
     		$data['tahun']=$tahun;
@@ -135,28 +135,27 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
       public function kondisi_update($id,Request $request){
     	$tahun=Hp::fokus_tahun();
     	$meta_urusan=Hp::fokus_urusan();
-    	$tahun=Hp::fokus_tahun();
-    	$meta_urusan=Hp::fokus_urusan();
+    
 
-    	if($request->tipe_value){
+    	// if($request->tipe_value){
     		$valid=Validator::make($request->all(),[
-    			'nilai'=>'numeric|required',
-    			'kode'=>'string|required',
-    			'satuan'=>'string|required',
-    			'tipe_value'=>'numeric',
+    			// 'nilai'=>'numeric|required',
+    			// 'kode'=>'string|required',
+    			// 'satuan'=>'string|required',
+    			// 'tipe_value'=>'numeric',
     			'uraian'=>'string|required',
-    			'tahun_data'=>'numeric|min:'.(Hp::fokus_tahun()-5),
+    			// 'tahun_data'=>'numeric|min:'.(Hp::fokus_tahun()-5),
     		]);
-    	}else{
-    		$valid=Validator::make($request->all(),[
-    			'nilai'=>'string|required',
-    			'kode'=>'string|required',
-    			'tipe_value'=>'numeric',
-    			'satuan'=>'string|required',
-    			'uraian'=>'string|required',
-    			'tahun_data'=>'numeric|min:'.(Hp::fokus_tahun()-5),
-    		]);
-    	}
+    	// }else{
+    		// $valid=Validator::make($request->all(),[
+    		// 	'nilai'=>'string|required',
+    		// 	'kode'=>'string|required',
+    		// 	'tipe_value'=>'numeric',
+    		// 	'satuan'=>'string|required',
+    		// 	'uraian'=>'string|required',
+    		// 	'tahun_data'=>'numeric|min:'.(Hp::fokus_tahun()-5),
+    		// ]);
+    	// }
 
 
     	if($valid->fails()){
@@ -164,12 +163,12 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     		return back();
 
     	}else{
-    		$data['satuan']=$request->satuan;
-    		$data['tipe_value']=$request->tipe_value;
-    		$data['nilai']=$request->nilai;
-    		$data['tahun_data']=$request->tahun_data;
+    		// $data['satuan']=$request->satuan;
+    		// $data['tipe_value']=$request->tipe_value;
+    		// $data['nilai']=$request->nilai;
+    		// $data['tahun_data']=$request->tahun_data;
     		$data['uraian']=$request->uraian;
-    		$data['kode']=$meta_urusan['singkat'].'.KN.'.$request->kode;
+    		// $data['kode']=$meta_urusan['singkat'].'.KN.'.$request->kode;
     		$data['id_user']=Auth::id();
     		$data['updated_at']=Carbon::now();
 

@@ -240,7 +240,6 @@ return [
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class,
-
         'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],

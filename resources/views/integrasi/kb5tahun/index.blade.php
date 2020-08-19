@@ -13,7 +13,7 @@
 
 
 @section('content')
-<div class="box box-solid 	">
+<div class="box box-dotted 	">
 	<div class="box-body ">
 
 		<button onclick="showFormCreateKondisi()" class="btn btn-success btn-xs text-uppercase">Tambah Kondisi saat ini</button>
@@ -24,27 +24,22 @@
 <hr>
 
 <div class="table-responsive">
-	<table class="table bg-white table-bordered table-hover">
+	<table class="table bg-white table-bordered table-striped table-hover">
 		<thead class="bg-navy">
 			<tr>
-				<th rowspan="2" style="min-width: 200px;">ACTION</th>
-				<th colspan="5">KONDISI</th>
+				<th rowspan="2" colspan="2" style="min-width: 230px;">ACTION</th>
+				<th colspan="2">KONDISI</th>
 				<th rowspan="2">URAIAN ISU STRATEGIS</th>
 				<th rowspan="2">URAIAN ARAH KEBIJAKAN</th>
-				<th colspan="5">INDIKATOR</th>
+				<th colspan="5">INDIKATOR / SASARAN</th>
 				<th colspan="3">KEWENANGAN</th>
 				<th rowspan="2">PELAKSANA</th>
-
-
 			</tr>
 			<tr>
-				<th >KODE</th>
+				<th  >KODE</th>
 
 				<th>URAIAN KONDISI</th>
-				<th>TAHUN DATA</th>
-
-				<th>NILAI</th>
-				<th>SATUAN</th>
+			
 				<th>SUB URUSAN</th>
 
 				<th>KODE INDIKATOR</th>
@@ -63,8 +58,12 @@
 
 
 			<tr class=" ">
-					<td class="">
-						<div class=" pull-right  ">
+							
+				<td class="bg-yellow ket-col" >
+					<h4><b>KN</b></h4>
+				</td>
+					<td class="bg-warning">
+						<div class=" pull-right action-col ">
 							<button collapse-btn-nested="false" data-target=".kn-{{$kn['id']}}"  class="btn btn-info btn-xs kn">
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL KONDISI SAAT INI" class="fa fa-eye"></i> ({{count($kn['_children'])}})</button>
 							<button class="btn btn-success  btn-xs" data="TAMBAH ISU STRATEGIS" onclick="showFormCreateisu({{$kn['id']}})">
@@ -74,30 +73,21 @@
 							<button class="btn btn-danger  btn-xs" onclick="showFormDeleteKondisi({{$kn['id']}})"><i class="fa fa-trash"></i></button>
 						</div>
 					</td>
-					<td><b>{{$kn['kode']}}</b></td>
-					<td>{{$kn['uraian']}}</td>
-					<td>{{$kn['tahun_data']}}</td>
-					<td>
-						@if($kn['tipe_value']==1)
-							{{number_format($kn['nilai'],2)}}
-						@else
-							{{$kn['nilai']}}
-						@endif
-
-						
-					</td>
-					<td>
-						{{$kn['satuan']}}
-					</td>
-					<td colspan="12"></td>
+					<td class="bg-warning"><b>{{$kn['kode']}}</b></td>
+					<td colspan="12" style="border-left:2px solid #f39b12 !important;"><b>KN: </b>{{$kn['uraian']}}</td>
+				
+					
 
 
 				</tr>
 
 				@foreach($kn['_children'] as $isu)
 				<tr class="collapse  kn-{{$kn['id']}}">
-						<td class="" colspan="">
-								<div class=" pull-right">
+					<td class="bg-yellow ket-col" >
+					<h4><b>ISU</b></h4>
+				</td>
+						<td class="bg-warning" colspan="">
+								<div class=" pull-right action-col">
 									<button  collapse-btn-nested="false" data-target=".isu-{{$isu['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ISU STRATEGIS" class="fa fa-eye"></i>
 									 ({{count($isu['_children'])}})</button>
@@ -107,7 +97,11 @@
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteisu({{$isu['id']}})"><i class="fa fa-trash"></i></button>
 								</div>
 						</td>
-						<td colspan="5"></td>
+						<td class="bg-warning"></td>
+						<td colspan="1" >
+							<div class="pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px; 
+							border-top:0px; border-right:0px;margin-top:-9px; margin-right: -9px; "></div>
+						</td>
 						
 
 						<td colspan="12"><b>ISU: </b>{{$isu['uraian']}}</td>
@@ -116,9 +110,11 @@
 					@foreach($isu['_children'] as $ak)
 						<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}}">
 						
-						
-							<td class="" colspan="">
-								<div class=" pull-right">
+							<td class="bg-yellow ket-col" >
+					<h4><b>AK</b></h4>
+				</td>
+							<td class="bg-warning" colspan="">
+								<div class=" pull-right action-col">
 									<button   collapse-btn-nested="false" data-target=".ak-{{$ak['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ARAH KEBIJAKAN" class="fa fa-eye"></i>
 									 ({{count($ak['_indikator'])}})</button>
@@ -126,18 +122,28 @@
 								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 								<button class="btn btn-warning  btn-xs" onclick="showFormUpdateAk({{$ak['id']}})"><i class="fa fa-pen"></i></button>
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteAk({{$ak['id']}})"><i class="fa fa-trash"></i></button>
+								
+
 								</div>
 							</td>
-							<td colspan="6"></td>
+							<td class="bg-warning"></td>
+							<td colspan="1" ></td>
+							<td colspan="">
+								<div class="pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px; 
+							border-top:0px; border-right:0px;margin-top:-9px; margin-right: -9px; "></div>
+							</td>
 							<td colspan="11"><b>AK: </b>{{$ak['uraian']}}</td>
 						</tr>
 
 						@foreach($ak['_indikator'] as $i)
 
 							<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}} ak-{{$ak['id']}} }}">
-								
-								<td colspan="8">
-									<div class=" pull-right">
+								<td class="bg-yellow ket-col"  >
+					<h4><b>IND</b></h4>
+				</td>
+								<td colspan="2" class="bg-warning"></td>
+								<td colspan="3">
+									<div class=" pull-right action-col">
 										<button  class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$i['id']}})"><I class="fa fa-eye"  data-toggle="tooltip" data-placement="top" title="DETAIL INDIKATOR" ></I> </button>
 										<button class="btn btn-warning  btn-xs" onclick="showFormUpdateIndikator({{$i['id']}})"><i class="fa fa-pen"></i></button>
 										<button class="btn btn-danger  btn-xs" onclick="showFormDeleteIndikator({{$i['id']}})"><i class="fa fa-trash"></i></button>

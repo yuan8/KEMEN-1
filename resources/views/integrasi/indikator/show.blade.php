@@ -1,15 +1,6 @@
 
 @php
-	// if($tag==1){
-	// 	$route=route('int.kb5tahun.indikator.update',['id'=>$data['id']]);
-	// }
-	// else if($tag==2){
-	// 	$route=route('int.kb5tahun.indikator.store',['id'=>$ak_kondisi['id']]);
-	// }
-	// else
-	// {
 
-	// }
 
 	$route=route('int.m.indikator.update',['id'=>$data['id']]);
 

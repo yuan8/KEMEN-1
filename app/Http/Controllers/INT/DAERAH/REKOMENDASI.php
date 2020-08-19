@@ -69,7 +69,9 @@ class REKOMENDASI extends Controller
         $meta_urusan=Hp::fokus_urusan();
         $id_urusan=$meta_urusan['id_urusan'];
         $data=DAERAH::with(['_rekomendasi_final'=>function($q) use ($tahun,$id_urusan){
+            
             return $q->where('tahun',$tahun)->where('id_urusan',$id_urusan);
+
         }])->orderBy('id','asc')->get();
     	return view('integrasi.rekomendasi.index')->with('data',$data);
     }
@@ -82,6 +84,7 @@ class REKOMENDASI extends Controller
         $daerah=DAERAH::where('id',$id)->with(['_rekomendasi_final'=>function($q) use ($tahun,$id_urusan){
             return $q->where('tahun',$tahun)->where('id_urusan',$id_urusan);
         }])->first();
+
         if($daerah['_rekomendasi_final']){
             return redirect()->route('int.rekomendasi.export',['id'=>$id,'pdf'=>'export']);
 
@@ -96,7 +99,7 @@ class REKOMENDASI extends Controller
 
 
     	}else{
-    		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun)])->with(['_nomen_kab'=>function($q) use ($tahun,$id){
+    		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun),'id_urusan'=>$meta_urusan['id_urusan']])->with(['_nomen_kab'=>function($q) use ($tahun,$id){
 
                 return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
 
@@ -105,7 +108,6 @@ class REKOMENDASI extends Controller
 
 
 
-    	
 
     	$data=$model->get()->toArray();
 
