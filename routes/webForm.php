@@ -160,6 +160,8 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 		Route::get('/daerah/{kodepemda}','INT\DAERAH\PELAKSANAANURUSAN@detail')->name('int.permasalahan.detail');
 
+		Route::get('/resume-masalah-pokok/','INT\PERMASALAHAN@masalah_pokok')->name('int.permasalahan.mpokok');
+
 		Route::get('/resume/{id}','INT\PERMASALAHAN@resume')->name('int.permasalahan.resume');
 
 		Route::post('/daerah/update/masalah-pokok/{kodepemda}/{id}','FORM\PermasalahanCtrl@update_masalah_pokok')->name('int.permasalahan.update_masalah_pokok');

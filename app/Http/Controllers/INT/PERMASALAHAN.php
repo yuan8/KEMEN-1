@@ -13,12 +13,23 @@ class PERMASALAHAN extends Controller
 
 
 	public function masalah_pokok(Request $request){
-		// MASALAHPOKOK::where(
-		// 	[
-		// 		'id_urusan'=>$meta_urusan['id_urusan'],
-		// 		'tahun'=>$tahun
-		// 	]
-		// )
+		$meta_urusan=Hp::fokus_urusan();
+		$tahun=Hp::fokus_tahun();
+		$data=MASALAHPOKOK::where(
+			[
+				'id_urusan'=>$meta_urusan['id_urusan'],
+				'tahun'=>$tahun
+			]
+		)
+		->select(DB::RAW("
+			max(id) as id,
+			uraian,
+			count(distinct(kode_daerah)) as jumlah_pemda
+
+		"))
+		->groupBy('uraian')->get();
+
+		return view('integrasi.permasalahan.masalah_pokok')->with('data',$data);
 	}
 
 

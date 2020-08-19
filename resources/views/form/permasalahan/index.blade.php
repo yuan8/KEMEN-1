@@ -14,7 +14,21 @@
 
 @section('content')
 
-
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-warning">
+        <div class="box-body">
+          <div class="pull-left">
+            <h5><b>PEMETAAN PERMASALAHAN</b></h5>
+          </div>
+          <div class="pull-right">
+            <a href="{{route('int.permasalahan.mpokok')}}" class="btn btn-success btn-xs">PERMASALAHAN POKOK</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <div class="row">
   	<div class="col-md-6">
   		<div class="box box-success">
