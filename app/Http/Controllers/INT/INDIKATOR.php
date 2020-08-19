@@ -23,13 +23,14 @@ class INDIKATOR extends Controller
             $id_sub=[$request->s];
         }else{
              $id_sub=(array)DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get()->pluck('id')->toArray();
+             $id_sub[]=null;
         }
        
 
 
         $data=IND::whereRaw("
-            (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan in (".implode(',', $id_sub).",null) and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
-            OR (tahun=".$tahun.(isset($request->t)?(" and tag::text ilike '".$request->t."'"):' ')." and id_sub_urusan in (".implode(',', $id_sub).",null) and kode ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
+            (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan in (".implode(',', $id_sub).") and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
+            OR (tahun=".$tahun.(isset($request->t)?(" and tag::text ilike '".$request->t."'"):' ')." and id_sub_urusan in (".implode(',', $id_sub).") and kode ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].") 
             ".(count($id_sub)>0 ?" OR (tahun=".$tahun." and id_sub_urusan is null and id_urusan=".$meta_urusan['id_urusan'].")":'')."
     
         ");
@@ -41,6 +42,8 @@ class INDIKATOR extends Controller
 
         $data->appends(['q'=>$request->q]);
         $data->appends(['t'=>$request->t]);
+        $data->appends(['s'=>$request->s]);
+
 
          $id_sub=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get();
     	return view('integrasi.master_indikator.index')->with(['data'=>$data,'sub_urusan'=>$id_sub]);
