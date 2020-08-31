@@ -18,6 +18,34 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 {
     //
 
+
+    public function download(Request $request){
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+        $rpjmn=HP::get_tahun_rpjmn();
+        $title='RESUME  KEBIJAKAN PUSAT 5 TAHUN '.$meta_urusan['nama'].' ('.$rpjmn['start'].' - '.$rpjmn['finish'].')';
+
+        $sub_title='KEBIJAKAN PUSAT 5 TAHUN  ('.$rpjmn['start'].' - '.$rpjmn['finish'].')';
+
+        $data=KONDISI::
+        where('id_urusan',$meta_urusan['id_urusan'])->
+        where('tahun',$tahun)->
+        with('_urusan','_children._children._indikator._sub_urusan')->get()->toArray();
+
+
+        if($request->pdf){
+             $pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'defaultFont' => 'sans-serif','isRemoteEnabled' => true]);
+                $pdf->loadHTML(view('integrasi.kb5tahun.resume_ex')->with(['data'=>$data,
+                    'title'=>$title,'sub_title'=>$sub_title])->render());
+                return $pdf->stream();
+        }
+
+        if($request->pdf){
+
+        }
+
+    }
+
 	public function index(){
 		$tahun=Hp::fokus_tahun();
     	$meta_urusan=Hp::fokus_urusan();

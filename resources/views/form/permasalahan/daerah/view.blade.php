@@ -13,7 +13,10 @@
 
 
 @section('content')
-<button class="btn btn-info btn-xs" style="margin-bottom: 10px;" data-toggle="collapse" data-target="#info-page"><i class="fa fa-info-circle"></i> INFORMASI TERKAIT CARA PENGISIAN</button>
+<div class="btn-group">
+	<button class="btn btn-info btn-xs" style="margin-bottom: 10px;" data-toggle="collapse" data-target="#info-page"><i class="fa fa-info-circle"></i> INFORMASI TERKAIT CARA PENGISIAN</button>
+	<a href="{{route('int.permasalahan.daerah.download',['id'=>$daerah->id,'pdf'=>'export'])}}" class="btn btn-success btn-xs">DOWNLOAD DATA</a>
+</div>
 	<div class="box box box-solid bg-green-gradient collapse "  id="info-page" >
 		<div class="box-body text-dark">
 			  <p style="text-align: center;"><strong>Kolom Masalah Pokok</strong></p>

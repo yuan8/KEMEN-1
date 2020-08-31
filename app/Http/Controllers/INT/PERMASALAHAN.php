@@ -12,6 +12,9 @@ class PERMASALAHAN extends Controller
     //
 
 
+
+
+
 	public function masalah_pokok(Request $request){
 		$meta_urusan=Hp::fokus_urusan();
 		$tahun=Hp::fokus_tahun();

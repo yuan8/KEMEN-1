@@ -17,6 +17,24 @@ class PELAKSANAANURUSAN extends Controller
     //
 
 
+    public function download(Request $request){
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+         $sub_urusan=DB::table('master_sub_urusan')->where('id_urusan',$meta_urusan['id_urusan'])->get()->pluck('id');
+
+        
+        $data=KEWENANGAN::whereIn('id_sub_urusan',$sub_urusan)->with('_sub_urusan','_indikator')->orderBy('id_sub_urusan','ASC')->get();
+
+        $title='DATA PELAKSANAAN '.$meta_urusan['nama'].' TAHUN '.$tahun;
+        $sub_title='DATA PELAKSANAAN URUSAN';
+        if($request->pdf){
+             $pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'defaultFont' => 'sans-serif','isRemoteEnabled' => true]);
+                $pdf->loadHTML(view('integrasi.pelaksanaan.download')->with(['data'=>$data,'title'=>$title,'sub_title'=>$sub_title])->render());
+                return $pdf->stream();
+        }
+    }
+
+
     public function form_update($id){
         $meta_urusan=Hp::fokus_urusan();
         $tahun=Hp::fokus_tahun();
