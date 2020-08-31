@@ -17,7 +17,7 @@
 	<div class="box-body ">
 
 		<button onclick="showFormCreateKondisi()" class="btn btn-success btn-xs text-uppercase">Tambah Kondisi saat ini</button>
-		<a href="" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
+		<a href="{{route('int.kb5tahun.resume',['pdf'=>'true'])}}" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
 
 	</div>
 </div>

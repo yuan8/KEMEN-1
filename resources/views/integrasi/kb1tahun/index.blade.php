@@ -17,17 +17,17 @@
 	<div class="box-body ">
 
 		<button onclick="showFormCreatePn()" class="btn btn-primary btn-xs text-uppercase">TAMBAH PN</button>
-		<a href="" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
+		<a href="{{route('int.kb1tahun.download',['pdf'=>'true'])}}" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
 
 	</div>
 </div>
 <hr>
 
 <div class="table-responsive">
-	<table class="table-bordered table bg-white table-hover">
+	<table class=" table-bordered table-striped table bg-white table-hover">
 	<thead class="bg-navy">
 		<tr>
-			<th rowspan="2"></th>
+			<th rowspan="2" colspan="2"></th>
 			<th rowspan="2" >PN</th>
 			<th rowspan="2">PP</th>
 			<th rowspan="2">KP</th>
@@ -49,8 +49,11 @@
 	<tbody>
 		@foreach($data as $pn)
 			<tr>
-				<td >
-					<div class=" pull-right">
+				<td class=" bg-yellow text-center" style="width:50px;">
+					<h5><b>PN</b></h5>
+				</td>
+				<td style="min-width: 220px;" class="bg-warning">
+					<div class=" pull-right action-col ">
 						<button   collapse-btn-nested="false" data-target=".pn-{{$pn['id']}}"  class="btn btn-info btn-xs ">
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
 							 ({{count($pn['_child_pp'])}})</button>
@@ -70,10 +73,13 @@
 						$pni=$tagpni['_indikator'];
 					@endphp
 					<tr class="pn-{{$pn['id']}}">
-
-					<td colspan="5"></td>
+					<td class=" bg-yellow text-center" style="width:50px;">
+						<h5><b>IND</b></h5>
+					</td>
+					<td class="bg-warning"></td>
+					<td colspan="4"></td>
 					<td>
-						<div class="form-group pull-right">
+						<div class="form-group pull-right action-col">
 							<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$pni['id']}})"><i class="fa fa-eye"></i></button>
 							<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagpni['id']}},{{$pni['jenis']}})"><i class="fa fa-trash"></i></button>
 						</div>
@@ -131,8 +137,11 @@
 			@endforeach
 			@foreach($pn['_child_pp'] as $pp)
 				<tr class="pn-{{$pn['id']}}">
-					<td >
-							<div class=" pull-right">
+					<td class=" bg-yellow text-center" style="width:50px;">
+					<h5><b>PP</b></h5>
+					</td>
+					<td class="bg-warning">
+						<div class=" pull-right action-col">
 							<button   collapse-btn-nested="false" data-target=".pp-{{$pp['id']}}"  class="btn btn-info btn-xs ">
 									<i data-toggle="tooltip" data-placement="top" title="DETAIL PP" class="fa fa-eye"></i>
 								 ({{count($pp['_child_kp'])}})</button>
@@ -153,10 +162,12 @@
 						@php
 							$ppi=$tagppi['_indikator'];
 						@endphp
-
+						<td class=" bg-yellow text-center" style="width:50px;">
+						<h5><b>IND</b></h5>
+						</td>
 						<td colspan="5"></td>
 						<td>
-							<div class="form-group pull-right">
+							<div class="form-group pull-right action-col">
 								<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$ppi['id']}})"><i class="fa fa-eye"></i></button>
 								<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagppi['id']}},{{$ppi['jenis']}})"><i class="fa fa-trash"></i></button>
 							</div>
@@ -223,8 +234,11 @@
 
 				@foreach($pp['_child_kp'] as $kp)
 					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}}">
-						<td colspan="">
-								<div class=" pull-right">
+					<td class=" bg-yellow text-center" style="width:50px;">
+					<h5><b>KP</b></h5>
+					</td>
+						<td colspan="" class="bg-warning">
+								<div class=" pull-right action-col">
 								<button   collapse-btn-nested="false" data-target=".kp-{{$kp['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL KP" class="fa fa-eye"></i>
 									 ({{count($kp['_child_propn'])}})</button>
@@ -246,9 +260,12 @@
 						@php
 							$kpi=$tagkpi['_indikator'];
 						@endphp
+						<td class=" bg-yellow text-center" style="width:50px;">
+					<h5><b>IND</b></h5>
+					</td>
 						<td colspan="5"></td>
 						<td>
-							<div class="form-group pull-right">
+							<div class="form-group pull-right action-col">
 								<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$kpi['id']}})"><i class="fa fa-eye"></i></button>
 								<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagkpi['id']}},{{$kpi['jenis']}})"><i class="fa fa-trash"></i></button>
 							</div>
@@ -317,8 +334,11 @@
 					@endforeach
 					@foreach($kp['_child_propn'] as $propn)
 						<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}}">
-							<td colspan="">
-												<div class=" pull-right">
+							<td class=" bg-yellow text-center" style="width:50px;">
+					<h5><b>PROPN</b></h5>
+					</td>
+							<td colspan="" class="bg-warning">
+												<div class=" pull-right action-col">
 										<button   collapse-btn-nested="false" data-target=".propn-{{$propn['id']}}"  class="btn btn-info btn-xs ">
 												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROPN" class="fa fa-eye"></i>  ({{count($propn['_child_proyek'])}})
 											 </button>
@@ -342,10 +362,13 @@
 								@php
 									$propni=$tagpropni['_indikator'];
 								@endphp
+								<td class=" bg-yellow text-center" style="width:50px;">
+					<h5><b>IND</b></h5>
+					</td>
 
 								<td colspan="5"></td>
-									<td>
-									<div class="form-group pull-right">
+									<td >
+									<div class="form-group pull-right action-col">
 										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$propni['id']}})"><i class="fa fa-eye"></i></button>
 										<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagpropni['id']}},{{$propni['jenis']}})"><i class="fa fa-trash"></i></button>
 
@@ -408,8 +431,11 @@
 						@endforeach
 						@foreach($propn['_child_proyek'] as $proyek)
 							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}}">
-								<td colspan="">
-									<div class=" pull-right">
+								<td class=" bg-yellow text-center" style="width:50px;">
+					<h5><b>PROYEK</b></h5>
+					</td>
+								<td colspan="" class="bg-warning" >
+									<div class=" pull-right action-col">
 										<button   collapse-btn-nested="false" data-target=".proyek-{{$proyek['id']}}"  class="btn btn-info btn-xs ">
 												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROYEK" class="fa fa-eye"></i> ({{count($propn['_child_proyek'])}})
 											</button>
@@ -426,14 +452,17 @@
 
 							</tr>
 							@foreach($proyek['_tag_indikator'] as $tagproyeki)
-								<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}} proyek-{{$proyek['id']}}">
+								<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}} proyek-{{$proyek['id']}} ">
 									@php
 										$proyeki=$tagproyeki['_indikator'];
 									@endphp
+									<td class=" bg-yellow text-center" style="width:50px;">
+					<h5><b>IND</b></h5>
+					</td>
 
 									<td colspan="5"></td>
-									<td>
-										<div class="form-group pull-right">
+									<td class="bg-warning">
+										<div class="form-group pull-right action-col">
 											<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$proyeki['id']}})"><i class="fa fa-eye"></i></button>
 											<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagproyeki['id']}},{{$proyeki['jenis']}})"><i class="fa fa-trash"></i></button>
 											

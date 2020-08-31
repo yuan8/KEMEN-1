@@ -10,8 +10,9 @@
     	<div class="col-md-4">
     		<br>
     		<div class="btn-group pull-right">
+    			<a href="{{route('int.pelurusan.download',['pdf'=>'export'])}}" class="full-w btn btn-success btn-xs" >DOWNLOAD  DATA</a>
     			<button class="full-w btn btn-xs btn-success" onclick="showFromCreateKewenangan()">TAMBAH KEWENANGAN</button>
-    			{{-- <button class="full-w btn btn-success btn-xs" onclick="showFromCreateIndikator()">TAMBAH INDIKATOR</button> --}}
+    		
     		</div>
     	</div>
     	
@@ -76,6 +77,7 @@
 					<td colspan="5">
 						<div class="pull-right">
 							 <button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$i['id']}})"><i class="fa fa-eye"></i></button>
+							 <button class="btn btn-warning btn-xs" onclick="showFormUpdateIndikator({{$i['id']}})"><i class="fa fa-pen"></i></button>
 							<button class="btn btn-danger  btn-xs" onclick="showFormDeleteIndikatorKW({{$i['id']}})"><i class="fa fa-trash"></i></button>
 						</div>
 					</td>
@@ -173,6 +175,14 @@
 		});
 
 	}
+
+	function showFormUpdateIndikator(id){
+        API_CON.get("{{route('int.m.indikator.form_edit',['id'=>null])}}/"+id,).then(function(res){
+            $('#modal-global-lg .modal-header .modal-title').html('UPDATE INDIKATOR {{Hp::fokus_tahun()}}');
+            $('#modal-global-lg .modal-body').html(res.data);
+            $('#modal-global-lg').modal();
+        });
+    }
 
 	
 

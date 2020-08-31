@@ -30,6 +30,8 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 	Route::prefix('indetifikasi-kebijakan-5-tahun')->group(function(){
 		Route::get('/','INT\KEBIJAKANPUSAT5TAHUN@index')->name('int.kb5tahun.index');
+		Route::get('/resume','INT\KEBIJAKANPUSAT5TAHUN@download')->name('int.kb5tahun.resume');
+
 		Route::post('/kondisi/store','INT\KEBIJAKANPUSAT5TAHUN@kondisi_store')->name('int.kb5tahun.store');
 		Route::get('/kondisi/show-from-create','INT\KEBIJAKANPUSAT5TAHUN@kondisi_create')->name('int.kb5tahun.kondisi.create');
 		Route::get('/kondisi/show-from-update/{id}','INT\KEBIJAKANPUSAT5TAHUN@kondisi_view')->name('int.kb5tahun.kondisi.view');
@@ -88,6 +90,9 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 		Route::get('/','INT\PELAKSANAANURUSAN@index')->name('int.pelurusan.index');	
 
+		Route::get('/download','INT\PELAKSANAANURUSAN@download')->name('int.pelurusan.download');	
+
+
 		Route::delete('/delete/{id}','INT\PELAKSANAANURUSAN@delete')->name('int.pelurusan.delete');
 
 		Route::get('/form-delete/{id?}','INT\PELAKSANAANURUSAN@form_delete')->name('int.pelurusan.form_delete');
@@ -123,6 +128,8 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 	Route::prefix('indetifikasi-kebijakan-tahunan')->group(function(){
 
 		Route::get('/','INT\KEBIJAKANPUSAT1TAHUN@index')->name('int.kb1tahun.index');
+		Route::get('/download','INT\KEBIJAKANPUSAT1TAHUN@download')->name('int.kb1tahun.download');
+
 		
 		Route::get('/show-form-pn','INT\KEBIJAKANPUSAT1TAHUN@pn_create')->name('int.kb1tahun.pn_create');	
 		
@@ -159,6 +166,8 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 	Route::prefix('permasalahan')->group(function(){
 
 		Route::get('/daerah/{kodepemda}','INT\DAERAH\PELAKSANAANURUSAN@detail')->name('int.permasalahan.detail');
+
+		Route::get('/daerah/{kodepemda}/download','INT\DAERAH\PERMASALAHAN@download')->name('int.permasalahan.daerah.download');
 
 		Route::get('/resume-masalah-pokok/','INT\PERMASALAHAN@masalah_pokok')->name('int.permasalahan.mpokok');
 

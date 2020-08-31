@@ -18,6 +18,25 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
 {
     //
 
+    public function download(Request $request){
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+        $rpjmn=HP::get_tahun_rpjmn();
+        $title='KEBIJAKAN PUSAT '.$meta_urusan['nama'].' TAHUN '.$tahun;
+
+        $sub_title='KEBIJAKAN PUSAT TAHUNAN';
+
+        $data=RKP::where(['jenis'=>1,'tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])->get();
+
+
+        if($request->pdf){
+             $pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'defaultFont' => 'sans-serif','isRemoteEnabled' => true]);
+                $pdf->loadHTML(view('integrasi.kb1tahun.download')->with(['data'=>$data,
+                    'title'=>$title,'sub_title'=>$sub_title])->render());
+                return $pdf->stream();
+        }
+    }
+
     public function store_indikator_rkp(Request $request){
         $rkp=RKP::find($request->id_rkp);
         $tahun=Hp::fokus_tahun();

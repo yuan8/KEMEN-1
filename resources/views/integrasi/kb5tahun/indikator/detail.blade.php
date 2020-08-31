@@ -115,9 +115,9 @@
 	 				<th class="bg-navy">DATA DUKUNG</th>
 	 			</tr>
 	 			<tr>
-	 				<td class="{{$i['kw_nas']?'':'bg-danger'}}">{!!$i['data_dukung_nas']!!}</td>
-	 				<td class="{{$i['kw_p']?'':'bg-danger'}}">{!!$i['data_dukung_p']!!}</td>
-	 				<td class="{{$i['kw_k']?'':'bg-danger'}}">{!!$i['data_dukung_k']!!}</td>
+	 				<td class="{{$i['kw_nas']?'':'bg-danger'}}">{!!nl2br($i['data_dukung_nas'])!!}</td>
+	 				<td class="{{$i['kw_p']?'':'bg-danger'}}">{!!nl2br($i['data_dukung_p'])!!}</td>
+	 				<td class="{{$i['kw_k']?'':'bg-danger'}}">{!!nl2br($i['data_dukung_k'])!!}</td>
 	 			</tr>
 	 		</tbody>
 	 	</table>
@@ -163,11 +163,11 @@
 			<tbody>
 				<tr>
 					
-					<td><b>{!!$i['_kondisi']['kode']!!}</b></td>
-					<td>{!!$i['_kondisi']['uraian']!!} 
+					<td><b>{!!nl2br($i['_kondisi']['kode'])!!}</b></td>
+					<td>{!!nl2br($i['_kondisi']['uraian'])!!} 
 				 </td>
-					<td>{!!$i['_kebijakan']['_isu']['uraian']!!}</td>
-					<td>{!!$i['_kebijakan']['uraian']!!}</td>
+					<td>{!!nl2br($i['_kebijakan']['_isu']['uraian'])!!}</td>
+					<td>{!!nl2br($i['_kebijakan']['uraian'])!!}</td>
 				</tr>
 
 			</tbody>
