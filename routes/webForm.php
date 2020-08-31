@@ -217,6 +217,11 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 
 });
+Route::prefix('nomen/')->group(function(){
+	Route::get('/','INT\MASTER90@index')->name('int.nomen.index');
+	
+});
+
 Route::prefix('pemetaan/')->group(function(){
 	Route::get('/{id}','INT\pemetaanarahkebijakan@pn_indikator')->name('form.pemetaan');
 	Route::POST('/insert/{id}','INT\pemetaanarahkebijakan@insert_arah_kebijakan')->name('form.pemetaan.insert');
