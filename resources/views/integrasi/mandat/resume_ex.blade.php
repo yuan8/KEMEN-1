@@ -32,9 +32,9 @@
 			<th class="text-center"  colspan="4">NSPK</th>
 			<th class="text-center"  rowspan="2">MANDAT KE DAERAH</th>
 			<th class="text-center"  rowspan="2">KATEGORI</th>
-			
-			<th class="text-center"  colspan="2">KEBIJAKAN DAERAH</th>
-			<th class="text-center"  colspan="2">KESESUAIAN NSPK DAN KEBIJAKAN DAERAH</th>
+
+			<th class="text-center"  colspan="2">REGULASI DAERAH</th>
+			<th class="text-center"  colspan="2">KESESUAIAN NSPK DAN REGULASI DAERAH</th>
 		</tr>
 		<tr>
 			<th class="text-center" >UU</th>
@@ -106,7 +106,7 @@
 					{!!nl2br($d['uraian'])!!}
 				</td>
 				<td>
-					{{$d['tipe']?'KEBIJAKAN':'KEGIATAN'}}
+					{{$d['tipe']?'REGULASI':'KEGIATAN'}}
 				</td>
 				
 				
