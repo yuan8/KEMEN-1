@@ -32,8 +32,8 @@
 		<tr>
 			<th>UU</th>
 			<th>PP</th>
-			<th>PERMEN</th>
 			<th>PERPRES</th>
+			<th>PERMEN</th>
 			<th>PERDA</th>
 			<th>PERKADA</th>
 			<th>SESUAI</th>
