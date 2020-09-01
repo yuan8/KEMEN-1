@@ -30,8 +30,9 @@
 			<th class="text-center"  rowspan="2" >NO</th>
 			<th class="text-center"  rowspan="2">SUB URUSAN</th>
 			<th class="text-center"  colspan="4">NSPK</th>
-			<th class="text-center"  rowspan="2">KATEGORI</th>
 			<th class="text-center"  rowspan="2">MANDAT KE DAERAH</th>
+			<th class="text-center"  rowspan="2">KATEGORI</th>
+			
 			<th class="text-center"  colspan="2">KEBIJAKAN DAERAH</th>
 			<th class="text-center"  colspan="2">KESESUAIAN NSPK DAN KEBIJAKAN DAERAH</th>
 		</tr>
@@ -102,11 +103,12 @@
 
 				</td>
 				<td>
-					{{$d['tipe']?'KEBIJAKAN':'KEGIATAN'}}
-				</td>
-				<td>
 					{!!nl2br($d['uraian'])!!}
 				</td>
+				<td>
+					{{$d['tipe']?'KEBIJAKAN':'KEGIATAN'}}
+				</td>
+				
 				
 				<td>{{number_format($d['_list_perda_count'],0)}}</td>
 				<td>{{number_format($d['_list_perkada_count'],0)}}</td>
