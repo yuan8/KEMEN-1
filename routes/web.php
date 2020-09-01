@@ -261,6 +261,16 @@ Route::prefix('prokeg/')->group(function(){
 			Route::get('/pemetaan/program/{id}/{kodepemda}','PROKEG\prokeg@pemetaan_program')->name('prokeg.pemetaan.pilihprogram');
 			Route::post('/pemetaan/program/insert','PROKEG\prokeg@insert_pemetaan_program')->name('prokeg.pemetaan.program.insert');
 		});
+Route::prefix('monev_dokrenda/')->group(function(){
+			Route::get('/','MONEVDOKRENDA\monevdokrenda@index')->name('monev.dokrenda.index');
+			Route::get('/monev_dokrenda/{kodepemda}','MONEVDOKRENDA\monevdokrenda@monev')->name('monev.dokrenda.monev');
+			Route::get('/monev_update_insert/{id}','MONEVDOKRENDA\monevdokrenda@insert')->name('monev.update.insert');
+			Route::post('/monev_insert_progres_submit/','MONEVDOKRENDA\monevdokrenda@insert_commit')->name('monev.insert.progres.commit');
+			Route::get('/monev_update_update/{id}','MONEVDOKRENDA\monevdokrenda@update')->name('monev.update.update');
+			Route::post('/monev_update_progres_submit/','MONEVDOKRENDA\monevdokrenda@update_commit')->name('monev.update.progres.commit');
+			Route::delete('/monev_delete_progres/{id}', 'MONEVDOKRENDA\monevdokrenda@delete')->name('monev.delete.progres');
+
+		});
 
 
 

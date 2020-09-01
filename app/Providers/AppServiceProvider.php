@@ -81,6 +81,10 @@ class AppServiceProvider extends ServiceProvider
           //      'url'=>route('int.prokeg.index')
 'url'=>route('prokeg.index')
             ]);
+	$event->menu->add([
+                'text' => 'PELAKSANAAN RENCANA PEMBANGUNAN DAERAH',
+                'url'=>route('monev.dokrenda.index')
+            ]);
 
 
             $event->menu->add('INTEGRASI');
