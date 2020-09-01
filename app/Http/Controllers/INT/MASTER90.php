@@ -15,9 +15,10 @@ class MASTER90 extends Controller
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
     	if($pro){
-    		$data=NOMEN::where([
-    			['urus','=',$meta_urusan['id_urusan']],
-    			['jenis','=','program']
+            $data =new NOMEN('public.master_nomenklatur_provinsi_2020');
+    		$data=$data->where([
+    			['id_urusan','=',$meta_urusan['id_urusan']],
+    			['jenis','=',1]
 
     		]
     	)->with(['_child_kegiatan._child_sub_kegiatan'])->get()->toArray();
@@ -25,8 +26,8 @@ class MASTER90 extends Controller
     	}
 
     	$data=NOMENKAB::where([
-    			['urus','=',$meta_urusan['id_urusan']],
-    			['jenis','=','program']
+    			['id_urusan','=',$meta_urusan['id_urusan']],
+    			['jenis','=',1]
 
     	])->with(['_child_kegiatan._child_sub_kegiatan'])->get()->toArray();
 

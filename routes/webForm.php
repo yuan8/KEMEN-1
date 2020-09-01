@@ -218,7 +218,7 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 });
 Route::prefix('nomen/')->group(function(){
-	Route::get('/','INT\MASTER90@index')->name('int.nomen.index');
+	Route::get('/{pro}','INT\MASTER90@index')->name('int.nomen.index');
 	
 });
 
