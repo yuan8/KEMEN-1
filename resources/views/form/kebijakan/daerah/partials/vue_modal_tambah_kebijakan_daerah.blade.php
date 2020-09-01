@@ -66,6 +66,9 @@
           setTimeout(function(){
               $('[name="{{$tag}}[]"]').val(null).trigger('change');
               var data=value;
+              if(data==null){
+                data='';
+              }
               data=data.split('|@|');
               for(var i in data){
                 if(data[i]!=''){

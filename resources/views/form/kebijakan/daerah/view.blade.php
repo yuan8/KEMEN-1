@@ -6,15 +6,9 @@
     	<div class="col-md-8">
     		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN <span class="text-success">{{$daerah->nama}}</span> </h3>
     	</div>
-<<<<<<< HEAD
     	<div class="col-md-4 modal-footer">
-    		<a href="" class="btn btn-success">Tambah</a>
+    		<a href="" class="btn btn-success">DOWNLOAD DATA</a>
     	</div>
-    	
-=======
-
-
->>>>>>> bd8778ebaf59315ae62f3c518bf44f39fffb0958
     </div>
 @stop
 
@@ -41,6 +35,9 @@
 
                          ?>
                         @foreach($datas as $kb)
+                          <script type="text/javascript">
+                            var mandat_{{$kb->id_mandat}}=<?php echo json_encode($kb); ?>;
+                          </script>
                             @if(($id_sub_urusan!=$kb->id)&&(!empty($kb->id)))
                                 <tr>
                                     <td>{{$kb->nama}}</td>
@@ -55,17 +52,22 @@
                                     <td>{!!$kb->tipe?'<i class="fa fa-circle text-warning"></i>':'<i class="fa fa-circle text-info"></i>'!!} {{$kb->mandat}}</td>
                                     <td colspan=""></td>
                                     <td>
-                                        <button class="btn btn-info btn-xs" onclick="plus_perda.build('#plus-perda','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perda',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perda',['id'=>$kb->id_mandat])}}','{{$kb->perda}}','{{$kode_daerah}}')">
+                                    
+
+                                        <button class="btn btn-info btn-xs" onclick="plus_perda.build('#plus-perda',mandat_{{$kb->id_mandat}}.mandat,'{{route('kebijakan.daerah.store.mandat.perda',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perda',['id'=>$kb->id_mandat])}}',mandat_{{$kb->id_mandat}}.perkada,'{{$kode_daerah}}')">
                                             <i class="fa fa-edit"></i> PERDA
                                         </button>
                                     </td>
                                     <td>
-                                          <button class="btn btn-info btn-xs" onclick="plus_perkada.build('#plus-perkada','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.perkada',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perkada',['id'=>$kb->id_mandat])}}','{{$kb->perkada}}','{{$kode_daerah}}')">
+                                      <script type="text/javascript">
+                                       var perkada_{{$kb->id}}=<?php echo json_encode($kb); ?>;
+                                     </script>
+                                          <button class="btn btn-info btn-xs" onclick="plus_perkada.build('#plus-perkada',mandat_{{$kb->id_mandat}}.mandat,'{{route('kebijakan.daerah.store.mandat.perkada',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perkada',['id'=>$kb->id_mandat])}}',mandat_{{$kb->id_mandat}}.perkada,'{{$kode_daerah}}')">
                                             <i class="fa fa-edit"></i> PERKADA
                                         </button>
                                     </td>
-									<td>
-                                          <button class="btn btn-info btn-xs" onclick="plus_lainnya.build('#plus-lainnya','{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.lainnya',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.lainnya',['id'=>$kb->id_mandat])}}','{{$kb->lainnya}}','{{$kode_daerah}}')">
+									                 <td>
+                                          <button class="btn btn-info btn-xs" onclick="plus_lainnya.build('#plus-lainnya',mandat_{{$kb->id_mandat}}.mandat,'{{route('kebijakan.daerah.store.mandat.lainnya',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.lainnya',['id'=>$kb->id_mandat])}}',mandat_{{$kb->id_mandat}}.lainya,'{{$kode_daerah}}')">
                                             <i class="fa fa-edit"></i> LAINNYA
                                         </button>
                                     </td>
@@ -78,7 +80,7 @@
                                 <tr>
                                     <td colspan="2"></td>
                                     <td class="bg {{$kb->kesesuaian==0?'bg-danger':(($kb->kesesuaian==1)?'bg-success':'bg-warning') }}" colspan="4">
-                                        <button onclick="update_kesesuian.build('{{$kb->mandat}}','{{route('kebijakan.daerah.store.mandat.update.kesesuian',['id'=>$kb->id_integrasi])}}',{{$kb->id_integrasi}},{{$kb->kesesuaian}},'{{$kb->note}}')" class="btn btn-xs {{$kb->kesesuaian==0?'btn-danger':(($kb->kesesuaian==1)?'btn-success':'btn-warning') }}">
+                                        <button onclick="update_kesesuian.build(mandat_{{$kb->id_mandat}}.mandat,'{{route('kebijakan.daerah.store.mandat.update.kesesuian',['id'=>$kb->id_integrasi])}}',{{$kb->id_integrasi}},{{$kb->kesesuaian}},mandat_{{$kb->id_mandat}}.note)" class="btn btn-xs {{$kb->kesesuaian==0?'btn-danger':(($kb->kesesuaian==1)?'btn-success':'btn-warning') }}">
                                             {{$kb->kesesuaian==0?'Belum Dinilai':(($kb->kesesuaian==1)?'Sesuai':'Tidak Sesuai') }}
 
                                         </button>
@@ -119,7 +121,7 @@
                                         @endif
 
                                     </td>
-									<td>
+									                     <td>
                                         @if(!empty($kb->lainnya))
                                          <ul>
                                           <?php $duu=explode('|@|',$kb->lainnya); ?>

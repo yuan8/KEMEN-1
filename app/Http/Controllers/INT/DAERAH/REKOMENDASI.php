@@ -133,7 +133,6 @@ class REKOMENDASI extends Controller
 
     	$data=$model::where('jenis','program')->where('urus',$meta_urusan['id_urusan'])->get();
         
-// Your Eloquent query executed by using get()
 
 
     	return view('integrasi.rekomendasi.nomen')->with(['data'=>$data,'kodepemda'=>$id,'id_rkp'=>$id_rkp]);
