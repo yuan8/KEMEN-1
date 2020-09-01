@@ -30,7 +30,7 @@
 			<th class="text-center"  rowspan="2" >NO</th>
 			<th class="text-center"  rowspan="2">SUB URUSAN</th>
 			<th class="text-center"  colspan="4">NSPK</th>
-			<th class="text-center"  rowspan="2">TIPE</th>
+			<th class="text-center"  rowspan="2">KATEGORI</th>
 			<th class="text-center"  rowspan="2">MANDAT KE DAERAH</th>
 			<th class="text-center"  colspan="2">KEBIJAKAN DAERAH</th>
 			<th class="text-center"  colspan="2">KESESUAIAN NSPK DAN KEBIJAKAN DAERAH</th>
@@ -38,8 +38,8 @@
 		<tr>
 			<th class="text-center" >UU</th>
 			<th class="text-center" >PP</th>
-			<th class="text-center" >PERMEN</th>
 			<th class="text-center" >PERPRES</th>
+			<th class="text-center" >PERMEN</th>
 			<th class="text-center" >PERDA</th>
 			<th class="text-center" >PERKADA</th>
 			<th class="text-center" >SESUAI</th>
@@ -102,7 +102,7 @@
 
 				</td>
 				<td>
-					{{$d['tipe']?'MANDAT':'KEGIATAN'}}
+					{{$d['tipe']?'KEBIJAKAN':'KEGIATAN'}}
 				</td>
 				<td>
 					{!!nl2br($d['uraian'])!!}
