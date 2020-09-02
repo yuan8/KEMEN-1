@@ -217,7 +217,7 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 
 });
-Route::prefix('nomen/')->group(function(){
+Route::prefix('master-nomenklatur/')->group(function(){
 	Route::get('/{pro}','INT\MASTER90@index')->name('int.nomen.index');
 	
 });

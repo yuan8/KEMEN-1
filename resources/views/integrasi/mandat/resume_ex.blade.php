@@ -12,7 +12,7 @@
 @stop
 
 @section('content')
-<table class="table-bordred table">
+<table class="table" style="max-width: 4960px">
 	<thead  class="text-center" >
 		<tr>
 			<th class="text-center"  colspan="11" class="text-center">KEBIJAKAN PUSAT</th>
@@ -22,7 +22,7 @@
 		</tr>
 	</thead>
 </table>
-<table class="table table-bordred table-striped">
+<table class="table table-data table-bordred" border='1'  style="max-width: 4960px">
 	<thead class="text-center" >
 
 		
@@ -73,7 +73,7 @@
 				<td>
 					<ul>
 						@foreach($d['_uu'] as $u)
-							<li>{!!nl2br($u['uraian'])!!}</li>
+							<li>{!!($u['uraian'])!!}</li>
 						@endforeach
 					</ul>
 
@@ -81,7 +81,7 @@
 				<td>
 					<ul>
 						@foreach($d['_pp'] as $u)
-							<li>{!!nl2br($u['uraian'])!!}</li>
+							<li>{!!($u['uraian'])!!}</li>
 						@endforeach
 					</ul>
 
@@ -89,7 +89,7 @@
 				<td>
 					<ul>
 						@foreach($d['_perpres'] as $u)
-							<li>{!!nl2br($u['uraian'])!!}</li>
+							<li>{!!($u['uraian'])!!}</li>
 						@endforeach
 					</ul>
 
@@ -97,23 +97,32 @@
 				<td>
 					<ul>
 						@foreach($d['_permen'] as $u)
-							<li>{!!nl2br($u['uraian'])!!}</li>
+							<li>{!!($u['uraian'])!!}</li>
 						@endforeach
 					</ul>
 
 				</td>
 				<td>
-					{!!nl2br($d['uraian'])!!}
+					{!!($d['uraian'])!!}
 				</td>
 				<td>
 					{{$d['tipe']?'REGULASI':'KEGIATAN'}}
 				</td>
 				
-				
+				@if($d['tipe'])
+
+
 				<td>{{number_format($d['_list_perda_count'],0)}}</td>
 				<td>{{number_format($d['_list_perkada_count'],0)}}</td>
 				<td>{{number_format($d['_integrasi_sesuai_count'],0)}} Daerah</td>
 				<td>{{number_format($d['_integrasi_tidak_sesuai_count'],0)}} Daerah</td>
+				@else
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+				<td>-</td>
+
+				@endif
 
 
 			</tr>
