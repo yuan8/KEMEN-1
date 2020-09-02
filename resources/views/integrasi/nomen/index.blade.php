@@ -14,7 +14,9 @@
 
 
 @section('content')
-
+<div class="box-group">
+    <button class="btn btn-primary">TAMBAH URUSAN</button>
+</div>
 <div class="box box-solid">
     <div class="box-body">
         <table class="table table-bordered">

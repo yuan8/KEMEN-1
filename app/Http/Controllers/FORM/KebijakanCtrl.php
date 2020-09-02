@@ -578,6 +578,7 @@ class KebijakanCtrl extends Controller
         ->orderBy('man.id','DESC')
         ->orderBy('int.id','DESC')
         ->where('su.id_urusan',Hp::fokus_urusan()['id_urusan'])
+        ->where('man.tipe',1)
         ->paginate(10);
 
 

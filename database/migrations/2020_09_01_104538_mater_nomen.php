@@ -21,6 +21,7 @@ class MaterNomen extends Migration
               Schema::connection('meta_rkpd')->create($schema.'nomenpro_'.env('TAHUN'),function(Blueprint $table) use ($schema){
                     $table->bigIncrements('id');
                     $table->integer('tahun');
+                    $table->bigInteger('id_bidang')->nullable();
                     $table->bigInteger('id_urusan')->unsigned();
                     $table->bigInteger('id_program')->nullable();
                     $table->bigInteger('id_kegiatan')->nullable();
@@ -41,6 +42,10 @@ class MaterNomen extends Migration
                         ->onDelete('cascade')->onUpdate('cascade');
 
                      $table->foreign('id_kegiatan')
+                        ->references('id')->on($schema.'nomenpro_'.env('TAHUN'))
+                        ->onDelete('cascade')->onUpdate('cascade');
+
+                      $table->foreign('id_bidang')
                         ->references('id')->on($schema.'nomenpro_'.env('TAHUN'))
                         ->onDelete('cascade')->onUpdate('cascade');
 
@@ -52,7 +57,8 @@ class MaterNomen extends Migration
               Schema::connection('meta_rkpd')->create($schema.'nomenkab_'.env('TAHUN'),function(Blueprint $table) use ($schema){
                     $table->bigIncrements('id');
                     $table->integer('tahun');
-                    $table->bigInteger('id_urusan')->unsigned();
+                    $table->bigInteger('id_bidang')->unsigned();
+                    $table->bigInteger('id_urusan')->nullable();
                     $table->bigInteger('id_program')->nullable();
                     $table->bigInteger('id_kegiatan')->nullable();
                     $table->text('uraian');
@@ -72,6 +78,10 @@ class MaterNomen extends Migration
                         ->onDelete('cascade')->onUpdate('cascade');
 
                      $table->foreign('id_kegiatan')
+                        ->references('id')->on($schema.'nomenpro_'.env('TAHUN'))
+                        ->onDelete('cascade')->onUpdate('cascade');
+
+                    $table->foreign('id_bidang')
                         ->references('id')->on($schema.'nomenpro_'.env('TAHUN'))
                         ->onDelete('cascade')->onUpdate('cascade');
 
@@ -90,8 +100,9 @@ class MaterNomen extends Migration
         //
         $schema='form.';
 
-        Schema::connection('form')->dropIfExists($schema.'nomenpro_'.env('TAHUN'));
         Schema::connection('form')->dropIfExists($schema.'nomenkab_'.env('TAHUN'));
+        Schema::connection('form')->dropIfExists($schema.'nomenpro_'.env('TAHUN'));
+
 
     }
 }

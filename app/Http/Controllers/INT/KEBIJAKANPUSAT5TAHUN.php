@@ -54,7 +54,9 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 		$data=KONDISI::
 		where('id_urusan',$meta_urusan['id_urusan'])->
 		where('tahun',$tahun)->
-		with('_urusan','_children._children._indikator._sub_urusan')->get()->toArray();
+		with('_urusan','_children._children._indikator._sub_urusan')
+        ->orderBy('id','desc')->get()->toArray();
+        
      $rpjmn=Hp::get_tahun_rpjmn(Hp::fokus_tahun());
      
     	return view('integrasi.kb5tahun.index')->with([
