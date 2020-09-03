@@ -283,6 +283,7 @@
         .table-responsive{
             max-height: 80vh;
             overflow: scroll;
+            padding: 0px;
         }
       </style>
 
