@@ -263,10 +263,27 @@
 
         $('.init-use-select2').select2();
 
+        var $th = $('.table-responsive').find('thead');
+            $('.table-responsive').on('scroll', function() {
+                console.log(this.scrollLeft);
+              $(this).find('thead').css('transform', 'translateY('+ this.scrollTop+'px)' );
+
+            });
 
       </script>
       <style type="text/css">
-        
+
+       
+
+        .table-responsive .table{
+            border-collapse: separate;
+        }
+       
+
+        .table-responsive{
+            max-height: 80vh;
+            overflow: scroll;
+        }
       </style>
 
     @stop

@@ -26,7 +26,7 @@
 	<table class=" table-bordered table">
 	<thead class="bg-navy">
 		<tr>
-			<th rowspan="2" >PN</th>
+			<th rowspan="2" >PN / MAJOR PROJECT</th>
 			<th rowspan="2">PP</th>
 			<th rowspan="2">KP</th>
 			<th rowspan="2">PROPN</th>
@@ -48,7 +48,7 @@
 		@foreach($data as $pn)
 			<tr>
 				
-				<td colspan="11"><b>PN: </b>{{$pn['uraian']}}</td>
+				<td colspan="11"><b>{{$pn['jenis']==-1?'MAJOR PROJECT':'PN'}}: </b>{{$pn['uraian']}}</td>
 
 			</tr>
 			@foreach($pn['_tag_indikator'] as $tagpni)

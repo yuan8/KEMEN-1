@@ -26,7 +26,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
 
         $sub_title='KEBIJAKAN PUSAT TAHUNAN';
 
-        $data=RKP::where(['jenis'=>1,'tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])->get();
+        $data=RKP::whereIn('jenis',[-1,1])->where(['tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])->orderBy('id','DESC')->get();
 
 
         if($request->pdf){
