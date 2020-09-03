@@ -54,10 +54,10 @@ class Rekomendasi extends Migration
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_nomen')
-                    ->references('id')->on('form.nomenkab_'.env('TAHUN'))
+                    ->references('id')->on('form.nomenpro_'.env('TAHUN'))
                     ->onDelete('cascade')->onUpdate('cascade');
 
-                
+
              });
 
          }
@@ -120,6 +120,6 @@ class Rekomendasi extends Migration
         Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi_kab_'.env('TAHUN'));
         Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi_'.env('TAHUN'));
 
-        
+
     }
 }
