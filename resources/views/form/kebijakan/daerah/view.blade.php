@@ -18,7 +18,7 @@
 		<div class="box box-success">
 			<div class="box-body">
                 <table class="table table-bordered">
-                    <thead>
+                    <thead class="bg-navy">
                         <tr>
                             <th>SUB URUSAN</th>
                             <th>MANDAT / KEGIATAN</th>

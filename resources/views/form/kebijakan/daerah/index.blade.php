@@ -16,7 +16,7 @@
   		<div class="box box-success">
   			<div class="box-body table-responsive">
   				<table class="table table-striped" id="table-pro">
-		  			<thead>
+		  			<thead > 
 		  				<tr>
 		  					<th>KODE</th>
 		  					<th>PROVINSI</th>

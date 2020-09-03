@@ -25,7 +25,7 @@
   		<div class="box box-warning">
   			<div class="box-body table-responsive">
   				<table class="table table-sriped table-bordered">
-		  			<thead>
+		  			<thead class="bg-navy">
 		  				<tr class="">
 		  					<th>SUB URUSAN</th>
                 <th></th>
