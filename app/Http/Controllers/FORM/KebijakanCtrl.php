@@ -15,6 +15,9 @@ class KebijakanCtrl extends Controller
 
     public function index(Request $request){
         $urusan=\Hp::fokus_urusan();
+        $tahun=\Hp::fokus_tahun();
+
+
 
         $kebijakan=DB::table(DB::raw('master_sub_urusan as su'))
         ->select('su.id as id','su.nama as nama','man.id as id_mandat','man.uraian as mandat','man.tipe',
@@ -25,6 +28,7 @@ class KebijakanCtrl extends Controller
         )
         ->leftJoin('ikb_mandat as man','man.id_sub_urusan','=','su.id')
         ->where('su.id_urusan',$urusan['id_urusan'])
+        ->where('man.tahun',$tahun)
         ->orderBy('su.id','ASC')
         ->orderBy('man.id','DESC')
 
@@ -574,10 +578,11 @@ class KebijakanCtrl extends Controller
         ->leftJoin('master_sub_urusan as su','man.id_sub_urusan','=','su.id')
         ->leftJoin('ikb_integrasi as int',[['man.id','=','int.id_mandat'],['int.kode_daerah','=',DB::raw("'".$id."'") ]])
 
-        ->orderBy('man.id_sub_urusan','DESC')
+        ->orderBy('man.id_sub_urusan','ASC')
         ->orderBy('man.id','DESC')
         ->orderBy('int.id','DESC')
         ->where('su.id_urusan',Hp::fokus_urusan()['id_urusan'])
+        ->where('man.tahun',Hp::fokus_tahun())
         ->where('man.tipe',1)
         ->paginate(10);
 
@@ -639,7 +644,7 @@ class KebijakanCtrl extends Controller
                 'id_urusan'=>(int)Hp::fokus_urusan()['id_urusan'],
                 'id_sub_urusan'=>(int)$id_sub_urusan,
                 'id_mandat'=>(int)$id_mandat,
-                'uraian'=>$value,
+                'uraian'=>strtoupper($value),
                 'tahun'=>(int)session('fokus_tahun'),
                 'id_user'=>(int)Auth::id(),
                 'created_at'=>date('Y-m-d h:i'),
@@ -656,6 +661,7 @@ class KebijakanCtrl extends Controller
                 ->whereNotIn('uraian',$uu)
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
+
             $a=DB::table('ikb_perda')->insertOrIgnore($data);
         }else{
 
@@ -664,7 +670,6 @@ class KebijakanCtrl extends Controller
                 'id_sub_urusan'=>$id_sub_urusan,
                 'id_mandat'=>$id_mandat,
                 'tahun'=>Hp::fokus_tahun(),
-
                 'kode_daerah'=>$request->kode_daerah,
             ])
             ->delete();
@@ -746,7 +751,7 @@ class KebijakanCtrl extends Controller
                 'kode_daerah'=>$request->kode_daerah,
                 'id_urusan'=>$m->id_urusan,
                 'id_sub_urusan'=>$m->id_sub_urusan,
-                'uraian'=>$request->uraian,
+                'uraian'=>strtoupper($request->uraian),
                 'id_mandat'=>$id,
                 'tahun'=>session('fokus_tahun')
             ])->first();
@@ -839,7 +844,7 @@ class KebijakanCtrl extends Controller
                 'kode_daerah'=>$request->kode_daerah,
                 'id_urusan'=>$m->id_urusan,
                 'id_sub_urusan'=>$m->id_sub_urusan,
-                'uraian'=>$request->uraian,
+                'uraian'=>strtoupper($request->uraian),
                 'id_mandat'=>$id,
                 'tahun'=>session('fokus_tahun')
             ])->first();
@@ -928,7 +933,7 @@ class KebijakanCtrl extends Controller
                 'id_urusan'=>(int)Hp::fokus_urusan()['id_urusan'],
                 'id_sub_urusan'=>(int)$id_sub_urusan,
                 'id_mandat'=>(int)$id_mandat,
-                'uraian'=>$value,
+                'uraian'=>strtoupper($value),
                 'tahun'=>(int)session('fokus_tahun'),
                 'id_user'=>(int)Auth::id(),
                 'created_at'=>date('Y-m-d h:i'),
@@ -1038,7 +1043,7 @@ class KebijakanCtrl extends Controller
                 'kode_daerah'=>$request->kode_daerah,
                 'id_urusan'=>$m->id_urusan,
                 'id_sub_urusan'=>$m->id_sub_urusan,
-                'uraian'=>$request->uraian,
+                'uraian'=>strtoupper($request->uraian),
                 'id_mandat'=>$id,
                 'tahun'=>session('fokus_tahun')
             ])->first();
@@ -1128,7 +1133,7 @@ public function store_lainnya($id_sub_urusan,$id_mandat,Request $request){
                 'id_urusan'=>(int)Hp::fokus_urusan()['id_urusan'],
                 'id_sub_urusan'=>(int)$id_sub_urusan,
                 'id_mandat'=>(int)$id_mandat,
-                'uraian'=>$value,
+                'uraian'=>strtoupper($value),
                 'tahun'=>(int)session('fokus_tahun'),
                 'id_user'=>(int)Auth::id(),
                 'created_at'=>date('Y-m-d h:i'),

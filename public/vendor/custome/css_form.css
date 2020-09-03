@@ -44,9 +44,18 @@
 	border-color:#ddd!important;
 }
 
-.table>tbody>tr>td,.table>tbody>tr>th{
+.table>tbody>tr>th{
+		vertical-align: top!important;
+}
+.table>thead>tr>th{
+		vertical-align: middle!important;
+		text-align: center!important;
+}
+
+.table.table-ex>tbody>tr>td,.table.table-ex>tbody>tr>th{
 		vertical-align: middle!important;
 }
+
 .table-hover>tbody>tr:hover td{
 	background: #f1ce93;
 }

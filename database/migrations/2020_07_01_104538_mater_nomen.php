@@ -21,18 +21,21 @@ class MaterNomen extends Migration
               Schema::connection('meta_rkpd')->create($schema.'nomenpro_'.env('TAHUN'),function(Blueprint $table) use ($schema){
                     $table->bigIncrements('id');
                     $table->integer('tahun');
-                    $table->bigInteger('id_bidang')->nullable();
+                    $table->bigInteger('id_urusan_prio')->nullable();
                     $table->bigInteger('id_urusan')->unsigned();
                     $table->bigInteger('id_program')->nullable();
                     $table->bigInteger('id_kegiatan')->nullable();
                     $table->text('uraian');
                     $table->tinyInteger('jenis')->default(1);
-                    $table->string('kode')->default(1);
+                    $table->string('kode_realistic')->nullable();
+                    $table->string('kode')->nullable();
                     $table->timestamps();
                     $table->unique(['kode','id_urusan','tahun']);
 
-                   
-                        
+                      $table->foreign('id_urusan_prio')
+                        ->references('id')->on($schema.'master_urusan_prioritas_'.env('TAHUN'))
+                        ->onDelete('cascade')->onUpdate('cascade');
+    
                     $table->foreign('id_urusan')
                         ->references('id')->on('public.master_urusan')
                         ->onDelete('cascade')->onUpdate('cascade');
@@ -45,9 +48,7 @@ class MaterNomen extends Migration
                         ->references('id')->on($schema.'nomenpro_'.env('TAHUN'))
                         ->onDelete('cascade')->onUpdate('cascade');
 
-                      $table->foreign('id_bidang')
-                        ->references('id')->on($schema.'nomenpro_'.env('TAHUN'))
-                        ->onDelete('cascade')->onUpdate('cascade');
+                    
 
                    
               });
@@ -57,33 +58,34 @@ class MaterNomen extends Migration
               Schema::connection('meta_rkpd')->create($schema.'nomenkab_'.env('TAHUN'),function(Blueprint $table) use ($schema){
                     $table->bigIncrements('id');
                     $table->integer('tahun');
-                    $table->bigInteger('id_bidang')->unsigned();
-                    $table->bigInteger('id_urusan')->nullable();
+                    $table->bigInteger('id_urusan_prio')->nullable();
+                    $table->bigInteger('id_urusan')->unsigned();
                     $table->bigInteger('id_program')->nullable();
                     $table->bigInteger('id_kegiatan')->nullable();
                     $table->text('uraian');
                     $table->tinyInteger('jenis')->default(1);
-                    $table->string('kode')->default(1);
+                    $table->string('kode_realistic')->nullable();
+                    $table->string('kode')->nullable();
                     $table->timestamps();
                     $table->unique(['kode','id_urusan','tahun']);
-
-                   
                         
+                    $table->foreign('id_urusan_prio')
+                        ->references('id')->on($schema.'master_urusan_prioritas_'.env('TAHUN'))
+                        ->onDelete('cascade')->onUpdate('cascade');
+
                     $table->foreign('id_urusan')
                         ->references('id')->on('public.master_urusan')
                         ->onDelete('cascade')->onUpdate('cascade');
 
                     $table->foreign('id_program')
-                        ->references('id')->on($schema.'nomenpro_'.env('TAHUN'))
+                        ->references('id')->on($schema.'nomenkab_'.env('TAHUN'))
                         ->onDelete('cascade')->onUpdate('cascade');
 
                      $table->foreign('id_kegiatan')
-                        ->references('id')->on($schema.'nomenpro_'.env('TAHUN'))
+                        ->references('id')->on($schema.'nomenkab_'.env('TAHUN'))
                         ->onDelete('cascade')->onUpdate('cascade');
 
-                    $table->foreign('id_bidang')
-                        ->references('id')->on($schema.'nomenpro_'.env('TAHUN'))
-                        ->onDelete('cascade')->onUpdate('cascade');
+                  
 
                    
               });

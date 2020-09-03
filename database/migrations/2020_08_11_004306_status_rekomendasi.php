@@ -17,19 +17,19 @@ class StatusRekomendasi extends Migration
         $schema='meta_rkpd.';
 
 
-         if(!Schema::connection('meta_rkpd')->hasTable($schema.'rekomendasi_status_final')){
-              Schema::connection('meta_rkpd')->create($schema.'rekomendasi_status_final',function(Blueprint $table) use ($schema){
-                        $table->bigIncrements('id');
-                     $table->string('kodepemda',4)->unsigned();
-                     $table->integer('tahun');
-
+         if(!Schema::connection('meta_rkpd')->hasTable($schema.'form_status_'.env('TAHUN'))){
+              Schema::connection('meta_rkpd')->create($schema.'form_status_'.env('TAHUN'),function(Blueprint $table) use ($schema){
+                    $table->bigIncrements('id');
+                    $table->string('kodepemda',4)->nullable();
+                    $table->integer('tahun');
+                    $table->integer('status');
                     $table->bigInteger('id_urusan')->unsigned();
+                    $table->string('form');
                     $table->bigInteger('id_user')->unsigned();
-                     
+                    $table->timestamps();
 
-                     $table->timestamps();
+                    $table->unique(['kodepemda','tahun','id_urusan','form']);
 
-                     $table->unique(['kodepemda','id_urusan','tahun']);
 
                     $table->foreign('kodepemda')
                         ->references('id')->on('public.master_daerah')
@@ -56,7 +56,7 @@ class StatusRekomendasi extends Migration
         //
         $schema='meta_rkpd.';
 
-        Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi_status_final');
+        Schema::connection('meta_rkpd')->dropIfExists($schema.'form_status_'.env('TAHUN'));
 
     }
 }

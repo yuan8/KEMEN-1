@@ -3,7 +3,7 @@
 <p><b>{{$jenis}} :</b></p>
 <p>{{$data['uraian']}}</p>
 <hr>
-<small class="text-yellow"><i class="fa fa-info-circle"></i> Penghapusan akan dilakukan pada arah PN  "{{$data['uraian']}}" berserta data turunan dari arah PN 	 ini</small>
+<small class="text-yellow text-uppercase"><i class="fa fa-info-circle"></i> Penghapusan akan dilakukan pada  {{$jenis}}  "{{$data['uraian']}}" berserta data turunan dari RKP</small>
 <hr>
 	<form action="{{route('int.kb1tahun.pn_delete',['id'=>$data['id']])}}" method="post">
 		@csrf

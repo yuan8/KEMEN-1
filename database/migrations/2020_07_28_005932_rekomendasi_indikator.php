@@ -18,8 +18,8 @@ class RekomendasiIndikator extends Migration
         $schema='meta_rkpd.';
 
 
-         if(!Schema::connection('meta_rkpd')->hasTable($schema.'rekomendasi_indikator')){
-              Schema::connection('meta_rkpd')->create($schema.'rekomendasi_indikator',function(Blueprint $table) use ($schema){
+         if(!Schema::connection('meta_rkpd')->hasTable($schema.'rekomendasi_indikator_'.env('TAHUN'))){
+              Schema::connection('meta_rkpd')->create($schema.'rekomendasi_indikator_'.env('TAHUN'),function(Blueprint $table) use ($schema){
                  $table->bigIncrements('id');
                  $table->string('kodepemda',4)->nullable();
                  $table->integer('tahun');
@@ -38,7 +38,7 @@ class RekomendasiIndikator extends Migration
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_rekom')
-                    ->references('id')->on($schema.'rekomendasi')
+                    ->references('id')->on($schema.'rekomendasi_'.env('TAHUN'))
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_indikator')
@@ -50,8 +50,8 @@ class RekomendasiIndikator extends Migration
 
          }
 
-          if(!Schema::connection('meta_rkpd')->hasTable($schema.'rekomendasi_indikator_kab')){
-              Schema::connection('meta_rkpd')->create($schema.'rekomendasi_indikator_kab',function(Blueprint $table) use ($schema){
+          if(!Schema::connection('meta_rkpd')->hasTable($schema.'rekomendasi_indikator_kab_'.env('TAHUN'))){
+              Schema::connection('meta_rkpd')->create($schema.'rekomendasi_indikator_kab_'.env('TAHUN'),function(Blueprint $table) use ($schema){
                  $table->bigIncrements('id');
                  $table->string('kodepemda',4)->nullable();
                  $table->integer('tahun');
@@ -70,7 +70,7 @@ class RekomendasiIndikator extends Migration
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_rekom')
-                    ->references('id')->on($schema.'rekomendasi_kab')
+                    ->references('id')->on($schema.'rekomendasi_kab_'.env('TAHUN'))
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_indikator')
@@ -94,8 +94,8 @@ class RekomendasiIndikator extends Migration
         //
         $schema='meta_rkpd.';
 
-        Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi_indikator');
-        Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi_indikator_kab');
+        Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi_indikator_'.env('TAHUN'));
+        Schema::connection('meta_rkpd')->dropIfExists($schema.'rekomendasi_indikator_kab_'.env('TAHUN'));
         
     }
 }

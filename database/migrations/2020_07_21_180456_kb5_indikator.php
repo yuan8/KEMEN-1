@@ -35,9 +35,6 @@ class Kb5Indikator extends Migration
                  $table->boolean('kw_nas')->default(0);
                  $table->boolean('kw_p')->default(0);
                  $table->boolean('kw_k')->default(0);
-                 $table->bigInteger('id_kebijakan')->unsigned();
-                 $table->bigInteger('id_kondisi')->unsigned();
-                 $table->bigInteger('id_sasaran')->unsigned();
                  $table->bigInteger('id_sub_urusan')->unsigned();
                  $table->bigInteger('id_user')->unsigned();
                  $table->text('data_dukung_nas')->nullable();
@@ -51,17 +48,7 @@ class Kb5Indikator extends Migration
                     ->references('id')->on('public.master_sub_urusan')
                     ->onDelete('cascade')->onUpdate('cascade');
 
-                $table->foreign('id_kebijakan')
-                    ->references('id')->on($schema.'kb5_arah_kebijakan')
-                    ->onDelete('cascade')->onUpdate('cascade');
-
-                $table->foreign('id_kondisi')
-                    ->references('id')->on($schema.'kb5_kondisi_saat_ini')
-                    ->onDelete('cascade')->onUpdate('cascade');
-
-                $table->foreign('id_sasaran')
-                    ->references('id')->on($schema.'kb5_sasaran')
-                    ->onDelete('cascade')->onUpdate('cascade');
+               
 
                 $table->foreign('id_user')
                     ->references('id')->on('public.users')

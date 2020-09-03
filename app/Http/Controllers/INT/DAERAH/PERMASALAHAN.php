@@ -7,6 +7,10 @@ use App\Http\Controllers\Controller;
 use Hp;
 use DB;
 use App\MASTER\MASALAHPOKOK;
+use App\MASALAH\MASALAH;
+use App\INTEGRASI\REKOMENDASI;
+use App\INTEGRASI\REKOMENDASIKAB;
+
 class PERMASALAHAN extends Controller
 {
     //
@@ -17,6 +21,28 @@ class PERMASALAHAN extends Controller
 
     public function index(){
     	
+    }
+
+    public function list_tagging(Request $request){
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+        $data=MASALAH::where(['kode_daerah'=>$request->kodepemda,'id_urusan'=>$meta_urusan['id_urusan'],'tahun'=>$tahun])->get();
+
+        if(strlen($request->kodepemda.'')>2 ){
+            $model=new REKOMENDASIKAB;
+        }else{
+            $model=new REKOMENDASI;
+
+        }
+        $rekom=$model->with('_nomen')->find($request->idrekom)->toArray();
+        if($rekom){
+            return view('integrasi.rekomendasi.tagging')->with(
+            ['data'=>$data,'jenis'=>'PERMASALAHAN','url_tagging'=>route('int.rekomendasi.tagging_nomen',['jenis'=>'PERMASALAHAN','id_rekom'=>$rekom['id'],'kodepemda'=>$request->kodepemda]),'rekom'=>$rekom]
+        );
+        }else{
+            return 'DATA TIDAK TERSEDIA, MOHON MEREFRESH BROWSER TERLEBIH DAHULU';
+        }
+
     }
 
     public function namePermasalahan($kode){

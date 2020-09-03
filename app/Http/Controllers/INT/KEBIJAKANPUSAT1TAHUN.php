@@ -45,7 +45,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
         if($rkp){
             $data=[];
             $data['tag']=2;
-            $data['uraian']=$request->uraian;
+            $data['uraian']=strtoupper($request->uraian);
             $data['kode_realistic']=$request->kode;
             $data['kode']=$request->pre_ind.$request->kode;
             $data['tahun']=$tahun;
@@ -133,6 +133,10 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     static function namaRKP($kode){
         $jenis='';
         switch ((int)$kode) {
+             case -1:
+                # code...
+             $jenis='MAJOR PROJECT';
+                break;
             case 1:
                 # code...
              $jenis='PN';
@@ -165,7 +169,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     public function index(){
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
-    	$data=RKP::where(['jenis'=>1,'tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])
+    	$data=RKP::whereIn('jenis',[-1,1])->where(['tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])
         ->orderBy('id','desc')
         ->get();
         
@@ -173,8 +177,9 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     }
 
 
-     public function pn_create(){
-    	return view('integrasi.kb1tahun.pn.create');
+     public function pn_create(Request $request){
+
+    	return view('integrasi.kb1tahun.pn.create')->with('major',($request->major?'MAJOR PROJECT':null));
     }
 
     public function pn_store(Request $request){
@@ -191,16 +196,18 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     		return back();
     	}
 
+
     	$data=RKP::create([
-    		'uraian'=>$request->uraian,
-    		'jenis'=>1,
+    		'uraian'=>strtoupper($request->uraian),
+    		'jenis'=>($request->major?$request->major:1),
     		'tahun'=>$tahun,
             'id_urusan'=>$meta_urusan['id_urusan'],
     		'id_user'=>Auth::User()->id
     	]);
 
+
     	if($data){
-    		Alert::success('Success','Berhasil Menambahkan PN');
+    		Alert::success('Success','Berhasil Menambahkan '.($request->major?'MAJOR PROJECT':'PN'));
     		return back();
     	}
 
@@ -224,7 +231,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
          $jenis=static::namaRKP($data['jenis']);
     	if($data){
     		$pn=RKP::find($id)->update([
-    			'uraian'=>$request->uraian
+    			'uraian'=>strtoupper($request->uraian)
     		]);
 
     		if($pn){
@@ -349,7 +356,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
         $data=RKP::where(['id'=>$id])->first()->toArray();
         $jenis_kode=(int)$data['jenis'];
         $data_create=[
-            'uraian'=>$request->uraian,
+            'uraian'=>strtoupper($request->uraian),
             'jenis'=>(int)$jenis,
             'id_pn'=>$data['id_pn'],
             'id_pp'=>$data['id_pp'],

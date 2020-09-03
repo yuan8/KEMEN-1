@@ -12,6 +12,7 @@ use App\MASTER\SUBURUSAN;
 
 use App\MASTER\PERDA;
 use App\MASTER\PERKADA;
+use Illuminate\Database\Eloquent\Builder;
 
 class MANDAT extends Model
 {
@@ -19,12 +20,12 @@ class MANDAT extends Model
 
     protected $connection = 'pgsql';
     protected $table='public.ikb_mandat';
-
     protected $fillable=[];
 
     public function _integrasi(){
     	return $this->hasMany(MANDATINTEGRASI::class,'id_mandat');
     }
+
 
     public function _sub_urusan(){
     	return $this->belongsTo(SUBURUSAN::class,'id_sub_urusan');

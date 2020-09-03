@@ -13,43 +13,205 @@ use App\INTEGRASI\REKOMENDASI as REKO;
 use App\INTEGRASI\REKOMENDASIKAB;
 use App\INTEGRASI\REKOMENDASI_IND;
 use App\INTEGRASI\REKOMENDASIFINAL;
+use App\INTEGRASI\REKOMENDASIKAB_IND;
+use App\INTEGRASI\PENDUKUNGREKOM;
+use App\INTEGRASI\PENDUKUNGREKOMKAB;
 
-use App\INTEGRASI\REKOMENDASIJAB_IND;
+
 use App\MASTER\INDIKATOR;
 use App\MASTER\DAERAH;
 Use Carbon\Carbon;
 use App\RKP\RKP;
 use Alert;
+use App\MANDAT\MANDAT;
 
+use App\MASALAH\MASALAH;
 
 class REKOMENDASI extends Controller
 {
     //
+    public function list_tagging_view($kodepemda,$jenis,Request $request){
+        $return=[];
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+        switch ($jenis) {
+            case 'PERMASALAHAN':
+            $data=MASALAH::where(['kode_daerah'=>$kodepemda,'id_urusan'=>$meta_urusan['id_urusan'],'tahun'=>$tahun])->get()->toArray();
+
+            if(strlen($request->kodepemda.'')>2 ){
+                $model=new REKOMENDASIKAB;
+            }else{
+                $model=new REKO;
+
+            }
+            $rekom=$model->with('_nomen')->find($request->idrekom)->toArray();
+            if($rekom){
+                $return=[
+                    'jenis'=>$jenis,
+                    'url_tagging'=>route('int.rekomendasi.tagging_nomen',['jenis'=>$jenis,'id_rekom'=>$rekom['id'],'kodepemda'=>$kodepemda])
+                    ,'rekom'=>$rekom
+                    ,'data'=>$data];
+
+           
+                }else{
+                    $return= 'DATA TIDAK TERSEDIA, MOHON MEREFRESH BROWSER TERLEBIH DAHULU';
+                }
+
+              
+        break;
+
+            case 'NSPK':
+            $data=MANDAT::where(['tipe'=>0,'id_urusan'=>$meta_urusan['id_urusan'],'tahun'=>$tahun])->get()->toArray();
+
+            if(strlen($request->kodepemda.'')>2 ){
+                $model=new REKOMENDASIKAB;
+            }else{
+                $model=new REKO;
+
+            }
+            $rekom=$model->with('_nomen')->find($request->idrekom)->toArray();
+            if($rekom){
+                $return=[
+                    'jenis'=>$jenis,
+                    'url_tagging'=>route('int.rekomendasi.tagging_nomen',['jenis'=>$jenis,'id_rekom'=>$rekom['id'],'kodepemda'=>$kodepemda])
+                    ,'rekom'=>$rekom
+                    ,'data'=>$data];
+
+           
+                }else{
+                    $return= 'DATA TIDAK TERSEDIA, MOHON MEREFRESH BROWSER TERLEBIH DAHULU';
+                }
+
+              
+        break;
+
+         case 'RKP':
+            $data=RKP::whereIn('jenis',[-1,2])
+            ->where(['id_urusan'=>$meta_urusan['id_urusan'],'tahun'=>$tahun])->get()->toArray();
+
+            if(strlen($request->kodepemda.'')>2 ){
+                $model=new REKOMENDASIKAB;
+            }else{
+                $model=new REKO;
+
+            }
+            $rekom=$model->with('_nomen')->find($request->idrekom)->toArray();
+            if($rekom){
+                $return=[
+                    'jenis'=>'PP ATAU MAJOR PROJECT',
+                    'url_tagging'=>route('int.rekomendasi.tagging_nomen',['jenis'=>$jenis,'id_rekom'=>$rekom['id'],'kodepemda'=>$kodepemda])
+                    ,'rekom'=>$rekom
+                    ,'data'=>$data];
+
+           
+                }else{
+                    $return= 'DATA TIDAK TERSEDIA, MOHON MEREFRESH BROWSER TERLEBIH DAHULU';
+                }
+
+              
+        break;
+
+        }
+
+
+         if(is_array($return)){
+            return view('integrasi.rekomendasi.tagging')->with(
+            $return
+            );
+        }else{
+            return $return;
+        }
+
+
+
+
+
+    }
+
+    public function tagging_nomen($jenis,$idrekom,$kodepemda=null,Request $request){
+       $data=[];
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+
+
+       foreach ($request->id as $key => $v) {
+            $v=(int)$v;
+             switch ($jenis) {
+               case 'PERMASALAHAN':
+                   # code...
+               $d=['id_masalah'=>$v,
+                   'id_urusan'=>$meta_urusan['id_urusan'],
+                   'tahun'=>$tahun,
+                   'id_rekomendasi'=>$idrekom
+               ];
+               
+                   break;
+
+                case 'NSPK':
+                   # code...
+               $d=['id_nspk'=>$v,
+                   'id_urusan'=>$meta_urusan['id_urusan'],
+                   'tahun'=>$tahun,
+                   'id_rekomendasi'=>$idrekom
+               ];
+               
+                break;
+                case 'RKP':
+                   # code...
+               $d=['id_rkp'=>$v,
+                   'id_urusan'=>$meta_urusan['id_urusan'],
+                   'tahun'=>$tahun,
+                   'id_rekomendasi'=>$idrekom
+                ];
+               
+                   break;
+               
+               default:
+                   # code...
+                   break;
+           }
+
+            if(strlen(($kodepemda.""))<3){
+                $model=new PENDUKUNGREKOM;
+
+            }else{
+                $model=new PENDUKUNGREKOMKAB;
+               
+            }
+            
+            $model->updateOrCreate($d,$d);
+
+
+
+           # code...
+       }
+
+       return back();
+
+    }
 
     public function setTargetDarah($id,$id_indikator,Request $request){
-            if(!$request->target){
-                Alert::error('');
-                return back();
-            }
+          
 
             $uid=Auth::id();
             $tahun=Hp::fokus_tahun();
             if(strlen(($id.""))<3){
                 $model='meta_rkpd.rekomendasi';
                 $parent=REKO::class;
-                $indikator_model='meta_rkpd.rekomendasi_indikator';
+                $indikator_model=new REKOMENDASI_IND;
 
             }else{
                 $model='meta_rkpd.rekomendasi_kab';
                 $parent=REKOMENDASIKAB::class;
-                $indikator_model='meta_rkpd.rekomendasi_indikator_kab';
+                $indikator_model=new REKOMENDASIKAB_IND;
+
 
             }
 
-            $data=DB::connection('meta_rkpd')->table($indikator_model)->where('id',$id_indikator)->first();
+            $data=$indikator_model->where('id',$id_indikator)->first();
 
             if($data){
-                $data=DB::connection('meta_rkpd')->table($indikator_model)->where('id',$id_indikator)->update([
+                $data=$indikator_model->where('id',$id_indikator)->update([
                     'target'=>$request->target,
                     'target_1'=>$request->target_1,
                     'updated_at'=>Carbon::now()
@@ -69,10 +231,9 @@ class REKOMENDASI extends Controller
         $meta_urusan=Hp::fokus_urusan();
         $id_urusan=$meta_urusan['id_urusan'];
         $data=DAERAH::with(['_rekomendasi_final'=>function($q) use ($tahun,$id_urusan){
-            
             return $q->where('tahun',$tahun)->where('id_urusan',$id_urusan);
-
         }])->orderBy('id','asc')->get();
+
     	return view('integrasi.rekomendasi.index')->with('data',$data);
     }
 
@@ -91,26 +252,49 @@ class REKOMENDASI extends Controller
         }
 
 
+
+
     	if(strlen(($id.""))<3){
 
-    		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun),'id_urusan'=>$meta_urusan['id_urusan']])->with(['_nomen_pro'=>function($q) use ($tahun,$id){
-                return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
-            },'_nomen_pro._nomen','_nomen_pro._tag_indikator._indikator','_nomen_pro._child_kegiatan._child_sub_kegiatan']);
+            $model=REKO::where([
+                'id_urusan'=>$meta_urusan['id_urusan'],
+            ])->with(['_nomen','_child_kegiatan._child_sub_kegiatan','_tag_indikator'=>function($q){
+                return $q->with(['_indikator'=>function($i){
+                    return $i->where('id_kewenangan','<>',null);
+                }]);
+            },'_pendukung_masalah'=>function($q) use ($id){
+              return $q->where('kode_daerah',$id);
+            },'_pendukung_nspk','_pendukung_rkp','_child_kegiatan._pendukung_masalah'=>function($q) use ($id){
+              return $q->where('kode_daerah',$id);
+
+            },'_child_kegiatan._pendukung_nspk','_child_kegiatan._pendukung_rkp'])->where(['jenis'=>1,'id_urusan'=>$meta_urusan['id_urusan']]);
+
 
 
     	}else{
-    		$model=RKP::where(['jenis'=>4,'tahun'=>($tahun),'id_urusan'=>$meta_urusan['id_urusan']])->with(['_nomen_kab'=>function($q) use ($tahun,$id){
+    		  $model=REKOMENDASIKAB::where([
+                'id_urusan'=>$meta_urusan['id_urusan'],
+            ])->with(['_nomen','_child_kegiatan._child_sub_kegiatan','_tag_indikator'=>function($q){
+                return $q->with(['_indikator'=>function($i){
+                    return $i->where('id_kewenangan','<>',null);
+                }]);
+            },'_pendukung_masalah'=>function($q) use ($id){
+              return $q->where('kode_daerah',$id);
 
-                return $q->where('tahun',$tahun)->where('jenis',1)->where('kodepemda',$id);
+            },'_pendukung_nspk','_pendukung_rkp','_child_kegiatan._pendukung_masalah'=>function($q) use ($id){
+              return $q->where('kode_daerah',$id);
 
-            },'_nomen_kab._nomen','_nomen_kab._tag_indikator._indikator','_nomen_kab._child_kegiatan._child_sub_kegiatan']);
+            },'_child_kegiatan._pendukung_nspk','_child_kegiatan._pendukung_rkp'])
+            ->where(['jenis'=>1,'id_urusan'=>$meta_urusan['id_urusan']]);
+
+
     	}
 
 
 
 
-    	$data=$model->get()->toArray();
 
+    	$data=$model->orderBy('id','desc')->get()->toArray();
 
 
 
@@ -128,53 +312,52 @@ class REKOMENDASI extends Controller
     		$model=NOMENKAB::class;
     	}
 
-        
-
-
-    	$data=$model::where('jenis','program')->where('urus',$meta_urusan['id_urusan'])->get();
-        
-
+    	$data=$model::where('jenis',1)->where('id_urusan',$meta_urusan['id_urusan'])->get();        
 
     	return view('integrasi.rekomendasi.nomen')->with(['data'=>$data,'kodepemda'=>$id,'id_rkp'=>$id_rkp]);
 
     }
 
     public function store_program($id,$id_rkp=null,Request $request){
-    	if(!$request->id_nomen){
-    		Alert::error('');
-    		return back();
-    	}
+        	if(!$request->id_nomen){
+        		Alert::error('');
+        		return back();
+        	}
+
 
 	    	$uid=Auth::id();
 	    	$tahun=Hp::fokus_tahun();
+             $meta_urusan=Hp::fokus_urusan();
+
 
 
 	    	if(strlen(($id.""))<3){
-	    		$model='meta_rkpd.rekomendasi';
-	    		$parent=REKO::class;
-	    	}else{
-	    		$model='meta_rkpd.rekomendasi_kab';
-	    		$parent=REKOMENDASIKAB::class;
+	    		$parent=new REKO;
+                $model=new REKO;
 
+	    	}else{
+	    		$parent=new REKOMENDASIKAB;
+                $model=new REKOMENDASIKAB;
 	    	}
+
 
 	    if(!isset($request->id_parent)){
 
-	    		foreach ($request->id_nomen as $key => $d) {
-	    		$data=DB::connection('meta_rkpd')->table($model)->updateOrInsert([
+	    	foreach ($request->id_nomen as $key => $d) {
+	    		$data=$parent->updateOrCreate([
 		    		'kodepemda'=>$id,
 		    		'id_nomen'=>$d,
 		    		'tahun'=>$tahun,
-                    'id_rkp'=>$id_rkp
+                    'id_urusan'=>$meta_urusan['id_urusan'],
 
 	    		],
 	    		[
 	    			'kodepemda'=>$id,
 		    		'id_nomen'=>$d,
 		    		'id_user'=>$uid,
+                    'id_urusan'=>$meta_urusan['id_urusan'],
 		    		'jenis'=>1,
 		    		'tahun'=>$tahun,
-                    'id_rkp'=>$id_rkp,
 		    		'updated_at'=>Carbon::now()
 	    		]);
 	    		# code...
@@ -183,12 +366,12 @@ class REKOMENDASI extends Controller
 	    	Alert::success('Success','Berhasil Menambahkan Program');
     	return back();
 	    }else{
-	    	$parent=$parent::where('id',$request->id_parent)->first()->toArray();
+	    	$parent=$parent->where('id',$request->id_parent)->first()->toArray();
+
 	    	if($parent){
 	    		$data=[
 	    			'id_p'=>$parent['id_p'],
 	    			'id_k'=>$parent['id_k'],
-                    'id_rkp'=>$parent['id_rkp'],
 
 	    		];
 
@@ -203,10 +386,12 @@ class REKOMENDASI extends Controller
 
 	    		foreach ($request->id_nomen as $key => $d) {
 		    		$tahun=Hp::fokus_tahun();
-		    		$nomen=DB::connection('meta_rkpd')->table($model)->updateOrInsert([
+		    		$nomen=$model->updateOrCreate([
 			    		'kodepemda'=>$id,
 			    		'id_nomen'=>$d,
 			    		'tahun'=>$tahun,
+                        'id_urusan'=>$meta_urusan['id_urusan'],
+
 
 		    		],
 		    		[
@@ -216,8 +401,8 @@ class REKOMENDASI extends Controller
 			    		'jenis'=>$jenis,
 			    		'id_p'=>$data['id_p'],
 			    		'id_k'=>$data['id_k'],
-                        'id_rkp'=>$data['id_rkp'],
 			    		'tahun'=>$tahun,
+                        'id_urusan'=>$meta_urusan['id_urusan'],
 			    		'updated_at'=>Carbon::now()
 		    		]);
 	    		# code...
@@ -236,12 +421,12 @@ class REKOMENDASI extends Controller
     	$meta_urusan=Hp::fokus_urusan();
 
     	if(strlen(($id.""))<3){
-    		$model=REKO::class;
-    		$nom=NOMEN::class;
+    		$model=new REKO;
+    		$nom=new NOMEN;
 
     	}else{
-    		$model=REKOMENDASIKAB::class;
-    		$nom=NOMENKAB::class;
+    		$model=new REKOMENDASIKAB;
+    		$nom=new NOMENKAB;
 
     	}
 
@@ -252,10 +437,12 @@ class REKOMENDASI extends Controller
 
     		$jenisNomen=static::jenisNomen($jenis);
     		$dt=[
-    			'jenis'=>static::jenisNomen($jenis+1),
-    			'urus'=>$meta_urusan['id_urusan']
+    			'jenis'=>($jenis+1),
+    			'id_urusan'=>$meta_urusan['id_urusan']
     		];
-    		$dt[$jenisNomen]=$model[$jenisNomen];
+
+    		$dt['id_'.$jenisNomen]=$model['id'];
+
     		$data=$nom::where($dt)->get();
 
     		return view('integrasi.rekomendasi.nomen')->with(['data'=>$data,'kodepemda'=>$id,'id_parent'=>$id_parent]);
@@ -307,13 +494,13 @@ class REKOMENDASI extends Controller
     	$where=[];
 
     	if(strlen(($id.""))<3){
-    		$model=REKO::class;
-    		$nom=NOMEN::class;
+    		$model=new REKO;
+    		$nom=new NOMEN;
     		$where['kw_p']=true;
     		$kewenangan='PROVINSI';
     	}else{
-    		$model=REKOMENDASIKAB::class;
-    		$nom=NOMENKAB::class;
+    		$model=new REKOMENDASIKAB;
+    		$nom=new NOMENKAB;
     		$where['kw_k']=true;
     		$kewenangan='KOTA / KAB';
     	}
@@ -335,19 +522,20 @@ class REKOMENDASI extends Controller
 
 
         if($jenis==1){
+            $data['tipe_indikator']='outcome';
             // $data['for_integrasi_program']=true;
             $data['for_integrasi_program_child']=true;
             
-            $data['indikator_from_rkp_id']=$parent['id_rkp'];
+            // $data['indikator_from_rkp_id']=$parent['id_rkp'];
         }
         else{
+            $data['tipe_indikator']='output';
             $data['for_integrasi_program_child']=true;
-            $data['indikator_from_rkp_id']=$parent['id_rkp'];
+            // $data['indikator_from_rkp_id']=$parent['id_rkp'];
         }
 
        
 
-      
 
     	if($parent){
             $jenis=static::jenis($parent['jenis']);
@@ -371,12 +559,13 @@ class REKOMENDASI extends Controller
 	    	if(strlen(($id.""))<3){
 	    		$model='meta_rkpd.rekomendasi';
 	    		$parent=REKO::class;
-	    		$indikator_model='meta_rkpd.rekomendasi_indikator';
+                $indikator_model=new REKOMENDASI_IND;
+	    		
 
 	    	}else{
 	    		$model='meta_rkpd.rekomendasi_kab';
 	    		$parent=REKOMENDASIKAB::class;
-	    		$indikator_model='meta_rkpd.rekomendasi_indikator_kab';
+	    		$indikator_model=new REKOMENDASIKAB_IND;
 
 	    	}
 
@@ -391,7 +580,7 @@ class REKOMENDASI extends Controller
 
 	    		foreach ($request->id_indikator as $key => $d) {
 		    		$tahun=Hp::fokus_tahun();
-		    		$nomen=DB::connection('meta_rkpd')->table($indikator_model)->updateOrInsert([
+		    		$nomen=$indikator_model->updateOrCreate([
 			    		'kodepemda'=>$id,
 			    		'id_indikator'=>$d,
 			    		'id_rekom'=>$id_parent,

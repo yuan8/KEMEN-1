@@ -1,8 +1,19 @@
 <?php
 
-			use App\MASTER\INDIKATOR;
+use App\MASTER\INDIKATOR;
 
 Route::prefix('integrasi')->middleware('auth:web')->group(function(){
+
+	Route::prefix('master-nomenklatur/')->group(function(){
+		Route::get('listing/{pro?}','INT\MASTER90@index')->name('int.nomen.index');
+		Route::get('api-web/get/nomen/{pro}/{id?}','INT\MASTER90@api_get_nomen')->name('int.nomen.api_data');
+
+		Route::post('handle/{pro?}/program','INT\MASTER90@store_program')->name('int.nomen.store_program');
+		Route::post('handle/{pro?}/kegiatan/{id_program}','INT\MASTER90@store_kegiatan')->name('int.nomen.store_kegiatan');
+
+		Route::post('handle-delete/{pro}/{id_nomen}','INT\MASTER90@delete')->name('int.nomen.delete');
+		Route::post('handle/{pro?}/subkegiatan/{id_program}/{id_kegiatan}','INT\MASTER90@store_subkegiatan')->name('int.nomen.store_subkegiatan');
+	});
 	
 
 	Route::prefix('kebijakan')->group(function(){
@@ -82,7 +93,9 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 	Route::prefix('global')->group(function(){
 
-		Route::get('/listing-satuan','INT\GLOBALCTRL@show_list_select_satuan')->name('api.global.listing-satuan');		
+		Route::get('/listing-satuan','INT\GLOBALCTRL@show_list_select_satuan')->name('api.global.listing-satuan');
+
+		Route::get('/listing-urusan-prio','INT\MASTER90@list_api_urusan_prio')->name('api.global.list_api_urusan_prio');		
 
 	});
 
@@ -191,10 +204,15 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 		Route::get('/','INT\PROGRAMKEGIATAN@index')->name('int.prokeg.index');
 		Route::get('/{kodepemda}','INT\PROGRAMKEGIATAN@detail')->name('int.prokeg.detail');
 
+
 	});
 	
 	Route::prefix('daerah/rekomendasi')->group(function(){
+
 		Route::get('/','INT\DAERAH\REKOMENDASI@index')->name('int.rekomendasi.index');
+		Route::post('tagging-nomen/{jenis}/{id_rekom}/{kodepemda?}','INT\DAERAH\REKOMENDASI@tagging_nomen')->name('int.rekomendasi.tagging_nomen');
+
+
 		Route::get('/detail/{kodepemda}','INT\DAERAH\REKOMENDASI@detail')->name('int.rekomendasi.detail');
 		Route::get('/nomen/show-form-program/{kodepemda}/{id_rkpd?}','INT\DAERAH\REKOMENDASI@add_program')->name('int.rekomendasi.add_program');
 		Route::post('/nomen/show-form-program/{kodepemda}/{id_rkpd?}','INT\DAERAH\REKOMENDASI@store_program')->name('int.rekomendasi.store_program');
@@ -215,12 +233,11 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 		Route::post('finalisasi/{kodepemda}','INT\DAERAH\REKOMENDASI@finalisasi')->name('int.rekomendasi.finalisasi');
 	});
 
+	
+
 
 });
-Route::prefix('master-nomenklatur/')->group(function(){
-	Route::get('/{pro}','INT\MASTER90@index')->name('int.nomen.index');
-	
-});
+
 
 Route::prefix('pemetaan/')->group(function(){
 	Route::get('/{id}','INT\pemetaanarahkebijakan@pn_indikator')->name('form.pemetaan');

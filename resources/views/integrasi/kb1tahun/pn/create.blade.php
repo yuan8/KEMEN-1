@@ -3,7 +3,10 @@
 
 	
 	<div class="form-group">
-		<label>URAIAN PN {{Hp::fokus_tahun()}}</label>
+		@if($major)
+			<input type="hidden" name="major" value="-1">
+		@endif
+		<label>URAIAN {{$major?$major:'PN'}} {{Hp::fokus_tahun()}}</label>
 		<textarea class="form-control" name="uraian" style="min-height: 70px;" required=""></textarea>
 	</div>
 		<hr>

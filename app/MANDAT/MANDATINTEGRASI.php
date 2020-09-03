@@ -25,6 +25,10 @@ class MANDATINTEGRASI extends Model
 
      public function _perkada(){
 
-    	return $this->hasMany(PERKADA::class,'id_inegrasi');
+    	return $this->hasMany(PERKADA::class,'id_integrasi');
+    }
+
+    public function _has_penilaian(){
+        
     }
 }

@@ -49,7 +49,7 @@
                    
                     <td>{{$kb->nama}}</td>
                     <td colspan="6" class="text-center bg bg-success">
-                      <button class="btn btn-success btn-sm" onclick="tambah_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.store.mandat',['id'=>$kb->id])}}')"> <i class="fa fa-plus"></i> Mandat/Kegiatan </button>
+                      <button class="btn btn-success btn-sm" onclick="tambah_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.store.mandat',['id'=>$kb->id])}}')"> <i class="fa fa-plus"></i> MANDAT </button>
                        
                     </td>
                   </tr> 
@@ -68,7 +68,6 @@
                         var kbpp_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.pp||'';
                         var kbm_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.mandat||'';
 
-                     //   console.log(m_{{$kb->id_mandat}}.tipe);
                       </script>
 
                   <tr class="">
@@ -77,13 +76,13 @@
                       
                         <button class="btn btn-danger btn-xs" onclick="delete_mandat.build('{{route('kebijakan.pusat.delete',['id'=>$kb->id_mandat])}}',kbm_{{$kb->id_mandat}},'{{$kb->nama}}')">
                          
-                        <i class="fa fa-trash"></i> {{$kb->tipe?'Mandat':'Kegiatan'}}
+                        <i class="fa fa-trash"></i> {{$kb->tipe?'REGULASI':'KEGIATAN'}}
                       </button>
                       <button class="btn btn-warning btn-xs" onclick="update_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.update',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}',m_{{$kb->id_mandat}},'{{$kb->id_mandat}}')">
-                        <i class="fa fa-pen"></i> {{$kb->tipe?'Mandat':'Kegiatan'}}
+                        <i class="fa fa-pen"></i> {{$kb->tipe?'REGULASI':'KEGIATAN'}}
                       </button>
                     </td>
-                    <td>{!!$kb->tipe?'<i class="fa fa-circle text-warning"></i>':'<i class="fa fa-circle text-info"></i>'!!}  {{$kb->tipe?'Mandat':'Kegiatan'}} <br> {!!nl2br($kb->mandat)!!}</td>
+                    <td>{!!$kb->tipe?'<i class="fa fa-circle text-warning"></i>':'<i class="fa fa-circle text-info"></i>'!!}  {{$kb->tipe?'REGULASI':'KEGIATAN'}} <br> {!!nl2br($kb->mandat)!!}</td>
                     <td class="text-center">
                       <button onclick="plus_uu.build('#plus-uu',kbm_{{$kb->id_mandat}},'{{route('kebijakan.pusat.store.mandat.uu',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.pusat.store.uu',['id_mandat'=>$kb->id_mandat])}}',kbuu_{{$kb->id_mandat}})" class="btn btn-info btn-xs"><i class="fa fa-edit"></i> UU</button>
                     </td>
@@ -201,7 +200,7 @@
                       </div>
                       <div class="modal-body" >
                         <div class="form-group">
-                          <label class="text-center">Uraian <span v-if='tipe==0' >Mandat</span><span v-if='tipe==1'>Kegiatan</span> </label>
+                          <label class="text-center">URAIAN <span v-if='tipe==0' >Mandat</span><span v-if='tipe==1'>Kegiatan</span> </label>
                           <textarea class="form-control" v-model="mandat" required="" name="uraian" style="min-height: 150px;"></textarea>
                         </div>
                         <div class="form-group">
@@ -262,18 +261,18 @@
                   @method('PUT')
               <div class="modal-content">
                       <div class="modal-header text-center">
-                        <h4 class="text-uppercase">Update <span v-if='tipe==0' >Mandat</span><span v-if='tipe==1'>Kegiatan</span> | <span>@{{sub_urusan}}</span></h4>
+                        <h4 class="text-uppercase">Update <span v-if='tipe==0' >REGULASI</span><span v-if='tipe==1'>KEGIATAN</span> | <span>@{{sub_urusan}}</span></h4>
                       </div>
                       <div class="modal-body" >
                         <div class="form-group">
-                          <label class="text-center">Uraian <span v-if='tipe==0' >Mandat</span><span v-if='tipe==1'>Kegiatan</span> </label>
+                          <label class="text-center">URAIAN <span v-if='tipe==0' >REGULASI</span><span v-if='tipe==1'>KEGIATAN</span> </label>
 						  <input v-model="id" name="id_mandat" hidden />
                           <textarea class="form-control" v-model="mandat" required="" name="uraian" style="min-height: 150px;"></textarea>
                         </div>
                         <div class="form-group">
                           <label  style="min-width: 100px;">
 						  
-                           <input class="tm" type="checkbox"  data-toggle="toggle" name="tipe" data-onstyle="warning" data-on="Mandat" data-off="Kegiatan" data-offstyle="info" data-size="small" data-width="100%"> 
+                           <input class="tm" type="checkbox"  data-toggle="toggle" name="tipe" data-onstyle="warning" data-on="REGULASI" data-off="KEGIATAN" data-offstyle="info" data-size="small" data-width="100%"> 
                           </label>
                         </div>
                       </div>

@@ -3,31 +3,38 @@
 namespace App\MASTER;
 
 use Illuminate\Database\Eloquent\Model;
+use App\MASTER\NOMENURUSANPRIO;
+use Hp;
 
 class NOMEN extends Model
 {
     //
     protected $connection='pgsql';
-    
-    protected $fillable=['id','uraian','jenis','id_urusan','id_program','id_kegiatan'];
+
+
+    protected $fillable=['id','id_urusan_prio','uraian','jenis','id_urusan','id_program','id_kegiatan'];
+
+    public function _urusan_prio(){
+        return $this->belongsTo(NOMENURUSANPRIO::class,'id_urusan_prio');
+    }
 
     public function _child_kegiatan(){
-    	return $this->hasMany($this,'program','program')->where('jenis','kegiatan');
+    	return $this->hasMany($this,'id_program')->where('jenis',2)->orderBy('kode','ASC');
     }
 
     public function _child_sub_kegiatan(){
-    	return $this->hasMany($this,'kegiatan','kegiatan')->where('jenis','sub_kegiatan');
+    	return $this->hasMany($this,'id_kegiatan')->where('jenis',3)->orderBy('kode','ASC');
     }
 
-    public function __construct($tahun=null)
+     public function __construct(array $attributes = array())
     {
 
-        if($tahun){
-             $this->setTable('form.nomenpro_'.$tahun);
-        }else{
-            $this->setTable('form.nomenpro_'.(2020));
-        }
+        $this->setTable('form.nomenpro_'.Hp::fokus_tahun());
+        parent::__construct($attributes);
+        
     }
+
+    
 
 
 

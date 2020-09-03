@@ -1,23 +1,25 @@
 @php
 	$domid='dom'.date('s');
 @endphp
-<h5><b>{{$jenis}}: {{$parent['nomenklatur']}}</b></h5>
+<h5><b>{{$jenis}}: {{$parent['uraian']}}</b></h5>
 <hr>
 <form action="{{route('int.rekomendasi.store_indikator',['kodepemda'=>$kodepemda,'id'=>$reko['id']])}}" method="post">
 	@csrf
-	<table class="table table-bordered" id="list_indikator_to_add_{{$domid}}">
-		<thead>
+	<table class="table table-bordered " id="list_indikator_to_add_{{$domid}}">
+		<thead class="bg-green">
 			<tr>
-				<th>ACTION</th>
-				<th>KODE</th>
-				<th>INDIKATOR</th>
-				<th>TARGET PUSAT</th>
-				<th>SATUAN</th>
-			</tr>
+			<th>ACTION</th>
+			<th>SUB URUSAN</th>
+			<th>JENIS</th>
+			<th>KODE</th>
+			<th>INDIKATOR</th>
+			<th>TARGET</th>
+			<th>SATUAN</th>
+		</tr>
 		</thead>
 		<tbody>
 			<tr id="kosong">
-				<td colspan="5" class="text-center">Tidak Terdapat Data Indikator Yang Akan ditambahkan</td>
+				<td colspan="7" class="text-center">Tidak Terdapat Data Indikator Yang Akan ditambahkan</td>
 			</tr>
 		</tbody>
 	</table>
@@ -144,7 +146,7 @@
 				}
 
 
-				var dom ='<tr id="key_ind_'+id+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+(data._sub_urusan?data._sub_urusan.nama:'-')+'</td><td>'+data._sumber+'</td><td>'+data.kode+'</td><td>'+data.uraian+'</td><td>'+target+'</td><td>'+data.satuan+'<input type="hidden" name="id_indikator[]" value="'+id+'"></td></tr>';
+				var dom ='<tr id="key_ind_'+id+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+(data._sub_urusan?data._sub_urusan.nama:'-')+'</td><td>'+data._sumber+'</td><td>'+data.kode+'</td><td><p><b>'+data.tipe.toUpperCase()+'</b></p>'+data.uraian+'</td><td>'+target+'</td><td>'+data.satuan+'<input type="hidden" name="id_indikator[]" value="'+id+'"></td></tr>';
 				$('#list_indikator_to_add_{{$domid}} tbody').prepend(dom);
 			}
 
@@ -153,8 +155,8 @@
 	}
 
 	@php
-	$meta=[];
 
+	$meta=[];
 	if(isset($for_kewenangan)){
 		$meta['id_kewenangan']=null;
 	}
@@ -165,7 +167,7 @@
 
 	if(isset($for_integrasi_program_child)){
 		$meta['id_kewenangan']=['id_kewenangan','!=',null];
-		$meta['tag']=[3];
+		$meta['tag']=[1,2,3];
 	}
 
 	if(isset($for_kebijakan)){
@@ -183,13 +185,19 @@
 	if(isset($only_sub_urusan)){
 		$meta['id_sub_urusan']=$only_sub_urusan;
 	}
+
 	if(isset($have_tag)){
 		$meta['tag']=$have_tag;
+	}
+
+	if(isset($tipe_indikator)){
+		$meta['tipe_indikator']=['tipe','=',$tipe_indikator];
 	}
 
 	if(isset($ak_not_null)){
 		$meta['id_kebijakan']=['id_kebijakan','!=',null];
 	}
+
 
 	if(isset($indikator_from_rkp_id)){
 		$ids=\App\RKP\RKPINDIKATOR::where('id_rkp',$indikator_from_rkp_id)->get()->pluck('id_indikator');
@@ -202,13 +210,14 @@
 @endphp
 	function updateSourceRKPINDIKATOR(){
 		API_CON.post('{{route('api.get.master_indikator')}}',<?php echo json_encode($meta,true) ?>).then(function(res){
+			
 			if(parseInt(res.data.kode)==200){
 				res=res.data.data;
 				data_{{$domid}}=res;
 				table_{{$domid}}.clear();
 				table_{{$domid}}.rows.add(res).draw();
-
 			}
+		
 		});
 	}
 

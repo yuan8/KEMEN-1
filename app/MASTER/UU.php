@@ -8,6 +8,6 @@ class UU extends Model
 {
     //
 
-     protected $connection = 'pgsql';
+    protected $connection = 'pgsql';
     protected $table='public.ikb_uu';
 }

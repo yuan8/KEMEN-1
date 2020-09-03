@@ -100,7 +100,6 @@ class Indikator extends Migration
         $schema='form.';
 
         Schema::connection('meta_rkpd')->dropIfExists($schema.'master_indikator');
-        Schema::connection('meta_rkpd')->dropIfExists($schema.'master_indikator');
         
     }
 }

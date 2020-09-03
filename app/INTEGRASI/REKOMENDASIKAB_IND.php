@@ -11,7 +11,7 @@ class REKOMENDASIKAB_IND extends Model
 
     protected $connection='pgsql';
     protected $table='meta_rkpd.rekomendasi_indikator_kab';
-    protected $fillable=['id','kodepmda','id_rekom','id_indikator','jenis','tahun','id_user','target_1','target'];
+    protected $fillable=['id','kodepemda','id_rekom','id_indikator','jenis','tahun','id_user','target_1','target'];
 
     public function _indikator(){
         $meta_urusan=Hp::fokus_urusan();
@@ -22,4 +22,14 @@ class REKOMENDASIKAB_IND extends Model
         // ->has('tag_on_rkp_propn');
         ;
     }
+
+
+
+    public function __construct(array $attributes = array())
+    {
+
+        $this->setTable('meta_rkpd.rekomendasi_indikator_kab_'.Hp::fokus_tahun());
+        parent::__construct($attributes);
+    }
+
 }

@@ -39,7 +39,7 @@
                             var mandat_{{$kb->id_mandat}}=<?php echo json_encode($kb); ?>;
                           </script>
                             @if(($id_sub_urusan!=$kb->id)&&(!empty($kb->id)))
-                                <tr>
+                                <tr class="bg bg-warning">
                                     <td>{{$kb->nama}}</td>
                                     <td colspan="5" class="bg bg-warning"></td>
             
@@ -154,6 +154,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{$datas->links()}}
 				
 			</div>
 		</div>

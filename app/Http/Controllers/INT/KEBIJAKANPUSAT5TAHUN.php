@@ -100,7 +100,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     		$data['tipe_value']=0;
     		$data['nilai']=0;
     		$data['tahun_data']=$tahun;
-    		$data['uraian']=$request->uraian;
+    		$data['uraian']=strtoupper($request->uraian);
     		$data['id_user']=Auth::id();
     		$data['tahun']=$tahun;
     		$data['id_urusan']=$meta_urusan['id_urusan'];
@@ -193,11 +193,11 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     		return back();
 
     	}else{
-    		// $data['satuan']=$request->satuan;
+    		// $data['satuan']=strtoupper($request->satuan);
     		// $data['tipe_value']=$request->tipe_value;
     		// $data['nilai']=$request->nilai;
     		// $data['tahun_data']=$request->tahun_data;
-    		$data['uraian']=$request->uraian;
+    		$data['uraian']=strtoupper($request->uraian);
     		// $data['kode']=$meta_urusan['singkat'].'.KN.'.$request->kode;
     		$data['id_user']=Auth::id();
     		$data['updated_at']=Carbon::now();
@@ -241,7 +241,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
     	if($kondisi){
     		$data=[];
-    		$data['uraian']=$request->uraian;
+    		$data['uraian']=strtoupper($request->uraian);
     		$data['tahun']=$tahun;
     		$data['id_kondisi']=$id;
     		$data['id_user']=Auth::id();
@@ -277,7 +277,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
     public function isu_update($id,Request $request){
     	$u=DB::connection('form')->table('kb5_isu_strategis')->where('id',$id)->update([
-    		'uraian'=>$request->uraian
+    		'uraian'=>strtoupper($request->uraian)
     	]);
 
     	if($u){
@@ -350,7 +350,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     
     public function ak_update($id,Request $request){
     	$u=DB::connection('form')->table('kb5_arah_kebijakan')->where('id',$id)->update([
-    		'uraian'=>$request->uraian
+    		'uraian'=>strtoupper($request->uraian)
     	]);
 
     	if($u){
@@ -402,7 +402,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
     	if($kondisi){
     		$data=[];
-    		$data['uraian']=$request->uraian;
+    		$data['uraian']=strtoupper($request->uraian);
     		$data['tahun']=$tahun;
     		$data['id_isu']=$id;
     		$data['id_user']=Auth::id();
@@ -429,6 +429,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     	->where('ak.id',$id)->first();
 
     	$satuan=DB::table('master_satuan')->get()->pluck('kode');
+
     	$meta_urusan=Hp::fokus_urusan();
     	$sub_urusan=SUBURUSAN::where('id_urusan',$meta_urusan['id_urusan'])->get()->toArray();
     	if($ak_kondisi){
@@ -499,7 +500,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
             $data['id_kondisi']=$ak_kondisi['id_kondisi'];
             $data['id_kebijakan']=$ak_kondisi['id'];
             // $data['id_sasaran']=$ak_kondisi['id_sasaran'];
-            $data['uraian']=$request->uraian;
+            $data['uraian']=strtoupper($request->uraian);
             $data['kode_realistic']=$request->kode;
             $data['tahun']=$tahun;
             $data['tipe_value']=$request->tipe_value;
@@ -509,7 +510,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     
             $data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
 
-            $data['satuan']=$request->satuan;
+            $data['satuan']=strtoupper($request->satuan);
             $data['lokus']=$request->lokus;
             $data['kw_nas']=$request->kw_nas=='on'?true:false;
 
@@ -564,7 +565,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
             $tahun=Hp::fokus_tahun();
             $meta_urusan=Hp::fokus_urusan();
            
-            $data['uraian']=$request->uraian;
+            $data['uraian']=strtoupper($request->uraian);
             $data['kode_realistic']=$request->kode;
             $data['kode']=$meta_urusan['singkat'].'.IND.'.$request->kode;
             $data['tahun']=$tahun;
@@ -573,7 +574,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     
             $data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
 
-            $data['satuan']=$request->satuan;
+            $data['satuan']=strtoupper($request->satuan);
             $data['lokus']=$request->lokus;
             $data['kw_nas']=$request->kw_nas=='on'?true:false;
 
@@ -693,7 +694,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
     
     public function sasaran_update($id,Request $request){
     	$u=DB::connection('form')->table('kb5_sasaran')->where('id',$id)->update([
-    		'uraian'=>$request->uraian
+    		'uraian'=>strtoupper($request->uraian)
     	]);
 
     	if($u){
@@ -744,7 +745,7 @@ class KEBIJAKANPUSAT5TAHUN extends Controller
 
     	if($kondisi){
     		$data=[];
-    		$data['uraian']=$request->uraian;
+    		$data['uraian']=strtoupper($request->uraian);
     		$data['tahun']=$tahun;
     		$data['id_kebijakan']=$id;
     		$data['id_user']=Auth::id();

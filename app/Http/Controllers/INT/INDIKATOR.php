@@ -27,14 +27,17 @@ class INDIKATOR extends Controller
         }
 
 
-        $data=IND::whereRaw("
-            (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan in (".implode(',', $id_sub).") and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].")".
+        $data=IND::whereRaw(
+            "(tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan in (".implode(',', $id_sub).") and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].")".
             // "
             // OR (tahun=".$tahun.(isset($request->t)?(" and tag::text ilike '".$request->t."'"):' ')." and id_sub_urusan in (".implode(',', $id_sub).") and kode ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].")
             // ".
             (count($id_sub)>1?
-              " OR (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan is null and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].")":''
-            )
+              " OR (tahun=".$tahun.(isset($request->t)?" and tag::text ilike '".$request->t."'":' ')." and id_sub_urusan is null  and uraian ilike '%".$request->q."%' and id_urusan =".$meta_urusan['id_urusan'].")":''
+            ).
+            (" OR (tahun = ".$tahun." and kode ilike '%".$request->q."%' and id_urusan=".$meta_urusan['id_urusan'].")").
+            
+            (" OR (tahun = ".$tahun." and satuan ilike '%".$request->q."%' and id_urusan=".$meta_urusan['id_urusan'].")")
 
         );
 
@@ -73,7 +76,7 @@ class INDIKATOR extends Controller
         $data=[];
 
         $data['tag']=$request->tag;
-        $data['uraian']=$request->uraian;
+        $data['uraian']=strtoupper($request->uraian);
 
         $data['tahun']=$tahun;
         $data['tipe_value']=$request->tipe_value;
@@ -81,7 +84,7 @@ class INDIKATOR extends Controller
         $data['id_urusan']=$meta_urusan['id_urusan'];
         $data['target_1']=$request->tipe_value==2?($request->target_1?(float)$request->target_1:null):null;
 
-        $data['satuan']=$request->satuan;
+        $data['satuan']=strtoupper($request->satuan);
         $data['lokus']=$request->lokus;
         $data['kw_nas']=$request->kw_nas=='on'?true:false;
 
@@ -164,7 +167,6 @@ class INDIKATOR extends Controller
                     $where[]=[$key,'=',$v];
                 }
               }
-
         }
 
         if(!empty($where)){
@@ -196,7 +198,7 @@ class INDIKATOR extends Controller
         }
 
 
-        return array('kode'=>200,'data'=>$data);
+        return array('kode'=>200,'data'=>$data,'request'=>$request->all());
 
     }
 
@@ -264,6 +266,7 @@ class INDIKATOR extends Controller
 
         if($indikator){
             $up=$request->except('_token','_method');
+
             $data['kw_nas']=$request->kw_nas=='on'?true:false;
             $data['kw_p']=$request->kw_p=='on'?true:false;
             $data['kw_k']=$request->kw_k=='on'?true:false;
@@ -292,6 +295,8 @@ class INDIKATOR extends Controller
                 }
                 # code...
             }
+            $data['uraian']=strtoupper($request->uraian);
+
             $indikator->update($data);
 
 

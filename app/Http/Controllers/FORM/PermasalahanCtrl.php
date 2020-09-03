@@ -95,7 +95,7 @@ class PermasalahanCtrl extends Controller
                 'id_urusan'=>Hp::fokus_urusan()['id_urusan'],
                 'tahun'=>Hp::fokus_tahun(),
                 'kode_daerah'=>$id,
-                'uraian'=>$request->uraian,
+                'uraian'=>strtoupper($request->uraian),
                 'id_user'=>$uid,
                 'created_at'=>date('Y-m-d h:i'),
                 'updated_at'=>date('Y-m-d h:i')
@@ -118,7 +118,7 @@ class PermasalahanCtrl extends Controller
 
     public function update_masalah_pokok($kodepemda,$id,Request $request){
         $data=DB::table('ms_pokok')->where('id',$id)->update([
-            'uraian'=>$request->uraian
+            'uraian'=>strtoupper($request->uraian)
         ]);
         if($data){
                 Alert::success('Success','Berhasl Update Masalah Pokok');
@@ -130,7 +130,7 @@ class PermasalahanCtrl extends Controller
 
      public function update_masalah($kodepemda,$id,Request $request){
         $data=DB::table('ms')->where('id',$id)->update([
-            'uraian'=>$request->uraian
+            'uraian'=>strtoupper($request->uraian)
         ]);
         if($data){
                 Alert::success('Success','Berhasl Update Masalah');
@@ -142,7 +142,7 @@ class PermasalahanCtrl extends Controller
 
       public function update_akar_masalah($kodepemda,$id,Request $request){
         $data=DB::table('ms_akar')->where('id',$id)->update([
-            'uraian'=>$request->uraian
+            'uraian'=>strtoupper($request->uraian)
         ]);
         if($data){
                 Alert::success('Success','Berhasl Update Akar Masalah');
@@ -154,7 +154,7 @@ class PermasalahanCtrl extends Controller
 
      public function update_data_dukung($kodepemda,$id,Request $request){
         $data=DB::table('ms_data_dukung')->where('id',$id)->update([
-            'uraian'=>$request->uraian
+            'uraian'=>strtoupper($request->uraian)
         ]);
         if($data){
                 Alert::success('Success','Berhasl Update Data Dukung');
@@ -226,7 +226,7 @@ class PermasalahanCtrl extends Controller
                 'tahun'=>Hp::fokus_tahun(),
                 'id_ms_pokok'=>$pokok->id,
                 'kode_daerah'=>$id,
-                'uraian'=>$request->uraian,
+                'uraian'=>strtoupper($request->uraian),
                 'id_user'=>$uid,
                 'created_at'=>date('Y-m-d h:i'),
                 'updated_at'=>date('Y-m-d h:i')
@@ -272,7 +272,7 @@ class PermasalahanCtrl extends Controller
                 'id_ms_pokok'=>$pokok->id,
                 'id_ms'=>$masalah->id,
                 'kode_daerah'=>$id,
-                'uraian'=>$request->uraian,
+                'uraian'=>strtoupper($request->uraian),
                 'id_user'=>$uid,
                 'created_at'=>date('Y-m-d h:i'),
                 'updated_at'=>date('Y-m-d h:i')
@@ -319,7 +319,7 @@ class PermasalahanCtrl extends Controller
                 'id_ms'=>$akar->id_ms,
                 'id_ms_akar'=>$akar->id,
                 'kode_daerah'=>$id,
-                'uraian'=>$request->uraian,
+                'uraian'=>strtoupper($request->uraian),
                 'id_user'=>$uid,
                 'created_at'=>date('Y-m-d h:i'),
                 'updated_at'=>date('Y-m-d h:i')

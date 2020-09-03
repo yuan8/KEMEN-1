@@ -58,7 +58,7 @@
 				</div>
 			</td>
 			<td>{{$d->kode}}</td>
-			<td>{{$d->nomenklatur}}</td>
+			<td>{{$d->uraian}}</td>
 			
 
 		</tr>
@@ -108,7 +108,7 @@
 					$('#list_indikator_to_add_{{$domid}} #kosong').remove();
 				}
 
-				var dom ='<tr id="key_ind_'+key+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+data.kode+'</td><td>'+data.nomenklatur+'<input type="hidden" name="id_nomen[]" value="'+data.id+'"></td></tr>';
+				var dom ='<tr id="key_ind_'+key+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+data.kode+'</td><td>'+data.uraian+' <input type="hidden" name="id_nomen[]" value="'+data.id+'"></td></tr>';
 				$('#list_indikator_to_add_{{$domid}} tbody').prepend(dom);
 			}
 

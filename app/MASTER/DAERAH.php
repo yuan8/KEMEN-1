@@ -29,11 +29,13 @@ class DAERAH extends Model
 
     public function _has_rekomendasi(){
         $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+
     	if($this->id){
             if(strlen(($this->id.''))<3){
-                return $this->hasOne(REKOMENDASI::class,'kodepemda','id')->where('tahun',$tahun);
+                return $this->hasOne(REKOMENDASI::class,'kodepemda','id')->where(['id_urusan'=>$meta_urusan['id_urusan'],'tahun'=>$tahun]);
             }else{
-                return $this->hasOne(REKOMENDASIKAB::class,'kodepemda','id')->where('tahun',$tahun);
+                return $this->hasOne(REKOMENDASIKAB::class,'kodepemda','id')->where(['id_urusan'=>$meta_urusan['id_urusan'],'tahun'=>$tahun]);
             }
         }
     }

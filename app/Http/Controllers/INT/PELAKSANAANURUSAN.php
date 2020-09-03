@@ -125,9 +125,9 @@ class PELAKSANAANURUSAN extends Controller
         $data=[];
 
         $data['id_sub_urusan']=$request->id_sub_urusan;
-        $data['kewenangan_nas']=$request->kw_nas;
-        $data['kewenangan_p']=$request->kw_p;
-        $data['kewenangan_k']=$request->kw_k;
+        $data['kewenangan_nas']=strtoupper($request->kw_nas);
+        $data['kewenangan_p']=strtoupper($request->kw_p);
+        $data['kewenangan_k']=strtoupper($request->kw_k);
         $data['tahun']=$tahun;
         $data['id_user']=Auth::id();
         $data['created_at']=Carbon::now();
@@ -243,9 +243,9 @@ class PELAKSANAANURUSAN extends Controller
             $k=KEWENANGAN::find($id);
 
             if($k){
-                $k->kewenangan_nas=$request->kw_nas;
-                $k->kewenangan_p=$request->kw_p;
-                $k->kewenangan_k=$request->kw_k;
+                $k->kewenangan_nas=strtoupper($request->kw_nas);
+                $k->kewenangan_p=strtoupper($request->kw_p);
+                $k->kewenangan_k=strtoupper($request->kw_k);
                 $k->update();
                 
                 

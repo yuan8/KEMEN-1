@@ -78,10 +78,9 @@ class AppServiceProvider extends ServiceProvider
 
             $event->menu->add([
                 'text' => 'PROGRAM KEGIATAN',
-          //      'url'=>route('int.prokeg.index')
-'url'=>route('prokeg.index')
+                'url'=>route('prokeg.index')
             ]);
-	$event->menu->add([
+	           $event->menu->add([
                 'text' => 'PELAKSANAAN RENCANA PEMBANGUNAN DAERAH',
                 'url'=>route('monev.dokrenda.index')
             ]);
@@ -90,7 +89,20 @@ class AppServiceProvider extends ServiceProvider
             $event->menu->add('INTEGRASI');
 
         
+            $event->menu->add([
+                'text' => 'MASTER NOMENLATUR',
+                'submenu'=>[
+                        [
+                            'text'=>'PROVINSI',
+                            'url'=>route('int.nomen.index',['pro'=>'provinsi'])
+                        ],
+                         [
+                            'text'=>'KOTA / KABUPATEN',
+                            'url'=>route('int.nomen.index',['pro'=>'kota'])
+                        ]
 
+                ]
+            ]);
             $event->menu->add([
                 'text' => 'INTEGRASI PROGRAM KEGIATAN',
                 'url'=>route('int.rekomendasi.index')

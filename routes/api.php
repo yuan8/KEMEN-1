@@ -124,6 +124,9 @@ Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 			Route::post('/update-data-target-ahir', 'INT\PROGRAMKEGIATAN@update_target')
 			->name('api.int.prokeg.update_target');
 
+			Route::get('/tagging-nomen-view/{kodepemda}/{jenis}', 'INT\DAERAH\REKOMENDASI@list_tagging_view')
+			->name('api.int.integrasi.rekomendasi.tagging_list');
+
 		});
 
 		Route::prefix('glob')->group(function(){

@@ -16,8 +16,12 @@
 <div class="box box-solid 	">
 	<div class="box-body ">
 
-		<button onclick="showFormCreatePn()" class="btn btn-primary btn-xs text-uppercase">TAMBAH PN</button>
-		<a href="{{route('int.kb1tahun.download',['pdf'=>'true'])}}" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
+		<div class="btn-group">
+			<button onclick="showFormCreatePn()" class="btn btn-primary text-uppercase">TAMBAH PN</button>
+			<button onclick="showFormCreatePn('MAJOR')" class="btn btn-info  text-uppercase">TAMBAH MAJOR PROJECT</button>
+
+		<a href="{{route('int.kb1tahun.download',['pdf'=>'true'])}}" class="btn btn-success text-uppercase">DOWNLOAD DATA</a>
+		</div>
 
 	</div>
 </div>
@@ -28,7 +32,7 @@
 	<thead class="bg-navy">
 		<tr>
 			<th rowspan="2" colspan="2"></th>
-			<th rowspan="2" >PN</th>
+			<th rowspan="2" >PN / MAJOR PROJECT</th>
 			<th rowspan="2">PP</th>
 			<th rowspan="2">KP</th>
 			<th rowspan="2">PROPN</th>
@@ -50,22 +54,35 @@
 		@foreach($data as $pn)
 			<tr>
 				<td class=" bg-yellow text-center" style="width:50px;">
-					<h5><b>PN</b></h5>
+						<h5><b>{{($pn['jenis']==-1?'MP':'PN')}}</b></h5>
+					
 				</td>
 				<td style="min-width: 220px;" class="bg-warning">
 					<div class=" pull-right action-col ">
+
 						<button   collapse-btn-nested="false" data-target=".pn-{{$pn['id']}}"  class="btn btn-info btn-xs ">
-								<i data-toggle="tooltip" data-placement="top" title="DETAIL SASARAN" class="fa fa-eye"></i>
+								<i data-toggle="tooltip" data-placement="top" title="DETAIL" class="fa fa-eye"></i>
 							 ({{count($pn['_child_pp'])}})</button>
+					@if($pn['jenis']!=-1)
+
 						<button class="btn btn-success  btn-xs" onclick="showFormNested({{$pn['id']}},{{$pn['jenis']}})" >
 
 						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PP" class="fa fa-plus"></i></button>
+					@endif
+
 						<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-pen"></i></button>
 						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-trash"></i></button>
-					
+					@if($pn['jenis']==-1)
+					<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$pn['id']}},{{$pn['jenis']}})" >
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator
+
+					</button>
+
+					@endif
 					</div>
 				</td>
-				<td colspan="11"><b>PN: </b>{{$pn['uraian']}}</td>
+					
+				<td colspan="11"><b>{{($pn['jenis']==-1?'MAJOR PROJECT':'PN')}}: </b>{{$pn['uraian']}}</td>
 
 			</tr>
 			@foreach($pn['_tag_indikator'] as $tagpni)
@@ -553,6 +570,9 @@
 
 	function nameRKP(jenis){
 		switch(jenis){
+			case -1:
+				jenis='MAJOR PROJECT';
+			break;
 			case 1:
 				jenis='PN';
 			break;
@@ -584,9 +604,9 @@
 		});
 	}
 
-	function showFormCreatePn(){
-		API_CON.get("{{route('int.kb1tahun.pn_create')}}").then(function(res){
-			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH PN {{Hp::fokus_tahun()}}');
+	function showFormCreatePn(major=null){
+		API_CON.get("{{route('int.kb1tahun.pn_create')}}"+(major?'?major=true':'')).then(function(res){
+			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH '+(major?'MAJOR PROJECT':'')+' {{Hp::fokus_tahun()}}');
 			$('#modal-global-lg .modal-body').html(res.data);
 			$('#modal-global-lg').modal();
 		});
