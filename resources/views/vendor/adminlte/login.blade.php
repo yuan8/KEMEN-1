@@ -13,7 +13,7 @@
     <div class="row no-gutters">
         <div class="login-logo" style="background: #222; padding-top:10px; color: #fff">
             <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" style="color:#fff">
-               <img src="{{url('logo.png')}}" style="max-width:30px;"><b> APPLIKASI SINKRONISASI</b></a>
+               <img src="{{url('logo.png')}}" style="max-width:30px;"><b> APLIKASI SINKRONISASI</b></a>
                <h5><small style="font-size: 20px; line-height: 1px; color: #fff">PUSAT DAN DAERAH</small></h5>
             <hr>
         </div>

@@ -16,7 +16,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="box box-success">
-			<div class="box-body">
+			<div class="box-body table-responsive">
                 <table class="table table-bordered">
                     <thead class="bg-navy">
                         <tr>
@@ -42,7 +42,7 @@
                                 <tr class="bg bg-warning">
                                     <td>{{$kb->nama}}</td>
                                     <td colspan="5" class="bg bg-warning"></td>
-            
+
                                 </tr>
                                 <?php $id_sub_urusan=$kb->id; ?>
                             @endif
@@ -52,7 +52,7 @@
                                     <td>{!!$kb->tipe?'<i class="fa fa-circle text-warning"></i>':'<i class="fa fa-circle text-info"></i>'!!} {{$kb->mandat}}</td>
                                     <td colspan=""></td>
                                     <td>
-                                    
+
 
                                         <button class="btn btn-info btn-xs" onclick="plus_perda.build('#plus-perda',mandat_{{$kb->id_mandat}}.mandat,'{{route('kebijakan.daerah.store.mandat.perda',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}','{{route('api.kebijakan.daerah.store.perda',['id'=>$kb->id_mandat])}}',mandat_{{$kb->id_mandat}}.perkada,'{{$kode_daerah}}')">
                                             <i class="fa fa-edit"></i> PERDA
@@ -72,7 +72,7 @@
                                         </button>
                                     </td>
 
-        
+
                                 </tr>
                                 <?php $id_sub_urusan=$kb->id; ?>
                             @endif
@@ -85,7 +85,7 @@
 
                                         </button>
                                     </td>
-                                   
+
                                 </tr>
                                 <tr>
                                     <td colspan="3"></td>
@@ -155,7 +155,7 @@
                     </tbody>
                 </table>
                 {{$datas->links()}}
-				
+
 			</div>
 		</div>
 	</div>

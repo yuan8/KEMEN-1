@@ -16,7 +16,7 @@ class prokeg extends Controller
 
         $urusan=\Hp::fokus_urusan();
 		$tahun=\Hp::fokus_tahun();
-					DB::enableQueryLog();
+	//				DB::enableQueryLog();
           // dd
 
 	   $tabel_prokeg=DB::table('master_daerah as a')
@@ -31,18 +31,18 @@ public function detail_prokeg(Request $request)
       	$urusan=\Hp::fokus_urusan();
 		$tahun=\Hp::fokus_tahun();
 		$namapemda=$request->namapemda;
-					DB::enableQueryLog();
+//					DB::enableQueryLog();
 //dd($request);
-	   $tabel_prokeg=DB::table('rpjmd.rpjmd_misi as a')
-	   ->select(DB::Raw("a.kode_daerah as kode_daerah,a.id as id_misi,b.id as id_sasaran,d.id as id_program_rkpd,c.id as id_program,
-            case when row_number() over(partition by a.id order by a.id)=1 then a.misi else '' end as misi,
-      case when row_number() over(partition by b.id order by b.id)=1 then b.sasaran else '' end as sasaran,
-      case when row_number() over(partition by c.id order by c.id)=1 then c.program_daerah else '' end as program_daerah,
-      case when row_number() over(partition by d.id order by d.id)=1 then e.uraiprogram else '' end as program_rkpd,
-      case when row_number() over(partition by f.id order by f.id)=1 then f.uraikegiatan else '' end as kegiatan,
-      case when row_number() over(partition by f.id order by g.id)=1 then g.tolokukur else '' end as indikator,
-      case when row_number() over(partition by f.id order by g.id)=1 then g.target else '' end as target,
-      case when row_number() over(partition by f.id order by g.id)=1 then g.satuan else '' end as satuan"))
+	  	   $tabel_prokeg=DB::table('rpjmd.rpjmd_misi as a')
+	   ->select(DB::Raw("a.kode_daerah as kode_daerah,a.id as id_misi,b.id as id_sasaran,d.id as id_program_rkpd,c.id as id_program,f.id as id_kegiatan,
+            a.misi as misi,
+            b.sasaran as sasaran,
+            c.program_daerah as program_daerah, 
+            e.uraiprogram as program_rkpd,
+            f.uraikegiatan as kegiatan,
+             g.tolokukur as indikator,
+            g.target as target,
+            g.satuan  as satuan"))
 ->leftJoin('rpjmd.rpjmd_sasaran as b','a.id','=','b.id_misi')
 ->leftJoin('rpjmd.rpjmd_program as c','b.id','=','c.id_sasaran')
 ->leftJoin('rpjmd.pemetaan_perencanaan as d','c.id','=','d.id_program_rpjmd')
@@ -52,9 +52,9 @@ public function detail_prokeg(Request $request)
 ->where('a.id_urusan' ,$urusan['id_urusan'])
 ->where('a.tahun' ,(int)$tahun)
 ->where('a.kode_daerah' ,$request->id)
-->orderByRaw('id_misi,id_sasaran')
+->orderByRaw('a.id,b.id,c.id,d.id,e.id,f.id,g.id')
 	   ->get();
-//	dd(DB::getQueryLog());
+	//dd(DB::getQueryLog());
 return view('prokeg.prokeg')->with('data',$tabel_prokeg)->with('namapemda',$namapemda)->with('tahun',(int)$tahun)->with('kodepemda',$request->id);
    }
    public function tambah_misi(Request $request){

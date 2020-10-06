@@ -6,7 +6,7 @@
       <div class="col-md-8">
         <h3>INTEGRASI PROGRAM KEGIATAN </h3>
       </div>
-      
+
     </div>
 @stop
 
@@ -40,14 +40,14 @@
 
                                 <td>
                                   @if($d['_rekomendasi_final'])
-                                    <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn btn-primary btn-xs "> VIEW REKOMENDASI {{HP::fokus_tahun()}}</a>
+                                    <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn btn-primary btn-xs "> VIEW REKOMENDASI {{HP::fokus_tahun()+1}}</a>
                                     </td>
                                   @else
-                                  <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn {{$d['_has_rekom']?'btn-warning':'btn-info'}} btn-xs ">{{$d['_has_rekomendasi']?'EDIT':'BUAT'}} REKOMENDASI {{HP::fokus_tahun()}}</a>
+                                  <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn {{$d['_has_rekom']?'btn-warning':'btn-info'}} btn-xs ">{{$d['_has_rekomendasi']?'EDIT':'BUAT'}} REKOMENDASI {{HP::fokus_tahun()+1}}</a>
                                   </td>
 
                                   @endif
-                               
+
                             </tr>
 
 

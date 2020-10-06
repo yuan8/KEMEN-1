@@ -35,12 +35,16 @@
                   </tr>
                       </thead>
                       <tbody>
-					  
+
+			<?php $m=0;$n=0;$o=0;$p=0;$q=0; ?>	  
                           @foreach($data as $d)
+				
                             <tr>
                                 <td>
-								@if($d->misi<>'')
-								 <table><tr><td>
+								
+							@if($d->id_misi<>$m)
+							
+							 <table><tr><td>
 							<span style="float:left;">	<button class="btn btn-success  btn-xs" onclick="showFormCreateSasaran({{$d->id_misi}})">
 						<i data-toggle="tooltip" data-placement="top" title="TAMBAH PP" class="fa fa-plus"></i></button>
 						<button class="btn btn-warning  btn-xs" onclick="showFormUpdatemisi({{$d->id_misi}})"><i class="fa fa-pen"></i></button>
@@ -51,7 +55,7 @@
 								@endif
 								</td>
                                 <td>
-								@if($d->sasaran<>'')																	 
+								@if($d->id_sasaran<>$n)																	 
 							<table><tr><td>
 						<span style="float:left;">		<button class="btn btn-success  btn-xs" onclick="showFormCreateProgram({{$d->id_sasaran}})">
 						<i data-toggle="tooltip" data-placement="top" title="TAMBAH PP" class="fa fa-plus"></i></button>
@@ -63,7 +67,7 @@
 								@endif
 								</td>
                                 <td> 
-								@if($d->program_daerah<>'')
+								@if($d->id_program_rkpd<>$o)
 								<table><tr><td>
 
 								<span style="float:left;">		
@@ -75,12 +79,12 @@
 							@endif
 							</td>
                                 <td>
-								@if($d->program_daerah<>'')
+								@if($d->id_program<>$p)
 								        <a href="{{route('prokeg.pemetaan.pilihprogram',['id'=>$d->id_program,'kodepemda'=>$kodepemda])}}"" class="btn btn-success btn-xs" onclick="">PEMETAAN PROGRAM</a>
 								@endif
 								</td>
 								<td>
-								@if($d->program_rkpd<>'')
+								@if($d->id_program_rkpd<>$o)
 
 								<table><tr><td>
 
@@ -92,7 +96,9 @@
 								@endif
 								</td>
 								<td>
+								@if($d->id_kegiatan<>$q)
 								{{$d->kegiatan}}
+								@endif
 								</td>
 								<td>
 								{{$d->indikator}}
@@ -104,7 +110,7 @@
 								{{$d->satuan}}
 								</td>
                             </tr>
-
+			<?php $m=$d->id_misi;$n=$d->id_sasaran;$o=$d->id_program_rkpd;$p=$d->id_program;$q=$d->id_kegiatan; ?>
                           @endforeach
                       </tbody>
                   </table>
@@ -119,6 +125,7 @@
     <script type="text/javascript">
         $('#table-daerah').DataTable({
              pageLength: 15,
+paging:false,
     ordering: false
         });
 
