@@ -71,7 +71,7 @@
 	</thead>
 	<tbody>
 		@php
-			$id_sub_urusan=(isset($data[0])?$d['_sub_urusan']['id']:'');
+			$id_sub_urusan=(isset($data[0])?$data[0]['_sub_urusan']['id']:'');
 		@endphp
 		@foreach($data as $key=> $d)
 
