@@ -45,7 +45,6 @@ async function login(){
 
               });
      });
-     console.log('a');
 
     await Promise.all([
           page.click('button[type="submit"]')

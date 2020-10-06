@@ -169,9 +169,12 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     public function index(){
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
-    	$data=RKP::whereIn('jenis',[-1,1])->where(['tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek'])
+
+    	$data=RKP::whereIn('jenis',[-1,1])->where(['tahun'=>$tahun,'id_urusan'=>$meta_urusan['id_urusan']])->with(['_tag_indikator._indikator','_child_pp._child_kp._child_propn._child_proyek','_rowspan'])
         ->orderBy('id','desc')
         ->get();
+
+
         
     	return view('integrasi.kb1tahun.index')->with('data',$data);
     }

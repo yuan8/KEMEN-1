@@ -20,6 +20,17 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 		Route::get('resume','INT\KEBIJAKAN@resume')->name('int.kb.resume');
 
 	});
+
+	Route::prefix('spm')->group(function(){
+		Route::get('/','INT\SPM@index')->name('int.spm.index');
+		Route::post('/store','INT\SPM@store')->name('int.spm.store');
+		Route::post('/update','INT\SPM@update')->name('int.spm.update');
+		Route::post('/indikator/{id}','INT\SPM@indikator')->name('int.spm.indikator');
+
+		Route::post('/store/indikator/{id}','INT\SPM@store_indikator')->name('int.spm.store.indikator');
+
+	});
+
 	Route::prefix('master-indikator')->group(function(){
 		Route::get('/','INT\INDIKATOR@index')->name('int.m.indikator');
 		Route::get('/create','INT\INDIKATOR@create')->name('int.m.indikator.create');

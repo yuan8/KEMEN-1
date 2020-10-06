@@ -18,22 +18,35 @@
 		@php
 		$domid=rand(0,1000).date('i');
 		@endphp
-			
-			<div class="form-group">
-					<label>SUB URUSAN {{in_array($tag,[3,4])?'*':''}}</label>
-					<select class="form-control init-use-select2" name="id_sub_urusan" {{in_array($tag,[3,4])?'required="':''}} >
-						@if(in_array($tag,[3,4]))
-							<option value="">-</option>
-						@endif
+		
+		<div class="row">
+			<div class="col-md-6 form-group">
+				<label>TIPE INDIKATOR</label>
+				<select class="form-control init-use-select2" name="tipe"  id="tipe_indikator">
+					<option value="OUTPUT" {{strtoupper($data['tipe'])=='OUTPUT'?'selected':''}}>OUTPUT</option>
+					<option value="OUTCOME" {{strtoupper($data['tipe'])=='OUTCOME'?'selected':''}}>OUTCOME</option>
+					<option value="" {{($data['tipe'])==null?'selected':''}}>TIDAK TERDEFINISI</option>
+				</select>
+			</div>
+			<div class="col-md-6">
+				
+				<div class="form-group">
+						<label>SUB URUSAN {{in_array($tag,[3,4])?'*':''}}</label>
+						<select class="form-control init-use-select2" name="id_sub_urusan" {{in_array($tag,[3,4])?'required="':''}} >
+							@if(in_array($tag,[3,4]))
+								<option value="">-</option>
+							@endif
 
-						@foreach($sub_urusan as $sub)
-						@php 
-							$sub=(array)$sub;
-						@endphp
-							<option value="{{$sub['id']}}" {{$data['id_sub_urusan']==$sub['id']?'selected':''}}>{{$sub['nama']}}</option>
-						@endforeach
-					</select>
+							@foreach($sub_urusan as $sub)
+							@php 
+								$sub=(array)$sub;
+							@endphp
+								<option value="{{$sub['id']}}" {{$data['id_sub_urusan']==$sub['id']?'selected':''}}>{{$sub['nama']}}</option>
+							@endforeach
+						</select>
 				</div>
+			</div>
+		</div>	
 
 		<div class="form-group">
 			<label>URAIAN INDIKATOR {{Hp::fokus_tahun()}} *</label>
@@ -187,7 +200,7 @@
 					
 				<hr>
 				<div class="form-group">
-					<label>Lokus</label>
+					<label>LOKUS</label>
 					<textarea class="form-control" name="lokus">{!!$data['lokus']!!}</textarea>
 				</div>
 				<small>

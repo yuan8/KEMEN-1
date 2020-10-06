@@ -51,3 +51,13 @@ function buildUrl(url,prop=[]){
 	return url;
 
 }
+
+
+$.AdminLTESidebarTweak = {};
+
+$.AdminLTESidebarTweak.options = {
+    EnableRemember: true,
+    NoTransitionAfterReload: false
+    //Removes the transition after page reload.
+};
+

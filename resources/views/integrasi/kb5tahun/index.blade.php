@@ -25,33 +25,7 @@
 
 <div class="table-responsive">
 	<table class="table table-fixed bg-white table-bordered table-striped table-hover">
-		<thead class="bg-navy">
-			<tr>
-				<th rowspan="2" colspan="2" style="min-width: 230px;">ACTION</th>
-				<th colspan="2">KONDISI</th>
-				<th rowspan="2">URAIAN ISU STRATEGIS</th>
-				<th rowspan="2">URAIAN ARAH KEBIJAKAN</th>
-				<th colspan="5">INDIKATOR / SASARAN</th>
-				<th colspan="3">KEWENANGAN</th>
-				<th rowspan="2">PELAKSANA</th>
-			</tr>
-			<tr>
-				<th  >KODE</th>
-
-				<th>URAIAN KONDISI</th>
-
-				<th>SUB URUSAN</th>
-
-				<th>KODE INDIKATOR</th>
-				<th>URAI INDIKATOR</th>
-				<th>TARGET</th>
-				<th>SATUAN</th>
-
-				<th>KEWENANGAN PUSAT</th>
-				<th>KEWENANGAN PROVINSI</th>
-				<th>KEWENANGAN KOTA/KAB</th>
-			</tr>
-		</thead>
+		
 		<tbody class="bg-white">
 		@foreach($data as $kn)
 
@@ -63,7 +37,7 @@
 					<h4><b>KN</b></h4>
 				</td>
 					<td class="bg-warning">
-						<div class=" pull-right action-col ">
+						<div class=" btn-group-vertical pull-right action-col ">
 							<button collapse-btn-nested="false" data-target=".kn-{{$kn['id']}}"  class="btn btn-info btn-xs kn">
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL KONDISI SAAT INI" class="fa fa-eye"></i> ({{count($kn['_children'])}})</button>
 							<button class="btn btn-success  btn-xs" data="TAMBAH ISU STRATEGIS" onclick="showFormCreateisu({{$kn['id']}})">
@@ -74,7 +48,9 @@
 						</div>
 					</td>
 					<td class="bg-warning"><b>{{$kn['kode']}}</b></td>
-					<td colspan="12" style="border-left:2px solid #f39b12 !important;"><b>KN: </b>{!!nl2br($kn['uraian'])!!}</td>
+					<td colspan="12" style="border-left:2px solid #f39b12 !important;"><b>KONDISI: </b>
+						<p>{!!nl2br($kn['uraian'])!!}</p>
+					</td>
 
 
 
@@ -87,7 +63,7 @@
 					<h4><b>ISU</b></h4>
 				</td>
 						<td class="bg-warning" colspan="">
-								<div class=" pull-right action-col">
+								<div class=" btn-group-vertical pull-right action-col">
 									<button  collapse-btn-nested="false" data-target=".isu-{{$isu['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ISU STRATEGIS" class="fa fa-eye"></i>
 									 ({{count($isu['_children'])}})</button>
@@ -99,12 +75,12 @@
 						</td>
 						<td class="bg-warning"></td>
 						<td colspan="1" >
-							<div class="pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px;
+							<div class="btn-group-vertical pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px;
 							border-top:0px; border-right:0px;margin-top:-9px; margin-right: -9px; "></div>
 						</td>
 
 
-						<td colspan="12"><b>ISU: </b>{!!nl2br($isu['uraian'])!!}</td>
+						<td colspan="12"><b>ISU: </b><p>{!!nl2br($isu['uraian'])!!}</p></td>
 
 					</tr>
 					@foreach($isu['_children'] as $ak)
@@ -114,12 +90,12 @@
 					<h4><b>AK</b></h4>
 				</td>
 							<td class="bg-warning" colspan="">
-								<div class=" pull-right action-col">
+								<div class=" btn-group-vertical pull-right action-col">
 									<button   collapse-btn-nested="false" data-target=".ak-{{$ak['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ARAH KEBIJAKAN" class="fa fa-eye"></i>
 									 ({{count($ak['_indikator'])}})</button>
 								<button class="btn btn-success  btn-xs" onclick="showFormCreateIndikator({{$ak['id']}})" >
-								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
+								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> IND</button>
 								<button class="btn btn-warning  btn-xs" onclick="showFormUpdateAk({{$ak['id']}})"><i class="fa fa-pen"></i></button>
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteAk({{$ak['id']}})"><i class="fa fa-trash"></i></button>
 
@@ -129,10 +105,10 @@
 							<td class="bg-warning"></td>
 							<td colspan="1" ></td>
 							<td colspan="">
-								<div class="pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px;
+								<div class="btn-group-vertical pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px;
 							border-top:0px; border-right:0px;margin-top:-9px; margin-right: -9px; "></div>
 							</td>
-							<td colspan="11"><b>AK: </b>{!!nl2br($ak['uraian'])!!}</td>
+							<td colspan="11"><b>AK: </b><p>{!!nl2br($ak['uraian'])!!}</p></td>
 						</tr>
 
 						@foreach($ak['_indikator'] as $i)
@@ -143,7 +119,7 @@
 				</td>
 								<td colspan="2" class="bg-warning"></td>
 								<td colspan="3">
-									<div class=" pull-right action-col">
+									<div class=" btn-group-vertical pull-right action-col">
 										<button  class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$i['id']}})"><I class="fa fa-eye"  data-toggle="tooltip" data-placement="top" title="DETAIL INDIKATOR" ></I> </button>
 										<button class="btn btn-warning  btn-xs" onclick="showFormUpdateIndikator({{$i['id']}})"><i class="fa fa-pen"></i></button>
 										<button class="btn btn-danger  btn-xs" onclick="showFormDeleteIndikator({{$i['id']}})"><i class="fa fa-trash"></i></button>
@@ -258,6 +234,33 @@
 			@endforeach
 
 		</tbody>
+		<thead class="bg-navy">
+			<tr>
+				<th rowspan="2" colspan="2" style="min-width: 110px;">ACTION</th>
+				<th colspan="2">KONDISI</th>
+				<th rowspan="2">URAIAN ISU STRATEGIS</th>
+				<th rowspan="2">URAIAN ARAH KEBIJAKAN</th>
+				<th colspan="5">INDIKATOR / SASARAN</th>
+				<th colspan="3">KEWENANGAN</th>
+				<th rowspan="2">PELAKSANA</th>
+			</tr>
+			<tr>
+				<th  >KODE</th>
+
+				<th>URAIAN KONDISI</th>
+
+				<th>SUB URUSAN</th>
+
+				<th>KODE INDIKATOR</th>
+				<th>URAI INDIKATOR</th>
+				<th>TARGET</th>
+				<th>SATUAN</th>
+
+				<th>KEWENANGAN PUSAT</th>
+				<th>KEWENANGAN PROVINSI</th>
+				<th>KEWENANGAN KOTA/KAB</th>
+			</tr>
+		</thead>
 	</table>
 </div>
 

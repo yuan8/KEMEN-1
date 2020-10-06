@@ -270,13 +270,48 @@
 
             });
 
+
+$(function () {
+    "use strict";
+
+        $("body").on("collapsed.pushMenu expanded.pushMenu", function(){
+        
+            var toggleState = 'opened';
+            if($("body").hasClass('sidebar-collapse')){
+                toggleState = 'closed';
+            }
+            document.cookie = "toggleStateDSS="+toggleState;
+
+        
+     });
+    
+
+        var re = new RegExp('toggleStateDSS' + "=([^;]+)");
+        var value = re.exec(document.cookie);
+        
+        var toggleState = (value != null) ? unescape(value[1]) : null;
+        if(toggleState == 'closed'){
+            $("body").addClass('sidebar-collapse hold-transition').delay(100).queue(function(){
+                $(this).removeClass('hold-transition'); 
+            });
+            
+        }else{
+
+             $("body").removeClass('sidebar-collapse hold-transition').delay(100).queue(function(){
+                $(this).removeClass('hold-transition'); 
+            });
+
+        }
+    
+});
+
       </script>
       <style type="text/css">
 
-       
 
         .table-responsive .table{
             border-collapse: separate;
+            position: relative;
         }
        
 

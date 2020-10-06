@@ -44,7 +44,7 @@ class INDIKATOR extends Controller
 
 
 
-        $data=$data->with('_sub_urusan')->orderBy('id_sub_urusan','ASC')->paginate(10);
+        $data=$data->with('_sub_urusan')->orderBy('id_sub_urusan','ASC')->orderBy('id','DESC')->paginate(10);
 
         $data->appends(['q'=>$request->q]);
         $data->appends(['t'=>$request->t]);
@@ -76,6 +76,7 @@ class INDIKATOR extends Controller
         $data=[];
 
         $data['tag']=$request->tag;
+        $data['tipe']=in_array($request->tipe, ['OUTPUT','OUTCOME'])?$request->tipe:NULL;
         $data['uraian']=strtoupper($request->uraian);
 
         $data['tahun']=$tahun;
@@ -109,7 +110,6 @@ class INDIKATOR extends Controller
         $data['id_user']=Auth::id();
         $data['created_at']=Carbon::now();
         $data['updated_at']=Carbon::now();
-
 
         $data=IND::create($data);
 
@@ -270,7 +270,7 @@ class INDIKATOR extends Controller
             $data['kw_nas']=$request->kw_nas=='on'?true:false;
             $data['kw_p']=$request->kw_p=='on'?true:false;
             $data['kw_k']=$request->kw_k=='on'?true:false;
-
+            $data['tipe']=in_array($request->tipe, ['OUTPUT','OUTCOME'])?$request->tipe:NULL;
             $data['data_dukung_nas']=$data['kw_nas']?($request->data_dukung_nas):null;
             $data['data_dukung_p']=$data['kw_p']?($request->data_dukung_p):null;
             $data['data_dukung_k']=$data['kw_k']?($request->data_dukung_k):null;

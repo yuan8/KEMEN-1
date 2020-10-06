@@ -28,8 +28,8 @@
 <hr>
 
 <div class="table-responsive">
-	<table class=" table-bordered table-striped table bg-white table-hover">
-	<thead class="bg-navy">
+	<table class=" table-bordered  table bg-white table-hover">
+	{{-- <thead class="bg-navy">
 		<tr>
 			<th rowspan="2" colspan="2"></th>
 			<th rowspan="2" >PN / MAJOR PROJECT</th>
@@ -49,60 +49,68 @@
 			<th>SATUAN</th>
 		</tr>
 
-	</thead>
+	</thead> --}}
 	<tbody>
 		@foreach($data as $pn)
-			<tr>
-				<td class=" bg-yellow text-center" style="width:50px;">
-						<h5><b>{{($pn['jenis']==-1?'MP':'PN')}}</b></h5>
+			@php
+			$pnrowspan=0;
+
+			@endphp
+			<tr >
+				
+				
 					
-				</td>
-				<td style="min-width: 220px;" class="bg-warning">
-					<div class=" pull-right action-col ">
+				<td rowspan="{{$pn['_rowspan']['rowspan']+1}}" style="min-width:180px;" >
+
+					<div class=" btn-group ">
 
 						<button   collapse-btn-nested="false" data-target=".pn-{{$pn['id']}}"  class="btn btn-info btn-xs ">
-								<i data-toggle="tooltip" data-placement="top" title="DETAIL" class="fa fa-eye"></i>
-							 ({{count($pn['_child_pp'])}})</button>
+								<i data-toggle="tooltip" data-placement="top" title="DETAIL PP" class="fa fa-eye"> </i> </button>
 					@if($pn['jenis']!=-1)
 
 						<button class="btn btn-success  btn-xs" onclick="showFormNested({{$pn['id']}},{{$pn['jenis']}})" >
 
-						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PP" class="fa fa-plus"></i></button>
-					@endif
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PP" class="fa fa-plus"></i> PP</button>
 
-						<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-pen"></i></button>
-						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-trash"></i></button>
+					@endif
+						<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-pen"></i> PN</button>
+						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pn['id']}},{{$pn['jenis']}})"><i class="fa fa-trash"></i> PN</button>
+
 					@if($pn['jenis']==-1)
 					<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$pn['id']}},{{$pn['jenis']}})" >
-						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i>
 
 					</button>
 
 					@endif
 					</div>
-				</td>
-					
-				<td colspan="11"><b>{{($pn['jenis']==-1?'MAJOR PROJECT':'PN')}}: </b>{{$pn['uraian']}}</td>
+					<hr>
+					<b>{{($pn['jenis']==-1?'MAJOR PROJECT':'PN')}}: </b>{{$pn['uraian']}}</td>
+					<td colspan="9" class="bg-grey">
+						{!!count($pn['_tag_indikator'])?
+						'<small  class="text-center"><b>INDIKATOR MAJOR PROJECT</b></small>':'<small  class="text-center"><b>TURUNAN PROGRAM PRIORITAS</b></small>'!!}
+					</td>
 
 			</tr>
 			@foreach($pn['_tag_indikator'] as $tagpni)
 					@php
 						$pni=$tagpni['_indikator'];
 					@endphp
-					<tr class="pn-{{$pn['id']}}">
-					<td class=" bg-yellow text-center" style="width:50px;">
-						<h5><b>IND</b></h5>
-					</td>
-					<td class="bg-warning"></td>
-					<td colspan="4"></td>
+					<tr class="pn-{{$pn['id']}} bg-success">
+					
+					
 					<td>
-						<div class="form-group pull-right action-col">
+						<div class="btn-group ">
 							<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$pni['id']}})"><i class="fa fa-eye"></i></button>
 							<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagpni['id']}},{{$pni['jenis']}})"><i class="fa fa-trash"></i></button>
 						</div>
+						<hr>
+						<b>{{$pni['kode']}}</b>
 					</td>
-					<td><b>{{$pni['kode']}}</b></td>
-					<td>{{$pni['uraian']}}</td>
+					<td style="min-width:180px;" >
+							<p>	<b>{{strtoupper($pni['tipe'])}}</b></p>
+
+					{{$pni['uraian']}}</td>
 					<td>
 						@if(($pni['tipe_value']==1)OR($pni['tipe_value']==2))
 						{{number_format($pni['target'],2)}}
@@ -148,50 +156,51 @@
 							</ul>
 						
 						</td>
+					<td colspan="3"></td>
 
 			</tr>
 
 			@endforeach
 			@foreach($pn['_child_pp'] as $pp)
-				<tr class="pn-{{$pn['id']}}">
-					<td class=" bg-yellow text-center" style="width:50px;">
-					<h5><b>PP</b></h5>
-					</td>
-					<td class="bg-warning">
-						<div class=" pull-right action-col">
+				<tr class="pn-{{$pn['id']}}">				
+					<td rowspan="{{$pp['_rowspan']['rowspan']+1}}">
+						<div class=" btn-group ">
 							<button   collapse-btn-nested="false" data-target=".pp-{{$pp['id']}}"  class="btn btn-info btn-xs ">
 									<i data-toggle="tooltip" data-placement="top" title="DETAIL PP" class="fa fa-eye"></i>
-								 ({{count($pp['_child_kp'])}})</button>
+								 </button>
 								 <button class="btn btn-success  btn-xs" onclick="showFormNested({{$pp['id']}},{{$pp['jenis']}})" >
-						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH KP" class="fa fa-plus"></i></button>
-						  <button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pp['id']}},{{$pp['jenis']}})"><i class="fa fa-pen"></i></button>
-						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pp['id']}},{{$pp['jenis']}})"><i class="fa fa-trash"></i></button>
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH KP" class="fa fa-plus"></i> KP</button>
+						  <button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$pp['id']}},{{$pp['jenis']}})"><i class="fa fa-pen"></i> PP</button>
+						<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$pp['id']}},{{$pp['jenis']}})"><i class="fa fa-trash"></i> PP</button>
 						<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$pp['id']}},{{$pp['jenis']}})" >
-						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> IND PP</button>
 						</div>
-					</td>
-					<td></td>
-					<td colspan="10"><b>PP: </b>{{$pp['uraian']}}</td>
-
+						<hr>
+						<b>PP: </b>{{$pp['uraian']}}</td>
+						<td colspan="8" class="bg-grey">
+							{!!count($pp['_tag_indikator'])?
+						'<small  class="text-center"><b>INDIKATOR PROGRAM PRIORITAS</b></small>':''!!}
+						</td>
 				</tr>
 				@foreach($pp['_tag_indikator'] as $tagppi)
-					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}} ">	
+					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}} bg-success">	
 						@php
 							$ppi=$tagppi['_indikator'];
 						@endphp
-						<td class=" bg-yellow text-center" style="width:50px;">
-						<h5><b>IND</b></h5>
-						</td>
-						<td colspan="5"></td>
+						
 						<td>
-							<div class="form-group pull-right action-col">
+							<div class="btn-group ">
 								<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$ppi['id']}})"><i class="fa fa-eye"></i></button>
 								<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagppi['id']}},{{$ppi['jenis']}})"><i class="fa fa-trash"></i></button>
 							</div>
-
-						</td>
-						<td><b>{{$ppi['kode']}}</b></td>
-						<td>{{$ppi['uraian']}}</td>
+							<hr>
+							<b>
+							{{$ppi['kode']}}</b></td>
+						<td>
+					
+							<p>	<b>{{strtoupper($ppi['tipe'])}}</b></p>
+						{{$ppi['uraian']}}
+					</td>
 						<td>
 							@if(($ppi['tipe_value']==1)OR($ppi['tipe_value']==2))
 							{{number_format($ppi['target'],2)}}
@@ -212,8 +221,9 @@
 						</td>
 						<td>
 							@php
-								$i=$ppi;
+								$i=$ppi->toArray();
 								$i['pelaksana_nas']=json_decode($ppi['pelaksana_nas']);
+
 								$i['pelaksana_p']=json_decode($ppi['pelaksana_p']);
 								$i['pelaksana_k']=json_decode($ppi['pelaksana_k']);
 							@endphp
@@ -244,156 +254,158 @@
 									</ul>
 									@endif
 						</td>
+						<td colspan="2"></td>
 
 					</tr>
 
 				@endforeach
 
 				@foreach($pp['_child_kp'] as $kp)
-					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}}">
-					<td class=" bg-yellow text-center" style="width:50px;">
-					<h5><b>KP</b></h5>
-					</td>
-						<td colspan="" class="bg-warning">
-								<div class=" pull-right action-col">
+				<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}}">
+					
+						
+						
+						<td  rowspan="{{$kp['_rowspan']['rowspan']+1}}">
+							<div class=" btn-group">
 								<button   collapse-btn-nested="false" data-target=".kp-{{$kp['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL KP" class="fa fa-eye"></i>
-									 ({{count($kp['_child_propn'])}})</button>
+									</button>
 									  <button class="btn btn-success  btn-xs" onclick="showFormNested({{$kp['id']}},{{$kp['jenis']}})" >
-						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH KP" class="fa fa-plus"></i></button>
-								  <button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$kp['id']}},{{$kp['jenis']}})"><i class="fa fa-pen"></i></button>
-								<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$kp['id']}},{{$kp['jenis']}})"><i class="fa fa-trash"></i></button>
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PROPN" class="fa fa-plus"></i> PROPN</button>
+								  <button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$kp['id']}},{{$kp['jenis']}})"><i class="fa fa-pen"></i> KP</button>
+								<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$kp['id']}},{{$kp['jenis']}})"><i class="fa fa-trash"></i> KP</button>
 								<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$kp['id']}},{{$kp['jenis']}})" >
-								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
+								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> IND KP</button>
 							</div>
+							<hr>
+							<b>KP: </b>{{$kp['uraian']}}</td>
+						<td colspan="7" class="bg-grey">
+							{!!COUNT($kp['_tag_indikator'])?'<small><b>INDIKATOR KEGIATAN PRIORITAS</b></small>':''!!}
 						</td>
-						<td colspan="2"></td>
-						
-						<td colspan="9"><b>KP: </b>{{$kp['uraian']}}</td>
 
 					</tr>
 					@foreach($kp['_tag_indikator'] as $tagkpi)
-					<tr class=" kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}}">
-						@php
-							$kpi=$tagkpi['_indikator'];
-						@endphp
-						<td class=" bg-yellow text-center" style="width:50px;">
-					<h5><b>IND</b></h5>
-					</td>
-						<td colspan="5"></td>
-						<td>
-							<div class="form-group pull-right action-col">
-								<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$kpi['id']}})"><i class="fa fa-eye"></i></button>
-								<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagkpi['id']}},{{$kpi['jenis']}})"><i class="fa fa-trash"></i></button>
-							</div>
-
-						</td>
-						<td><b>{{$kpi['kode']}}</b></td>
-						<td>{{$kpi['uraian']}}</td>
-						<td>
-							@if(($kpi['tipe_value']==1)OR($kpi['tipe_value']==2))
-							{{number_format($kpi['target'],2)}}
-							@else
-								{{$kpi['target']}}
-
-							@endif
-
-							@if($kpi['tipe_value']==2)
-								<-> {{number_format($kpi['target_1'],2)}}
-
-							@endif
-								
-						</td>
-						<td>{{$kpi['satuan']}}</td>
-						<td>
-							{!!$kpi['lokus']!!}
-						</td>
-						<td>
+						<tr class=" kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} bg-success">
 							@php
-								$i=$kpi;
-								$i['pelaksana_nas']=json_decode($kpi['pelaksana_nas']);
-								$i['pelaksana_p']=json_decode($kpi['pelaksana_p']);
-								$i['pelaksana_k']=json_decode($kpi['pelaksana_k']);
+								$kpi=$tagkpi['_indikator'];
 							@endphp
-							@if($i['kw_nas'])
-								<b>PUSAT</b>
+						
+							<td>
+								<div class="btn-group ">
+									<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$kpi['id']}})"><i class="fa fa-eye"></i></button>
+									<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagkpi['id']}},{{$kpi['jenis']}})"><i class="fa fa-trash"></i></button>
+								</div>
+								<hr>
+								<b>{{$kpi['kode']}}</b></td>
+							<td>
+							<p>	<b>{{strtoupper($kpi['tipe'])}}</b></p>
+
+							{{$kpi['uraian']}}</td>
+							<td>
+								@if(($kpi['tipe_value']==1)OR($kpi['tipe_value']==2))
+								{{number_format($kpi['target'],2)}}
+								@else
+									{{$kpi['target']}}
+
+								@endif
+
+								@if($kpi['tipe_value']==2)
+									<-> {{number_format($kpi['target_1'],2)}}
+
+								@endif
+									
+							</td>
+							<td>{{$kpi['satuan']}}</td>
+							<td>
+								{!!$kpi['lokus']!!}
+							</td>
+							<td>
+								@php
+									$i=$kpi;
+									$i['pelaksana_nas']=json_decode($kpi['pelaksana_nas']);
+									$i['pelaksana_p']=json_decode($kpi['pelaksana_p']);
+									$i['pelaksana_k']=json_decode($kpi['pelaksana_k']);
+								@endphp
+								@if($i['kw_nas'])
+									<b>PUSAT</b>
+									<ul>
+									@foreach($i['pelaksana_nas'] as $p)
+										<li>{{$p}}</li>
+									@endforeach
+									</ul>
+								@endif
+								@if($i['kw_p'])
+
+								<b>PROVINSI</b>
 								<ul>
-								@foreach($i['pelaksana_nas'] as $p)
+								@foreach($i['pelaksana_p'] as $p)
 									<li>{{$p}}</li>
 								@endforeach
 								</ul>
-							@endif
-							@if($i['kw_p'])
+								@endif
+								@if($i['kw_k'])
 
-							<b>PROVINSI</b>
-							<ul>
-							@foreach($i['pelaksana_p'] as $p)
-								<li>{{$p}}</li>
-							@endforeach
-							</ul>
-							@endif
-							@if($i['kw_k'])
-
-							<b>KOTA/KAB</b>
-							<ul>
-							@foreach($i['pelaksana_k'] as $p)
-								<li>{{$p}}</li>
-							@endforeach
-							</ul>
-							@endif
-									
-						
-						</td>
+								<b>KOTA/KAB</b>
+								<ul>
+								@foreach($i['pelaksana_k'] as $p)
+									<li>{{$p}}</li>
+								@endforeach
+								</ul>
+								@endif
+										
+							
+							</td>
 
 
-					</tr>
+						</tr>
 
 					@endforeach
 					@foreach($kp['_child_propn'] as $propn)
 						<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}}">
-							<td class=" bg-yellow text-center" style="width:50px;">
-					<h5><b>PROPN</b></h5>
-					</td>
-							<td colspan="" class="bg-warning">
-												<div class=" pull-right action-col">
-										<button   collapse-btn-nested="false" data-target=".propn-{{$propn['id']}}"  class="btn btn-info btn-xs ">
-												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROPN" class="fa fa-eye"></i>  ({{count($propn['_child_proyek'])}})
-											 </button>
-											   <button class="btn btn-success  btn-xs" onclick="showFormNested({{$propn['id']}},{{$propn['jenis']}})" >
-						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH KP" class="fa fa-plus"></i></button>
-									  	<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$propn['id']}},{{$propn['jenis']}})"><i class="fa fa-pen"></i></button>
-										<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$propn['id']}},{{$propn['jenis']}})"><i class="fa fa-trash"></i></button>
-										<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$propn['id']}},{{$propn['jenis']}})" >
-										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
-									</div>
-								</td>
-								<td colspan="3"></td>
+						
+							
 								
 
-							<td colspan="8"><b>PROPN: </b>{{$propn['uraian']}}</td>
+							<td colspan="" rowspan="{{$propn['_rowspan']['rowspan']+1}}">
+								<div class=" btn-group">
+										<button   collapse-btn-nested="false" data-target=".propn-{{$propn['id']}}"  class="btn btn-info btn-xs ">
+												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROPN" class="fa fa-eye"></i>  
+											 </button>
+											   <button class="btn btn-success  btn-xs" onclick="showFormNested({{$propn['id']}},{{$propn['jenis']}})" >
+						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PROYEK KL" class="fa fa-plus"></i> PROYEK KL</button>
+									  	<button class="btn btn-warning  btn-xs" onclick="showFormViewPn({{$propn['id']}},{{$propn['jenis']}})"><i class="fa fa-pen"></i> PROPN</button>
+										<button class="btn btn-danger  btn-xs" onclick="showFormDeletePn({{$propn['id']}},{{$propn['jenis']}})"><i class="fa fa-trash"></i> PROPN</button>
+										<button class="btn btn-success  btn-xs" onclick="showFormCreatePnIndikator({{$propn['id']}},{{$propn['jenis']}})" >
+										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> IND PROPN</button>
+									</div>
+								<hr>
+								<b>PROPN: </b>{{$propn['uraian']}}
+							</td>
+							<td colspan="6">
+								{!!COUNT($propn['_tag_indikator'])?'<small><b>INDIKATOR PROYEK PRIORITAS</b></small>':''!!}
+							</td>
 
 						</tr>
 
 						@foreach($propn['_tag_indikator'] as $tagpropni)
-							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}}">
+							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}} bg-success">
 								@php
 									$propni=$tagpropni['_indikator'];
 								@endphp
-								<td class=" bg-yellow text-center" style="width:50px;">
-					<h5><b>IND</b></h5>
-					</td>
-
-								<td colspan="5"></td>
-									<td >
-									<div class="form-group pull-right action-col">
+								
+								
+								<td>
+									<div class="btn-group">
 										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$propni['id']}})"><i class="fa fa-eye"></i></button>
 										<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagpropni['id']}},{{$propni['jenis']}})"><i class="fa fa-trash"></i></button>
 
 									</div>
+									<hr>
+									<b>{{$propni['kode']}}</b></td>
+								<td>
+							<p>	<b>{{strtoupper($propni['tipe'])}}</b></p>
 
-								</td>
-								<td><b>{{$propni['kode']}}</b></td>
-								<td>{{$propni['uraian']}}</td>
+								{{$propni['uraian']}}</td>
 								<td>
 									@if(($propni['tipe_value']==1)OR($propni['tipe_value']==2))
 									{{number_format($propni['target'],2)}}
@@ -409,9 +421,7 @@
 										
 								</td>
 								<td>{{$propni['satuan']}}</td>
-								<td>
-									{!!$propni['lokus']!!}
-								</td>
+								
 								<td>
 									@php
 									$i=$propni;
@@ -462,7 +472,7 @@
 										<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> Indikator</button>
 									</div>
 								</td>
-								<td colspan="4"></td>
+								<td colspan="4" class="bg-grey"></td>
 
 
 								<td><b>PROYEK: </b>{{$proyek['uraian']}}</td>
@@ -559,6 +569,13 @@
 
 		@endforeach
 	</tbody>
+	<thead class="bg-navy">
+		<tr>
+			<th colspan="11">
+				<p class="text-center"><b>INDNTIFIKASI KEBIJAKAN 5 TAHUNAN {{Hp::fokus_tahun()}}</b></p>
+			</th>
+		</tr>
+	</thead>
 </table>
 
 </div>

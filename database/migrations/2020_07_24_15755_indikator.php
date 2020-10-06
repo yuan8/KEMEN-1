@@ -51,11 +51,17 @@ class Indikator extends Migration
                  $table->bigInteger('id_kebijakan')->nullable();
                  $table->bigInteger('id_kondisi')->nullable();
                  $table->bigInteger('id_sasaran')->nullable();
+                 $table->bigInteger('id_spm')->nullable();
+
                  $table->bigInteger('id_kewenangan')->nullable();
                  $table->integer('tag')->nullable();
 
                 $table->foreign('id_kebijakan')
                     ->references('id')->on($schema.'kb5_arah_kebijakan')
+                    ->onDelete('cascade')->onUpdate('cascade');
+
+                $table->foreign('id_spm')
+                    ->references('id')->on($schema.'master_spm_'.env('TAHUN'))
                     ->onDelete('cascade')->onUpdate('cascade');
 
                 $table->foreign('id_kondisi')

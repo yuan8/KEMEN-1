@@ -237,6 +237,34 @@ class REKOMENDASI extends Controller
     	return view('integrasi.rekomendasi.index')->with('data',$data);
     }
 
+
+    public function detail2($id){
+        $kodepemda=$id;
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
+        $data=MASALAH::where(['tahun'=>$tahun,'kode_daerah'=>$kodepemda,'id_urusan'=>$meta_urusan['id_urusan']])
+        ->with(['_reko_program'=>function($q) use ($tahun,$meta_urusan,$kodepemda){
+            return $q->where(['kodepemda'=>$kodepemda]);
+        }
+        ,'_reko_program._nomen','_reko_program._child_kegiatan._nomen','_akar'])->get()->toArray();
+
+
+
+        $daerah=DAERAH::where('id',$id)->with(['_rekomendasi_final'=>function($q) use ($tahun,$meta_urusan){
+            return $q->where('tahun',$tahun)->where('id_urusan',$meta_urusan['id_urusan']);
+        }])->first();
+
+        return view('integrasi.rekomendasi.detail_permasalahan')->with(
+            ['data'=>$data,
+            'daerah'=>$daerah
+            ]
+        );
+
+
+
+
+    }
+
     public function detail($id){
     	$tahun=Hp::fokus_tahun();
         $meta_urusan=Hp::fokus_urusan();
@@ -252,12 +280,10 @@ class REKOMENDASI extends Controller
         }
 
 
-
-
     	if(strlen(($id.""))<3){
 
             $model=REKO::where([
-                'id_urusan'=>$meta_urusan['id_urusan'],
+                'id_urusan'=>$meta_urusan['id_urusan'],'kodepemda'=>$id
             ])->with(['_nomen','_child_kegiatan._child_sub_kegiatan','_tag_indikator'=>function($q){
                 return $q->with(['_indikator'=>function($i){
                     return $i->where('id_kewenangan','<>',null);

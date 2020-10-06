@@ -674,6 +674,21 @@ class KebijakanCtrl extends Controller
             ])
             ->delete();
 
+            
+            $delete_check=(array)DB::table('ikb_integrasi as i')
+            ->leftJoin('ikb_perda as pd','pd.id_integrasi','=','i.id')
+            ->leftJoin('ikb_perkada as pk','pk.id_integrasi','=','i.id')
+            ->whereRaw("i.id =".$integrasi)
+            ->groupBy('i.id')
+            ->select(DB::raw("i.id,count(distinct(pd.id)) count_pd,count(distinct(pk.id)) count_pk"))
+            ->first();
+
+            if($delete_check){
+                if(($delete_check['count_pk']==0)&&($delete_check['count_pd']==0)){
+                    DB::table('ikb_integrasi as i')->where('id',$delete_check['id'])->delete();
+                }
+            }
+
 
         }
 
@@ -773,7 +788,7 @@ class KebijakanCtrl extends Controller
                //  ]
                // );
                 if($uu){
-                    return array('code'=>200,'data'=>array('text'=>$request->uraian,'id'=>$request->uraian));
+                    return array('code'=>200,'data'=>array('text'=>strtoupper($request->uraian),'id'=>strtoupper($request->uraian)));
                }else{
                     return array('code'=>500,'mesaage'=>'');
                }
@@ -866,7 +881,7 @@ class KebijakanCtrl extends Controller
                //  ]
                // );
                 if($uu){
-                    return array('code'=>200,'data'=>array('text'=>$request->uraian,'id'=>$request->uraian));
+                    return array('code'=>200,'data'=>array('text'=>strtoupper($request->uraian),'id'=>strtoupper($request->uraian)));
                }else{
                     return array('code'=>500,'mesaage'=>'');
                }
@@ -947,9 +962,10 @@ class KebijakanCtrl extends Controller
                 ->where('id_mandat',$id_mandat)
                 ->where('kode_daerah',$request->kode_daerah)
                 ->where('id_integrasi',$integrasi)
-                ->whereNotIn('uraian',$uu)
+                ->whereNotIn('uraian',($uu))
                 ->where('tahun',session('fokus_tahun'))
                 ->delete();
+
             $a=DB::table('ikb_perkada')->insertOrIgnore($data);
         }else{
              $a=DB::table('ikb_perkada')
@@ -960,6 +976,20 @@ class KebijakanCtrl extends Controller
                 'kode_daerah'=>$request->kode_daerah,
             ])
             ->delete();
+
+            $delete_check=(array)DB::table('ikb_integrasi as i')
+            ->leftJoin('ikb_perda as pd','pd.id_integrasi','=','i.id')
+            ->leftJoin('ikb_perkada as pk','pk.id_integrasi','=','i.id')
+            ->whereRaw("i.id =".$integrasi)
+            ->groupBy('i.id')
+            ->select(DB::raw("i.id,count(distinct(pd.id)) count_pd,count(distinct(pk.id)) count_pk"))
+            ->first();
+
+            if($delete_check){
+                if(($delete_check['count_pk']==0)&&($delete_check['count_pd']==0)){
+                    DB::table('ikb_integrasi as i')->where('id',$delete_check['id'])->delete();
+                }
+            }
         }
 
         Alert::success('','Perkada Berhasil di Tambahkan');
