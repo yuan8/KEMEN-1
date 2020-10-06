@@ -78,7 +78,8 @@ class SPM extends Controller
     			'id_urusan'=>$meta_urusan['id_urusan'],
     			'id_sub_urusan'=>$request->sub_urusan,
     			'uraian'=>strtoupper($request->uraian),
-    			'tahun'=>$tahun
+    			'tahun'=>$tahun,
+                'id_user'=>Auth::User()->id
     		]);
 
     		if($data){
