@@ -25,17 +25,7 @@
   		<div class="box box-warning">
   			<div class="box-body table-responsive">
   				<table class="table table-sriped table-bordered">
-		  			<thead class="bg-navy">
-		  				<tr class="">
-		  					<th>SUB URUSAN</th>
-                <th></th>
-		  					<th>MANDAT</th>
-		  					<th>UU</th>
-		  					<th>PP</th>
-		  					<th>PERPRES</th>
-		  					<th>PERMEN</th>
-		  				</tr>
-		  			</thead>
+		  			
             <tbody>
               <?php
                 $id_sub_urusan=0;
@@ -73,7 +63,7 @@
                   <tr class="">
                     <td colspan="1"></td>
                     <td>
-                      
+                      <div class="btn-group-vertical">
                         <button class="btn btn-danger btn-xs" onclick="delete_mandat.build('{{route('kebijakan.pusat.delete',['id'=>$kb->id_mandat])}}',kbm_{{$kb->id_mandat}},'{{$kb->nama}}')">
                          
                         <i class="fa fa-trash"></i> {{$kb->tipe?'REGULASI':'KEGIATAN'}}
@@ -81,6 +71,8 @@
                       <button class="btn btn-warning btn-xs" onclick="update_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.update',['id'=>$kb->id,'id_mandat'=>$kb->id_mandat])}}',m_{{$kb->id_mandat}},'{{$kb->id_mandat}}')">
                         <i class="fa fa-pen"></i> {{$kb->tipe?'REGULASI':'KEGIATAN'}}
                       </button>
+                      </div>
+
                     </td>
                     <td>{!!$kb->tipe?'<i class="fa fa-circle text-warning"></i>':'<i class="fa fa-circle text-info"></i>'!!}  {{$kb->tipe?'REGULASI':'KEGIATAN'}} <br> {!!nl2br($kb->mandat)!!}</td>
                     <td class="text-center">
@@ -175,6 +167,17 @@
             
               @endforeach
             </tbody>
+            <thead class="bg-navy">
+              <tr class="">
+                <th>SUB URUSAN</th>
+                <th></th>
+                <th>MANDAT</th>
+                <th>UU</th>
+                <th>PP</th>
+                <th>PERPRES</th>
+                <th>PERMEN</th>
+              </tr>
+            </thead>
 
 		  		</table>
   			</div>

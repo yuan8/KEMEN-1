@@ -23,7 +23,7 @@
 @php
 	if(!isset($route_add)){
 	
-		$route_add=route('int.kb1tahun.store_indikator',['id'=>$rkp->id]);
+		$route_add=route('int.spm.store.indikator',['id'=>$rkp['id']]);
 	}
 
 @endphp
@@ -61,7 +61,7 @@
 </form>
 
 <hr>
-<H5><b>LIST INDIKATOR {{isset($for_pp)?'RPJMN':''}} {{isset($for_pp_child)?'RKP DAN KINERJA URUSAN':''}}</b></H5>
+<H5><b>LIST INDIKATOR SPM {{isset($for_pp)?'RPJMN':''}} {{isset($for_pp_child)?'RKP DAN KINERJA URUSAN':''}}</b></H5>
 <table class="table table-bordered" id="table-indikator-{{$domid}}" style="width:100%">
 	<thead>
 		<tr>
@@ -194,7 +194,7 @@
 
 	$( "#add-indikator form" ).submit(function( event ) {
 		event.preventDefault();
-		var dta={};
+		var dta={'for_api':true};
 		var fields= $(this).serializeArray();
 	 	jQuery.each( fields, function( i, field ) {
 	 		dta[field.name]=field.value;
@@ -213,7 +213,7 @@
 				}
 
 
-				var dom ='<tr id="key_ind_'+data.id+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+data._sub_urusan.nama+'</td><td>'+data._sumber+'</td><td>'+data.kode+'</td><td>'+data.uraian+'</td><td>'+target+'</td><td>'+data.satuan+'<input type="hidden" name="id_indikator[]" value="'+data.id+'"></td></tr>';
+				var dom ='<tr id="key_ind_'+data.id+'"><td><div class="pull-right"><button type="button" class="btn btn-danger btn-xs" onclick="checkIndikatorList_{{$domid}}(this)"><i class="fa fa-trash"></i></button></div></td><td>'+(data._sub_urusan?data._sub_urusan.nama:'')+'</td><td>'+data._sumber+'</td><td>'+data.kode+'</td><td>'+data.uraian+'</td><td>'+target+'</td><td>'+data.satuan+'<input type="hidden" name="id_indikator[]" value="'+data.id+'"></td></tr>';
 
 				if($('#list_indikator_to_add_{{$domid}} #kosong').html()!=undefined){
 					$('#list_indikator_to_add_{{$domid}} #kosong').remove();
@@ -222,11 +222,12 @@
 				$('#list_indikator_to_add_{{$domid}} tbody').prepend(dom);
 				$('#nav-indikator').click();
 
-				Swal.fire({
-				  title: "Success",
-				  text: res.message,
-				  icon: "success",
-				});
+				// Swal.fire({
+				//   title: "Success",
+				//   text: res.message,
+				//   icon: "success",
+				// });
+
 				$('#add-indikator form select[name]').val(null);
 				for(var i in form_value_def){
 					$('#add-indikator form [name="'+i+'"]').val(form_value_def.i);
@@ -270,6 +271,12 @@
 	}
 	if(isset($have_tag)){
 		$meta['tag']=$have_tag;
+	}
+
+	if(isset($use_spm)){
+		$meta['id_spm']=['id_spm','=',null];
+		$meta['tag']=[5];
+
 	}
 
 	if(isset($ak_not_null)){

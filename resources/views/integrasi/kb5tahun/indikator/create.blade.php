@@ -23,14 +23,14 @@
 				</div>
 				
 			</div>
-			<div class="form-group">
-					<label>SUB URUSAN *</label>
-					<select class="form-control" name="id_sub_urusan" required="" >
-						@foreach($sub_urusan as $sub)
-							<option value="{{$sub['id']}}">{{$sub['nama']}}</option>
-						@endforeach
-					</select>
-				</div>
+		<div class="form-group">
+			<label>SUB URUSAN *</label>
+			<select class="form-control" name="id_sub_urusan" required="" >
+				@foreach($sub_urusan as $sub)
+					<option value="{{$sub['id']}}">{{$sub['nama']}}</option>
+				@endforeach
+			</select>
+		</div>
 
 		<div class="form-group">
 			<label>URAIAN INDIKATOR {{Hp::fokus_tahun()}} *</label>

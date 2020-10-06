@@ -10,7 +10,6 @@ class PENDUKUNGREKOM extends Model
 
     public function __construct(array $attributes = array())
     {
-
         $this->setTable('meta_rkpd.rekomendasi_dukungan_pro_'.Hp::fokus_tahun());
         parent::__construct($attributes);
     }

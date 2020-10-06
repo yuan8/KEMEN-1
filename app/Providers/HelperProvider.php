@@ -39,10 +39,15 @@ class HelperProvider extends ServiceProvider
                 $r='LAIN-LAIN';
                 # code...
                 break;
+
+              case 5:
+                $r='SPM';
+                # code...
+                break;
             
             default:
                 # code...
-$r='LAIN-LAIN';
+            $r='LAIN-LAIN';
                 break;
         }
 
@@ -70,11 +75,15 @@ $r='LAIN-LAIN';
             case 3:
             $p=static::fokus_urusan()['singkat'].'.PD.IND.'.static::fokus_tahun().'.';
                 # code...
-                break;
-                case 4:
+            break;
+            case 4:
             $p=static::fokus_urusan()['singkat'].'.IND.'.static::fokus_tahun().'.';
                 # code...
-                break;
+            break;
+              case 5:
+            $p=static::fokus_urusan()['singkat'].'.SPM.'.static::fokus_tahun().'.';
+                # code...
+            break;
             default:
                 # code...
                 break;

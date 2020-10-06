@@ -67,40 +67,20 @@
 <div class="row">
     <div class="col-md-12">
         <div class="table-responsive">
-    <table class="table table-condesed table-bordered bg-white">
-        <thead class="bg-navy">
-            <tr>
-                <th rowspan="2">ACTION</th>
-                <th rowspan="2">SUB URUSAN</th>
-
-                <th rowspan="2">JENIS</th>
-                <th rowspan="2">KODE</th>
-                <th rowspan="2">INDIKATOR</th>
-                <th rowspan="2">TARGET</th>
-                <th rowspan="2">SATUAN</th>
-                <th colspan="3">KEWENANGAN</th>
-                <th rowspan="2">LOKUS</th>
-                <th rowspan="2">PELAKSANA</th>
-
-            </tr>
-            <tr>
-                <th>PUSAT</th>
-                <th>PROVINSI</th>
-                <th>KOTA/KAB</th>
-
-
-            </tr>
-        </thead>
+    <table class="table  table-bordered table-hover bg-white">
+     
 
         <tbody>
             @foreach($data as $d)
                 <tr>
 
-                    <td>
-                           <div class="form-group pull-right">
-                                <button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$d['id']}})"><i class="fa fa-eye"></i></button>
+                    <td style="background: #fff">
+                            <div class="btn-group-vertical" style="background: #fff">
+                                <button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$d['id']}})"><i class="fa fa-eye"></i>
+                                </button>
                                  <button class="btn btn-warning btn-xs" onclick="showFormUpdateIndikator({{$d['id']}})"><i class="fa fa-pen"></i></button>
-                                <button class="btn btn-danger btn-xs" onclick="showFormDeleteIndikator({{$d['id']}})"><i class="fa fa-trash"></i></button>
+                                <button class="btn btn-danger btn-xs" onclick="showFormDeleteIndikator({{$d['id']}})"><i class="fa fa-trash"></i>
+                                </button>
                             </div>
 
                     </td>
@@ -108,6 +88,8 @@
 
 
                     <td>{{$d->_sumber()}}</td>
+                    <td>{{($d->tipe)?strtoupper($d->tipe):'-'}}</td>
+
 
                     <td>{{$d->kode}}</td>
 
@@ -178,6 +160,29 @@
             @endforeach
 
         </tbody>
+           <thead class="bg-navy">
+            <tr>
+                <th rowspan="2" style="">ACTION</th>
+                <th rowspan="2">SUB URUSAN</th>
+                <th rowspan="2">SUMBER</th>
+                <th rowspan="2">TIPE</th>
+                <th rowspan="2">KODE</th>
+                <th rowspan="2">INDIKATOR</th>
+                <th rowspan="2">TARGET</th>
+                <th rowspan="2">SATUAN</th>
+                <th colspan="3">KEWENANGAN</th>
+                <th rowspan="2">LOKUS</th>
+                <th rowspan="2">PELAKSANA</th>
+
+            </tr>
+            <tr>
+                <th>PUSAT</th>
+                <th>PROVINSI</th>
+                <th>KOTA/KAB</th>
+
+
+            </tr>
+        </thead>
     </table>
 </div>
 {{$data->links()}}

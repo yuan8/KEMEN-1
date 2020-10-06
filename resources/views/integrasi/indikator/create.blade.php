@@ -21,6 +21,12 @@
 		$route=route('int.m.indikator.store');
 		$pre_ind='';
 
+	}else if($tag==5)
+	{
+
+		$route=route('int.m.indikator.store');
+		$pre_ind='';
+
 	}
 
 	
@@ -40,17 +46,31 @@
 
 		@php
 		$domid=rand(0,1000).date('i');
+
+
 		@endphp
-			@if($tag==0)
+		
 			<div class="row">
+				<div class="col-md-6 form-group">
+				<label>TIPE INDIKATOR</label>
+				<select class="form-control init-use-select2" name="tipe"  id="tipe_indikator">
+					<option value="OUTPUT">OUTPUT</option>
+					<option value="OUTCOME">OUTCOME</option>
+					<option value="">TIDAK TERDEFINISI</option>
+
+				</select>
+			</div>
+
+			@if($tag==0)
 				<div class="col-md-6 form-group">
 				<label>SUMBER INDIKATOR</label>
 				<select class="form-control init-use-select2" name="tag" id="jenis_indikator">
 					{{-- <option value="1">RPJMN</option> --}}
 					<option value="2">RKP</option>
 					<option value="3">KINERJA URUSAN</option>
+					<option value="5">SPM</option>
+
 				</select>
-			</div>
 			</div>
 			<script type="text/javascript">
 				$('#jenis_indikator').on('change',function(){
@@ -83,6 +103,8 @@
 				@endif
 
 			@endif
+			</div>
+
 			@if(in_array($tag,[0,1,2]))
 			<div class="form-group">
 					<label>SUB URUSAN {{in_array($tag,[3,4])?'*':''}} </label>
@@ -242,7 +264,7 @@
 					
 				<hr>
 				<div class="form-group">
-					<label>Lokus</label>
+					<label>LOKUS</label>
 					<textarea class="form-control" name="lokus"></textarea>
 				</div>
 				<small>

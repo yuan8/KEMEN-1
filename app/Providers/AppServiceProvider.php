@@ -29,11 +29,21 @@ class AppServiceProvider extends ServiceProvider
     {
         //
 
+        \Illuminate\Database\Query\Builder::macro('toRawSql', function(){
+            return array_reduce($this->getBindings(), function($sql, $binding){
+                return preg_replace('/\?/', is_numeric($binding) ? $binding : "'".$binding."'" , $sql, 1);
+            }, $this->toSql());
+        });
+
         Schema::defaultStringLength(151);
 
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
             $event->menu->add('PUSAT');
-        
+            
+            $event->menu->add([
+                'text'=>'SPM',
+                'url'=>route('int.spm.index')
+            ]);
             $event->menu->add([
                 'text' => 'KEBIJAKAN PUSAT',
                 'url'=>route('kebijakan.pusat.index')

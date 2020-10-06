@@ -44,25 +44,7 @@
 
 <div class="table-responsive">
 	<table class="table-bordered table-hover table bg-white">
-	<thead class="bg-navy">
-		<tr>
-			<th colspan="10"><b>REKOMENDASI PROGRAM KEGIATAN {{$daerah['nama']}} - {{Hp::fokus_tahun()+1}}</b></th>
-		</tr>
-		{{-- <tr>
-			<th rowspan="2" colspan="1">PROGRAM</th>
-			<th rowspan="2" colspan="1">KEGIATAN</th>
-			<th rowspan="2" colspan="2">SUB KEGIATAN</th>
-			<th colspan="4">INDIKATOR</th>
-			<th rowspan="2">ACTION</th>
-		</tr>
-		<tr>
-			<th colspan="">URAIAN</th>
-			<th>TARGET PUSAT</th>
-			<th>TARGET DAERAH</th>
-			<th>SATUAN</th>
-		</tr> --}}
-
-	</thead>
+	
 	<tbody>
 		@foreach($data as $p)
 				@php $pn=$p['_nomen']; @endphp
@@ -96,7 +78,7 @@
 							@foreach($p['_pendukung_masalah'] as $m)
 							<tr>
 								<td style="width: 60px; padding: 0px" class="text-center">
-									<div class="btn btn-group" style="margin: 0px; padding: 5px;">
+									<div class="btn btn-group-vertical" style="margin: 0px; padding: 5px;">
 										<button class="btn btn-xs btn-info"><i class="fa fa-eye"></i></button>
 										<button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
 									</div>
@@ -109,7 +91,7 @@
 							@endforeach
 						</table>
 						<hr style="margin: 2px">
-						<div class="btn-group">
+						<div class="btn-group-vertical">
 							<button onclick="tagging_permasalahan({{$daerah['id']}},{{$p['id']}},'{{route('api.int.integrasi.rekomendasi.tagging_list',['kodepemda'=>$daerah['id'],'jenis'=>'PERMASALAHAN'])}}','PERMASALAHAN')" class="btn-success btn-xs btn">Tagging</button>
 						</div>
 					</div>
@@ -122,7 +104,7 @@
 							@foreach($p['_pendukung_nspk'] as $m)
 							<tr>
 								<td style="width: 60px; padding: 0px" class="text-center">
-									<div class="btn btn-group" style="margin: 0px; padding: 5px;">
+									<div class="btn btn-group-vertical" style="margin: 0px; padding: 5px;">
 										<button class="btn btn-xs btn-info"><i class="fa fa-eye"></i></button>
 										<button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
 									</div>
@@ -135,7 +117,7 @@
 							@endforeach
 						</table>
 						<hr style="margin: 2px">
-						<div class="btn-group">
+						<div class="btn-group-vertical">
 							<button onclick="tagging_permasalahan({{$daerah['id']}},{{$p['id']}},'{{route('api.int.integrasi.rekomendasi.tagging_list',['kodepemda'=>$daerah['id'],'jenis'=>'NSPK'])}}','NSPK')" class="btn-success btn-xs btn">Tagging</button>
 						</div>
 					</div>
@@ -148,7 +130,7 @@
 							@foreach($p['_pendukung_rkp'] as $m)
 							<tr>
 								<td style="width: 60px; padding: 0px" class="text-center">
-									<div class="btn btn-group" style="margin: 0px; padding: 5px;">
+									<div class="btn btn-group-vertical" style="margin: 0px; padding: 5px;">
 										<button class="btn btn-xs btn-info"><i class="fa fa-eye"></i></button>
 										<button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
 									</div>
@@ -163,7 +145,7 @@
 							@endforeach
 						</table>
 						<hr style="margin: 2px">
-						<div class="btn-group">
+						<div class="btn-group-vertical">
 							<button onclick="tagging_permasalahan({{$daerah['id']}},{{$p['id']}},'{{route('api.int.integrasi.rekomendasi.tagging_list',['kodepemda'=>$daerah['id'],'jenis'=>'RKP'])}}','RKP')" class="btn-success btn-xs btn">RKP</button>
 						</div>
 					</div>
@@ -193,7 +175,7 @@
 							<p><b>INDIKATOR PROGRAM - {{strtoupper($pii['tipe'])}}</b></p>
 							{{$pii['uraian']}}
 							<hr style="margin: 2px;">
-							<div class=" btn-group">
+							<div class=" btn-group-vertical">
 								<button   class="btn btn-info btn-xs " onclick="showFormDetailIndikator({{$pii['id']}})">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL SUB INDIKATOR" class="fa fa-eye"></i>
 								</button>
@@ -280,7 +262,7 @@
 							@foreach($k['_pendukung_masalah'] as $m)
 							<tr>
 								<td style="width: 60px; padding: 0px" class="text-center">
-									<div class="btn btn-group" style="margin: 0px; padding: 5px;">
+									<div class="btn btn-group-vertical" style="margin: 0px; padding: 5px;">
 										<button class="btn btn-xs btn-info"><i class="fa fa-eye"></i></button>
 										<button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
 									</div>
@@ -293,7 +275,7 @@
 							@endforeach
 						</table>
 						<hr style="margin: 2px">
-						<div class="btn-group">
+						<div class="btn-group-vertical">
 							<button onclick="tagging_permasalahan({{$daerah['id']}},{{$k['id']}},'{{route('api.int.integrasi.rekomendasi.tagging_list',['kodepemda'=>$daerah['id'],'jenis'=>'PERMASALAHAN'])}}','PERMASALAHAN')" class="btn-success btn-xs btn">Tagging</button>
 						</div>
 					</div>
@@ -306,7 +288,7 @@
 							@foreach($k['_pendukung_nspk'] as $m)
 							<tr>
 								<td style="width: 60px; padding: 0px" class="text-center">
-									<div class="btn btn-group" style="margin: 0px; padding: 5px;">
+									<div class="btn btn-group-vertical" style="margin: 0px; padding: 5px;">
 										<button class="btn btn-xs btn-info"><i class="fa fa-eye"></i></button>
 										<button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
 									</div>
@@ -319,7 +301,7 @@
 							@endforeach
 						</table>
 						<hr style="margin: 2px">
-						<div class="btn-group">
+						<div class="btn-group-vertical">
 							<button onclick="tagging_permasalahan({{$daerah['id']}},{{$k['id']}},'{{route('api.int.integrasi.rekomendasi.tagging_list',['kodepemda'=>$daerah['id'],'jenis'=>'NSPK'])}}','NSPK')" class="btn-success btn-xs btn">Tagging</button>
 						</div>
 					</div>
@@ -332,7 +314,7 @@
 							@foreach($k['_pendukung_rkp'] as $m)
 							<tr>
 								<td style="width: 60px; padding: 0px" class="text-center">
-									<div class="btn btn-group" style="margin: 0px; padding: 5px;">
+									<div class="btn btn-group-vertical" style="margin: 0px; padding: 5px;">
 										<button class="btn btn-xs btn-info"><i class="fa fa-eye"></i></button>
 										<button class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
 									</div>
@@ -347,7 +329,7 @@
 							@endforeach
 						</table>
 						<hr style="margin: 2px">
-						<div class="btn-group">
+						<div class="btn-group-vertical">
 							<button onclick="tagging_permasalahan({{$daerah['id']}},{{$k['id']}},'{{route('api.int.integrasi.rekomendasi.tagging_list',['kodepemda'=>$daerah['id'],'jenis'=>'RKP'])}}','RKP')" class="btn-success btn-xs btn">RKP</button>
 						</div>
 					</div>
@@ -379,7 +361,7 @@
 								<p><b>INDIKATOR KEGIATAN - {{strtoupper($kii['tipe'])}}</b></p>
 								{{$kii['uraian']}}
 								<hr style="margin: 2px;">
-								<div class=" btn-group" >
+								<div class=" btn-group-vertical" >
 									<button   class="btn btn-info btn-xs " onclick="showFormDetailIndikator({{$kii['id']}})">
 											<i data-toggle="tooltip" data-placement="top" title="DETAIL SUB INDIKATOR" class="fa fa-eye"></i>
 									</button>
@@ -471,7 +453,7 @@
 								<p><b>INDIKATOR SUBKEGIATAN - {{strtoupper($sii['tipe'])}}</b></p>
 							{{$sii['uraian']}}
 							<hr style="margin: 2px;">
-							<div class="btn-group">
+							<div class="btn-group-vertical">
 
 									<button   class="btn btn-info btn-xs " onclick="showFormDetailIndikator({{$sii['id']}})">
 											<i data-toggle="tooltip" data-placement="top" title="DETAIL SUB INDIKATOR" class="fa fa-eye"></i>
@@ -538,6 +520,25 @@
 
 
 	</tbody>
+	<thead class="bg-navy">
+		<tr>
+			<th colspan="10"><b>REKOMENDASI PROGRAM KEGIATAN {{$daerah['nama']}} - {{Hp::fokus_tahun()+1}}</b></th>
+		</tr>
+		{{-- <tr>
+			<th rowspan="2" colspan="1">PROGRAM</th>
+			<th rowspan="2" colspan="1">KEGIATAN</th>
+			<th rowspan="2" colspan="2">SUB KEGIATAN</th>
+			<th colspan="4">INDIKATOR</th>
+			<th rowspan="2">ACTION</th>
+		</tr>
+		<tr>
+			<th colspan="">URAIAN</th>
+			<th>TARGET PUSAT</th>
+			<th>TARGET DAERAH</th>
+			<th>SATUAN</th>
+		</tr> --}}
+
+	</thead>
 </table>
 </div>
 @stop

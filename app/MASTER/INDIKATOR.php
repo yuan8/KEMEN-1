@@ -59,7 +59,8 @@ class INDIKATOR extends Model
     'id_sasaran',
     'id_kewenangan',
     'tag',
-    'id_urusan'
+    'id_urusan',
+    'tipe'
   ];
 
 

@@ -16,7 +16,7 @@ use App\MASALAH\MASALAH;
 class REKOMENDASI extends Model
 {
     //
-      public function __construct(array $attributes = array())
+    public function __construct(array $attributes = array())
     {
 
         $this->setTable('meta_rkpd.rekomendasi_'.Hp::fokus_tahun());
@@ -28,6 +28,11 @@ class REKOMENDASI extends Model
 
     public function _nomen(){
     	return $this->belongsTo(NOMEN::class,'id_nomen');
+    }
+
+
+    public function _reko_msalah(){
+        return $this->belongsToOne(PENDUKUNGREKOM::class,MASALAH::class,'id_rekomendasi','id_masalah');
     }
 
     public function _child_kegiatan(){
