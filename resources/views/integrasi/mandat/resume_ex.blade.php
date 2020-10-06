@@ -7,6 +7,10 @@
 	th{
 		text-align: center!important;
 	}
+
+	.page-break {
+    	page-break-before: always;
+	}
 </style>
 
 @stop
@@ -66,8 +70,12 @@
 		
 	</thead>
 	<tbody>
+		@php
+			$id_sub_urusan=(isset($data[0])?$d['_sub_urusan']['id']:'');
+		@endphp
 		@foreach($data as $key=> $d)
-			<tr>
+
+			<tr class="{{$d['_sub_urusan']['id']!=$id_sub_urusan?'page-break':''}}">
 				<td>{{($key+1)}}</td>
 				<td>{{$d['_sub_urusan']['nama']}}</td>
 				<td>
@@ -124,9 +132,13 @@
 
 				@endif
 
-
 			</tr>
-			
+
+			@php
+			if($id_sub_urusan!=$d['_sub_urusan']['id']){
+				$id_sub_urusan=$d['_sub_urusan']['id'];
+			}
+			@endphp
 
 		@endforeach
 	</tbody>
