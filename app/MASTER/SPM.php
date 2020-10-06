@@ -11,7 +11,7 @@ class SPM extends Model
 
     protected $connection = 'pgsql';
     protected $table='form.master_spm_2020';
-    protected $fillable=['id','id_urusan','id_sub_urusan','uraian','tahun'];
+    protected $fillable=['id','id_urusan','id_sub_urusan','uraian','tahun','id_user'];
       public function __construct(array $attributes = array())
     {
 
