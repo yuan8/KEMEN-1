@@ -45,10 +45,12 @@ class KEBIJAKAN extends Controller
                 
         // return view('integrasi.mandat.resume_ex')->with(['data'=>$data,'title'=>$title]);
     	if($request->pdf){
-
+         
       
-    		$pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'defaultFont' => 'sans-serif','isRemoteEnabled' => true]);
+    		$pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'enable_php'=>true,'isRemoteEnabled' => true]);
                 $pdf->loadHTML(view('integrasi.mandat.resume_ex')->with(['data'=>$data,'title'=>$title])->render());
+
+                
 
                 $pdf->save(storage_path('app/public/dokumen-integrasi/'.$meta_urusan['nama'].'/'.$tahun.'/FORMAT-1/KEBIJAKAN-PUSAT.pdf'));
 

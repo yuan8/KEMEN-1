@@ -74,9 +74,9 @@ class PERMASALAHAN extends Controller
 		    	
 
 		    	$title='RESUME  PERMASALAHAN URUSAN '.$meta_urusan['nama'].' TAHUN '.$tahun;
-		    		 $pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'defaultFont' => 'sans-serif','isRemoteEnabled' => true]);
+		    		 $pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'enable_php'=>true,'isRemoteEnabled' => true]);
 		                $pdf->loadHTML(view('integrasi.permasalahan.resume_ex')->with(['meta'=>(array)$data[0],'data'=>$data,'title'=>$title])->render());
-		                return $pdf->stream();
+		                return $pdf->stream($title.'.pdf');
 	    		}
     		
     	}

@@ -13,34 +13,26 @@
 
 @section('content')
 
-<table class="table-bordred table">
-	<thead  class="text-center" >
-		<tr>
-			<th class="text-center"  colspan="11" class="text-center">{{$sub_title}}</th>
-		</tr>
-		<tr>
-			<th class="text-center"  colspan="11" class="text-center">{{Hp::fokus_urusan()['nama'].' TAHUN '.Hp::fokus_tahun()}}</th>
-		</tr>
-	</thead>
-</table>
+
+@include('layouts.header-export',['context'=>$sub_title.' -'])
+
 	<table class=" table-bordered table">
-	<thead class="bg-navy">
+	<thead class="bg-primary">
 		<tr>
-			<th rowspan="2" >PN / MAJOR PROJECT</th>
-			<th rowspan="2">PP</th>
-			<th rowspan="2">KP</th>
-			<th rowspan="2">PROPN</th>
-			<th rowspan="2">PROYEK KL</th>
-			<th colspan="4">INDIKATOR</th>
-			<th rowspan="2">LOKUS</th>
-			<th rowspan="2">PELAKSANA</th>
+			<th rowspan="2"  class="text-center">PN / MAJOR PROJECT</th>
+			<th rowspan="2" class="text-center">PP</th>
+			<th rowspan="2" class="text-center">KP</th>
+			<th rowspan="2" class="text-center">PROPN</th>
+			<th rowspan="2" class="text-center">PROYEK KL</th>
+			<th colspan="3" class="text-center">INDIKATOR</th>
+			<th rowspan="2" class="text-center">LOKUS</th>
+			<th rowspan="2" class="text-center">PELAKSANA</th>
 
 		</tr>
 		<tr>
-			<th>KODE</th>
-			<th>URAIAN</th>
-			<th>TARGET</th>
-			<th>SATUAN</th>
+			<th class="text-center">URAIAN</th>
+			<th class="text-center">TARGET</th>
+			<th class="text-center">SATUAN</th>
 		</tr>
 
 	</thead>
@@ -48,7 +40,15 @@
 		@foreach($data as $pn)
 			<tr>
 				
-				<td colspan="11"><b>{{$pn['jenis']==-1?'MAJOR PROJECT':'PN'}}: </b>{{$pn['uraian']}}</td>
+				<td>
+					<b>{{$pn['jenis']==-1?'MAJOR PROJECT':'PN'}}: </b>{{$pn['uraian']}}
+				</td>
+				<td class="bg-info"></td>
+				<td></td>
+				<td class="bg-info"></td>
+				<td></td>
+				<td colspan="5"></td>
+
 
 			</tr>
 			@foreach($pn['_tag_indikator'] as $tagpni)
@@ -57,7 +57,6 @@
 					@endphp
 					<tr class="pn-{{$pn['id']}}">
 					
-					<td><b>{{$pni['kode']}}</b></td>
 					<td>{{$pni['uraian']}}</td>
 					<td>
 						@if(($pni['tipe_value']==1)OR($pni['tipe_value']==2))
@@ -112,7 +111,11 @@
 				<tr class="pn-{{$pn['id']}}">
 					
 					<td></td>
-					<td colspan="10"><b>PP: </b>{{$pp['uraian']}}</td>
+					<td class="bg-info"><b>PP: </b>{{$pp['uraian']}}</td>
+					<td></td>
+					<td class="bg-info"></td>
+					<td></td>
+					<td colspan="5"></td>
 
 				</tr>
 				@foreach($pp['_tag_indikator'] as $tagppi)
@@ -120,9 +123,13 @@
 						@php
 							$ppi=$tagppi['_indikator'];
 						@endphp
-						<td colspan="5"></td>
+						<td ></td>
+						<td class="bg-info"></td>
+						<td ></td>
+						<td class="bg-info"></td>
+						<td ></td>
+
 						
-						<td><b>{{$ppi['kode']}}</b></td>
 						<td>{{$ppi['uraian']}}</td>
 						<td>
 							@if(($ppi['tipe_value']==1)OR($ppi['tipe_value']==2))
@@ -184,9 +191,12 @@
 				@foreach($pp['_child_kp'] as $kp)
 					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}}">
 					
-						<td colspan="2"></td>
-						
-						<td colspan="9"><b>KP: </b>{{$kp['uraian']}}</td>
+						<td colspan=""></td>
+						<td class="bg-info"></td>
+						<td colspan=""><b>KP: </b>{{$kp['uraian']}}</td>
+						<td class="bg-info"></td>
+						<td></td>
+						<td colspan="5"></td>
 
 					</tr>
 					@foreach($kp['_tag_indikator'] as $tagkpi)
@@ -195,9 +205,12 @@
 							$kpi=$tagkpi['_indikator'];
 						@endphp
 					
-						<td colspan="5"></td>
+						<td ></td>
+						<td class="bg-info"></td>
+						<td ></td>
+						<td class="bg-info"></td>
+						<td ></td>
 						
-						<td><b>{{$kpi['kode']}}</b></td>
 						<td>{{$kpi['uraian']}}</td>
 						<td>
 							@if(($kpi['tipe_value']==1)OR($kpi['tipe_value']==2))
@@ -261,10 +274,14 @@
 					@foreach($kp['_child_propn'] as $propn)
 						<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}}">
 						
-							<td colspan="3"></td>
+							<td colspan=""></td>
+							<td class="bg-info"></td>
+							<td colspan></td>
+							<td class="bg-info"><b>PROPN: </b>{{$propn['uraian']}}</td>
+							<td></td>
+							<td colspan="5"></td>
 								
 
-							<td colspan="8"><b>PROPN: </b>{{$propn['uraian']}}</td>
 
 						</tr>
 
@@ -275,9 +292,12 @@
 								@endphp
 								
 
-								<td colspan="5"></td>
+								<td ></td>
+								<td class="bg-info"></td>
+								<td ></td>
+								<td class="bg-info"></td>
+								<td ></td>
 									
-								<td><b>{{$propni['kode']}}</b></td>
 								<td>{{$propni['uraian']}}</td>
 								<td>
 									@if(($propni['tipe_value']==1)OR($propni['tipe_value']==2))
@@ -334,10 +354,13 @@
 						@foreach($propn['_child_proyek'] as $proyek)
 							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}}">
 								
-								<td colspan="4"></td>
-
-
+								<td colspan=""></td>
+								<td class="bg-info"></td>
+								<td colspan></td>
+								<td class="bg-info"></td>
 								<td><b>PROYEK: </b>{{$proyek['uraian']}}</td>
+								<td colspan="5"></td>
+
 
 							</tr>
 							@foreach($proyek['_tag_indikator'] as $tagproyeki)
@@ -347,9 +370,12 @@
 									@endphp
 							
 
-									<td colspan="5"></td>
+									<td ></td>
+									<td class="bg-info"></td>
+									<td ></td>
+									<td class="bg-info"></td>
+									<td ></td>
 									
-									<td><b>{{$proyeki['kode']}}</b></td>
 									<td>{{$proyeki['uraian']}}</td>
 									<td>
 										@if(($proyeki['tipe_value']==1)OR($proyeki['tipe_value']==2))

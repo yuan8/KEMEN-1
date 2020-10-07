@@ -14,10 +14,21 @@ class PermasalahanCtrl extends Controller
     //
 
     public function index(Request $request){
-    	$provinsi=DB::table('master_daerah')->where(DB::raw('length(id)'),2)
-    	->orderBy('nama','ASC')->get();
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
 
-    	return view('form.permasalahan.index',['provinsis'=>$provinsi]);
+    	$provinsi=DB::table('public.master_daerah as d')
+       
+        ->selectRaw("
+            (case when (length(d.id)<3) then d.nama else concat(d.nama,' - ',(select p.nama from public.master_daerah as p where p.id=d.kode_daerah_parent limit 1)) end) as nama,
+            d.id,
+            (select count(msp.id) from public.ms_pokok as msp where msp.kode_daerah=d.id and msp.tahun=".$tahun." and msp.id_urusan=".$meta_urusan['id_urusan']." ) as ms_exists
+            
+        ")
+    	->orderBy('d.id','ASC')->get();
+
+
+    	return view('form.permasalahan.index',['daerah'=>$provinsi]);
     }
 
 

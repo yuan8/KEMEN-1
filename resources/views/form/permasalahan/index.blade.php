@@ -30,22 +30,33 @@
   </div>
   
   <div class="row">
-  	<div class="col-md-6">
+  	<div class="col-md-12">
   		<div class="box box-success">
-  			<div class="box-body table-responsive">
-  				<table class="table table-striped" id="table-pro">
+  			<div class="box-body ">
+  				<table class="table  table-bordered" id="table-pro">
 		  			<thead>
 		  				<tr>
 		  					<th>KODE</th>
-		  					<th>PROVINSI</th>
+		  					<th>NAMA DAERAH</th>
+                <th>TERDAPAT DATA</th>
+
+                <th>ACTION</th>
+
 
 		  				</tr>
 		  			</thead>
             <tbody>
-              @foreach($provinsis as $key=> $p)
-              <tr  class="cursor-link" onclick="deatiledDaerah({{$p->id}})">
+              @foreach($daerah as $key=> $p)
+              <tr  class="{{$p->ms_exists?'bg-warning':''}}">
                 <td>{{$p->id}}</td>
+
                 <td>{{$p->nama}}</td>
+                <td>{{$p->ms_exists?'TERDAPAT DATA':'-'}}</td>
+
+                <td>
+                  <a href="{{route('permasalahan.daerah.view.daerah',['id'=>$p->id])}}" class="btn btn-xs {{$p->ms_exists?'btn-warning':'btn-success'}} ">{{$p->ms_exists?'UPDATE':'TAMBAH'}}</a>
+                  
+                </td>
                
               </tr>
 
@@ -69,7 +80,8 @@
 @section('js')
   <script type="text/javascript">
     $('#table-pro').DataTable({
-      sort:false
+      sort:false,
+
     });
 
 

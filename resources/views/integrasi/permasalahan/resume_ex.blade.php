@@ -7,45 +7,38 @@
 @stop
 
 @section('content')
-<table class="table-bordred table">
-	<thead>
-		<tr>
-			<th colspan="11" class="text-center">PERMASALAHAN URUSAN</th>
-		</tr>
-		<tr>
-			<th colspan="11">{{Hp::fokus_urusan()['nama'].' TAHUN '.Hp::fokus_tahun()}}</th>
-		</tr>
-	</thead>
-</table>
-<table class="table table-bordred table-striped">
+@include('layouts.header-export',['context'=>'PERMASALAHAN URUSAN -'])
+
+<table class="table table-bordered ">
 	<thead>
 
 		<tr>
-			<td colspan="2">MASALAH POKOK</td>
-			<td colspan="4"><b>{{$meta['urai_pokok']}}</b></td>
-		</tr>
-		<tr>
-			<th>1</th>
-			<th>2</th>
-			<th>3</th>
-			<th>4</th>
-			<th>5</th>
-			<th>6</th>
-
-
-		
+			<td colspan="2" class="text-center"><b>MASALAH POKOK</b></td>
+			<td colspan="4"><b>{!!nl2br($meta['urai_pokok'])!!}</b></td>
 		</tr>
 		
-		<tr>
-			<th rowspan="">NO</th>
-			<th rowspan="">KODE PEMDA</th>
+		
+		<tr class="bg-primary">
+			<th class="text-center" rowspan="" style="width: 50px;">NO</th>
+			<th class="text-center" rowspan="" style="width: 50px;">KODE PEMDA</th>
 
-			<th rowspan="">NAMA PROVINSI</th>
+			<th class="text-center" rowspan="">NAMA PROVINSI</th>
 
-			<th rowspan="">NAMA DAERAH</th>
+			<th class="text-center" rowspan="">NAMA DAERAH</th>
 
-			<th colspan="">JUMLAH MASALAH</th>
-			<th >JUMLAH AKAR MASALAH</th>
+			<th class="text-center" colspan="">JUMLAH MASALAH</th>
+			<th class="text-center" >JUMLAH AKAR MASALAH</th>
+		
+		</tr>
+		<tr class="bg-primary">
+			<th class="text-center">1</th>
+			<th class="text-center">2</th>
+			<th class="text-center">3</th>
+			<th class="text-center">4</th>
+			<th class="text-center">5</th>
+			<th class="text-center">6</th>
+
+
 		
 		</tr>
 		
@@ -57,8 +50,8 @@
 		$d=(array)$d;
 		@endphp
 			<tr>
-				<td>{{$key+1}}</td>
-				<td>{{$d['kode_daerah']}}</td>
+				<td class="text-center">{{$key+1}}</td>
+				<td class="text-center">{{$d['kode_daerah']}}</td>
 
 				<td>{{$d['nama_provinsi']?$d['nama_provinsi']:$d['nama_daerah']}}</td>
 				<td>{{$d['nama_daerah']}}</td>
