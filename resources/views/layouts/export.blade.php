@@ -7,6 +7,8 @@
 
 	<style type="text/css">
 	@media print {
+
+
 	    @page {
 	      margin: 2.5cm;   
 	      background: transparent!important;
@@ -39,6 +41,17 @@
 	    padding-inline-start: 0px!important;
 		
 		}
+
+		.page-break {
+	    	page-break-after: always!important;
+		}
+
+		tr.table-page-break{
+		
+	    	page-break-before: always!important;
+
+		}
+		 tr.page-break  { display: block; page-break-before: always; }
 	}
 
 	li:not(:first-child){
@@ -74,6 +87,17 @@
 		background: transparent!important;
 	}
 
+	.page-break {
+    	page-break-after: always!important;
+	}
+	
+	tr.table-page-break{
+	
+    	page-break-before: always!important;
+
+	}
+	 tr.page-break  { display: block; page-break-before: always; }
+
 	/*
 
 	.table {
@@ -88,9 +112,27 @@
 	    border: solid 1px #ccc;
 	    padding: 2px;
 	}*/
+	.bg-gray{
+		background-color: #f1f1f1!important;
+	}
 	</style>
+
 </head>
 <body>
+<script type="text/php">
+	    if (isset($pdf)) {
+	        $x = 770;
+	        $y = 10;
+	        $text = "Halaman {PAGE_NUM} / {PAGE_COUNT}";
+	        $font = null;
+	        $size = 6;
+	        $color = array(0,0,0);
+	        $word_space = 0.0;  //  default
+	        $char_space = 0.0;  //  default
+	        $angle = 0.0;   //  default
+	        $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+	    }
+</script>
 @yield('content')
 </body>
 </html>

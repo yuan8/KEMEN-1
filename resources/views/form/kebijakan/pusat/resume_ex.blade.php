@@ -7,18 +7,10 @@
 @stop
 
 @section('content')
-<table class="table-bordred table">
-	<thead>
-		<tr>
-			<th colspan="11" class="text-center">KEBIJAKAN PUSAT</th>
-		</tr>
-		<tr>
-			<th colspan="11">{{Hp::fokus_urusan()['nama'].' TAHUN '.Hp::fokus_tahun()}}</th>
-		</tr>
-	</thead>
-</table>
+@include('layouts.header-export',['context'=>'KEBIJAKAN PUSAT -'])
+
 <table class="table table-bordred table-striped">
-	<thead>
+	<thead class="bg-primary">
 		
 		
 		<tr >
@@ -30,28 +22,28 @@
 			<th colspan="2" class="text-center">KESESUAIAN NSPK DAN KEBIJAKAN DAERAH</th>
 		</tr>
 		<tr>
-			<th>UU</th>
-			<th>PP</th>
-			<th>PERPRES</th>
-			<th>PERMEN</th>
-			<th>PERDA</th>
-			<th>PERKADA</th>
-			<th>SESUAI</th>
-			<th>TIDAK SESUAI</th>
+			<th class="text-center">UU</th>
+			<th class="text-center">PP</th>
+			<th class="text-center">PERPRES</th>
+			<th class="text-center">PERMEN</th>
+			<th class="text-center">PERDA</th>
+			<th class="text-center">PERKADA</th>
+			<th class="text-center">SESUAI</th>
+			<th class="text-center">TIDAK SESUAI</th>
 
 		</tr>
 		<tr class="text-center">
-			<th>1</th>
-			<th>2</th>
-			<th>3</th>
-			<th>4</th>
-			<th>5</th>
-			<th>6</th>
-			<th>7</th>
-			<th>8</th>
-			<th>9</th>
-			<th>10</th>
-			<th>11</th>
+			<th class="text-center">1</th>
+			<th class="text-center">2</th>
+			<th class="text-center">3</th>
+			<th class="text-center">4</th>
+			<th class="text-center">5</th>
+			<th class="text-center">6</th>
+			<th class="text-center">7</th>
+			<th class="text-center">8</th>
+			<th class="text-center">9</th>
+			<th class="text-center">10</th>
+			<th class="text-center">11</th>
 
 		</tr>
 		
