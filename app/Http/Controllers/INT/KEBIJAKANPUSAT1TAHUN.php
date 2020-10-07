@@ -102,7 +102,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
 
     }
 
- 
+
 
     static function indikator_form_delete($id){
 
@@ -175,7 +175,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
         ->get();
 
 
-        
+
     	return view('integrasi.kb1tahun.index')->with('data',$data);
     }
 
@@ -221,7 +221,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     	$tahun=Hp::fokus_tahun();
     	$data=RKP::where(['tahun'=>$tahun,'id'=>$id])->first();
         $jenis=static::namaRKP($data['jenis']);
-    	
+
         if($data){
     		return view('integrasi.kb1tahun.pn.update')->with(['data'=>$data,'jenis'=>$jenis]);
     	}
@@ -238,7 +238,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     		]);
 
     		if($pn){
-    			
+
     			Alert::success('Success','Berhasil Mengubah '.$jenis);
     			return back();
     		}
@@ -252,7 +252,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
     	$data=RKP::where(['tahun'=>$tahun,'id'=>$id])->first();
         $jenis=static::namaRKP($data['jenis']);
     	if($data){
-	    	return view('integrasi.kb1tahun.pn.form_delete')->with(['data'=>$data,'jenis'=>$jenis]);	
+	    	return view('integrasi.kb1tahun.pn.form_delete')->with(['data'=>$data,'jenis'=>$jenis]);
 
 
     	}
