@@ -1,0 +1,17 @@
+{
+  "name": "yuan",
+  "homepage": "https://github.com/yuan8/KEMEN-1",
+  "authors": [
+    "yuan putra <bhalayuan@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

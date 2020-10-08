@@ -27,6 +27,13 @@ Route::get('rkpd-i',function(){
 
 Route::get('/', 'LoginBarcodeCtrl@landing');
 
+Route::prefix('dashboard')->group(function(){
+	Route::get('/', 'DASHBOARD\HomeCtrl@index');
+	Route::get('/dukungan-kebijakan-nasional', 'DASHBOARD\DukunganKebijakanCtrl@index');
+
+
+});
+
 // Route::get('/aaa','FORM\IntegrasiCtrl@testing');
 Route::get('/bot-sipd/{tahun}','BOT\MapProgramKegiatanCTRL@UpdateMap');
 
