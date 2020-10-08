@@ -14,7 +14,7 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 		Route::post('handle-delete/{pro}/{id_nomen}','INT\MASTER90@delete')->name('int.nomen.delete');
 		Route::post('handle/{pro?}/subkegiatan/{id_program}/{id_kegiatan}','INT\MASTER90@store_subkegiatan')->name('int.nomen.store_subkegiatan');
 	});
-	
+
 
 	Route::prefix('kebijakan')->group(function(){
 		Route::get('resume','INT\KEBIJAKAN@resume')->name('int.kb.resume');
@@ -39,13 +39,13 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 		Route::put('/update/{id}','INT\INDIKATOR@update')->name('int.m.indikator.update');
 		Route::get('/delete/{id}','INT\INDIKATOR@form_delete')->name('int.m.indikator.form_delete');
 		Route::delete('/delete/{id}','INT\INDIKATOR@delete')->name('int.m.indikator.delete');
-
-		Route::get('/print',function(){
-			$pdf = App::make('dompdf.wrapper');
-			$pdf->loadHTML('<h1>Test</h1>');
-			return $pdf->stream();
-			return view('integrasi.indikator.print')->with('data',INDIKATOR::get());
-		});
+		//
+		// Route::get('/print',function(){
+		// 	// $pdf = App::make('dompdf.wrapper');
+		// 	// $pdf->loadHTML('<h1>Test</h1>');
+		// 	// return $pdf->stream();
+		// 	// return view('integrasi.indikator.print')->with('data',INDIKATOR::get());
+		// });
 
 
 	});
@@ -106,22 +106,22 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 		Route::get('/listing-satuan','INT\GLOBALCTRL@show_list_select_satuan')->name('api.global.listing-satuan');
 
-		Route::get('/listing-urusan-prio','INT\MASTER90@list_api_urusan_prio')->name('api.global.list_api_urusan_prio');		
+		Route::get('/listing-urusan-prio','INT\MASTER90@list_api_urusan_prio')->name('api.global.list_api_urusan_prio');
 
 	});
 
 	Route::prefix('pelaksanaan-urusan')->group(function(){
 
-		Route::get('/','INT\PELAKSANAANURUSAN@index')->name('int.pelurusan.index');	
+		Route::get('/','INT\PELAKSANAANURUSAN@index')->name('int.pelurusan.index');
 
-		Route::get('/download','INT\PELAKSANAANURUSAN@download')->name('int.pelurusan.download');	
+		Route::get('/download','INT\PELAKSANAANURUSAN@download')->name('int.pelurusan.download');
 
 
 		Route::delete('/delete/{id}','INT\PELAKSANAANURUSAN@delete')->name('int.pelurusan.delete');
 
 		Route::get('/form-delete/{id?}','INT\PELAKSANAANURUSAN@form_delete')->name('int.pelurusan.form_delete');
 
-		Route::put('/update/{id}','INT\PELAKSANAANURUSAN@update')->name('int.pelurusan.update');	
+		Route::put('/update/{id}','INT\PELAKSANAANURUSAN@update')->name('int.pelurusan.update');
 
 		Route::get('/form-update/{id?}','INT\PELAKSANAANURUSAN@form_update')->name('int.pelurusan.form_update');
 
@@ -131,8 +131,8 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 
 
-		Route::get('/create/{id?}','INT\PELAKSANAANURUSAN@create')->name('int.pelurusan.create');	
-		
+		Route::get('/create/{id?}','INT\PELAKSANAANURUSAN@create')->name('int.pelurusan.create');
+
 		Route::get('/create-kewenangan','INT\PELAKSANAANURUSAN@create_kewenangan')->name('int.pelurusan.create_kewenangan');
 
 
@@ -143,8 +143,8 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 		Route::get('/view/{id}','INT\PELAKSANAANURUSAN@view')->name('int.pelurusan.view');
 		Route::post('/update/{id}','INT\PELAKSANAANURUSAN@update')->name('int.pelurusan.update');
-		Route::delete('/delete/{id}','INT\PELAKSANAANURUSAN@delete')->name('int.pelurusan.delete');	
-		Route::get('/delete/{id}','INT\PELAKSANAANURUSAN@show_form_delete')->name('int.pelurusan.show_form_delete');	
+		Route::delete('/delete/{id}','INT\PELAKSANAANURUSAN@delete')->name('int.pelurusan.delete');
+		Route::get('/delete/{id}','INT\PELAKSANAANURUSAN@show_form_delete')->name('int.pelurusan.show_form_delete');
 
 
 	});
@@ -154,11 +154,11 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 		Route::get('/','INT\KEBIJAKANPUSAT1TAHUN@index')->name('int.kb1tahun.index');
 		Route::get('/download','INT\KEBIJAKANPUSAT1TAHUN@download')->name('int.kb1tahun.download');
 
-		
-		Route::get('/show-form-pn','INT\KEBIJAKANPUSAT1TAHUN@pn_create')->name('int.kb1tahun.pn_create');	
-		
+
+		Route::get('/show-form-pn','INT\KEBIJAKANPUSAT1TAHUN@pn_create')->name('int.kb1tahun.pn_create');
+
 		Route::post('/store-pn','INT\KEBIJAKANPUSAT1TAHUN@pn_store')->name('int.kb1tahun.pn_store');
-		
+
 		Route::get('/show-form-update/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_view')->name('int.kb1tahun.pn_view');
 
 		Route::get('/show-form-nested/{id}','INT\KEBIJAKANPUSAT1TAHUN@nested_create')->name('int.kb1tahun.nested_create');
@@ -177,11 +177,11 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 		Route::get('/show-from-delete-pn/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_form_delete')->name('int.kb1tahun.pn_form_delete');
 
-		Route::put('/show-form-update/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_update')->name('int.kb1tahun.pn_update');	
-		
+		Route::put('/show-form-update/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_update')->name('int.kb1tahun.pn_update');
+
 		Route::delete('/pn/delete/{id}','INT\KEBIJAKANPUSAT1TAHUN@pn_delete')->name('int.kb1tahun.pn_delete');
 
-		Route::post('/store-indikator-rkp/','INT\KEBIJAKANPUSAT1TAHUN@store_indikator_rkp')->name('int.kb1tahun.add.store_indikator');		
+		Route::post('/store-indikator-rkp/','INT\KEBIJAKANPUSAT1TAHUN@store_indikator_rkp')->name('int.kb1tahun.add.store_indikator');
 
 
 
@@ -189,11 +189,11 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 	Route::prefix('permasalahan')->group(function(){
 
-		Route::get('/daerah/{kodepemda}','INT\DAERAH\PELAKSANAANURUSAN@detail')->name('int.permasalahan.detail');
+		// Route::get('/daerah/{kodepemda}','INT\DAERAH\PELAKSANAANURUSAN@detail')->name('int.permasalahan.detail');
 
 		Route::get('/daerah/{kodepemda}/download','INT\DAERAH\PERMASALAHAN@download')->name('int.permasalahan.daerah.download');
 
-		Route::get('/resume-masalah-pokok/','INT\PERMASALAHAN@masalah_pokok')->name('int.permasalahan.mpokok');
+		Route::get('/resume-masalah-pokok','INT\PERMASALAHAN@masalah_pokok')->name('int.permasalahan.mpokok');
 
 		Route::get('/resume/{id}','INT\PERMASALAHAN@resume')->name('int.permasalahan.resume');
 
@@ -217,7 +217,7 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 
 	});
-	
+
 	Route::prefix('daerah/rekomendasi')->group(function(){
 
 		Route::get('/','INT\DAERAH\REKOMENDASI@index')->name('int.rekomendasi.index');
@@ -244,7 +244,7 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 		Route::post('finalisasi/{kodepemda}','INT\DAERAH\REKOMENDASI@finalisasi')->name('int.rekomendasi.finalisasi');
 	});
 
-	
+
 
 
 });

@@ -57,13 +57,7 @@
 
 			@endphp
 			<tr >
-<<<<<<< HEAD
 
-
-
-=======
-				
->>>>>>> 8c5c560c7022b916ece278d64d95ac391a1e2c87
 				<td rowspan="{{$pn['_rowspan']['rowspan']+1}}" style="min-width:180px;" >
 
 					<div class=" btn-group ">
@@ -462,7 +456,7 @@
 						@endforeach
 						@foreach($propn['_child_proyek'] as $proyek)
 							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}}">
-								
+
 								<td rowspan="{{$proyek['_rowspan']['rowspan']+1}} class="bg-warning" >
 									<div class=" btn-group ">
 										<button   collapse-btn-nested="false" data-target=".proyek-{{$proyek['id']}}"  class="btn btn-info btn-xs ">
@@ -490,22 +484,17 @@
 									@php
 										$proyeki=$tagproyeki['_indikator'];
 									@endphp
-								
+
 									<td class="bg-warning">
 										<div class="form-group">
 											<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$proyeki['id']}})"><i class="fa fa-eye"></i></button>
 											<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagproyeki['id']}},{{$proyeki['jenis']}})"><i class="fa fa-trash"></i></button>
 
 										</div>
-<<<<<<< HEAD
-									</td>
-									<td><b>{{$proyeki['kode']}}</b></td>
-=======
 										<hr>
 										<b>{{$proyeki['kode']}}</b>
-									</td> 
-									
->>>>>>> 8c5c560c7022b916ece278d64d95ac391a1e2c87
+									</td>
+
 									<td>{{$proyeki['uraian']}}</td>
 									<td>
 										@if(($proyeki['tipe_value']==1)OR($proyeki['tipe_value']==2))

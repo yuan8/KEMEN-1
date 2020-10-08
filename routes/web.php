@@ -16,14 +16,14 @@ include __dir__.'/webSISTEM_RKPD.php';
 
 
 
-Route::get('rkpd-i',function(){
-	RKPDProvider::init(2021);
-	RKPDProvider::init(2020);
-	dd(\Carbon\Carbon::parse(explode(',', 'Jumat, 01-08-2020 16:50:22')[1]));
-	
-
-	return 'done';
-});
+// Route::get('rkpd-i',function(){
+// 	RKPDProvider::init(2021);
+// 	RKPDProvider::init(2020);
+// 	dd(\Carbon\Carbon::parse(explode(',', 'Jumat, 01-08-2020 16:50:22')[1]));
+//
+//
+// 	return 'done';
+// });
 
 Route::get('/', 'LoginBarcodeCtrl@landing');
 
@@ -36,14 +36,14 @@ Route::get('/push','InitCtrl@push');
 
 Route::post('/up-ddd','LoginBarcodeCtrl@updd');
 
-Route::get('/p/{id}',function($id){
-	return Hp::q($id);
-});
+// Route::get('/p/{id}',function($id){
+// 	return Hp::q($id);
+// });
 
-Route::get('/get-sipd/',function(){
-	return view('test');
-})->name('sipdd');
-
+// Route::get('/get-sipd/',function(){
+// 	return view('test');
+// })->name('sipdd');
+//
 
 
 
@@ -68,10 +68,10 @@ Route::post('init-tahun','InitCtrl@pindah_tahun')->middleware(['auth:web','can:i
 Route::get('init-refresing/','InitCtrl@refresh')->middleware(['auth:web','can:ifAlive'])->name('init.refresing');
 
 
-	
+
 Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 
-	
+
 	// -----------------------------------------------------------------------------------
 
 		Route::prefix('kebijakan-pusat/')->group(function(){
@@ -100,7 +100,7 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::get('/', 'FORM\KebijakanCtrl@index_daerah')->name('kebijakan.daerah.index');
 
 			Route::get('/tambah', 'FORM\KebijakanCtrl@create_daerah')->name('kebijakan.daerah.create');
-			
+
 			Route::get('/fokus/{id}', 'FORM\KebijakanCtrl@view_daerah')->name('kebijakan.daerah.view.daerah');
 
 			Route::post('/tambah/sub/{id}/mandat/{mandat}/perda', 'FORM\KebijakanCtrl@store_perda')->name('kebijakan.daerah.store.mandat.perda');
@@ -138,7 +138,7 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::post('/sub-urusan/{id}/tambah-indikator', 'FORM\PelaksanaanUrusanCtrl@store_indikator')->name('pelaksanaan.urusan.store.indikator');
 
 			Route::post('/sub-urusan/{id}/indikator/{id_indikator}/tambah-data', 'FORM\PelaksanaanUrusanCtrl@store_data')->name('pelaksanaan.urusan.store.data');
-			
+
 		});
 
 		Route::prefix('kebijakan-pusat-5-tahun/')->group(function(){
@@ -176,15 +176,15 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::put('/indikator/{id}', 'FORM\KebijakanTahunanCtrl@update_ind_psn')->name('kebijakan.pusat.tahunan.proyek.update_ind_psn');
 
 			Route::put('/indikator-psn-meta/{id}', 'FORM\KebijakanTahunanCtrl@update_ind_psn_meta')->name('kebijakan.pusat.tahunan.proyek.update_ind_psn_meta');
-			
+
 		});
 
 		Route::prefix('integrasi/')->group(function(){
-		
+
 			Route::get('/', 'FORM\IntegrasiCtrl@index')->name('integrasi.index');
-			
+
 			Route::get('/provinsi', 'FORM\IntegrasiCtrl@provinsi')->name('integrasi.provinsi');
-			
+
 			Route::get('/kota-kab', 'FORM\IntegrasiKabKotaCtrl@index')->name('integrasi.kota');
 
 			Route::get('/provinsi/{id}', 'FORM\IntegrasiCtrl@detail_provinsi')->name('integrasi.provinsi.detail');
@@ -200,21 +200,21 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::post('/map/provinsi-store/{id}', 'FORM\IntegrasiCtrl@mapingProStore')->name('map.provinsi.store');
 
 			Route::get('/result/provinsi/', 'FORM\IntegrasiCtrl@result_pro')->name('res.pro');
-			
+
 			Route::post('/pel-nomen/provinsi/{id}', 'FORM\IntegrasiNomenCTRL@store_pel_nomen_pro')->name('pel.pro');
 
 			Route::get('/provinsi-nomen/', 'FORM\IntegrasiNomenCTRL@index_pro')->name('nomen.pro.index');
-			
+
 			Route::get('/provinsi-nomen/{kode_daerah}', 'FORM\IntegrasiNomenCTRL@detail_pro')->name('nomen.pro.detail');
 
 
 			// Route::get('//{kode_daerah}', 'FORM\IntegrasiNomenCTRL@detail_pro')->name('nomen.pro.detail');
 
-			
+
 		});
 
 		Route::prefix('program-kegiatan/')->group(function(){
-		
+
 			Route::get('/', 'FORM\ProgramKegiatanCtrl@index')->name('program.kegiatan.index');
 			Route::get('/detail/{id?}','FORM\ProgramKegiatanCtrl@detail')->name('pk.detail');
 			Route::get('/detail-pemetaan/{id?}','FORM\ProgramKegiatanCtrl@detail_pemetaan')->name('pk.peta.detail');
@@ -222,7 +222,7 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 			Route::get('create-program-kegiatan-template','DokumentCtrl@createTemplate')->name('program.kegiatan.download-template');
 
 
-			
+
 		});
 		Route::prefix('pemetaan_kebijakan/')->group(function(){
 			Route::get('/','FORM\pemetaanKebijakanRpjmn@index')->name('pemetaan.kebijakan.index');
@@ -237,7 +237,7 @@ Route::prefix('prokeg/')->group(function(){
 			Route::post('/ubah/misi/', 'PROKEG\prokeg@update_misi')->name('prokeg.ubah.misi');
 
 			Route::post('/tambah/misi/', 'PROKEG\prokeg@insert_misi')->name('prokeg.tambah.misi');
-			
+
 			Route::delete('/hapus/misi/{id}', 'PROKEG\prokeg@hapus_misi')->name('prokeg.hapus.misi');
 
 			Route::put('/ubah/misi/{id}', 'PROKEG\prokeg@ubah_misi')->name('prokeg.ubah.sasaran');
@@ -251,7 +251,7 @@ Route::prefix('prokeg/')->group(function(){
 
 			Route::post('/tambah/program/', 'PROKEG\prokeg@insert_program')->name('prokeg.tambah.program');
 			Route::get('/tambah/programmodal/{id}', 'PROKEG\prokeg@tambah_program')->name('prokeg.tambah.programmodal');
-			
+
 			Route::delete('/hapus/program/{id}', 'PROKEG\prokeg@hapus_program')->name('prokeg.hapus.program');
 			Route::delete('/hapus/programrkpd/{id}', 'PROKEG\prokeg@hapus_program_rkpd')->name('prokeg.hapus.program_rkpd');
 
@@ -278,4 +278,3 @@ Route::prefix('monev_dokrenda/')->group(function(){
 
 include __dir__.'/webBot.php';
 include __dir__.'/webDash.php';
-
