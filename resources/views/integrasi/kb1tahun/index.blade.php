@@ -5,9 +5,9 @@
      <div class="row">
     	<div class="col-md-8">
     		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN TAHUNAN ({{Hp::fokus_tahun()}})</h3>
-    		
+
     	</div>
-    	
+
     </div>
 @stop
 
@@ -57,7 +57,7 @@
 
 			@endphp
 			<tr >
-				
+
 				<td rowspan="{{$pn['_rowspan']['rowspan']+1}}" style="min-width:180px;" >
 
 					<div class=" btn-group ">
@@ -95,8 +95,8 @@
 						$pni=$tagpni['_indikator'];
 					@endphp
 					<tr class="pn-{{$pn['id']}} bg-success">
-					
-					
+
+
 					<td>
 						<div class="btn-group ">
 							<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$pni['id']}})"><i class="fa fa-eye"></i></button>
@@ -121,7 +121,7 @@
 							<-> {{number_format($pni['target_1'],2)}}
 
 						@endif
-							
+
 					</td>
 					<td>{{$pni['satuan']}}</td>
 					<td>
@@ -152,7 +152,7 @@
 								<li>{{$p}}</li>
 							@endforeach
 							</ul>
-						
+
 						</td>
 					<td colspan="3"></td>
 
@@ -160,7 +160,7 @@
 
 			@endforeach
 			@foreach($pn['_child_pp'] as $pp)
-				<tr class="pn-{{$pn['id']}}">				
+				<tr class="pn-{{$pn['id']}}">
 					<td rowspan="{{$pp['_rowspan']['rowspan']+1}}">
 						<div class=" btn-group ">
 							<button   collapse-btn-nested="false" data-target=".pp-{{$pp['id']}}"  class="btn btn-info btn-xs ">
@@ -181,11 +181,11 @@
 						</td>
 				</tr>
 				@foreach($pp['_tag_indikator'] as $tagppi)
-					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}} bg-success">	
+					<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}} bg-success">
 						@php
 							$ppi=$tagppi['_indikator'];
 						@endphp
-						
+
 						<td>
 							<div class="btn-group ">
 								<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$ppi['id']}})"><i class="fa fa-eye"></i></button>
@@ -195,7 +195,7 @@
 							<b>
 							{{$ppi['kode']}}</b></td>
 						<td>
-					
+
 							<p>	<b>{{strtoupper($ppi['tipe'])}}</b></p>
 						{{$ppi['uraian']}}
 					</td>
@@ -211,7 +211,7 @@
 								<-> {{number_format($ppi['target_1'],2)}}
 
 							@endif
-								
+
 						</td>
 						<td>{{$ppi['satuan']}}</td>
 						<td>
@@ -260,9 +260,9 @@
 
 				@foreach($pp['_child_kp'] as $kp)
 				<tr class="pp-{{$pp['id']}} pn-{{$pn['id']}}">
-					
-						
-						
+
+
+
 						<td  rowspan="{{$kp['_rowspan']['rowspan']+1}}">
 							<div class=" btn-group">
 								<button   collapse-btn-nested="false" data-target=".kp-{{$kp['id']}}"  class="btn btn-info btn-xs ">
@@ -287,7 +287,7 @@
 							@php
 								$kpi=$tagkpi['_indikator'];
 							@endphp
-						
+
 							<td>
 								<div class="btn-group ">
 									<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$kpi['id']}})"><i class="fa fa-eye"></i></button>
@@ -311,7 +311,7 @@
 									<-> {{number_format($kpi['target_1'],2)}}
 
 								@endif
-									
+
 							</td>
 							<td>{{$kpi['satuan']}}</td>
 							<td>
@@ -350,8 +350,8 @@
 								@endforeach
 								</ul>
 								@endif
-										
-							
+
+
 							</td>
 
 
@@ -360,14 +360,14 @@
 					@endforeach
 					@foreach($kp['_child_propn'] as $propn)
 						<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}}">
-						
-							
-								
+
+
+
 
 							<td colspan="" rowspan="{{$propn['_rowspan']['rowspan']+1}}">
 								<div class=" btn-group">
 										<button   collapse-btn-nested="false" data-target=".propn-{{$propn['id']}}"  class="btn btn-info btn-xs ">
-												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROPN" class="fa fa-eye"></i>  
+												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROPN" class="fa fa-eye"></i>
 											 </button>
 											   <button class="btn btn-success  btn-xs" onclick="showFormNested({{$propn['id']}},{{$propn['jenis']}})" >
 						<i  data-toggle="tooltip" data-placement="top" title="TAMBAH PROYEK KL" class="fa fa-plus"></i> PROYEK KL</button>
@@ -390,8 +390,8 @@
 								@php
 									$propni=$tagpropni['_indikator'];
 								@endphp
-								
-								
+
+
 								<td>
 									<div class="btn-group">
 										<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$propni['id']}})"><i class="fa fa-eye"></i></button>
@@ -416,10 +416,10 @@
 										<-> {{number_format($propni['target_1'],2)}}
 
 									@endif
-										
+
 								</td>
 								<td>{{$propni['satuan']}}</td>
-								
+
 								<td>
 									@php
 									$i=$propni;
@@ -445,7 +445,7 @@
 										<li>{{$p}}</li>
 									@endforeach
 									</ul>
-								
+
 								</td>
 
 
@@ -456,7 +456,7 @@
 						@endforeach
 						@foreach($propn['_child_proyek'] as $proyek)
 							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}}">
-								
+
 								<td rowspan="{{$proyek['_rowspan']['rowspan']+1}} class="bg-warning" >
 									<div class=" btn-group ">
 										<button   collapse-btn-nested="false" data-target=".proyek-{{$proyek['id']}}"  class="btn btn-info btn-xs ">
@@ -484,17 +484,17 @@
 									@php
 										$proyeki=$tagproyeki['_indikator'];
 									@endphp
-								
+
 									<td class="bg-warning">
 										<div class="form-group">
 											<button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$proyeki['id']}})"><i class="fa fa-eye"></i></button>
 											<button class="btn btn-danger btn-xs" onclick="showFormDetailDeleteIndikator({{$tagproyeki['id']}},{{$proyeki['jenis']}})"><i class="fa fa-trash"></i></button>
-											
+
 										</div>
 										<hr>
 										<b>{{$proyeki['kode']}}</b>
-									</td> 
-									
+									</td>
+
 									<td>{{$proyeki['uraian']}}</td>
 									<td>
 										@if(($proyeki['tipe_value']==1)OR($proyeki['tipe_value']==2))
@@ -521,7 +521,7 @@
 											$i['pelaksana_p']=json_decode($proyeki['pelaksana_p']);
 											$i['pelaksana_k']=json_decode($proyeki['pelaksana_k']);
 										@endphp
-									
+
 										@if($i['kw_nas'])
 										<b>PUSAT</b>
 										<ul>
@@ -548,8 +548,8 @@
 										@endforeach
 										</ul>
 										@endif
-									
-									
+
+
 									</td>
 
 
@@ -608,7 +608,7 @@
 
 		return jenis;
 	}
-	
+
 
 
 	function showFormDetailIndikator(id){
@@ -643,7 +643,7 @@
 			$('#modal-global-lg').modal();
 		});
 	}
-	
+
 	function showFormCreatePnIndikator(id,jenis=null){
 		API_CON.get("{{route('int.kb1tahun.pn_indikator',['id'=>''])}}/"+id).then(function(res){
 			$('#modal-global-lg .modal-header .modal-title').html('TAMBAH INDIKATOR '+nameRKP(jenis)+' {{Hp::fokus_tahun()}}');

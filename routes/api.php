@@ -25,9 +25,9 @@ Route::post('/int-log-tokenizer','LoginBarcodeCtrl@update_token')->name('br.logi
 Route::post('/ilogin','LoginBarcodeCtrl@force_login')->name('br.login');
 
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::post('check_login_barcode','LoginBarcodeCtrl@login');
 
@@ -77,7 +77,7 @@ Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 
 			Route::get('/get-masalah-pokok', 'FORM\PermasalahanCtrl@api_get_masalah_pokok')
 			->name('api.permasalahan.daerah.get.masalah.pokok');
-			
+
 		});
 
 		Route::prefix('kebijakan-pusat-tahunan/')->group(function(){
@@ -93,7 +93,7 @@ Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 			Route::get('/get-propn', 'FORM\KebijakanTahunanCtrl@api_get_propn')
 			->name('api.kebijakan.tahunan.get.propn');
 
-			
+
 		});
 
 		Route::prefix('kebijakan-pusat-tahunan')->group(function(){
@@ -129,11 +129,11 @@ Route::prefix('form')->middleware(['auth:api','can:ifAlive'])->group(function(){
 
 		});
 
-		Route::prefix('glob')->group(function(){
-			Route::post('detail-ind-psn/{id?}','FORM\GlobCtrl@detail_ind_psn')->name('glob.det.ind.psn');
-			Route::post('detail-psn/{id?}','FORM\GlobCtrl@detail_psn')->name('glob.det.psn');
-
-		});
+		// Route::prefix('glob')->group(function(){
+		// 	Route::post('detail-ind-psn/{id?}','FORM\GlobCtrl@detail_ind_psn')->name('glob.det.ind.psn');
+		// 	Route::post('detail-psn/{id?}','FORM\GlobCtrl@detail_psn')->name('glob.det.psn');
+    //
+		// });
 
 		Route::prefix('program-kegiatan')->group(function(){
 			Route::get('get-daerah','FORM\ProgramKegiatanCtrl@api_get_daerah')->name('api.pk.daerah');

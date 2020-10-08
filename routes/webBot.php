@@ -18,9 +18,9 @@ Route::prefix('bot/rpjmn')->group(function(){
 Route::prefix('bot/sipd')->group(function(){
 	Route::get('/init/{tahun}','SISTEM\BOTSIPD@init');
 
-	Route::get('/init-jjj/',function(){
-		RKPDProvider::init(2020);
-	});
+	// Route::get('/init-jjj/',function(){
+	// 	RKPDProvider::init(2020);
+	// });
 
 
 	Route::prefix('data-rkpd')->group(function(){
