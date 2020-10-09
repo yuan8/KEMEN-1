@@ -28,9 +28,9 @@ class PELAKSANAANURUSAN extends Controller
         $title='DATA PELAKSANAAN '.$meta_urusan['nama'].' TAHUN '.$tahun;
         $sub_title='DATA PELAKSANAAN URUSAN';
         if($request->pdf){
-             $pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'defaultFont' => 'sans-serif','isRemoteEnabled' => true]);
+             $pdf = \App::make('dompdf.wrapper')->setPaper('a4', 'landscape')->setOptions(['dpi' => 200, 'enable_php'=>true,'isRemoteEnabled' => true]);
                 $pdf->loadHTML(view('integrasi.pelaksanaan.download')->with(['data'=>$data,'title'=>$title,'sub_title'=>$sub_title])->render());
-                return $pdf->stream();
+                return $pdf->stream($title);
         }
     }
 

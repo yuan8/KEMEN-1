@@ -555,11 +555,22 @@ class KebijakanCtrl extends Controller
     // ------------------------------------------------------------------------------------------------------------------
 
     public function index_daerah(Request $request){
+        $tahun=Hp::fokus_tahun();
+        $meta_urusan=Hp::fokus_urusan();
 
-    	$provinsi=DB::table('master_daerah')->where(DB::raw('length(id)'),2)
-    	->orderBy('nama','ASC')->get();
+       
 
-    	return view('form.kebijakan.daerah.index',['provinsis'=>$provinsi]);
+    	$data=DB::table('master_daerah as d')
+        ->selectRaw("d.id,(case when length(d.id)<3 then nama else concat(nama,' - ',(select p.nama from public.master_daerah as p where p.id=d.kode_daerah_parent limit 1)) end) as nama_daerah,
+
+            (select count(*) from public.ikb_integrasi as lap where lap.kode_daerah=d.id and lap.tahun=".$tahun." and lap.id_urusan=".$meta_urusan['id_urusan'].") as exists
+         ")
+    	->orderBy('id','ASC')
+        ->get();
+
+       
+
+    	return view('form.kebijakan.daerah.index',['data'=>$data]);
 
     }
 

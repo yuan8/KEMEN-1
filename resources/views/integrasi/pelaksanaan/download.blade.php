@@ -13,31 +13,21 @@
 
 @section('content')
 
-<table class="table-bordred table">
-	<thead  class="text-center" >
-		<tr>
-			<th class="text-center"  colspan="11" class="text-center">{{$sub_title}}</th>
-		</tr>
-		<tr>
-			<th class="text-center"  colspan="11" class="text-center">{{Hp::fokus_urusan()['nama'].' TAHUN '.Hp::fokus_tahun()}}</th>
-		</tr>
-	</thead>
-</table>
+@include('layouts.header-export',['context'=>$sub_title.' -'])
 	<table class="table bg-white table-bordered " id="data_pelaksanaan_table">
-		<thead class="bg-navy">
+		<thead class="bg-primary">
 			<tr>
-				<th rowspan="2" >SUB URUSAN</th>
-				<th rowspan="2">KEWENANGAN PUSAT</th>
-				<th rowspan="2">KEWENANGAN PROVINSI</th>
-				<th rowspan="2">KEWENANGAN KOTA / KAB</th>
-				<th colspan="5">INDIKATOR</th>
+				<th rowspan="2" class="text-center">SUB URUSAN</th>
+				<th rowspan="2" class="text-center">KEWENANGAN PUSAT</th>
+				<th rowspan="2" class="text-center">KEWENANGAN PROVINSI</th>
+				<th rowspan="2" class="text-center">KEWENANGAN KOTA / KAB</th>
+				<th colspan="4" class="text-center">INDIKATOR</th>
 			</tr>
 			<tr>
-				<th >JENIS</th>
-				<th >KODE</th>
-				<th >INDIKATOR</th>
-				<th >TARGET</th>
-				<th >SATUAN</th>
+				<th class="text-center">JENIS</th>
+				<th class="text-center">INDIKATOR</th>
+				<th class="text-center">TARGET</th>
+				<th class="text-center">SATUAN</th>
 
 			</tr>
 			
@@ -63,7 +53,6 @@
 					</td>
 					<td>{{$i->_sumber()}}</td>
 					
-					<td>{{$i->kode}}</td>
 					<td>{{$i->uraian}}</td>
 					<td>
 						@if(($i['tipe_value']==1)OR($i['tipe_value']==2))

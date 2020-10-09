@@ -7,23 +7,15 @@
 @stop
 
 @section('content')
-<table class="table-bordred table">
-	<thead>
-		<tr>
-			<th colspan="4" class="text-center">{{$sub_title}}</th>
-		</tr>
-		<tr>
-			<th colspan="4" class="text-center">{{Hp::fokus_urusan()['nama'].' TAHUN '.Hp::fokus_tahun()}}</th>
-		</tr>
-	</thead>
-</table>
+@include('layouts.header-export',['context'=>$sub_title.' -'])
+
 <table class="table table-bordered">
-						<thead>
+						<thead class="bg-primary">
 							<tr>
-								<th>MASALAH POKOK</th>
-								<th>MASALAH</th>
-								<th>AKAR MASALAH</th>
-								<th>DATA DUKUNG</th>
+								<th class="text-center">MASALAH POKOK</th>
+								<th class="text-center">MASALAH</th>
+								<th class="text-center">AKAR MASALAH</th>
+								<th class="text-center">DATA DUKUNG</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -40,9 +32,10 @@
 										
 									<tr>
 										
-										<td colspan="4">
-											 {{$d->pokok_uraian}}
+										<td colspan="">
+											 {!!nl2br($d->pokok_uraian)!!}
 										</td>
+										<td colspan="3"></td>
 										
 									</tr>
 									<?php $id_pokok=$d->id_pokok; ?>
@@ -52,9 +45,11 @@
 									<tr class="">
 										<td colspan="1"></td>
 										
-										<td colspan="3">
-											{{$d->ms_uraian}}
+										<td colspan="1">
+											{!!nl2br($d->ms_uraian)!!}
 										</td>
+										<td colspan="2"></td>
+
 									
 									</tr>
 									<?php $id_ms=$d->id_ms; ?>
@@ -65,9 +60,11 @@
 									<tr>
 										<td colspan="2"></td>
 										
-										<td colspan="2">
-											{{$d->akar_uraian}}
+										<td colspan="1">
+											{!!nl2br($d->akar_uraian)!!}
 										</td>
+										<td colspan="1"></td>
+
 										
 									</tr>
 									<?php $id_akar=$d->id_akar; ?>
@@ -79,7 +76,8 @@
 										<td colspan="3"></td>
 										
 										<td>
-											{{$d->data_uraian}}
+											{!!nl2br($d->data_uraian)!!}
+
 										</td>
 										
 									</tr>

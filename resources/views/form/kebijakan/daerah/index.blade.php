@@ -12,22 +12,33 @@
 
 @section('content')
   <div class="row">
-  	<div class="col-md-6">
+  	<div class="col-md-12">
   		<div class="box box-success">
-  			<div class="box-body table-responsive">
-  				<table class="table table-striped" id="table-pro">
-		  			<thead > 
-		  				<tr>
-		  					<th>KODE</th>
-		  					<th>PROVINSI</th>
+  			<div class="box-body ">
+          <table class="table  table-bordered" id="table-pro">
+            <thead>
+              <tr>
+                <th>KODE</th>
+                <th>NAMA DAERAH</th>
+                <th>TERDAPAT DATA</th>
 
-		  				</tr>
-		  			</thead>
+                <th>ACTION</th>
+
+
+              </tr>
+            </thead>
             <tbody>
-              @foreach($provinsis as $key=> $p)
-              <tr  class="cursor-link" onclick="deatiledDaerah({{$p->id}})">
+              @foreach($data as $key=> $p)
+              <tr  class="{{$p->exists?'bg-warning':''}}">
                 <td>{{$p->id}}</td>
-                <td>{{$p->nama}}</td>
+
+                <td>{{$p->nama_daerah}}</td>
+                <td>{{$p->exists?'TERDAPAT DATA':'-'}}</td>
+
+                <td>
+                  <a href="{{route('kebijakan.daerah.view.daerah',['id'=>$p->id])}}" class="btn btn-xs {{$p->exists?'btn-warning':'btn-success'}} ">{{$p->exists?'UPDATE':'TAMBAH'}}</a>
+                  
+                </td>
                
               </tr>
 
@@ -35,7 +46,7 @@
 
             </tbody>
 
-		  		</table>
+          </table>
   			</div>
   		</div>
   	</div>

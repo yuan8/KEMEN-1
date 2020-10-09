@@ -176,7 +176,7 @@ class KEBIJAKANPUSAT1TAHUN extends Controller
 
 
 
-    	return view('integrasi.kb1tahun.index')->with('data',$data);
+    	return view('integrasi.kb1tahun.index2')->with('data',$data);
     }
 
 
