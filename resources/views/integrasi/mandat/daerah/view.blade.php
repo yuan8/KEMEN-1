@@ -7,7 +7,7 @@
     		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN <span class="text-success">{{$daerah->nama}}</span> </h3>
     	</div>
     	<div class="col-md-4 modal-footer">
-    		
+
     	</div>
     </div>
 @stop
@@ -36,8 +36,8 @@
     </div>
     <!-- /.info-box -->
   </div>
-  
-  
+
+
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
       <span class="info-box-icon bg-green"><i class="fa fa-file"></i></span>
@@ -49,7 +49,7 @@
     </div>
     <!-- /.info-box -->
   </div>
-  
+
 
   <div class="col-md-3 col-sm-6 col-xs-12">
     <div class="info-box">
@@ -62,7 +62,7 @@
     </div>
     <!-- /.info-box -->
   </div>
- 
+
 
 	<div class="col-md-12">
    <div class="btn-group" style="margin-bottom: 10px;">
@@ -97,7 +97,7 @@
                                 <?php $id_sub_urusan=$kb->id; ?>
                             @endif
                              @if(($id_mandat!=$kb->id_mandat)&&(!empty($kb->id_mandat)))
-                             
+
                               @if((!empty($kb->id_integrasi)))
                                   <tr class="{{$kb->kesesuaian==0?'bg-danger':(($kb->kesesuaian==1)?'':'bg-warning') }}">
                                       <td rowspan="2" style="width: 300px;">
@@ -159,7 +159,7 @@
                                           @endif
                                       </td>
                                       <td rowspan="2" style="width: 250px;">
-                                         
+
 
 
                                        {!!nl2br($kb->mandat)!!}</td>
@@ -320,13 +320,13 @@
                                           @endif
                                       </td>
                                       <td  style="width: 250px;">
-                                         
+
 
 
                                        {!!nl2br($kb->mandat)!!}</td>
 
                                       <td></td>
-                                     
+
                                      <td>
 
 

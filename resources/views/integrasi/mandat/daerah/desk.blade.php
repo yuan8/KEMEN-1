@@ -32,11 +32,11 @@
 				</td>
 			</tr>
 		</table>
-		
-		
-		
+
+
+
 	</div>
-	
+
 </div>
 </div>
 <div class="row">
@@ -57,7 +57,7 @@
 
 				<td style="width: 25%">
                                         	 <p><b>UNDANG-UNDANG</b></p>
-					
+
 					@if(!empty($kb->uu))
                <ul>
                 <?php $duu=explode('|@|',$kb->uu); ?>
@@ -69,7 +69,7 @@
                </ul>
 
                                           @endif
-				
+
 
 
 
@@ -90,7 +90,7 @@
                                            </ul>
 
                                           @endif
-					
+
 				</td>
 				<td style="width: 25%">
                                            <p><b>PERATURAN PRESIDEN</b></p>
@@ -108,7 +108,7 @@
                                            </ul>
 
                                           @endif
-					
+
 				</td>
 				<td style="width: 25%">
                                            <p><b>PERATURAN MENTRI</b></p>
@@ -137,22 +137,22 @@
 		</div>
 		<div class="box box-solid">
 		<div class="box-body">
-			
+
 
 			<table class="table table-bordered">
-				
+
 				 @foreach($data as $kb)
                         @php
                         @endphp
                           <script type="text/javascript">
                             var mandat_{{$kb->id_mandat}}=<?php echo json_encode($kb); ?>;
                           </script>
-                            
+
                              @if(($id_mandat!=$kb->id_mandat)&&(!empty($kb->id_mandat)))
-                             
+
                               @if((!empty($kb->id_integrasi)))
                                   <tr class="{{$kb->kesesuaian==0?'bg-danger':(($kb->kesesuaian==1)?'':'bg-warning') }}">
-                                      
+
 
                                       <td>
 
@@ -177,7 +177,7 @@
 
                                   </tr>
                                   <tr class="{{$kb->kesesuaian==0?'bg-danger':(($kb->kesesuaian==1)?'bg-':'bg-warning') }}">
-                                     
+
                                       <td>
                                           <p><b>PERDA</b></p>
                                           @if(!empty($kb->perda))
@@ -236,8 +236,8 @@
                               @else
                                 <tr>
 
-                                       
-                                     
+
+
                                      <td>
 
 
@@ -288,7 +288,7 @@
 </style>
 <script type="text/javascript">
 
-@php 
+@php
 	$node=[
 		'MANDAT'=>[
 			'id'=>'MANDAT',
@@ -326,7 +326,7 @@
 	    @endphp
     @endforeach
 
-  
+
   @endif
 
    @if(!empty($kb->pp))
@@ -350,7 +350,7 @@
 	    @endphp
     @endforeach
 
-   @php 
+   @php
    // dd((array_values($data_node)));
    @endphp
   @endif
@@ -376,7 +376,7 @@
 	    @endphp
     @endforeach
 
-   @php 
+   @php
    // dd((array_values($node)));
    @endphp
   @endif
@@ -401,11 +401,11 @@
 	    @endphp
     @endforeach
 
-   @php 
+   @php
    // dd((array_values($node)));
    @endphp
   @endif
- 
+
 
   var series={
 	'nested_list':<?php echo json_encode($data_node) ?>,
@@ -441,7 +441,7 @@
     name: 'Highsoft',
     keys: ['from', 'to'],
     data:series.nested_list,
- 
+
     nodes:series.node,
     colorByPoint: false,
     color: '#007ad0',
