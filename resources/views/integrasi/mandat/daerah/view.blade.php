@@ -130,7 +130,7 @@
 
                                           @endif
                                             @if(!empty($kb->perpres))
-                                           <p><b>PERATURAN MENTRI</b></p>
+                                           <p><b>PERATURAN PRESIDEN</b></p>
                                              <ul>
                                               <?php $duu=explode('|@|',$kb->perpres); ?>
                                               @foreach($duu as $uu)

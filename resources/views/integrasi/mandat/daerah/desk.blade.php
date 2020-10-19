@@ -93,7 +93,7 @@
 					
 				</td>
 				<td style="width: 25%">
-                                           <p><b>PERATURAN MENTRI</b></p>
+                                           <p><b>PERATURAN PRESIDEN</b></p>
 
                                             @if(!empty($kb->perpres))
                                              <ul>
