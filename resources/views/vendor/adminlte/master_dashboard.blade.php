@@ -80,7 +80,6 @@
 
 
 
-@include('adminlte::plugins', ['type' => 'js'])
 
 @yield('adminlte_js')
 

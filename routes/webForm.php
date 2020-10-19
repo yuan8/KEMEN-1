@@ -18,6 +18,54 @@ Route::prefix('integrasi')->middleware('auth:web')->group(function(){
 
 	Route::prefix('kebijakan')->group(function(){
 		Route::get('resume','INT\KEBIJAKAN@resume')->name('int.kb.resume');
+		Route::prefix('kebijakan-pusat/')->group(function(){
+			Route::get('/', 'INT\KEBIJAKAN@index')->name('kebijakan.pusat.index');
+
+			Route::delete('/delete/mandat/{id}', 'INT\KEBIJAKAN@delete_mandat')->name('kebijakan.pusat.delete');
+
+			Route::post('/tambah/sub/{id}/mandat/', 'INT\KEBIJAKAN@store_mandat')->name('kebijakan.pusat.store.mandat');
+
+			Route::put('/update/sub/{id}/mandat/{id_mandat}', 'INT\KEBIJAKAN@update_mandat')->name('kebijakan.pusat.update');
+
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/uu', 'INT\KEBIJAKAN@store_uu')->name('kebijakan.pusat.store.mandat.uu');
+
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/pp', 'INT\KEBIJAKAN@store_pp')->name('kebijakan.pusat.store.mandat.pp');
+
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/perpres', 'INT\KEBIJAKAN@store_perpres')->name('kebijakan.pusat.store.mandat.perpres');
+
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/permen', 'INT\KEBIJAKAN@store_permen')->name('kebijakan.pusat.store.mandat.permen');
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/lainnya', 'INT\KEBIJAKAN@store_lainnya')->name('kebijakan.daerah.store.mandat.lainnya');
+
+
+		});
+
+
+		Route::prefix('kebijakan-daerah/')->group(function(){
+
+
+			Route::get('/', 'INT\KEBIJAKAN@index_daerah')->name('kebijakan.daerah.index');
+
+
+			Route::get('/tambah', 'INT\KEBIJAKAN@create_daerah')->name('kebijakan.daerah.create');
+
+			Route::get('/fokus/{id}', 'INT\KEBIJAKAN@view_daerah')->name('kebijakan.daerah.view.daerah');
+
+			Route::get('desk/{id}', 'INT\KEBIJAKAN@desk_daerah')->name('kebijakan.daerah.desk_daerah');
+
+
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/perda', 'INT\KEBIJAKAN@store_perda')->name('kebijakan.daerah.store.mandat.perda');
+
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/perkada', 'INT\KEBIJAKAN@store_perkada')->name('kebijakan.daerah.store.mandat.perkada');
+			Route::post('/tambah/sub/{id}/mandat/{mandat}/lainnya', 'INT\KEBIJAKAN@store_lainnya')->name('kebijakan.daerah.store.mandat.lainnya');
+
+
+			Route::put('/tambah/sub/kesesuian/{id}', 'INT\KEBIJAKAN@update_kesesuaian')->name('kebijakan.daerah.store.mandat.update.kesesuian');
+
+			Route::put('/tambah/sub/kesesuian/delete/{id}', 'INT\KEBIJAKAN@delete_kesesuaian')->name('kebijakan.daerah.store.mandat.delete.kesesuian');
+
+
+		});
+
 
 	});
 

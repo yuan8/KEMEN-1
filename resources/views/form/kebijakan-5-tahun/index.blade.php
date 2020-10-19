@@ -4,11 +4,14 @@
 @section('content_header')
      <div class="row">
     	<div class="col-md-8">
-    		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN 5 TAHUNAN ({{$rpjmn['start']}} -  {{$rpjmn['finish']}})</h3>
+    		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN 5 TAHUNAN aa ({{$rpjmn['start']}} -  {{$rpjmn['finish']}})</h3>
     		
     	</div>
     	
     </div>
+    <link rel="stylesheet" type="text/css" href="{{asset('bower_components/jquery-treetable/css/jquery.treetable.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('bower_components/jquery-treetable/css/jquery.treetable.theme.default.css')}}">
+	<script type="text/javascript" src="{{asset('bower_components/jquery-treetable/jquery.treetable.js')}}"></script>
 @stop
 
 
@@ -23,10 +26,10 @@
 </div>
 <hr>
 
-	<table class="table bg-white table-bordered">
+	<table class="table bg-white table-bordered" id="data-table">
 		<thead class="bg-navy">
 			<tr>
-				<th rowspan="2" style="width: 170px;">ACTION</th>
+				<th rowspan="2" style="width: 170px;">ACTION s</th>
 				<th colspan="5">KONDISI</th>
 				<th rowspan="2">URAIAN ISU STRATEGIS</th>
 				<th rowspan="2">URAIAN ARAH KEBIJAKAN</th>
@@ -59,7 +62,7 @@
 		</thead>
 		<tbody class="bg-white">
 		@foreach($data as $kn)
-			<tr class=" ">
+			<tr class=" " data-tt-id="kn-{{$kn['id']}}">
 					<td class="bg-white">
 						<div class=" pull-right  ">
 							<button collapse-btn-nested="false" data-target=".kn-{{$kn['id']}}"  class="btn btn-info btn-xs kn">
@@ -91,7 +94,7 @@
 				</tr>
 
 				@foreach($kn['_children'] as $isu)
-					<tr class="collapse  kn-{{$kn['id']}}">
+					<tr class="collapse  kn-{{$kn['id']}}" data-tt-parent-id="kn-{{$kn['id']}}" data-tt-id="isu-{{$isu['id']}}">
 						<td class="bg-white" colspan="6">
 								<div class=" pull-right">
 									<button  collapse-btn-nested="false" data-target=".isu-{{$isu['id']}}"  class="btn btn-info btn-xs ">
@@ -107,7 +110,7 @@
 
 					</tr>
 					@foreach($isu['_children'] as $ak)
-						<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}}">
+						<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}}" data-tt-parent-id="isu-{{$isu['id']}}" data-tt-id="ak-{{$ak['id']}}">
 						
 						
 							<td class="bg-white" colspan="7">
@@ -125,7 +128,7 @@
 						</tr>
 
 						@foreach($ak['_children'] as $i)
-							<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}} ak-{{$ak['id']}}">
+							<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}} ak-{{$ak['id']}}" data-tt-parent-id="ak-{{$ak['id']}}" data-tt-id="i-{{$i['id']}}">
 								
 								<td colspan="8">
 									<div class=" pull-right">
@@ -242,6 +245,8 @@
 
 
 <script type="text/javascript">
+
+		$("#data-table").treetable({ expandable: true,column:1 });
 function init_dss_js_f(){
 		$('[collapse-btn-nested]').on('click',function(){
 		var nes_status=(this.getAttribute('collapse-btn-nested').toLowerCase()==='true');

@@ -15,14 +15,13 @@
       <div class="col-md-12">
         <div class="box box-solid box-info-gradient">
             <div class="box-body">
-                   <table class="table table-borded" id="table-daerah">
+                   <table class="table table-bordered" id="table-daerah">
               <thead>
                   <tr class="bg bg-navy">
                       <th>KODEPEMDA</th>
-                      <th></th>
                       <th>NAMA PEMDA</th>
                       <th>NAMA PROVINSI</th>
-
+                      <th>STATUS</th>
                       <th>ACTION</th>
 
                   </tr>
@@ -34,10 +33,11 @@
                             @endphp
                             <tr class="{{$d['_rekomendasi_final']?'bg-primary':($d['_has_rekom']?'bg-warning':'')}}">
                                 <td>{{$d->id}}</td>
-                                <td></td>
                                 <td>{{$d->nama}}</td>
                                 <td>{{isset($d['_provinsi'])?$d['_provinsi']['nama']:''}}</td>
-
+                                <td>
+                                  {{$d['_rekomendasi_final']?'FINAL':($d['_has_rekom']?'TERDAPAT DATA':'BELUM TERDAPAT DATA')}}
+                                </td>
                                 <td>
                                   @if($d['_rekomendasi_final'])
                                     <a href="{{route('int.rekomendasi.detail',['kodepemda'=>$d->id])}}" class="btn btn-primary btn-xs "> VIEW REKOMENDASI {{HP::fokus_tahun()+1}}</a>
@@ -63,7 +63,8 @@
 @section('js')
     <script type="text/javascript">
         $('#table-daerah').DataTable({
-             pageLength: 15,
+          "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
+          
              sort:false
         });
 

@@ -9,37 +9,40 @@
     	</div>
 
     </div>
+    <link rel="stylesheet" type="text/css" href="{{asset('bower_components/jquery-treetable/css/jquery.treetable.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('bower_components/jquery-treetable/css/jquery.treetable.theme.default.css')}}">
+	<script type="text/javascript" src="{{asset('bower_components/jquery-treetable/jquery.treetable.js')}}"></script>
+	<style type="text/css">
+		.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+			vertical-align:middle!important;
+		}
+	</style>
 @stop
 
 
 @section('content')
-<div class="box box-dotted  box-warning	">
-	<div class="box-body ">
-
-		<button onclick="showFormCreateKondisi()" class="btn btn-success btn-xs text-uppercase">Tambah Kondisi saat ini</button>
-		<a href="{{route('int.kb5tahun.resume',['pdf'=>'true'])}}" class="btn btn-success btn-xs text-uppercase">DOWNLOAD DATA</a>
-
-	</div>
+<div class="btn-group">
+	<button onclick="showFormCreateKondisi()" class="btn btn-primary btn-sm text-uppercase">Tambah Kondisi saat ini</button>
+		<a href="{{route('int.kb5tahun.resume',['pdf'=>'true'])}}" class="btn btn-success btn-sm text-uppercase">DOWNLOAD DATA</a>
 </div>
-<hr>
 
 <div class="table-responsive">
-	<table class="table table-fixed bg-white table-bordered table-striped table-hover">
+	<table class="table table-fixed bg-white table-bordered table-striped table-hover" id="data-table">
 		
 		<tbody class="bg-white">
 		@foreach($data as $kn)
 
 
 
-			<tr class=" ">
+			<tr class=" " data-tt-id="kn-{{$kn['id']}}">
 
-				<td class="bg-yellow ket-col" >
+				<td class="bg-primary ket-col" >
 					<h4><b>KN</b></h4>
 				</td>
-					<td class="bg-warning">
-						<div class=" btn-group-vertical pull-right action-col ">
-							<button collapse-btn-nested="false" data-target=".kn-{{$kn['id']}}"  class="btn btn-info btn-xs kn">
-								<i data-toggle="tooltip" data-placement="top" title="DETAIL KONDISI SAAT INI" class="fa fa-eye"></i> ({{count($kn['_children'])}})</button>
+					<td class="bg-info">
+						<div class=" btn-group   ">
+							{{-- <button collapse-btn-nested="false" data-target=".kn-{{$kn['id']}}"  class="btn btn-info btn-xs kn">
+								<i data-toggle="tooltip" data-placement="top" title="DETAIL KONDISI SAAT INI" class="fa fa-eye"></i> ({{count($kn['_children'])}})</button> --}}
 							<button class="btn btn-success  btn-xs" data="TAMBAH ISU STRATEGIS" onclick="showFormCreateisu({{$kn['id']}})">
 								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH ISU STRATEGIS" class="fa fa-plus"></i>
 							</button>
@@ -47,10 +50,11 @@
 							<button class="btn btn-danger  btn-xs" onclick="showFormDeleteKondisi({{$kn['id']}})"><i class="fa fa-trash"></i></button>
 						</div>
 					</td>
-					<td class="bg-warning"><b>{{$kn['kode']}}</b></td>
-					<td colspan="12" style="border-left:2px solid #f39b12 !important;"><b>KONDISI: </b>
+					<td class="bg-info"><b>{{$kn['kode']}}</b></td>
+					<td colspan="1" ><b>KONDISI: </b>
 						<p>{!!nl2br($kn['uraian'])!!}</p>
 					</td>
+					<td colspan="11"></td>
 
 
 
@@ -58,42 +62,42 @@
 				</tr>
 
 				@foreach($kn['_children'] as $isu)
-				<tr class="collapse  kn-{{$kn['id']}}">
-					<td class="bg-yellow ket-col" >
+				<tr class="collapse  kn-{{$kn['id']}}" data-tt-parent-id="kn-{{$kn['id']}}" data-tt-id="isu-{{$isu['id']}}">
+					<td class="bg-primary ket-col" >
 					<h4><b>ISU</b></h4>
-				</td>
-						<td class="bg-warning" colspan="">
-								<div class=" btn-group-vertical pull-right action-col">
-									<button  collapse-btn-nested="false" data-target=".isu-{{$isu['id']}}"  class="btn btn-info btn-xs ">
+					</td>
+						<td class="bg-info" colspan="">
+								<div class=" btn-group  ">
+									{{-- <button  collapse-btn-nested="false" data-target=".isu-{{$isu['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ISU STRATEGIS" class="fa fa-eye"></i>
-									 ({{count($isu['_children'])}})</button>
+									 ({{count($isu['_children'])}})</button> --}}
 								<button class="btn btn-success  btn-xs" onclick="showFormCreateAk({{$isu['id']}})">
 								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH ARAH KEBIJAKAN" class="fa fa-plus"></i></button>
 								<button class="btn btn-warning  btn-xs" onclick="showFormUpdateeisu({{$isu['id']}})"><i class="fa fa-pen"></i></button>
 								<button class="btn btn-danger  btn-xs" onclick="showFormDeleteisu({{$isu['id']}})"><i class="fa fa-trash"></i></button>
 								</div>
 						</td>
-						<td class="bg-warning"></td>
+						<td class="bg-info">-</td>
 						<td colspan="1" >
-							<div class="btn-group-vertical pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px;
-							border-top:0px; border-right:0px;margin-top:-9px; margin-right: -9px; "></div>
+							<div class="btn-group " ></div>
 						</td>
 
 
-						<td colspan="12"><b>ISU: </b><p>{!!nl2br($isu['uraian'])!!}</p></td>
+						<td colspan="1"><b>ISU: </b><p>{!!nl2br($isu['uraian'])!!}</p></td>
+						<td colspan="11"></td>
 
 					</tr>
 					@foreach($isu['_children'] as $ak)
-						<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}}">
+						<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}}" data-tt-parent-id="isu-{{$isu['id']}}" data-tt-id="ak-{{$ak['id']}}">
 
-							<td class="bg-yellow ket-col" >
+							<td class="bg-primary ket-col" >
 					<h4><b>AK</b></h4>
 				</td>
-							<td class="bg-warning" colspan="">
-								<div class=" btn-group-vertical pull-right action-col">
-									<button   collapse-btn-nested="false" data-target=".ak-{{$ak['id']}}"  class="btn btn-info btn-xs ">
+							<td class="bg-info" colspan="">
+								<div class=" btn-group  ">
+								{{-- 	<button   collapse-btn-nested="false" data-target=".ak-{{$ak['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ARAH KEBIJAKAN" class="fa fa-eye"></i>
-									 ({{count($ak['_indikator'])}})</button>
+									 ({{count($ak['_indikator'])}})</button> --}}
 								<button class="btn btn-success  btn-xs" onclick="showFormCreateIndikator({{$ak['id']}})" >
 								<i  data-toggle="tooltip" data-placement="top" title="TAMBAH INDIKATOR" class="fa fa-plus"></i> IND</button>
 								<button class="btn btn-warning  btn-xs" onclick="showFormUpdateAk({{$ak['id']}})"><i class="fa fa-pen"></i></button>
@@ -102,30 +106,33 @@
 
 								</div>
 							</td>
-							<td class="bg-warning"></td>
+							<td class="bg-info">-</td>
 							<td colspan="1" ></td>
 							<td colspan="">
-								<div class="btn-group-vertical pull-right" style="width:calc(100% + 18px); border:2px solid #f39b12; height: 20px;
-							border-top:0px; border-right:0px;margin-top:-9px; margin-right: -9px; "></div>
+								<div class="btn-group " ></div>
 							</td>
-							<td colspan="11"><b>AK: </b><p>{!!nl2br($ak['uraian'])!!}</p></td>
+							<td colspan=""><b>AK: </b><p>{!!nl2br($ak['uraian'])!!}</p></td>
+							<td colspan="10"></td>
 						</tr>
 
 						@foreach($ak['_indikator'] as $i)
 
-							<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}} ak-{{$ak['id']}} }}">
-								<td class="bg-yellow ket-col"  >
+							<tr class="collapse kn-{{$kn['id']}} isu-{{$isu['id']}} ak-{{$ak['id']}} }}"  data-tt-parent-id="ak-{{$ak['id']}}" data-tt-id="i-{{$i['id']}}">
+								<td class="bg-primary ket-col"  >
 					<h4><b>IND</b></h4>
 				</td>
-								<td colspan="2" class="bg-warning"></td>
-								<td colspan="3">
-									<div class=" btn-group-vertical pull-right action-col">
+								<td  class="bg-info">
+									<div class=" btn-group  ">
 										<button  class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$i['id']}})"><I class="fa fa-eye"  data-toggle="tooltip" data-placement="top" title="DETAIL INDIKATOR" ></I> </button>
 										<button class="btn btn-warning  btn-xs" onclick="showFormUpdateIndikator({{$i['id']}})"><i class="fa fa-pen"></i></button>
 										<button class="btn btn-danger  btn-xs" onclick="showFormDeleteIndikator({{$i['id']}})"><i class="fa fa-trash"></i></button>
 
 										</div>
 								</td>
+								<td colspan="1" class="bg-info">
+									-
+								</td>
+								<td colspan="3"></td>
 								<td>{{$i['_sub_urusan']['nama']}}</td>
 
 								<td><b>{{$i['kode']}}</b></td>
@@ -236,7 +243,8 @@
 		</tbody>
 		<thead class="bg-navy">
 			<tr>
-				<th rowspan="2" colspan="2" style="min-width: 110px;">ACTION</th>
+				<th rowspan="2"  ></th>
+				<th rowspan="2"  style="width: 210px;">ACTION</th>
 				<th colspan="2">KONDISI</th>
 				<th rowspan="2">URAIAN ISU STRATEGIS</th>
 				<th rowspan="2">URAIAN ARAH KEBIJAKAN</th>
@@ -245,9 +253,7 @@
 				<th rowspan="2">PELAKSANA</th>
 			</tr>
 			<tr>
-				<th  >KODE</th>
-
-				<th>URAIAN KONDISI</th>
+				<th colspan="2">URAIAN KONDISI</th>
 
 				<th>SUB URUSAN</th>
 
@@ -277,9 +283,9 @@
 
 
 <script type="text/javascript">
-
-
-
+	
+	$("#data-table").treetable({ expandable: true,column:1,initialState: 'Expand'},true);
+	$("#data-table").reveal();
 
 
 

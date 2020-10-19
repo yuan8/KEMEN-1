@@ -28,7 +28,7 @@
                                 <th>PP</th>
                                 <th></th>
                                 <th>KP</th>
-                                <th>ANGGARAN  </th>
+                                <th>ANGGARAN</th>
                                
                             </tr>
                         </thead>

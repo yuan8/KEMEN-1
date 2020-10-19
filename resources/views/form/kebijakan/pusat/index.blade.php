@@ -37,8 +37,8 @@
                 @if($id_sub_urusan!=$kb->id)
                   <tr class="">
                    
-                    <td>{{$kb->nama}}</td>
-                    <td colspan="6" class="text-center bg bg-success">
+                    <td style="width: 200px;">{{$kb->nama}}</td>
+                    <td colspan="6" class="text-center bg bg-success" >
                       <button class="btn btn-success btn-sm" onclick="tambah_mandat.build('{{$kb->nama}}','{{route('kebijakan.pusat.store.mandat',['id'=>$kb->id])}}')"> <i class="fa fa-plus"></i> MANDAT </button>
                        
                     </td>
@@ -48,17 +48,15 @@
                   ?>               
                 @endif
                  @if(($id_mandat!=$kb->id_mandat)&&(!empty($kb->id_mandat)))
-                 <script type="text/javascript">
-
-                        var kbm_{{$kb->id_mandat}}=<?php echo json_encode((array)$kb,true);?>;
-                        var m_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}};
-                        var kbuu_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.uu||'';
-                        var kbpermen_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.permen||'';
-                        var kbperpres_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.perpres||'';
-                        var kbpp_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.pp||'';
-                        var kbm_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.mandat||'';
-
-                      </script>
+                   <script type="text/javascript">
+                          var kbm_{{$kb->id_mandat}}=<?php echo json_encode((array)$kb,true);?>;
+                          var m_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}};
+                          var kbuu_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.uu||'';
+                          var kbpermen_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.permen||'';
+                          var kbperpres_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.perpres||'';
+                          var kbpp_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.pp||'';
+                          var kbm_{{$kb->id_mandat}}=kbm_{{$kb->id_mandat}}.mandat||'';
+                    </script>
 
                   <tr class="">
                     <td colspan="1"></td>
@@ -171,18 +169,17 @@
               <tr class="">
                 <th>SUB URUSAN</th>
                 <th></th>
-                <th>MANDAT</th>
-                <th>UU</th>
-                <th>PP</th>
-                <th>PERPRES</th>
-                <th>PERMEN</th>
+                <th style="min-width: 250px;">MANDAT</th>
+                <th style="min-width: 250px;">UU</th>
+                <th style="min-width: 250px;">PP</th>
+                <th style="min-width: 250px;">PERPRES</th>
+                <th style="min-width: 250px;">PERMEN</th>
               </tr>
             </thead>
 
 		  		</table>
   			</div>
   		</div>
-      {{$kebijakan->links()}}
   	</div>
   </div>
 
