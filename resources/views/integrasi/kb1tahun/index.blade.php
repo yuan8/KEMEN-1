@@ -9,6 +9,15 @@
     	</div>
 
     </div>
+    <style media="screen">
+      tr .btn-group{
+        display: none;
+      }
+
+      tr:hover .btn-group{
+        display: block;
+      }
+    </style>
 @stop
 
 

@@ -44,7 +44,7 @@ class HelperProvider extends ServiceProvider
                 $r='SPM';
                 # code...
                 break;
-            
+
             default:
                 # code...
             $r='LAIN-LAIN';
@@ -89,7 +89,7 @@ class HelperProvider extends ServiceProvider
                 break;
         }
         return $p;
-    
+
     }
 
 
@@ -108,7 +108,7 @@ class HelperProvider extends ServiceProvider
 
         if(($poin_start+4)>=$tahun){
             $index=($poin_start - $tahun)+1;
-            
+
         }else{
               do{
                 $poin_start+=5;
@@ -132,7 +132,7 @@ class HelperProvider extends ServiceProvider
             'table'=>static::get_rpjmn_table(null,$tahun),
             'table_indikator'=>static::get_rpjmn_table('indikator',$tahun),
         ];
-        
+
     }
 
     static function get_rpjmn_table($tambahan=null,$tahun=null){
@@ -167,8 +167,8 @@ class HelperProvider extends ServiceProvider
 
         return ('master_'.(($poin_start)).'_'.$point_finish.'_rpjmn'.(!empty($tambahan)?'_'.$tambahan:'') );
 
-       
-       
+
+
     }
 
 
@@ -187,30 +187,29 @@ class HelperProvider extends ServiceProvider
     }
 
 
-    static function ToObject($Array) { 
-      
-    // Create new stdClass object 
-    $object = new \stdClass(); 
-      
-    // Use loop to convert array into 
-    // stdClass object 
-    foreach ($Array as $key => $value) { 
-        if (is_array($value)) { 
-            $value = static::ToObject($value); 
-        } 
-        $object->$key = $value; 
-    } 
-    return $object; 
-    } 
+    static function ToObject($Array) {
+
+    // Create new stdClass object
+    $object = new \stdClass();
+
+    // Use loop to convert array into
+    // stdClass object
+    foreach ($Array as $key => $value) {
+        if (is_array($value)) {
+            $value = static::ToObject($value);
+        }
+        $object->$key = $value;
+    }
+    return $object;
+    }
 
     static function checked(){
         if(empty(session('fokus_tahun'))){
-            // dd((session('fokus_tahun')));
 
             header("Location: ".url('meta-login-user'));
             exit();
         }else{
-            
+
             // dd((session('fokus_tahun')));
         }
 
@@ -244,7 +243,7 @@ class HelperProvider extends ServiceProvider
     }
     static function fokus_urusan(){
        if(Auth::User()){
-        
+
         static::checked();
 
          $urusan=(array)(session('fokus_urusan'));
@@ -303,7 +302,7 @@ class HelperProvider extends ServiceProvider
                 CONSTRAINT map_nomen_pro_".$tahun."_tahun_kode_daerah_id_nomen_unique UNIQUE (tahun, kode_daerah, id_nomen)
 
                 );
-               
+
             ");
             DB::statement(" CREATE INDEX map_nomen_pro_".$tahun."_id_nomen_index ON public.map_nomen_pro_".$tahun." USING btree (id_nomen);");
             DB::statement(" CREATE INDEX map_nomen_pro_".$tahun."_kode_daerah_index ON public.map_nomen_pro_".$tahun." USING btree (kode_daerah);");
@@ -329,7 +328,7 @@ class HelperProvider extends ServiceProvider
                 CONSTRAINT map_nomen_kab_".$tahun."_tahun_kode_daerah_id_nomen_unique UNIQUE (tahun, kode_daerah, id_nomen)
 
                 );
-               
+
             ");
             DB::statement(" CREATE INDEX map_nomen_kab_".$tahun."_id_nomen_index ON public.map_nomen_kab_".$tahun." USING btree (id_nomen);");
             DB::statement(" CREATE INDEX map_nomen_kab_".$tahun."_kode_daerah_index ON public.map_nomen_kab_".$tahun." USING btree (kode_daerah);");
@@ -605,7 +604,7 @@ class HelperProvider extends ServiceProvider
         $range=$sekarang-$awal;
         // 0
         $range=ceil($range / 4);
-  
+
         if($range!=0){
         $ahir=((int)$range * 4 )+$awal+($range-1);
         $awal=$ahir-5;
@@ -614,7 +613,7 @@ class HelperProvider extends ServiceProvider
             $awal=$ahir-4;
         }
         // 2024
-        
+
         // 2020
 
         $data=[];
@@ -624,7 +623,7 @@ class HelperProvider extends ServiceProvider
         }
 
         return $data;
-        
+
 
     }
 

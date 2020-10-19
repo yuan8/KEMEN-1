@@ -39,11 +39,11 @@ class AppServiceProvider extends ServiceProvider
 
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
             $event->menu->add('PUSAT');
-            
-            $event->menu->add([
-                'text'=>'SPM',
-                'url'=>route('int.spm.index')
-            ]);
+
+            // $event->menu->add([
+            //     'text'=>'SPM',
+            //     'url'=>route('int.spm.index')
+            // ]);
             $event->menu->add([
                 'text' => 'KEBIJAKAN PUSAT',
                 'url'=>route('kebijakan.pusat.index')
@@ -77,7 +77,7 @@ class AppServiceProvider extends ServiceProvider
                 'text' => 'INDENTIFIKASI KEBIJAKAN',
                 // 'icon'=>'fa-number-1',
                 'url'=>route('kebijakan.daerah.index')
-                
+
 
             ]);
 
@@ -98,7 +98,7 @@ class AppServiceProvider extends ServiceProvider
 
             $event->menu->add('INTEGRASI');
 
-        
+
             $event->menu->add([
                 'text' => 'MASTER NOMENLATUR',
                 'submenu'=>[
@@ -126,15 +126,15 @@ class AppServiceProvider extends ServiceProvider
 
 
             // $event->menu->add('PENILAIAN INTEGRASI');
-            
-           
-
-            
 
 
-         
 
-       
+
+
+
+
+
+
 
             // $event->menu->add([
             //     'text' => 'INTEGRASI',
@@ -197,7 +197,7 @@ class AppServiceProvider extends ServiceProvider
             //             ]
 
             //         ],
-                    
+
             //     ]
 
             // ]);
