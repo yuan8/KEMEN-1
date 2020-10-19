@@ -12,6 +12,9 @@
 
 
 @section('content')
+<h1 class="text-center"><b>DUKUNGAN KEBIJAKAN PUSAT KE DAERAH</b></h1>
+<hr>
+
 <div class="container">
 	<div class="row" style="margin-bottom: 10px;">
 		<div class="col-md-3">
@@ -61,9 +64,9 @@
 						<thead>
 							<tr>
 								<th>NAMA PEMDA</th>
-								<th>JUMLAH PROGRAM</th>
-								<th>JUMLAH KEGIATAN</th>
-								<th>PAGU</th>
+								<th>JUMLAH KEBIJAKAN TERIMPLEMENTASI</th>
+								<th>JUMLAH KEBIJAKAN BELUM TERIMPLEMENTASI</th>
+								<th>ACTION</th>
 
 
 
@@ -76,7 +79,9 @@
 								<td>PROVINSI ACEH</td>
 								<td>7</td>
 								<td>11</td>
-								<td>Rp. 300,0000,0000</td>
+								<td>
+									<a href="{{route('v.kebijakan.detail',['tahun'=>$tahun,'kodepemda'=>11])}}" class="btn btn-success btn-sm">Detail</a>
+								</td>
 
 
 
@@ -110,7 +115,7 @@
                     backgroundColor: 'transparent',
                 },
                 title: {
-                    text: 'RKPD 2020',
+                    text: 'KESUSUAIAN KEBIAJAKAN PUSAT TINGKAT PROVINSI',
                     style:{
                         color:'#222'
                     },
@@ -429,7 +434,7 @@ Highcharts.chart('chart', {
         type: 'bar'
     },
     title: {
-        text: 'RKPD 2020'
+        text: 'KESUSUAIAN KEBIAJAKAN PUSAT TINGKAT KAB/KOTA'
     },
     xAxis: {
         categories: ['PROVINSI ACEH', 'PROVINSI SUMATRA UTARA', 'PROVINSI SUMATRA BARAT', 'PROVINSI RIAU', 'PROVINSI JAMBI','PROVINSI SUMATRA SELATAN','PROVINSI BENGKULU','PROVINSI LAMPUNG','PROVINSI KEPULAUAN BANGKABELITUNG','PROVINSI KEPULAUAN RIAU','PROVINSI DKI JAKARTA','PROVINSI JAWA BARAT','PROVINSI JAWA TENGAH','DAERAH ISTIMEWA YOGYAKARTA','PROVINSI JAWA TIMUR','PROVINSI BANTEN','PROVINSI BALI','PROVINSI NUSA TENGGARA BARAT','PROVINSI NUSA TENGGARA TIMUR','PROVINSI KALIMANTAN BARAT','PROVINSI KALIMANTAN TENGAH','PROVINSI KALIMANTAN SELATAN','PROVINSI KALIMANTAN TIMUR','PROVINSI SULAWESI UTARA','PROVINSI SULAWESI TENGAH','PROVINSI SULAWESI SELATAN','PROVINSI SULAWESI TENGGARA','PROVINSI GORONTALO','PROVINSI SULAWESI BARAT','PROVINSI MALUKU','PROVINSI MALUKU UTARA','PROVINSI PAPUA BARAT','PROVINSI PAPUA','PROVINSI KALIMANTAN UTARA']
@@ -449,12 +454,12 @@ Highcharts.chart('chart', {
         }
     },
     series: [{
-        name: 'DAERAH MELAPORKAN RKPD',
+        name: 'KEBIJAKAN DAERAH SUDAH TERIMPLEMENTASI',
         color:'green',
         data: [5, 2, 1, 3, 2,5, 2, 1, 3, 2,5, 2, 1, 3, 2,5, 2, 1, 3, 2,5, 2, 1, 3, 2,5, 2, 1, 3]
     },
     {
-        name: 'DAERAH TIDAK MELAPORKAN RKPD',
+        name: 'KEBIJAKAN DAERAH BELUM TERIMPLEMENTASI',
         color:'red',
         data: [3, 3, 4, 1, 9,3, 3, 4, 1, 9,3, 3, 4, 1, 9,3, 3, 4, 1, 9,3, 3, 4, 1, 9,3, 3, 4, 1]
     }]

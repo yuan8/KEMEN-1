@@ -11,8 +11,8 @@
 @stop
 
 @section('content')
-<div class="btn-group">
-	<button class="btn btn-primary" onclick="$('#modal-tabah-jenis-pelayanan').modal()">TAMBAH JENIS PELAYANAN</button>
+<div class="btn-group" style="margin-bottom: 10px;">
+	<button class="btn btn-primary btn-sum" onclick="$('#modal-tabah-jenis-pelayanan').modal()">TAMBAH JENIS PELAYANAN</button>
 </div>
 
 

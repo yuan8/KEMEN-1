@@ -9,44 +9,38 @@
     	</div>
     	<div class="col-md-4">
     		<br>
-    		<div class="btn-group pull-right">
-    			<a href="{{route('int.pelurusan.download',['pdf'=>'export'])}}" class="full-w btn btn-success btn-xs" >DOWNLOAD  DATA</a>
-    			<button class="full-w btn btn-xs btn-success" onclick="showFromCreateKewenangan()">TAMBAH KEWENANGAN</button>
     		
-    		</div>
     	</div>
     	
     </div>
+       <link rel="stylesheet" type="text/css" href="{{asset('bower_components/jquery-treetable/css/jquery.treetable.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{asset('bower_components/jquery-treetable/css/jquery.treetable.theme.default.css')}}">
+	<script type="text/javascript" src="{{asset('bower_components/jquery-treetable/jquery.treetable.js')}}"></script>
+	<style type="text/css">
+		.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+			vertical-align:middle!important;
+		}
+	</style>
 @stop
 
 
 @section('content')
-	
-	<table class="table bg-white table-bordered table-hover" id="data_pelaksanaan_table">
-		<thead class="bg-navy">
-			<tr>
-				<th rowspan="2" >ACTION</th>
-				<th rowspan="2" >SUB URUSAN</th>
-				<th rowspan="2">KEWENANGAN PUSAT</th>
-				<th rowspan="2">KEWENANGAN PROVINSI</th>
-				<th rowspan="2">KEWENANGAN KOTA / KAB</th>
-				<th colspan="5">INDIKATOR</th>
-			</tr>
-			<tr>
-				<th >JENIS</th>
-				<th >KODE</th>
-				<th >INDIKATOR</th>
-				<th >TARGET</th>
-				<th >SATUAN</th>
+	<div class="btn-group btn-group" style="margin-bottom: 10px;">
+    			<button class="full-w btn btn-sm btn-primary" onclick="showFromCreateKewenangan()">TAMBAH KEWENANGAN</button>
 
-			</tr>
-			
-		</thead>
+    			<a href="{{route('int.pelurusan.download',['pdf'=>'export'])}}" class="full-w btn btn-success btn-sm" >DOWNLOAD  DATA</a>
+    		
+    		</div>
+	<table class="table bg-white table-bordered table-hover" id="data_pelaksanaan_table">
+	
 		<tbody>
 			@foreach($data as $k)
-			<tr>
+			<tr data-tt-id="kn-{{$k['id']}}" >
+				<td class="bg-primary">
+					<h5><b>KEWENANGAN</b></h5>
+				</td>
 				<td>
-					<div class=" pull-right">
+					<div class=" btn-group">
 						<button   collapse-btn-nested="false" data-target=".k-{{$k['id']}}"  class="btn btn-info btn-xs ">
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL INDIKATOR KEWENANGAN" class="fa fa-eye"></i>
 							 ({{count($k['_indikator'])}})</button>
@@ -73,14 +67,21 @@
 			</tr>
 
 			@foreach($k['_indikator'] as $i)
-				<tr class="k-{{$k['id']}}">
-					<td colspan="5">
-						<div class="pull-right">
+			@php	
+
+			@endphp
+				<tr class="k-{{$k['id']}}" data-tt-id="i-{{$i['id']}}" data-tt-parent-id="kn-{{$i['id_kewenangan']}}">
+					<td class="bg-primary">
+					<h5><b>INDIKATOR</b></h5>
+				</td>
+					<td colspan="">
+						<div class="btn-group">
 							 <button class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$i['id']}})"><i class="fa fa-eye"></i></button>
 							 <button class="btn btn-warning btn-xs" onclick="showFormUpdateIndikator({{$i['id']}})"><i class="fa fa-pen"></i></button>
 							<button class="btn btn-danger  btn-xs" onclick="showFormDeleteIndikatorKW({{$i['id']}})"><i class="fa fa-trash"></i></button>
 						</div>
 					</td>
+					<td colspan="4"></td>
 					<td>{{$i->_sumber()}}</td>
 					
 					<td>{{$i->kode}}</td>
@@ -111,6 +112,26 @@
 
 			@endforeach
 		</tbody>
+			<thead class="bg-navy">
+			<tr>
+				<th rowspan="2"></th>
+				<th rowspan="2" style="width: 250px;" >ACTION</th>
+				<th rowspan="2" >SUB URUSAN</th>
+				<th rowspan="2">KEWENANGAN PUSAT</th>
+				<th rowspan="2">KEWENANGAN PROVINSI</th>
+				<th rowspan="2">KEWENANGAN KOTA / KAB</th>
+				<th colspan="5">INDIKATOR</th>
+			</tr>
+			<tr>
+				<th >JENIS</th>
+				<th >KODE</th>
+				<th >INDIKATOR</th>
+				<th >TARGET</th>
+				<th >SATUAN</th>
+
+			</tr>
+			
+		</thead>
 	</table>
 
 @stop
@@ -118,9 +139,10 @@
 @section('js')
 
 <script type="text/javascript">
-	$('#data_pelaksanaan_table').dataTable({
-		sort:false
-	});
+	
+	$("#data_pelaksanaan_table").treetable({ expandable: true,column:1,initialState: 'Expand'},true);
+	$("#data_pelaksanaan_table").reveal();
+
 
 
 

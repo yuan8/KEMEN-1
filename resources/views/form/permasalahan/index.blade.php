@@ -14,31 +14,22 @@
 
 @section('content')
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="box box-warning">
-        <div class="box-body">
-          <div class="pull-left">
-            <h5><b>PEMETAAN PERMASALAHAN</b></h5>
-          </div>
-          <div class="pull-right">
-            <a href="{{route('int.permasalahan.mpokok')}}" class="btn btn-success btn-xs">PERMASALAHAN POKOK</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+
+<div class="btn-group" style="margin-bottom: 10px;">
+   <a href="{{route('int.permasalahan.mpokok')}}" class="btn btn-primary btn-sm">PERMASALAHAN POKOK</a>
+</div>  
   
   <div class="row">
   	<div class="col-md-12">
-  		<div class="box box-success">
+  		<div class="box box-solid">
   			<div class="box-body ">
   				<table class="table  table-bordered" id="table-pro">
 		  			<thead>
-		  				<tr>
+		  				<tr class="bg-navy">
 		  					<th>KODE</th>
 		  					<th>NAMA DAERAH</th>
-                <th>TERDAPAT DATA</th>
+                <th>STATUS</th>
 
                 <th>ACTION</th>
 
@@ -81,6 +72,8 @@
   <script type="text/javascript">
     $('#table-pro').DataTable({
       sort:false,
+          "lengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
+
 
     });
 
@@ -92,7 +85,8 @@
       $('#content-kota-table').html(res);
       setTimeout(function(){
         $('#table-kota').DataTable({
-          sort:false
+          sort:false,
+
         },100);
       })
     });

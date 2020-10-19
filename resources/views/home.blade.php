@@ -18,7 +18,11 @@
 
     <style type="text/css">
     	.content{
+            @if(config('adminlte.skin')=='yellow')
     		 background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%) !important;
-    	}
+    	   @else
+            background-image: linear-gradient( 109.6deg,  rgba(121,203,202,1) 11.2%, rgba(119,161,211,1) 91.1% );
+           @endif
+        }
     </style>
 @stop

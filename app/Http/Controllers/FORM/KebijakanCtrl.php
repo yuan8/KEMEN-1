@@ -31,12 +31,10 @@ class KebijakanCtrl extends Controller
         ->where('man.tahun',$tahun)
         ->orderBy('su.id','ASC')
         ->orderBy('man.id','DESC')
+        ->get();
 
 
-        ->paginate(10);
-
-
-    	return view('form.kebijakan.pusat.index')->with('kebijakan',$kebijakan);
+    	return view('integrasi.mandat.pusat.index')->with('kebijakan',$kebijakan);
     }
 
 
@@ -157,7 +155,7 @@ class KebijakanCtrl extends Controller
         return back();
 
 
-    	// return view('form.kebijakan.pusat.tambah');
+    	// return view('integrasi.mandat.pusat.tambah');
     }
 
     public function store_pp($id_sub_urusan,$id_mandat,Request $request){
@@ -220,7 +218,7 @@ class KebijakanCtrl extends Controller
         return back();
 
 
-        // return view('form.kebijakan.pusat.tambah');
+        // return view('integrasi.mandat.pusat.tambah');
     }
 
     public function store_perpres($id_sub_urusan,$id_mandat,Request $request){
@@ -277,7 +275,7 @@ class KebijakanCtrl extends Controller
         return back();
 
 
-        // return view('form.kebijakan.pusat.tambah');
+        // return view('integrasi.mandat.pusat.tambah');
     }
 
     public function store_permen($id_sub_urusan,$id_mandat,Request $request){
@@ -334,7 +332,7 @@ class KebijakanCtrl extends Controller
         return back();
 
 
-        // return view('form.kebijakan.pusat.tambah');
+        // return view('integrasi.mandat.pusat.tambah');
     }
 
 
@@ -570,7 +568,7 @@ class KebijakanCtrl extends Controller
 
        
 
-    	return view('form.kebijakan.daerah.index',['data'=>$data]);
+    	return view('integrasi.mandat.daerah.index',['data'=>$data]);
 
     }
 
@@ -599,7 +597,7 @@ class KebijakanCtrl extends Controller
 
 
 
-    	return view('form.kebijakan.daerah.view')->with('daerah',$daerah)->with('datas',$data)->with('kode_daerah',$id)->with('back_link',route('kebijakan.daerah.index'));
+    	return view('integrasi.mandat.daerah.view')->with('daerah',$daerah)->with('datas',$data)->with('kode_daerah',$id)->with('back_link',route('kebijakan.daerah.index'));
     }
 
      public function store_perda($id_sub_urusan,$id_mandat,Request $request){
@@ -707,7 +705,7 @@ class KebijakanCtrl extends Controller
         return back();
 
 
-        // return view('form.kebijakan.pusat.tambah');
+        // return view('integrasi.mandat.pusat.tambah');
     }
 
 
@@ -720,7 +718,7 @@ class KebijakanCtrl extends Controller
 			->get();
     	}
 
-    	return view('form.kebijakan.daerah.api.table_kota')->with('daerahs',$return)->render();
+    	return view('integrasi.mandat.daerah.api.table_kota')->with('daerahs',$return)->render();
 
     }
 
@@ -1007,7 +1005,7 @@ class KebijakanCtrl extends Controller
         return back();
 
 
-        // return view('form.kebijakan.pusat.tambah');
+        // return view('integrasi.mandat.pusat.tambah');
     }
 
 
@@ -1207,7 +1205,7 @@ public function store_lainnya($id_sub_urusan,$id_mandat,Request $request){
         return back();
 
 
-        // return view('form.kebijakan.pusat.tambah');
+        // return view('integrasi.mandat.pusat.tambah');
     }
 
 }

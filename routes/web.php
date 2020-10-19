@@ -28,9 +28,23 @@ include __dir__.'/webSISTEM_RKPD.php';
 Route::get('/', 'LoginBarcodeCtrl@landing');
 
 Route::prefix('dashboard')->group(function(){
-	Route::get('/', 'DASHBOARD\HomeCtrl@index');
-	Route::get('/dukungan-kebijakan-nasional', 'DASHBOARD\DukunganKebijakanCtrl@index');
+	Route::prefix('rkpd')->group(function(){
+		Route::prefix('api')->group(function(){
+			Route::get('perpemda/{kodepemda}','DASHBOARD\HomeCtrl@api_pemda')->name('v.api.rkpd.pemda');
+		});
+		Route::get('/', 'DASHBOARD\HomeCtrl@index');
+		Route::get('/pemda/{kodepemda}', 'DASHBOARD\HomeCtrl@pemda')->name('v.rkpd.pemda');
+		Route::get('/detail/{tahun}/{kodepemda}', 'DASHBOARD\HomeCtrl@detail')->name('v.rkpd.detail');
+		Route::get('/detail-program/{tahun}/{kodepemda}', 'DASHBOARD\HomeCtrl@program')->name('v.rkpd.detail.program');
 
+
+	});
+	Route::prefix('dukungan-kebijakan')->group(function(){
+	Route::get('/', 'DASHBOARD\DukunganKebijakanCtrl@index');
+	Route::get('/detail/{tahun}/{kodepemda}', 'DASHBOARD\DukunganKebijakanCtrl@detail')->name('v.kebijakan.detail');
+
+
+	});
 
 });
 
@@ -81,48 +95,7 @@ Route::prefix('form')->middleware(['auth:web','can:ifAlive'])->group(function(){
 
 	// -----------------------------------------------------------------------------------
 
-		Route::prefix('kebijakan-pusat/')->group(function(){
-			Route::get('/', 'FORM\KebijakanCtrl@index')->name('kebijakan.pusat.index');
-
-			Route::delete('/delete/mandat/{id}', 'FORM\KebijakanCtrl@delete_mandat')->name('kebijakan.pusat.delete');
-
-			Route::post('/tambah/sub/{id}/mandat/', 'FORM\KebijakanCtrl@store_mandat')->name('kebijakan.pusat.store.mandat');
-
-			Route::put('/update/sub/{id}/mandat/{id_mandat}', 'FORM\KebijakanCtrl@update_mandat')->name('kebijakan.pusat.update');
-
-			Route::post('/tambah/sub/{id}/mandat/{mandat}/uu', 'FORM\KebijakanCtrl@store_uu')->name('kebijakan.pusat.store.mandat.uu');
-
-			Route::post('/tambah/sub/{id}/mandat/{mandat}/pp', 'FORM\KebijakanCtrl@store_pp')->name('kebijakan.pusat.store.mandat.pp');
-
-			Route::post('/tambah/sub/{id}/mandat/{mandat}/perpres', 'FORM\KebijakanCtrl@store_perpres')->name('kebijakan.pusat.store.mandat.perpres');
-
-			Route::post('/tambah/sub/{id}/mandat/{mandat}/permen', 'FORM\KebijakanCtrl@store_permen')->name('kebijakan.pusat.store.mandat.permen');
-			Route::post('/tambah/sub/{id}/mandat/{mandat}/lainnya', 'FORM\KebijakanCtrl@store_lainnya')->name('kebijakan.daerah.store.mandat.lainnya');
-
-
-		});
-
-
-		Route::prefix('kebijakan-daerah/')->group(function(){
-			Route::get('/', 'FORM\KebijakanCtrl@index_daerah')->name('kebijakan.daerah.index');
-
-			Route::get('/tambah', 'FORM\KebijakanCtrl@create_daerah')->name('kebijakan.daerah.create');
-
-			Route::get('/fokus/{id}', 'FORM\KebijakanCtrl@view_daerah')->name('kebijakan.daerah.view.daerah');
-
-			Route::post('/tambah/sub/{id}/mandat/{mandat}/perda', 'FORM\KebijakanCtrl@store_perda')->name('kebijakan.daerah.store.mandat.perda');
-
-			Route::post('/tambah/sub/{id}/mandat/{mandat}/perkada', 'FORM\KebijakanCtrl@store_perkada')->name('kebijakan.daerah.store.mandat.perkada');
-			Route::post('/tambah/sub/{id}/mandat/{mandat}/lainnya', 'FORM\KebijakanCtrl@store_lainnya')->name('kebijakan.daerah.store.mandat.lainnya');
-
-
-			Route::put('/tambah/sub/kesesuian/{id}', 'FORM\KebijakanCtrl@update_kesesuaian')->name('kebijakan.daerah.store.mandat.update.kesesuian');
-
-			Route::put('/tambah/sub/kesesuian/delete/{id}', 'FORM\KebijakanCtrl@delete_kesesuaian')->name('kebijakan.daerah.store.mandat.delete.kesesuian');
-
-
-		});
-
+		
 		Route::prefix('permasalahan/')->group(function(){
 			Route::get('/', 'FORM\PermasalahanCtrl@index')->name('permasalahan.index');
 
