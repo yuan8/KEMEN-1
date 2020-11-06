@@ -41,7 +41,7 @@ class HomeCtrl extends Controller
     }
 
     public function index($tahun=null){
-        if($tahun){
+        if(is_numeric($tahun){
             $data=DB::connection('bot')->table('public.master_daerah as d')
             ->leftjoin('rkpd.master_'.$tahun.'_status_data as st',[['d.id','=','st.kodepemda'],['st.status','>',DB::raw(0)]])
             ->selectRaw("min(d.id) as id,REPLACE((select p.nama from master_daerah as p where p.id=min(d.id)),'PROVINSI ','') as nama_pemda,count(distinct(d.id)) as jumlah_pemda,count(distinct(st.kodepemda)) as jumlah_pemda_melapor,(count(distinct(d.id))-count(distinct(st.kodepemda))) as jumlah_pemda_tidak_melapor,
