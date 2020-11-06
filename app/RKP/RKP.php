@@ -14,7 +14,7 @@ class RKP extends Model
 {
     //
 
-    protected $with = ['_rowspan'];
+    // protected $with = ['_rowspan'];
     
     protected $connection = 'rkp';
     protected $table='rkp.master_rkp';
@@ -23,19 +23,19 @@ class RKP extends Model
     
 
     public function _child_pp(){
-    	return $this->hasMany($this,'id_pn')->where('jenis',2)->with('_tag_indikator._indikator');
+    	return $this->hasMany($this,'id_pn')->where('jenis',2)->orderBy('id','desc')->with('_tag_indikator._indikator');
     }
 
     public function _child_kp(){
-    	return $this->hasMany($this,'id_pp')->where('jenis',3)->with('_tag_indikator._indikator');;
+    	return $this->hasMany($this,'id_pp')->where('jenis',3)->orderBy('id','desc')->with('_tag_indikator._indikator');;
     }
 
     public function _child_propn(){
-    	return $this->hasMany($this,'id_kp')->where('jenis',4)->with('_tag_indikator._indikator');;
+    	return $this->hasMany($this,'id_kp')->where('jenis',4)->orderBy('id','desc')->with('_tag_indikator._indikator');;
     }
 
     public function _child_proyek(){
-    	return $this->hasMany($this,'id_propn')->where('jenis',5)->with('_tag_indikator._indikator');;
+    	return $this->hasMany($this,'id_propn')->where('jenis',5)->orderBy('id','desc')->with('_tag_indikator._indikator');;
     }
 
 
@@ -71,9 +71,9 @@ class RKP extends Model
         return $this->hasMany(REKOMENDASIKAB::class,'id_rkp')->where('jenis',1);
     }
 
-    public function _rowspan(){
-        return $this->hasOne(RKPROWSPAN::class,'id');
-    }
+    // public function _rowspan(){
+    //     return $this->hasOne(RKPROWSPAN::class,'id');
+    // }
 
 
 }

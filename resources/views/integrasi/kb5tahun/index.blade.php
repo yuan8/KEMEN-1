@@ -39,8 +39,9 @@
 				<td class="bg-primary ket-col" >
 					<h4><b>KN</b></h4>
 				</td>
+					
 					<td class="bg-info">
-						<div class=" btn-group   ">
+						<div style="width:100px;" class=" btn-group   ">
 							{{-- <button collapse-btn-nested="false" data-target=".kn-{{$kn['id']}}"  class="btn btn-info btn-xs kn">
 								<i data-toggle="tooltip" data-placement="top" title="DETAIL KONDISI SAAT INI" class="fa fa-eye"></i> ({{count($kn['_children'])}})</button> --}}
 							<button class="btn btn-success  btn-xs" data="TAMBAH ISU STRATEGIS" onclick="showFormCreateisu({{$kn['id']}})">
@@ -66,8 +67,9 @@
 					<td class="bg-primary ket-col" >
 					<h4><b>ISU</b></h4>
 					</td>
+					
 						<td class="bg-info" colspan="">
-								<div class=" btn-group  ">
+								<div style="width:100px;" class=" btn-group  ">
 									{{-- <button  collapse-btn-nested="false" data-target=".isu-{{$isu['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ISU STRATEGIS" class="fa fa-eye"></i>
 									 ({{count($isu['_children'])}})</button> --}}
@@ -93,8 +95,9 @@
 							<td class="bg-primary ket-col" >
 					<h4><b>AK</b></h4>
 				</td>
+				
 							<td class="bg-info" colspan="">
-								<div class=" btn-group  ">
+								<div style="width:100px;" class=" btn-group  ">
 								{{-- 	<button   collapse-btn-nested="false" data-target=".ak-{{$ak['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL ARAH KEBIJAKAN" class="fa fa-eye"></i>
 									 ({{count($ak['_indikator'])}})</button> --}}
@@ -121,8 +124,9 @@
 								<td class="bg-primary ket-col"  >
 					<h4><b>IND</b></h4>
 				</td>
+				
 								<td  class="bg-info">
-									<div class=" btn-group  ">
+									<div style="width:100px;" class=" btn-group  ">
 										<button  class="btn btn-info btn-xs" onclick="showFormDetailIndikator({{$i['id']}})"><I class="fa fa-eye"  data-toggle="tooltip" data-placement="top" title="DETAIL INDIKATOR" ></I> </button>
 										<button class="btn btn-warning  btn-xs" onclick="showFormUpdateIndikator({{$i['id']}})"><i class="fa fa-pen"></i></button>
 										<button class="btn btn-danger  btn-xs" onclick="showFormDeleteIndikator({{$i['id']}})"><i class="fa fa-trash"></i></button>

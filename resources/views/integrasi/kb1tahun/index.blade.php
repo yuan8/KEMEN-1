@@ -5,15 +5,13 @@
      <div class="row">
     	<div class="col-md-8">
     		<h3 class="text-uppercase">IDENTIFIKASI KEBIJAKAN TAHUNAN ({{Hp::fokus_tahun()}})</h3>
-
     	</div>
-
     </div>
     <style media="screen">
       tr .btn-group{
         display: none;
       }
-
+      
       tr:hover .btn-group{
         display: block;
       }
@@ -67,7 +65,7 @@
 			@endphp
 			<tr >
 
-				<td rowspan="{{$pn['_rowspan']['rowspan']+1}}" style="min-width:180px;" >
+				<td rowspan="" style="min-width:180px;" >
 
 					<div class=" btn-group ">
 
@@ -170,7 +168,7 @@
 			@endforeach
 			@foreach($pn['_child_pp'] as $pp)
 				<tr class="pn-{{$pn['id']}}">
-					<td rowspan="{{$pp['_rowspan']['rowspan']+1}}">
+					<td rowspan="">
 						<div class=" btn-group ">
 							<button   collapse-btn-nested="false" data-target=".pp-{{$pp['id']}}"  class="btn btn-info btn-xs ">
 									<i data-toggle="tooltip" data-placement="top" title="DETAIL PP" class="fa fa-eye"></i>
@@ -272,7 +270,7 @@
 
 
 
-						<td  rowspan="{{$kp['_rowspan']['rowspan']+1}}">
+						<td  rowspan="">
 							<div class=" btn-group">
 								<button   collapse-btn-nested="false" data-target=".kp-{{$kp['id']}}"  class="btn btn-info btn-xs ">
 										<i data-toggle="tooltip" data-placement="top" title="DETAIL KP" class="fa fa-eye"></i>
@@ -373,7 +371,7 @@
 
 
 
-							<td colspan="" rowspan="{{$propn['_rowspan']['rowspan']+1}}">
+							<td colspan="" rowspan="">
 								<div class=" btn-group">
 										<button   collapse-btn-nested="false" data-target=".propn-{{$propn['id']}}"  class="btn btn-info btn-xs ">
 												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROPN" class="fa fa-eye"></i>
@@ -466,7 +464,7 @@
 						@foreach($propn['_child_proyek'] as $proyek)
 							<tr class="kp-{{$kp['id']}} pp-{{$pp['id']}} pn-{{$pn['id']}} propn-{{$propn['id']}}">
 
-								<td rowspan="{{$proyek['_rowspan']['rowspan']+1}} class="bg-warning" >
+								<td class="bg-warning" >
 									<div class=" btn-group ">
 										<button   collapse-btn-nested="false" data-target=".proyek-{{$proyek['id']}}"  class="btn btn-info btn-xs ">
 												<i data-toggle="tooltip" data-placement="top" title="DETAIL PROYEK" class="fa fa-eye"></i> ({{count($propn['_child_proyek'])}})

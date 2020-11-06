@@ -27,12 +27,12 @@ include __dir__.'/webSISTEM_RKPD.php';
 
 Route::get('/', 'LoginBarcodeCtrl@landing');
 
-Route::prefix('dashboard')->group(function(){
+Route::prefix('dashboard/{tahun}')->group(function(){
 	Route::prefix('rkpd')->group(function(){
 		Route::prefix('api')->group(function(){
 			Route::get('perpemda/{kodepemda}','DASHBOARD\HomeCtrl@api_pemda')->name('v.api.rkpd.pemda');
 		});
-		Route::get('/', 'DASHBOARD\HomeCtrl@index');
+		Route::get('/', 'DASHBOARD\HomeCtrl@index')->name('v.rkpd.prov');
 		Route::get('/pemda/{kodepemda}', 'DASHBOARD\HomeCtrl@pemda')->name('v.rkpd.pemda');
 		Route::get('/detail/{tahun}/{kodepemda}', 'DASHBOARD\HomeCtrl@detail')->name('v.rkpd.detail');
 		Route::get('/detail-program/{tahun}/{kodepemda}', 'DASHBOARD\HomeCtrl@program')->name('v.rkpd.detail.program');

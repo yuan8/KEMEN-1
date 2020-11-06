@@ -32,7 +32,7 @@ class HelperProvider extends ServiceProvider
                 break;
 
              case 3:
-                $r='PEMDA';
+                $r='PERMEN 18';
                 break;
 
              case 4:

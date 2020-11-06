@@ -159,17 +159,17 @@ class RAKORTEK extends Controller
     			$value=static::getValue($d['target_nasional_2020_2024']);
 
     			DB::connection('sink_prokeg')->table('tb_'.$tahun.'_master_indikator')
-    		->insertOrIgnore([
-    			'kode'=>$d['kode_indikator'],
-    			'uraian'=>strtoupper($d['nama_indikator']),
-    			'target'=>$value[0],
-    			'target_max'=>$value[1],
-    			'data_type'=>$value[2],
-    			'satuan'=>$d['nama_satuan'],
-    			'pelaksana'=>$d['bidang']!=''?(str_replace('P.','', str_replace('K.','',$d['bidang'][0]['kode_urusan']))):'',
-    			'jenis'=>'IM',
+	    		->insertOrIgnore([
+	    			'kode'=>$d['kode_indikator'],
+	    			'uraian'=>strtoupper($d['nama_indikator']),
+	    			'target'=>$value[0],
+	    			'target_max'=>$value[1],
+	    			'data_type'=>$value[2],
+	    			'satuan'=>$d['nama_satuan'],
+	    			'pelaksana'=>$d['bidang']!=''?(str_replace('P.','', str_replace('K.','',$d['bidang'][0]['kode_urusan']))):'',
+	    			'jenis'=>'IM',
 
-    		]);
+	    		]);
     		}
 
 

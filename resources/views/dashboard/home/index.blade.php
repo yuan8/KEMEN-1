@@ -12,14 +12,15 @@
 
 
 @section('content')
-<h1 class="text-center"><b>PELAPORAN RKPD PEMDA</b></h1>
+<h1 class="text-center"><b>RKPD PROVINSI TAHUN {{$tahun}}</b></h1>
 <hr>
 <div class="container">
 	<div class="row" style="margin-bottom: 10px;">
 	<div class="col-md-3">
 		<label>TAHUN</label>
-		<select class="form-control">
-			<option>2020</option>
+		<select class="form-control" onchange="window.location.href=this.value">
+			<option value="{{route('v.rkpd.prov',['tahun'=>date('Y')])}}" {{$tahun==date('Y')?'selected':''}}>{{date('Y')}}</option>
+			<option value="{{route('v.rkpd.prov',['tahun'=>date('Y')+1])}}" {{$tahun==(date('Y')+1)?'selected':''}}>{{date('Y')+1}}</option>
 		</select>
 	</div>
 	<div class="col-md-3">
@@ -28,26 +29,59 @@
 			<option>SEMUA</option>
 		</select>
 	</div>
-	<div class="col-md-3">
+{{-- 	<div class="col-md-3">
 		<label>URUSAN</label>
 		<select class="form-control">
 			<option>SEMUA</option>
 			
 		</select>
-	</div>
+	</div> --}}
 </div>
 </div>
-<div class="row" style="margin-bottom: 10px;">
+<style type="text/css">
+	.list-group-horizontal .list-group-item
+{
+	display: inline-block;
+}
+.list-group-horizontal .list-group-item
+{
+	margin-bottom: 0;
+	margin-left:-4px;
+	margin-right: 0;
+ 	border-right-width: 0;
+}
+.list-group-horizontal .list-group-item:first-child
+{
+	border-top-right-radius:0;
+	border-bottom-left-radius:4px;
+}
+.list-group-horizontal .list-group-item:last-child
+{
+	border-top-right-radius:4px;
+	border-bottom-left-radius:0;
+	border-right-width: 1px;
+}
+</style>
+<div class="row" style="margin-bottom: 15px;">
 
-	<div class="col-md-6" id="chart" style="background: #fff; height: 400px;">
+	<div class="col-md-6" id="chart" style="background: #fff; height: 462px;">
 		
 	</div>
-	<div class="col-md-6" id="map" style="background: #fff;  height: 400px;">
-		
+	<div class="col-md-6"  style="background: #fff;  height: 462px;">
+		<div id="map"></div>
+		<p class="text-center"><b>Persentase Pelaporan</b></p>
+		<ul class="list-group list-group-horizontal text-center">
+		  <li class="list-group-item"><i class="fas fa-circle"></i> =0%</li>
+		  <li class="list-group-item"><i class="fas fa-circle" style="color:red;"></i> <=20%</li>
+		  <li class="list-group-item"><i class="fas fa-circle" style="color:orange;"></i> <=40%</li>
+		  <li class="list-group-item"><i class="fas fa-circle" style="color:yellow;"> </i> <=60%</li>
+		  <li class="list-group-item"><i class="fas fa-circle" style="color:green;"> </i> <=60%</li>
+		  <li class="list-group-item"><i class="fas fa-circle" style="color:#45ff23;"> </i> <=100%</li>
+		</ul>
 	</div>
 
 </div>
-<div class="container">
+{{-- <div class="container">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box box-solid">
@@ -71,8 +105,7 @@
 								<td>Rp. 300,0000,0000</td>
 								<td>
 									<div class="btn-group">
-										<a href="{{route('v.rkpd.detail',['tahun'=>2020,'kodepemda'=>11])}}" class="btn btn-success btn-sm">Detail Data</a>
-										<a href="{{route('v.rkpd.pemda',['kodepemda'=>11,'tahun'=>2020])}}" class="btn btn-success btn-sm">Detail Pemda</a>
+										
 									</div>
 								</td>
 
@@ -83,7 +116,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> --}}
 
 	
 </div>
@@ -102,7 +135,7 @@
                     backgroundColor: 'transparent',
                 },
                 title: {
-                    text: 'PELAPORAN RKPD PROVINSI',
+                    text: 'PELAPORAN RKPD PER-PROVINSI',
                     style:{
                         color:'#222'
                     },
@@ -130,245 +163,7 @@
                 series:[
 
                 	{
-					    data: [
-					    {
-					    	'id':11,
-					    	'name':'namaa point',
-					    	'value':1,
-					    	'color':'red',
-					    	'tooltip':''
-					    },
-					    {
-					    	'id':12,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'red',
-					    	'tooltip':''
-					    },
-					    {
-					    	'id':13,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':14,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'red',
-					    	'tooltip':''
-					    }, {
-					    	'id':15,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					    {
-					    	'id':16,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':17,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					    {
-					    	'id':18,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					    {
-					    	'id':19,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					    {
-					    	'id':21,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					    {
-					    	'id':31,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':32,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'red',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':33,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':34,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'red',
-					    	'tooltip':''
-					    },
-					    {
-					    	'id':35,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					    {
-					    	'id':36,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':51,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'red',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':52,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':53,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':61,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':62,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':63,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':64,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'red',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':71,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':72,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'red',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':73,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':74,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':75,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':76,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					      {
-					    	'id':81,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'red',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':82,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':91,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'red',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':92,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					     {
-					    	'id':65,
-					    	'name':'namaa point',
-					    	'value':123,
-					    	'color':'green',
-					    	'tooltip':''
-					    },
-					    ],
+					    data: <?= json_encode($data_map) ?>,
 					    name: 'APA AJA BOLEH',
 					    joinBy: 'id',
 					    type:'map',
@@ -400,20 +195,20 @@
 // ------
 
 
-Highcharts.chart('chart', {
+var clm_chart=Highcharts.chart('chart', {
     chart: {
         type: 'bar'
     },
     title: {
         text: 'PELAPORAN RKPD PER-PROVINSI'
     },
-    xAxis: {
-        categories: ['PROVINSI ACEH', 'PROVINSI SUMATRA UTARA', 'PROVINSI SUMATRA BARAT', 'PROVINSI RIAU', 'PROVINSI JAMBI','PROVINSI SUMATRA SELATAN','PROVINSI BENGKULU','PROVINSI LAMPUNG','PROVINSI KEPULAUAN BANGKABELITUNG','PROVINSI KEPULAUAN RIAU','PROVINSI DKI JAKARTA','PROVINSI JAWA BARAT','PROVINSI JAWA TENGAH','DAERAH ISTIMEWA YOGYAKARTA','PROVINSI JAWA TIMUR','PROVINSI BANTEN','PROVINSI BALI','PROVINSI NUSA TENGGARA BARAT','PROVINSI NUSA TENGGARA TIMUR','PROVINSI KALIMANTAN BARAT','PROVINSI KALIMANTAN TENGAH','PROVINSI KALIMANTAN SELATAN','PROVINSI KALIMANTAN TIMUR','PROVINSI SULAWESI UTARA','PROVINSI SULAWESI TENGAH','PROVINSI SULAWESI SELATAN','PROVINSI SULAWESI TENGGARA','PROVINSI GORONTALO','PROVINSI SULAWESI BARAT','PROVINSI MALUKU','PROVINSI MALUKU UTARA','PROVINSI PAPUA BARAT','PROVINSI PAPUA','PROVINSI KALIMANTAN UTARA']
+    xAxis:{
+    	categories:<?= json_encode($data_chart['category'])?>,
     },
     yAxis: {
         min: 0,
         title: {
-            text: 'Total fruit consumption'
+            text: 'Jumlah Pemda'
         }
     },
     legend: {
@@ -427,12 +222,12 @@ Highcharts.chart('chart', {
     series: [{
         name: 'DAERAH MELAPORKAN RKPD',
         color:'green',
-        data: [5, 2, 1, 3, 2,5, 2, 1, 3, 2,5, 2, 1, 3, 2,5, 2, 1, 3, 2,5, 2, 1, 3, 2,5, 2, 1, 3]
+        data: <?php echo json_encode($data_chart['melapor']) ?>
     },
     {
         name: 'DAERAH TIDAK MELAPORKAN RKPD',
         color:'red',
-        data: [3, 3, 4, 1, 9,3, 3, 4, 1, 9,3, 3, 4, 1, 9,3, 3, 4, 1, 9,3, 3, 4, 1, 9,3, 3, 4, 1]
+        data:<?php echo json_encode($data_chart['tidak_melapor']) ?>
     }]
 });
 </script>
