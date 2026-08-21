@@ -85,8 +85,8 @@ async function login() {
     await page.goto('http://localhost/dss/bot/simspam-login',{ waitUntil: 'networkidle0' });
     // await page.goto('http://airminum.ciptakarya.pu.go.id/sinkronisasi/login.php?appid=spam',{ waitUntil: 'networkidle0' });
     
-    await page.type('#username','admin');
-    await page.type('#password','spam3257');
+    await page.type('#username','_');
+    await page.type('#password','spam3257XX4');
     await Promise.all([
           page.click('button[type="submit"]'),
           // page.waitForNavigation({ waitUntil: 'networkidle0' }),
